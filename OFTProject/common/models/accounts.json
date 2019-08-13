@@ -25,54 +25,54 @@
     },
     "white": {
       "type": "boolean",
-      "required": true,
+      "required": false,
       "default":false
     },
     "userId": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "registeredNo": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "email": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "counter": {
       "type": "number",
-      "required": true,
+      "required": false,
       "default":0
     },
     "counterall":{
       "type": "number",
-      "required": true,
+      "required": false,
       "default":0
     },
     "key":{
       "type": "string",
-      "required": true,
+      "required": false,
       "default":"null"
     },
     "current": {
       "type": "boolean",
-      "required": true,
+      "required": false,
       "default":false
     },
     "server": {
       "type": "boolean",
-      "required": true,
+      "required": false,
       "default":false
     },
     "extra1": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default":"null"
     },
     "extra2": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default":"null"
     },
     "deleted":{
