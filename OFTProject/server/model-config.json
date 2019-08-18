@@ -91,5 +91,9 @@
   "AccountBalance":{
     "dataSource": "mongoatlas",
     "public": true
+  },
+  "CourseMst":{
+    "dataSource": "mongoatlas",
+    "public": true
   }
 }

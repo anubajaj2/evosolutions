@@ -284,12 +284,15 @@
 		"date": "",
 		"FirstName": "",
 		"LastName": "",
-		"country": "IN",
+		"city": " ",
 		"phone": "",
-		"subject": "",
-		"message": "",
+		"emailId2": "",
+		"remarks": "",
 		"fees":"18 k",
-		"currency":"INR"
+		"currency":"INR",
+		"address":"",
+		"organization":"",
+		"type":""
 	},
 	"newCustomer": {
 		"GmailId": "",
