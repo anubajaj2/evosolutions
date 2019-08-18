@@ -27,7 +27,7 @@
     "Date": {
       "type": "date"
     },
-    "Country": {
+    "City": {
       "type": "string",
       "default": "null"
     },
@@ -35,11 +35,11 @@
       "type": "number",
       "default":0
     },
-    "Subject": {
+    "EmailId2": {
       "type": "string",
       "default": "null"
     },
-    "Message": {
+    "Remarks": {
       "type": "string",
       "default": "null"
     },

@@ -2,7 +2,7 @@
 controllerName="oft.fiori.controller.MainApp"
 	xmlns:html="http://www.w3.org/1999/xhtml" >
 	<App id="idMainApp">
-		<Page title="www.OnlineFioriTrainings.com">
+		<Page title="Evo Training Solutions">
 			<content>
 				<!-- <tnt:ToolHeader>
 					<ToolbarSpacer />

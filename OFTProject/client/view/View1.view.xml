@@ -11,6 +11,7 @@
 					mode="SingleSelectMaster" delete="onDelete"
 			      selectionChange="onSelectItem">
 				<items>
+					<StandardListItem id="newmcourse" icon="sap-icon://course-book" title="New Course" description=""></StandardListItem>
 					<StandardListItem id="newlead" icon="sap-icon://leads" title="New Lead" description=""></StandardListItem>
 					<StandardListItem id="newCustomer" icon="sap-icon://customer" title="New Customer" description=""></StandardListItem>
 					<StandardListItem id="newreg" icon="sap-icon://collections-insight" title="New Registration" description=""></StandardListItem>

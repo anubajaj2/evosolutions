@@ -48,14 +48,17 @@
 				<Label text="Name" />
 				<Input value="{local>/newLead/FirstName}"/>
         <Input value="{local>/newLead/LastName}"/>
-				<Label text="Country" />
-				<ComboBox id="country" items="{local>/countries}"
-          change="onCourseSelect"
-          selectedKey="{local>/newLead/country}">
-					<items>
-						<core:Item text="{local>name}" key="{local>code}"/>
-					</items>
-				</ComboBox>
+				<Label text="Address" />
+        <TextArea value="{local>/newLead/address}">
+        </TextArea>
+        <Label text="City" />
+<!--				<ComboBox id="country" items="{local>/countries}"
+            change="onCourseSelect"
+            selectedKey="{local>/newLead/country}">
+      			<items>
+      				<core:Item text="{local>name}" key="{local>code}"/>
+      			</items>
+      		</ComboBox> -->
         <Label text="Fees" />
 				<Input value="{local>/newLead/fees}" />
         <Label text="Currency" />
@@ -63,11 +66,11 @@
 				<Label text="Phone" />
 				<Input type="Number" value="{local>/newLead/phone}">
 				</Input>
-				<Label text="Subject" />
-				<Input value="{local>/newLead/subject}">
+				<Label text="Alternate EmailId" />
+				<Input value="{local>/newLead/emailId2}">
 				</Input>
-				<Label text="Message" />
-				<TextArea value="{local>/newLead/message}">
+				<Label text="Remarks" />
+				<TextArea value="{local>/newLead/remarks}">
 				</TextArea>
 			</f:content>
 		</f:SimpleForm>

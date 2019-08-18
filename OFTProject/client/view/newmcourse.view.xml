@@ -1,0 +1,58 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+    controllerName="oft.fiori.controller.newmcourse"
+	xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="New Course"  navButtonPress="onBack">
+		<headerContent>
+	    	<Text id="idUser"></Text>
+			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+		</headerContent>
+		<content>
+			<VBox class="sapUiSmallMargin">
+		<f:SimpleForm id="SimpleFormToolbar"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+			ariaLabelledBy="New Course" >
+			<f:toolbar>
+				<Toolbar id="TB1">
+					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
+					<ToolbarSpacer />
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+				<Label text="Course Name"  />
+				<Input required="true" value="" />
+				<Label text="Course Fees" />
+        <Input required="true" type="Number" value="" />
+        <CheckBox id="idchkBox" editable="true" text="Min Fees Allowed" select="onSelect"/>
+        <Label text="Min Fees"  />
+				<Input value="" type="Number"/>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+
+		</content>
+		<footer>
+			<Toolbar>
+        <Button icon="sap-icon://message-popup" text="{local>/messagesLength}" type="Emphasized"
+						press="handleMessagePopoverPress"/>
+				<ToolbarSpacer/>
+				<Button text="Save" type="Accept" press="onSave" id="idApr"></Button>
+        <Button text="Cancel" type="Reject" press="onCancel" id="idCancel" />
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
