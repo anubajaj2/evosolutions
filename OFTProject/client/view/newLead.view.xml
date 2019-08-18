@@ -59,16 +59,21 @@
       				<core:Item text="{local>name}" key="{local>code}"/>
       			</items>
       		</ComboBox> -->
-        <Label text="Fees" />
-				<Input value="{local>/newLead/fees}" />
-        <Label text="Currency" />
-				<Input value="{local>/newLead/currency}" />
+
+<!--        <Label text="Currency" />
+				<Input value="{local>/newLead/currency}" /> -->
 				<Label text="Phone" />
 				<Input type="Number" value="{local>/newLead/phone}">
 				</Input>
 				<Label text="Alternate EmailId" />
 				<Input value="{local>/newLead/emailId2}">
 				</Input>
+        <Label text="Fees" />
+				<Input value="{local>/newLead/fees}" />
+        <Label text="Type"/>
+        <Input value="{local>/newLead/type}" />
+        <Label text="College/Company name" />
+        <Input value="{local>/newLead/organization}"/>
 				<Label text="Remarks" />
 				<TextArea value="{local>/newLead/remarks}">
 				</TextArea>
