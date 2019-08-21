@@ -52,13 +52,57 @@ sap.ui.define([
 			if(oEvent.getParameter("name") !== "newmcourse"){
 				return;
 			}
-			//Restore the state of UI by fruitId
-			// this.getView().getModel("local").setProperty("/newLead/date", this.formatter.getFormattedDate(0));
-			// this.getView().getModel("local").setProperty("/newLead/country", "IN");
+
+		},
+			onSave: function(oEvent) {
+				debugger;
+				var oLocal = oEvent;
+				console.log(this.getView().getModel("local").getProperty("/newmcourse"));
+				var that = this;
+				that.getView().setBusy(true);
+				var leadData = this.getView().getModel("local").getProperty("/newmcourse");
+				var payload = {
+					 "CourseName":leadData.CourseName.toUpperCase(),
+					 "CourseFee":leadData.CourseFee,
+					 "MinFees":leadData.MinFees,
+						"CreatedOn": new Date(),
+						"CreatedBy": "Pooja",
+					// "SoftDelete": false
+				};
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
+						payload, this)
+						.then(function(oData) {
+
+						that.getView().setBusy(false);
+						//that.subsciptionSaved = "true";
+						sap.m.MessageToast.show("New Course Saved successfully");
+						that.destroyMessagePopover();
+					}).catch(function(oError) {
+
+						that.getView().setBusy(false);
+						//that.subsciptionSaved = "false";
+						var oPopover = that.getErrorMessage(oError);
+					});
+		},
+		onSelect:function(oEvent){
+		this.sId = oEvent.getSource().getId();
+		var sTitle = "",
+			sPath = "";
+ 		if (this.sId.indexOf("idCourse") !== -1) {
+				this.getCourseMstPopUp();
+				var title = this.getView().getModel("i18n").getProperty("courseMst");
+				this.searchPopup.setTitle(title);
+				this.searchPopup.bindAggregation("items", {
+					path: "/CoursesMst",
+					template: new sap.m.DisplayListItem({
+						label: "{CourseName}",
+						value: "{CourseFee}"
+					})
+				});
+			}
 
 
 		},
-
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

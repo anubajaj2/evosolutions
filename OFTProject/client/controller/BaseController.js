@@ -403,6 +403,15 @@ sap.ui.define([
 			// 	.catch(function(oError) {
 			// 		jQuery.sap.log.error("Could not obtain data");
 			// 	});
+		},
+		getCourseMstPopUp: function() {
+			if (!this.searchPopup) {
+				this.searchPopup = new sap.ui.xmlfragment("oft.fiori.fragments.popup", this);
+				this.getView().addDependent(this.searchPopup);
+				var title = this.getView().getModel("i18n").getProperty("courseMst");
+				this.searchPopup.setTitle(title);
+			}
+			this.searchPopup.open();
 		}
 
 	});

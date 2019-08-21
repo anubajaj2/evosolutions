@@ -294,6 +294,16 @@
 		"organization":"",
 		"type":""
 	},
+	"newmcourse":{
+		"CourseName":"",
+		"CourseFee":"",
+		"MinFees":"",
+		"CreatedOn":"",
+		"CreatedBy":"",
+		"ChangedBy":"",
+		"ChangedOn":"",
+		"id":""
+	},
 	"newCustomer": {
 		"GmailId": "",
 		"Name": "",

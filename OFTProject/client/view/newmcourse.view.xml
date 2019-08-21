@@ -28,18 +28,33 @@
 			ariaLabelledBy="New Course" >
 			<f:toolbar>
 				<Toolbar id="TB1">
-					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
+					<Title id="Title1" text="New Course" level="H4" titleStyle="H4"/>
 					<ToolbarSpacer />
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
 				<Label text="Course Name"  />
-				<Input required="true" value="" />
+				<Input required="true"
+           value="{local>/newmcourse/CourseName}"
+           id="idCourse"
+           showValueHelp="true"
+           valueHelpRequest="onSelect"
+           liveChange="onCourse"
+           submit="onEnter"
+           placeholder="Enter Course Name..."
+           showSuggestion="true"
+           suggestionItems="{/CoursesMst}"
+           suggestionItemSelected="suggestionItemSelected">
+           <suggestionItems>
+             <core:Item text="{CourseName}"/>
+           </suggestionItems>
+         </Input>
+
 				<Label text="Course Fees" />
-        <Input required="true" type="Number" value="" />
+        <Input required="true" type="Number" value="{local>/newmcourse/CourseFee}" />
         <CheckBox id="idchkBox" editable="true" text="Min Fees Allowed" select="onSelect"/>
         <Label text="Min Fees"  />
-				<Input value="" type="Number"/>
+				<Input value="{local>/newmcourse/MinFees}" type="Number"/>
 			</f:content>
 		</f:SimpleForm>
 	</VBox>
