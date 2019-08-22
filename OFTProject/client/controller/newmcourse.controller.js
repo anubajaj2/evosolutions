@@ -1,3 +1,5 @@
+//var courseGUID;
+//var Updatecourse;
 sap.ui.define([
 	"oft/fiori/controller/BaseController",
 	"sap/m/MessageBox",
@@ -14,6 +16,7 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf oft.fiori.view.View2
 		 */
+
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			// this.clearForm();
@@ -24,6 +27,8 @@ sap.ui.define([
 			// 	this.getView().byId("idUser").setText(loginUser);
 			// }
 		},
+		//Declaration of global variable to control update and Save
+	//	Updatecourse = false,
 		clearForm: function() {
 			// this.getView().getModel("local").setProperty("/newLead",{
 			// 	"emailId": "",
@@ -47,7 +52,9 @@ sap.ui.define([
 		// onHover: function() {
 		// 	sap.m.MessageBox.alert("Button was Hovered");
 		// },
-
+		onBack: function() {
+			sap.ui.getCore().getView().byId("idApp").to("idView1");
+		},
 		herculis: function(oEvent) {
 			if(oEvent.getParameter("name") !== "newmcourse"){
 				return;
@@ -100,8 +107,41 @@ sap.ui.define([
 					})
 				});
 			}
+		},
+		onConfirm:function(oEvent) {
+			debugger;
+			if (this.sId.indexOf("idCourse") !== -1){
+				var oItem = oEvent.getParameter("selectedItem");
+				var oContext = oItem.getBindingContext();
+				if (oContext) {
+					var that = this;
+					var payload = {};
+				  var oFilter = new sap.ui.model.Filter("CourseName","EQ",oContext.getObject().CourseName);
+					this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/CoursesMst","GET",{
+						filters:[oFilter]
+					},payload,this)
+					.then(function(oData){
+							if(oData.results.length != 0){
+							that.getView().byId("idCourse").setValue(oData.results[0].CourseName);
+							that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
+							if (oData.results[0].MinFees) {
+							that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
+						}
+						else
+						{
+							that.getView().byId("idMinFees").setValue(0);
+						}
+						that.getView().byId("idCreate").setText("Update");
+						//that.Updatecourse = true;
+						//that.courseGUID = odata.results[0].id;
+							}
+					}).catch(function(oError){
+						that.getView().byId("idCreate").setText("Create");
+						//that.Updatecourse = false;
+					});
+				}
 
-
+			}
 		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered

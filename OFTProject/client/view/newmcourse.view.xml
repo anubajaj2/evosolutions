@@ -51,10 +51,10 @@
          </Input>
 
 				<Label text="Course Fees" />
-        <Input required="true" type="Number" value="{local>/newmcourse/CourseFee}" />
+        <Input id="idCourseFee" required="true" type="Number" value="{local>/newmcourse/CourseFee}" />
         <CheckBox id="idchkBox" editable="true" text="Min Fees Allowed" select="onSelect"/>
         <Label text="Min Fees"  />
-				<Input value="{local>/newmcourse/MinFees}" type="Number"/>
+				<Input id="idMinFees" value="{local>/newmcourse/MinFees}" type="Number"/>
 			</f:content>
 		</f:SimpleForm>
 	</VBox>
@@ -65,7 +65,8 @@
         <Button icon="sap-icon://message-popup" text="{local>/messagesLength}" type="Emphasized"
 						press="handleMessagePopoverPress"/>
 				<ToolbarSpacer/>
-				<Button text="Save" type="Accept" press="onSave" id="idApr"></Button>
+        <Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear1"></Button>
+        <Button text="Create" type="Accept" press="onSave" id="idCreate"></Button>
         <Button text="Cancel" type="Reject" press="onCancel" id="idCancel" />
 			</Toolbar>
 		</footer>
