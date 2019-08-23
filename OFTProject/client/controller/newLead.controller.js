@@ -412,7 +412,19 @@ sap.ui.define([
 				.fail(function(xhr, status, error) {
 					sap.m.MessageBox.error(xhr.responseText);
 				});
-		}
+		},
+		handleSkillFinish: function(oEvent) {
+			var selectedItems = oEvent.getParameter("selectedItems");
+
+			var courses = ' ';
+			for (var i = 0; i < selectedItems.length; i++) {
+				courses += selectedItems[i].getText();
+				if (i != selectedItems.length - 1) {
+					courses += ",";
+				}
+			}
+			this.getView().getModel("local").setProperty("/newCustomer/Skills", SkillSet);
+		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

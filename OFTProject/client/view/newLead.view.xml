@@ -35,13 +35,21 @@
 			<f:content>
 				<Label text="Email Id"  />
 				<Input required="true" type="Email" value="{local>/newLead/emailId}" />
-				<Label text="Course" />
-				<Select  id="course" items="{local>/courses}"
+				<Label text="Courses" />
+        <MultiComboBox id="idCourse1"
+          selectionFinish="handleFinish" width="500px"
+          items="{
+            path: '/CoursesMst',
+            sorter: { path: 'CourseName' }
+          }">
+          <core:Item key="{id}" text="{CourseName}"/>
+        </MultiComboBox>
+<!--				<Select  id="course" items="{local>/courses}"
 						  selectedKey="{local>/newLead/course}" change="onCourseSelect">
 					<items>
 						<core:Item text="{local>courseName}" key="{local>courseName}"/>
 					</items>
-				</Select>
+				</Select>-->
 				<Label text="Date" />
 				<DatePicker id="inqDate" valueFormat="dd.MM.yyyy"
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
@@ -52,13 +60,12 @@
         <TextArea value="{local>/newLead/address}">
         </TextArea>
         <Label text="City" />
-<!--				<ComboBox id="country" items="{local>/countries}"
-            change="onCourseSelect"
-            selectedKey="{local>/newLead/country}">
-      			<items>
-      				<core:Item text="{local>name}" key="{local>code}"/>
-      			</items>
-      		</ComboBox> -->
+        <ComboBox id="idCity"
+        showSecondaryValues="true"
+          items="{local>/cities}">
+<!--     <core:ListItem text="{local>city}" key="{local>city}" additionaltext="{local>state}" /> -->
+          <core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}"/>
+        </ComboBox>
 
 <!--        <Label text="Currency" />
 				<Input value="{local>/newLead/currency}" /> -->
@@ -68,10 +75,14 @@
 				<Label text="Alternate EmailId" />
 				<Input value="{local>/newLead/emailId2}">
 				</Input>
-        <Label text="Fees" />
-				<Input value="{local>/newLead/fees}" />
         <Label text="Type"/>
-        <Input value="{local>/newLead/type}" />
+        <Select id="idCustType" selectedKey="{local>/newLead/Type}">
+          <core:Item key="School" text="School"></core:Item>
+          <core:Item key="College" text="College"></core:Item>
+          <core:Item key="Graduate" text="Graduate"></core:Item>
+          <core:Item key="Post Graduate" text="Post Graduate"></core:Item>
+          <core:Item key="Corporate" text="Corporate"></core:Item>
+        </Select>
         <Label text="College/Company name" />
         <Input value="{local>/newLead/organization}"/>
 				<Label text="Remarks" />
