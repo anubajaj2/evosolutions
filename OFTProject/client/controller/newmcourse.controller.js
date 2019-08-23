@@ -16,7 +16,9 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf oft.fiori.view.View2
 		 */
-
+		courseGUID:"",
+		Updatecourse:"",
+		oCourse:"",
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			// this.clearForm();
@@ -68,28 +70,55 @@ sap.ui.define([
 				var that = this;
 				that.getView().setBusy(true);
 				var leadData = this.getView().getModel("local").getProperty("/newmcourse");
-				var payload = {
-					 "CourseName":leadData.CourseName.toUpperCase(),
-					 "CourseFee":leadData.CourseFee,
-					 "MinFees":leadData.MinFees,
-						"CreatedOn": new Date(),
-						"CreatedBy": "Pooja",
-					// "SoftDelete": false
-				};
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
-						payload, this)
-						.then(function(oData) {
 
+				switch (that.Updatecourse) {
+					case true:
+						var payload = {
+							"CourseName":leadData.CourseName.toUpperCase(),
+ 						   "CourseFee":leadData.CourseFee,
+ 						   "MinFees":leadData.MinFees,
+	 							"ChangedBy": "Pooja",
+	 							"ChangedOn": new Date(),
+						};
+						var sPath1 = "/CoursesMst";
+						sPath1 = sPath1 + "(" + "\'" +that.courseGUID + "\'" + ")";
+						this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath1, "PUT", {},
+					payload, this)
+					.then(function(oData){
 						that.getView().setBusy(false);
-						//that.subsciptionSaved = "true";
-						sap.m.MessageToast.show("New Course Saved successfully");
+						sap.m.MessageToast.show("Course Details Updated successfully");
 						that.destroyMessagePopover();
-					}).catch(function(oError) {
-
+					}).catch(function(oError){
 						that.getView().setBusy(false);
-						//that.subsciptionSaved = "false";
 						var oPopover = that.getErrorMessage(oError);
 					});
+					break;
+					case false:
+					var payload = {
+						 "CourseName":leadData.CourseName.toUpperCase(),
+						 "CourseFee":leadData.CourseFee,
+						 "MinFees":leadData.MinFees,
+							"CreatedOn": new Date(),
+							"CreatedBy": "Pooja",
+						// "SoftDelete": false
+					};
+					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
+							payload, this)
+							.then(function(oData) {
+
+							that.getView().setBusy(false);
+							//that.subsciptionSaved = "true";
+							sap.m.MessageToast.show("New Course Saved successfully");
+							that.destroyMessagePopover();
+						}).catch(function(oError) {
+
+							that.getView().setBusy(false);
+							//that.subsciptionSaved = "false";
+							var oPopover = that.getErrorMessage(oError);
+						});
+					break;
+				}
+
 		},
 		onSelect:function(oEvent){
 		this.sId = oEvent.getSource().getId();
@@ -132,16 +161,120 @@ sap.ui.define([
 							that.getView().byId("idMinFees").setValue(0);
 						}
 						that.getView().byId("idCreate").setText("Update");
-						//that.Updatecourse = true;
-						//that.courseGUID = odata.results[0].id;
+						that.Updatecourse = true;
+						that.courseGUID = oData.results[0].id;
 							}
 					}).catch(function(oError){
 						that.getView().byId("idCreate").setText("Create");
-						//that.Updatecourse = false;
+						that.Updatecourse = false;
 					});
 				}
 
 			}
+		},
+		onCourse:function(oEvent){
+			this.getView().byId("idCourse").setEnabled(true);
+		},
+		suggestionItemSelected:function(oEvent){
+			var oItem = oEvent.getParameter("selectedItem");
+			var oContext = oItem.getBindingContext();
+			if (oContext) {
+				var that = this;
+				var payload = {};
+				var oFilter = new sap.ui.model.Filter("CourseName","EQ",oContext.getObject().CourseName);
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/CoursesMst","GET",{
+				filters:[oFilter]
+			},payload,this)
+			.then(function(oData){
+					if(oData.results.length != 0){
+					that.getView().byId("idCourse").setValue(oData.results[0].CourseName);
+					that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
+					if (oData.results[0].MinFees) {
+					that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
+				}
+				else
+				{
+					that.getView().byId("idMinFees").setValue(0);
+				}
+				that.getView().byId("idCreate").setText("Update");
+				that.Updatecourse = true;
+				that.courseGUID = oData.results[0].id;
+					}
+			}).catch(function(oError){
+				that.getView().byId("idCreate").setText("Create");
+				that.Updatecourse = false;
+			});
+			}
+
+
+		},
+		onEnter:function(oEvent){
+			this.oCourse = oEvent.getParameters();
+			// if (this.oCourse) {
+			// 	var that = this;
+			// 	var payload = {};
+			// 	var oFilter = new sap.ui.model.Filter("CourseName","EQ",that.oCourse);
+			// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/CoursesMst","GET",{
+			// 	filters:[oFilter]
+			// }, payload, this)
+			// .then(function(oData){
+			// 		if(oData.results.length != 0){
+			// 		that.getView().byId("idCourse").setValue(oData.results[0].CourseName);
+			// 		that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
+			// 		if (oData.results[0].MinFees) {
+			// 		that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
+			// 	}
+			// 	else
+			// 	{
+			// 		that.getView().byId("idMinFees").setValue(0);
+			// 	}
+			// 	that.getView().byId("idCreate").setText("Update");
+			// 	that.Updatecourse = true;
+			// 	that.courseGUID = oData.results[0].id;
+			// 		}
+			// 		else{
+			// 			that.getView().byId("idCreate").setText("Create");
+			// 			that.Updatecourse = false;
+			// 		}
+			// }).catch(function(oError){
+			// 	var oPopover = that.getErrorMessage(oError);
+			// });
+			//
+			// }
+		},
+		onDeleteCourse: function(oEvent) {
+			var that = this;
+			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+				if (conf == 'OK') {
+					//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
+					// that.totalCount = that.totalCount - items.length;
+					// for (var i = 0; i < items["length"]; i++) {
+					debugger;
+					var sPath = "/CoursesMst('" + that.courseGUID + "')";
+					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
+						.then(function(oData) {
+							//that.getView().byId("idDelete").setEnabled(false);
+							sap.m.MessageToast.show("Deleted succesfully");
+							that.onClearScreen();
+						}).catch(function(oError) {
+							that.getView().setBusy(false);
+							that.oPopover = that.getErrorMessage(oError);
+							that.getView().setBusy(false);
+						});
+					// }
+				}
+			}, "Confirmation");
+		},
+		onClearScreen: function(oEvent) {
+			debugger;
+			this.getView().getModel("local").setProperty("/newmcourse/CourseName", null);
+			this.getView().getModel("local").setProperty("/newmcourse/CourseFee", null);
+			this.getView().getModel("local").setProperty("/newmcourse/MinFees", null);
+			this.getView().byId("idCreate").setText("Create");
+
+			this.Updatecourse = false;
+			this.courseGUID = null;
+
 		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
