@@ -255,21 +255,28 @@ sap.ui.define([
 				sap.m.MessageToast.show("Enter a valid Date");
 				return "";
 			}
+			//get the Course set here and save the records
+			var course = leadData.courseSet.split(",");
+			for(var i=0; i<course.length; i++){
+				//var temp = course[i];
 			var payload = {
 				"EmailId": leadData.emailId.toLowerCase(),
-				"CourseName": leadData.course,
+				"CourseName": course[i],
 				"FirstName": leadData.FirstName,
 				"LastName": leadData.LastName,
 				"Date": this.getView().byId("inqDate").getDateValue(),
-				"Country": leadData.country,
+				"City": leadData.city,
 				"Phone": leadData.phone,
-				"Subject": leadData.subject,
-				"Message": leadData.message,
-				"fees": leadData.fees,
-				"currency": leadData.currency,
+				"Remarks": leadData.remarks,
+				"SoftDelete": false,
 				"CreatedOn": new Date(),
-				"CreatedBy": "Minakshi",
-				"SoftDelete": false
+		    "CreatedBy": "Pooja",
+		    "ChangedOn": new Date(),
+		    "ChangedBy": "Pooja",
+				"fees": "18000",
+				"currency": "INR",
+				"CustType": leadData.custType,
+				"Organization": leadData.organization
 			};
 			// var oDataModel = this.getView().getModel();
 			// oDataModel.create("/Inquries",payload,null, function(){
@@ -388,6 +395,7 @@ sap.ui.define([
 			// function(data, status){
 			//     sap.m.MessageBox.confirm("Wallah! Posted");
 			// });
+		}
 		},
 		onApprove: function() {
 
@@ -413,17 +421,16 @@ sap.ui.define([
 					sap.m.MessageBox.error(xhr.responseText);
 				});
 		},
-		handleSkillFinish: function(oEvent) {
+		handleFinish: function(oEvent) {
 			var selectedItems = oEvent.getParameter("selectedItems");
-
 			var courses = ' ';
 			for (var i = 0; i < selectedItems.length; i++) {
-				courses += selectedItems[i].getText();
+				courses += selectedItems[i].getKey();
 				if (i != selectedItems.length - 1) {
 					courses += ",";
 				}
 			}
-			this.getView().getModel("local").setProperty("/newCustomer/Skills", SkillSet);
+			this.getView().getModel("local").setProperty("/newLead/courseSet", courses);
 		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered

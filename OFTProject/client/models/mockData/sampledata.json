@@ -281,6 +281,7 @@
 	"newLead": {
 		"emailId": "",
 		"course": " ",
+		"courseId":" ",		
 		"date": "",
 		"FirstName": "",
 		"LastName": "",
@@ -292,7 +293,12 @@
 		"currency":"INR",
 		"address":"",
 		"organization":"",
-		"type":""
+		"custType":"",
+		"CreatedOn":"",
+		"CreatedBy":"",
+		"ChangedBy":"",
+		"ChangedOn":"",
+		"courseSet":""
 	},
 	"newmcourse":{
 		"CourseName":"",

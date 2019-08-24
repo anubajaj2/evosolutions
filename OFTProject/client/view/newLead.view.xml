@@ -76,7 +76,7 @@
 				<Input value="{local>/newLead/emailId2}">
 				</Input>
         <Label text="Type"/>
-        <Select id="idCustType" selectedKey="{local>/newLead/Type}">
+        <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
           <core:Item key="College" text="College"></core:Item>
           <core:Item key="Graduate" text="Graduate"></core:Item>

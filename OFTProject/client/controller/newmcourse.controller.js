@@ -64,13 +64,19 @@ sap.ui.define([
 
 		},
 			onSave: function(oEvent) {
+
 				debugger;
 				var oLocal = oEvent;
 				console.log(this.getView().getModel("local").getProperty("/newmcourse"));
 				var that = this;
 				that.getView().setBusy(true);
 				var leadData = this.getView().getModel("local").getProperty("/newmcourse");
+				if (leadData.CourseFee < leadData.MinFees) {
+					that.getView().setBusy(false);
+					sap.m.MessageBox.error("Min Fees Cannot be greater than Course Fee");
 
+					return;
+				}
 				switch (that.Updatecourse) {
 					case true:
 						var payload = {

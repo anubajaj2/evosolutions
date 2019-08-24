@@ -3,22 +3,23 @@
 module.exports = function(Inquiry) {
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+    var app = require('../../server/server');
+    var CourseMst = app.models.CourseMst;
     //validations
-    Inquiry.validatesPresenceOf('FirstName', {message: 'Name Cannot be blank'});
-
+    Inquiry.validatesPresenceOf('FirstName', {message: 'Name Cannot be blank'})
     Inquiry.validatesFormatOf('EmailId', {with: re, message: 'invalid email id'});
-    Inquiry.validatesInclusionOf('CourseName', {
-        in: ["UI5 and Fiori", "ABAP on HANA", "Launchpad", "HANA XS",  "Hybris C4C",
-             ,"HANA Cloud Integration (HCI)","SAP Cloud Platform","ABAP", "OOPS ABAP", "Webdynpro", "Workflow", "FPM", "Other"
-             ,"S4HANA Extension","BRF", "SimpleLogistics","SimpleFinance"], message: 'Course Name is not allowed'
-    });
+    // Inquiry.validatesInclusionOf('CourseName', {
+    //     in: ["UI5 and Fiori", "ABAP on HANA", "Launchpad", "HANA XS",  "Hybris C4C",
+    //          ,"HANA Cloud Integration (HCI)","SAP Cloud Platform","ABAP", "OOPS ABAP", "Webdynpro", "Workflow", "FPM", "Other"
+    //          ,"S4HANA Extension","BRF", "SimpleLogistics","SimpleFinance"], message: 'Course Name is not allowed'
+    // });
     //anubhav push from atom
     ///Parse microsoft ISO Date while read : /Date(1540319400000)/
     //jsonDate = "/Date(1540319400000)/"; var date = new Date(parseInt(jsonDate.substr(6)));
     Inquiry.observe("before save",function(ctx, next){
       var app = require('../../server/server');
       var AppUser = app.models.AppUser;
+      var CourseMst = app.models.CourseMst;
       //console.log("Context kya hai" + ctx.instance.EmailId  + "   " +   ctx.instance.CourseName);
       if(ctx.instance && ctx.instance.EmailId  && ctx.instance.CourseName){
 
@@ -42,12 +43,10 @@ module.exports = function(Inquiry) {
                     //good practice such student create an inquiry first then create course
                 	  var err = new Error(".Inquiry already exist, Inquired on " + inq.CreatedOn + ' From Country  : ' +  inq.Country + ' & Created by : ' +  inq.CreatedBy);
                   }
-
                   err.statusCode = 400;
                   console.log(err);
                   next(err);
                 });
-
             }
             else {
               //do nothing

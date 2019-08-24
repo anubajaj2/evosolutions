@@ -16,6 +16,11 @@
       "default": "null",
       "required": true
     },
+    "CourseId":{
+      "type":"string",
+      "default": "null",
+      "required": true
+    },
     "FirstName": {
       "type": "string",
       "default": "null"
@@ -68,6 +73,18 @@
     "currency":{
       "type": "string",
       "default": "INR"
+    },
+    "CustType":{
+      "type": "string",
+      "default":"null"
+    },
+    "Organization":{
+      "type": "string",
+      "default":"null"
+    },
+    "Address":{
+      "type": "string",
+      "default":"null"
     }
   },
   "validations": [],
