@@ -35,6 +35,9 @@ sap.ui.define([
 		oEventBus: undefined,
 		oTestcaseListModel: undefined,
 		sUrlTargetSystem: undefined,
+		allMasterData:{
+			"courseMst":[]
+		},
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
 		 * @public
@@ -48,6 +51,15 @@ sap.ui.define([
 			// 	}).catch(function(oError) {
 			// 		var oPopover = that.getErrorMessage(oError);
 			// 	});
+			var that = this;
+		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
+		.then(function(oData){
+			for(i =0 ;i < oData.results.length; i++){
+				that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
+			}
+		}).catch(function(oError) {
+			var oPopover = that.getErrorMessage(oError);
+		});
 		},
 		allStudnets: [],
 		loadAllStudents: function(){

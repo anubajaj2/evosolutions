@@ -94,7 +94,7 @@
 	<VBox>
 		<List id="idRecent" growing="true" mode="MultiSelect"
 			growingThreshold="100" growingScrollToLoad="false"
-			class="sapUiSizeCompact">
+			class="sapUiSizeCompact" updateFinished="onUpdateFinished">
       <headerToolbar>
 				<Toolbar>
         <Title

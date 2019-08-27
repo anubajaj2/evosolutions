@@ -98,7 +98,13 @@
 			"type": "belongsTo",
 			"model": "AppUser",
 			"foreignKey": "ChangedBy"
-		}
+		},
+    "ToCourse":{
+      "type":"belongsTo",
+      "model":"CourseMst",
+      "foreignKey":"CourseName"
+
+    }
   },
   "acls": [
     {

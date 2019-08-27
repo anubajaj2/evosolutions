@@ -432,6 +432,18 @@ sap.ui.define([
 			}
 			this.getView().getModel("local").setProperty("/newLead/courseSet", courses);
 		},
+		onUpdateFinished:function(oEvent){
+			debugger;
+			var olist = oEvent.getSource();
+			var oItemList = olist.getItems();
+			var noOfItems = oItemList.length;
+			for(var i = 0; i < noOfItems; i++){
+				var courseId = olist.getItems()[i].mBindingInfos.label.binding.aValues[1];
+				var courseData = this.allMasterData.courseMst[courseId];
+				olist.getItems()[i].mBindingInfos.label.binding.setValue(["123","Abc","12"]);
+
+			}
+		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
