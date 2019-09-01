@@ -151,7 +151,7 @@ sap.ui.define([
 			oList.bindAggregation("items", {
 				path: '/Inquries',
 				template: new sap.m.DisplayListItem({
-					label: "{EmailId} - {CourseName} - {Country}",
+					label: "{EmailId} - {CourseName}",
 					value: "{fees} {currency} / {CreatedOn}-{CreatedBy}"
 				}),
 				filters: [new Filter("CreatedOn", "GE", newDate)],
@@ -438,9 +438,20 @@ sap.ui.define([
 			var oItemList = olist.getItems();
 			var noOfItems = oItemList.length;
 			for(var i = 0; i < noOfItems; i++){
-				var courseId = olist.getItems()[i].mBindingInfos.label.binding.aValues[1];
-				var courseData = this.allMasterData.courseMst[courseId];
-				olist.getItems()[i].mBindingInfos.label.binding.setValue(["123","Abc","12"]);
+			var course = olist.getItems()[i].mBindingInfos.label.binding.aValues[1];
+			var oLbl = oItemList[i].mProperties.label;
+			var oValue = oItemList[i].mProperties.value.split("/");
+			var courseId = 'CoursesMst(\'' + course.trim() + '\')';
+			var courseDtl = this.getView().getModel().oData[courseId];
+			debugger;
+			if (courseDtl) {
+				var olblArray =  oLbl.split("-");
+				var oLblName = olblArray[0] + '-' + courseDtl.CourseName;
+				var listValue = courseDtl.CourseFee + oValue[1];
+				oItemList[i].mProperties.label = oLblName;
+				oItemList[i].mProperties.value = listValue;
+			}
+
 
 			}
 		},
