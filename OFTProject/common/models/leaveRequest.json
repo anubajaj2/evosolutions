@@ -21,6 +21,10 @@
       "type": "number",
       "default":0
     },
+    "LeaveType": {
+      "type": "string",
+      "default": "null"
+    },
     "Status": {
       "type": "string",
       "default": "null"

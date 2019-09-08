@@ -310,6 +310,20 @@
 		"ChangedOn":"",
 		"id":""
 	},
+	"newLeaveRequest":{
+	"TechnicalId": "",
+	 "DateFrom": "",
+	 "DateTo": "",
+	 "Days": 0,
+	 "LeaveType":"Full Day",
+	 "Status": "",
+	 "ApproverId": "",
+	 "ApprovedOn": "",
+	 "RequestedOn": "",
+	 "Remarks": "",
+	 "ChangedOn": "",
+	 "ChangedBy": ""
+	},
 	"newCustomer": {
 		"GmailId": "",
 		"Name": "",

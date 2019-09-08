@@ -17,7 +17,7 @@
 		</layoutData>
 		<Panel id="overviewPanel" expanded="true" width="auto">
 				<Label text="Leave Type" labelFor="idleaveType"/>
-			<ComboBox id="idleaveType" items="{local>/leaveType}" selectedKey="1" >
+			<ComboBox id="idleaveType" items="{local>/leaveType}" selectedKey="{local>/newLeaveRequest/LeaveType}" >
 							<items>
 								<core:Item text="{local>leave}" key="{local>leave}"/>
 							</items>
@@ -36,12 +36,14 @@
 </HBox>
 <HBox id="hbox2" width="100%" renderType="Bare">
 	<items>
-		<Input  id="input0"/>
-		<Input  id="input1"/>
+		<DatePicker id="idDateFrom" valueFormat="dd.MM.yyyy"
+			displayFormat="dd.MM.yyyy" value="{local>/newLeaveRequest/DateFrom}" ></DatePicker>
+			<DatePicker id="idDateto" valueFormat="dd.MM.yyyy"
+				displayFormat="dd.MM.yyyy" value="{local>/newLeaveRequest/DateTo}" ></DatePicker>
 </items>
 </HBox>
 		<Label id="notes" text="Notes" width="100%"/>
-		<TextArea id="area0" value="Lorem ipsum dolor" width="100%" rows="4"/>
+		<TextArea id="area0" value="{local>/newLeaveRequest/Remarks}" width="100%" rows="4"/>
 		</Panel>
 	</VBox>
 </l:ResponsiveFlowLayout>

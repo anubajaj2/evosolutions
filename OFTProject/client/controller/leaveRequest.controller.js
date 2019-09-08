@@ -39,8 +39,42 @@ sap.ui.define([
 
 
 		},
-		onSend:function(){
-			
+		onSend:function(oEvent){
+			var oLocal = oEvent;
+			var that = this;
+			that.getView().setBusy(true);
+			var leadData = this.getView().getModel("local").getProperty("/newLeaveRequest");
+			if (leadData.DateFrom >  leadData.DateTo){
+			that.getView().setBusy(false);
+			sap.m.MessageBox.error("Date From Cannot be greater than Date To");
+			return;
+			}
+			var payload ={
+				"TechnicalId": "Get the id of logged user here",
+				 "DateFrom": leadData.DateFrom,
+				 "DateTo": leadData.DateTo,
+				 "Days": 1,
+				 "LeaveType":"Full Day",
+				 "Status": "Not Approved",
+				 "ApproverId": "get the id of Approver",
+				 "ApprovedOn": new Date(),
+				 "RequestedOn": new Date(),
+				 "Remarks": leadData.Remarks,
+				 "ChangedOn": new Date(),
+				 "ChangedBy": "get the id of user"
+			};
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/LeaveRequests","Post",{},
+				payload, this)
+				.then(function(oData){
+					that.getView().setBusy(false);
+					sap.m.MessageToast.show("Leave Request send for Approval");
+					that.destroyMessagePopover();
+				}).catch(function(oError){
+					that.getView().setBusy(false);
+					var oPopover = that.getErrorMessage(oError);
+				});
+
+
 		}
 
 		/**
