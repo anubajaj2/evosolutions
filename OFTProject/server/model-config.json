@@ -95,5 +95,9 @@
   "CourseMst":{
     "dataSource": "mongoatlas",
     "public": true
+  },
+  "LeaveRequest":{
+    "dataSource":"mongoatlas",
+    "public":true
   }
 }

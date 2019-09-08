@@ -25,7 +25,7 @@
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="adminPanel" icon="sap-icon://key-user-settings" title="Admin Panel" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem>
-
+					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="leaveRequest" icon="sap-icon://money-bills" title="Leave request" description=""></StandardListItem>
 				</items>
 			</List>
 		</content>

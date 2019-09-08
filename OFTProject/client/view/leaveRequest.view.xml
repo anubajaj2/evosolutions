@@ -1,0 +1,55 @@
+<mvc:View
+	controllerName="oft.fiori.controller.leaveRequest"
+	xmlns:l="sap.ui.layout"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns="sap.m">
+<semantic:FullscreenPage id="page"
+	title="Leave Request"
+	floatingFooter="true">
+	<l:ResponsiveFlowLayout>
+		<VBox renderType="Bare">
+		<layoutData>
+			<l:ResponsiveFlowLayoutData minWidth="320"/>
+		</layoutData>
+		<Panel id="overviewPanel" expanded="true" width="auto">
+				<Label text="Leave Type" labelFor="idleaveType"/>
+			<ComboBox id="idleaveType" items="{local>/leaveType}" selectedKey="1" >
+							<items>
+								<core:Item text="{local>leave}" key="{local>leave}"/>
+							</items>
+			</ComboBox>
+
+			<u:Calendar id="calendar" width="100%" months="2"
+				intervalSelection="true" legend="legend" select="handleCalendarSelect" />
+				<u:CalendarLegend id="legend"/>
+		</Panel>
+		<Panel id="detailPanel" expanded="true" width="auto">
+			<HBox id="hbox1" width="100%" renderType="Bare">
+				<items>
+					<Label id="From" text="From" width="50%"/>
+					<Label id="label2" text="To" width="50%"/>
+	</items>
+</HBox>
+<HBox id="hbox2" width="100%" renderType="Bare">
+	<items>
+		<Input  id="input0"/>
+		<Input  id="input1"/>
+</items>
+</HBox>
+		<Label id="notes" text="Notes" width="100%"/>
+		<TextArea id="area0" value="Lorem ipsum dolor" width="100%" rows="4"/>
+		</Panel>
+	</VBox>
+</l:ResponsiveFlowLayout>
+<semantic:positiveAction>
+				<semantic:PositiveAction text="Send" press="onSend"/>
+			</semantic:positiveAction>
+			<semantic:negativeAction>
+				<semantic:NegativeAction text="Cancel" press="onCancel"/>
+			</semantic:negativeAction>
+</semantic:FullscreenPage>
+</mvc:View>

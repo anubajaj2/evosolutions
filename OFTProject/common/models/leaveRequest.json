@@ -1,0 +1,72 @@
+{
+  "name": "LeaveRequest",
+  "plural": "LeaveRequests",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "TechnicalId": {
+      "type": "string",
+      "required": true
+    },
+    "DateFrom": {
+      "type": "date"
+    },
+    "DateTo":{
+      "type": "date"
+    },
+    "Days": {
+      "type": "number",
+      "default":0
+    },
+    "Status": {
+      "type": "string",
+      "default": "null"
+    },
+    "ApproverId": {
+      "type": "string",
+      "default": "null"
+    },
+    "ApprovedOn": {
+    "type": "date"
+    },
+    "RequestedOn": {
+      "type": "date"
+    },
+    "Remarks": {
+      "type": "string",
+      "default": "null"
+    },
+    "ChangedOn": {
+      "type": "date"
+    },
+    "ChangedBy": {
+      "type": "string",
+      "default": "null"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "TechnicalIdTo": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "TechnicalId"
+		},
+    "ChangedByTo": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "ChangedBy"
+		}
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

@@ -281,7 +281,7 @@
 	"newLead": {
 		"emailId": "",
 		"course": " ",
-		"courseId":" ",		
+		"courseId":" ",
 		"date": "",
 		"FirstName": "",
 		"LastName": "",
@@ -2722,6 +2722,13 @@
 		},
 		{
 			"query": "Subscriptions"
+		}
+	],
+	"leaveType":[{
+		"leave":"Full Day"
+		},
+		{
+		"leave":"Half Day"
 		}
 	]
 }

@@ -187,6 +187,11 @@
 								"pattern": "newmcourse",
 								"name": "newmcourse",
 								"target": ["donald", "newmcourse"]
+							},
+							{
+								"pattern": "leaveRequest",
+								"name": "leaveRequest",
+								"target": ["donald", "leaveRequest"]
 							}
 
 						]
@@ -195,6 +200,7 @@
 				]
 			}],
 			"targets": {
+
 				"App":{
 					"viewName": "App",
 					"controlId": "idMainApp",
@@ -342,6 +348,16 @@
 					"viewId": "idnewmcourse",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
+				},
+				"leaveRequest":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "leaveRequest",
+					"viewId": "idleaveRequest",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+
 				}
 			}
 		}
