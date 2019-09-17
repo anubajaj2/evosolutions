@@ -192,6 +192,11 @@
 								"pattern": "leaveRequest",
 								"name": "leaveRequest",
 								"target": ["donald", "leaveRequest"]
+							},
+							{
+								"pattern": "dailytask",
+								"name": "dailytask",
+								"target":["donald","dailytask"]
 							}
 
 						]
@@ -358,6 +363,16 @@
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 
+				},
+
+				"dailytask": {
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "dailytask",
+					"viewId":"iddailytask",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
 				}
 			}
 		}

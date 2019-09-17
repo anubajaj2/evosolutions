@@ -99,5 +99,9 @@
   "LeaveRequest":{
     "dataSource":"mongoatlas",
     "public":true
-  }
+  },
+  "task":{
+   "dataSource": "mongoatlas",
+   "public": true
+ }
 }
