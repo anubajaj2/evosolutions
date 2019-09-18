@@ -118,12 +118,12 @@
 							},
 							{
 								"pattern": "newTrainer",
-								"name": "newTrainer",
+								"name": "newtrainer",
 								"target": ["donald", "newTrainer"]
 							},
 							{
 								"pattern": "newDemo",
-								"name": "newDemo",
+								"name": "newdemo",
 								"target": ["donald", "newDemo"]
 							},
 
@@ -165,7 +165,7 @@
 							},
 							{
 								"pattern": "trainerPay",
-								"name": "trainerPay",
+								"name": "trainerpay",
 								"target": ["analytical", "trainerPay"]
 							},
 							{

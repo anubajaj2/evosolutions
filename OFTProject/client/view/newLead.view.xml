@@ -33,17 +33,17 @@
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
-				<Label text="Email Id"  />
-				<Input required="true" type="Email" value="{local>/newLead/emailId}" />
+				<Label text="Mobile No"  />
+				<Input required="true" type="number" value="{local>/newLead/emailId}" />
 				<Label text="Courses" />
-        <MultiComboBox id="idCourse1"
+        <Select id="idCourse1"
           selectionFinish="handleFinish" width="500px"
           items="{
             path: '/CoursesMst',
             sorter: { path: 'CourseName' }
           }">
           <core:Item key="{id}" text="{CourseName}"/>
-        </MultiComboBox>
+        </Select>
 <!--				<Select  id="course" items="{local>/courses}"
 						  selectedKey="{local>/newLead/course}" change="onCourseSelect">
 					<items>
@@ -62,17 +62,17 @@
         <Label text="City" />
         <ComboBox id="idCity"
         showSecondaryValues="true"
-          items="{local>/cities}">
+          items="{local>/cities}" selectedKey="Gurgaon">
 <!--     <core:ListItem text="{local>city}" key="{local>city}" additionaltext="{local>state}" /> -->
           <core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}"/>
         </ComboBox>
 
 <!--        <Label text="Currency" />
 				<Input value="{local>/newLead/currency}" /> -->
-				<Label text="Phone" />
+				<Label text="Alternate Number" />
 				<Input type="Number" value="{local>/newLead/phone}">
 				</Input>
-				<Label text="Alternate EmailId" />
+				<Label text="EmailId" />
 				<Input value="{local>/newLead/emailId2}">
 				</Input>
         <Label text="Type"/>
@@ -88,6 +88,16 @@
 				<Label text="Remarks" />
 				<TextArea value="{local>/newLead/remarks}">
 				</TextArea>
+        <Select id="idHearAbout" selectedKey="{local>/newLead/hearAbout}">
+          <core:Item key="PaperAdd" text="PaperAdd"></core:Item>
+          <core:Item key="Banner" text="Banner"></core:Item>
+          <core:Item key="WhatsApp" text="WhatsApp"></core:Item>
+          <core:Item key="Reference" text="Reference"></core:Item>
+          <core:Item key="Email" text="Email"></core:Item>
+          <core:Item key="LinkedIn" text="LinkedIn"></core:Item>
+          <core:Item key="GoogleAds" text="GoogleAds"></core:Item>
+          <core:Item key="Other" text="Other"></core:Item>
+        </Select>
 			</f:content>
 		</f:SimpleForm>
 	</VBox>
