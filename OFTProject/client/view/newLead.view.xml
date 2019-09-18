@@ -39,14 +39,14 @@
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
 				<Label text="Mobile No"  />
 				<Input required="true" type="number" value="{local>/newLead/emailId}" />
-		        <Label text="Category" />
+		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
 		          items="{
 		            path: 'local>/courseCategory'
 		          }">
 		          <core:Item key="{local>text}" text="{local>text}"/>
-		        </Select>
+		        </Select> -->
 
     			<Label text="Courses" />
 		        <Select id="idCourse1"

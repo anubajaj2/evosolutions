@@ -307,9 +307,12 @@
 		"hearAbout":""
 	},
 	"newmcourse":{
+		"Category":"",
 		"CourseName":"",
-		"CourseFee":"",
-		"MinFees":"",
+		"CourseFee":0,
+		"MinFees":0,
+		"WebLink":"",
+		"CourseText":"",
 		"CreatedOn":"",
 		"CreatedBy":"",
 		"ChangedBy":"",

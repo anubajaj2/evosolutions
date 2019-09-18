@@ -7,13 +7,10 @@
     "validateUpsert": true
   },
   "properties": {
-    "CourseCode": {
-      "type": "string",
-      "required": true
-    },
     "CourseName": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "EVO-"
     },
     "Category": {
       "type": "string"
@@ -26,6 +23,12 @@
     "MinFees": {
       "type": "number",
       "default": 0
+    },
+    "WebLink":{
+      "type": "string"
+    },
+    "CourseText":{
+      "type": "string"
     },
     "CreatedOn": {
       "type": "date"
