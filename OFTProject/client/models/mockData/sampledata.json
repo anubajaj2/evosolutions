@@ -285,8 +285,8 @@
 },
 	"newLead": {
 		"emailId": "",
-		"course": " ",
-		"courseId":" ",
+		"CourseName": " ",
+		"Category":" ",
 		"date": "",
 		"FirstName": "",
 		"LastName": "",
@@ -294,7 +294,7 @@
 		"phone": "",
 		"emailId2": "",
 		"remarks": "",
-		"fees":"18 k",
+		"fees":12000,
 		"currency":"INR",
 		"address":"",
 		"organization":"",
@@ -378,6 +378,21 @@
 		"Amount": "0",
 		"Remarks":""
 	},
+	"courseCategory":[
+		{"text": "SAP"},
+		{"text": "Cloud Development"},
+		{"text": "Full Stack Development"},
+		{"text": "Mobile Development"},
+		{"text": "Artificial Intelligence"},
+		{"text": "Application Development"},
+		{"text": "Web Development"},
+		{"text": "Database Development"},
+		{"text": "UI Development"},
+		{"text": "Computer Skills"},
+		{"text": "First Steps to Programming"},
+		{"text": "Combo Course"},
+		{"text": "Other"}
+	],
 	"cities":[
 	{
     "id": "1",

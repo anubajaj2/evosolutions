@@ -33,48 +33,52 @@
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
-				<Label text="Mobile No"  />
-				<Input required="true" type="number" value="{local>/newLead/emailId}" />
-				<Label text="Courses" />
-        <Select id="idCourse1"
-          selectionFinish="handleFinish" width="500px"
-          items="{
-            path: '/CoursesMst',
-            sorter: { path: 'CourseName' }
-          }">
-          <core:Item key="{id}" text="{CourseName}"/>
-        </Select>
-<!--				<Select  id="course" items="{local>/courses}"
-						  selectedKey="{local>/newLead/course}" change="onCourseSelect">
-					<items>
-						<core:Item text="{local>courseName}" key="{local>courseName}"/>
-					</items>
-				</Select>-->
-				<Label text="Date" />
+
+    			<Label text="Date" />
 				<DatePicker id="inqDate" valueFormat="dd.MM.yyyy"
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
+				<Label text="Mobile No"  />
+				<Input required="true" type="number" value="{local>/newLead/emailId}" />
+		        <Label text="Category" />
+		        <Select id="idCategory"
+		          selectedKey="{local>/newLead/Category}" width="500px"
+		          items="{
+		            path: 'local>/courseCategory'
+		          }">
+		          <core:Item key="{local>text}" text="{local>text}"/>
+		        </Select>
+
+    			<Label text="Courses" />
+		        <Select id="idCourse1"
+		          selectedKey="{local>/newLead/CourseName}" width="500px"
+		          items="{
+		            path: '/CoursesMst',
+		            sorter: { path: 'CourseName' }
+		          }">
+		          <core:Item key="{id}" text="{CourseName}"/>
+		        </Select>
+
+    			<Label text="Quoted Fee" />
+				<Input type="Number" value="{local>/newLead/fees}" />
+
 				<Label text="Name" />
 				<Input value="{local>/newLead/FirstName}"/>
-        <Input value="{local>/newLead/LastName}"/>
-				<Label text="Address" />
-        <TextArea value="{local>/newLead/address}">
-        </TextArea>
-        <Label text="City" />
-        <ComboBox id="idCity"
-        showSecondaryValues="true"
-          items="{local>/cities}" selectedKey="Gurgaon">
-<!--     <core:ListItem text="{local>city}" key="{local>city}" additionaltext="{local>state}" /> -->
-          <core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}"/>
-        </ComboBox>
+        		<Input value="{local>/newLead/LastName}"/>
 
-<!--        <Label text="Currency" />
-				<Input value="{local>/newLead/currency}" /> -->
+				<Label text="Address" />
+        		<TextArea value="{local>/newLead/address}"></TextArea>
+
+        		<Label text="City" />
+        		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="Gurgaon">
+        			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
+        		</ComboBox>
+
 				<Label text="Alternate Number" />
-				<Input type="Number" value="{local>/newLead/phone}">
-				</Input>
+				<Input type="Number" value="{local>/newLead/phone}"></Input>
+
 				<Label text="EmailId" />
-				<Input value="{local>/newLead/emailId2}">
-				</Input>
+				<Input value="{local>/newLead/emailId2}"></Input>
+
         <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
@@ -88,6 +92,8 @@
 				<Label text="Remarks" />
 				<TextArea value="{local>/newLead/remarks}">
 				</TextArea>
+
+        <Label text="How did you hear about us" />
         <Select id="idHearAbout" selectedKey="{local>/newLead/hearAbout}">
           <core:Item key="PaperAdd" text="PaperAdd"></core:Item>
           <core:Item key="Banner" text="Banner"></core:Item>
