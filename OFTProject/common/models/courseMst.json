@@ -9,8 +9,7 @@
   "properties": {
     "CourseName": {
       "type": "string",
-      "required": true,
-      "default": "EVO-"
+      "required": true
     },
     "Category": {
       "type": "string"
@@ -47,6 +46,11 @@
   },
   "validations": [],
   "relations": {
+    "ToTrainerCourse":{
+      "type": "hasMany",
+      "model": "TrainerCourse",
+      "foreignKey": "CourseId"
+    }
   },
   "acls": [
     {

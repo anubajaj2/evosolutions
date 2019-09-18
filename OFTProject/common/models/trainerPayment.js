@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(TraierPayment) {
+module.exports = function(TrainerPayment) {
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var app = require('../../server/server');
@@ -15,7 +15,7 @@ module.exports = function(TraierPayment) {
     //anubhav push from atom
     ///Parse microsoft ISO Date while read : /Date(1540319400000)/
     //jsonDate = "/Date(1540319400000)/"; var date = new Date(parseInt(jsonDate.substr(6)));
-    TraierPayment.observe("before save",function(ctx, next){
+    TrainerPayment.observe("before save",function(ctx, next){
 
     });
 

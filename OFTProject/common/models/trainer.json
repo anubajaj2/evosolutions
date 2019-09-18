@@ -84,6 +84,11 @@
 			"model": "TrainerCourse",
 			"foreignKey": "TrainerId"
 		},
+    "ToPayments": {
+			"type": "hasMany",
+			"model": "TrainerPayment",
+			"foreignKey": "TrainerId"
+		},
     "ToChangedBy": {
 			"type": "belongsTo",
 			"model": "AppUser",

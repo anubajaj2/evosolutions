@@ -1,6 +1,6 @@
 {
-  "name": "TraierPayment",
-  "plural": "TraierPayments",
+  "name": "TrainerPayment",
+  "plural": "TrainerPayments",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

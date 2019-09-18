@@ -27,7 +27,7 @@
   "relations": {
     "ToCourse": {
 			"type": "belongsTo",
-			"model": "CoursesMst",
+			"model": "CourseMst",
 			"foreignKey": "CourseId"
 		},
     "ToTrainer": {
