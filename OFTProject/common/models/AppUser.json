@@ -23,6 +23,12 @@
       "type": "string",
       "required": true
     },
+    "JoiningDate": {
+      "type": "date"
+    },
+    "BDay": {
+      "type": "date"
+    },
     "CreatedOn": {
       "type": "date"
     },
