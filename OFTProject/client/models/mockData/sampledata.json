@@ -311,7 +311,7 @@
 		"id":""
 	},
 	"newLeaveRequest":{
-	"TechnicalId": "",
+	"AppUserId": "",
 	 "DateFrom": "",
 	 "DateTo": "",
 	 "Days": 0,
@@ -322,7 +322,26 @@
 	 "RequestedOn": "",
 	 "Remarks": "",
 	 "ChangedOn": "",
-	 "ChangedBy": ""
+	 "ChangedBy": "",
+	 "AppUserToId":"",
+	 "Datefilter": "",
+	 "TotalQuota":21,
+	 "Planned":0,
+	 "Used":0,
+	 "Available":0
+	},
+	"LeaveStatic":{
+		"LeaveType":"Full Day",
+		"TotalQuota":21,
+		"Planned":0,
+		"Used":0,
+		"Available":0,
+		"DateFrom":"",
+		"DateTo":"",
+		"delimiterDRS1": "@",
+		"dateValueDRS1": "",
+		"secondDateValueDRS1": "",
+		"dateFormatDRS1": "dd/MM/yyyy"
 	},
 	"newCustomer": {
 		"GmailId": "",
@@ -2661,6 +2680,7 @@
 	},
 	"Servers": [],
 	"Students": [],
+	"LeaveRequests":[],
 	"skills": [{
 			"text": "ABAP",
 			"key": "0001"

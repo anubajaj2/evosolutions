@@ -105,8 +105,37 @@ sap.ui.define([], function() {
 				return "Success";
 			}
 		},
+		formatLRdate:function(dateF,dateT){
+			debugger;
+			if (dateF === dateT){
+				return dateF;
+			}
+			var c = dateF.concat('-',dateT);
+			return c;
+		},
+		formatLRStatus:function(status){
+			switch(status){
+				case "Not Approved":
+					return sap.ui.core.ValueState.Warning;
+				case "Approved":
+						return sap.ui.core.ValueState.Success;
+				case "Rejected":
+					return sap.ui.core.ValueState.Error;
+				default:
+						return sap.ui.core.ValueState.None;
 
-		formatStatusValue: function(sValue) {
+			}
+	},
+	formatAvailable: function(leaves) {
+		debugger;
+		if (leaves >= 18 ) {
+			return sap.ui.core.ValueState.Error;
+		}else{
+			return sap.ui.core.ValueState.Success;
+		}
+
+	},
+			formatStatusValue: function(sValue) {
 			debugger;
 			switch (sValue) {
 				case "L": return "Live";

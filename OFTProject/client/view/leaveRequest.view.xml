@@ -9,49 +9,139 @@
 	xmlns="sap.m">
 <semantic:FullscreenPage id="page"
 	title="Leave Request"
-	floatingFooter="true">
+	floatingFooter="true"
+	showNavButton="true"
+	navButtonPress="onNavButtonPress"
+	>
 	<l:ResponsiveFlowLayout>
 		<VBox renderType="Bare">
 		<layoutData>
 			<l:ResponsiveFlowLayoutData minWidth="320"/>
 		</layoutData>
-		<Panel id="overviewPanel" expanded="true" width="auto">
-				<Label text="Leave Type" labelFor="idleaveType"/>
-			<ComboBox id="idleaveType" items="{local>/leaveType}" selectedKey="{local>/newLeaveRequest/LeaveType}" >
-							<items>
-								<core:Item text="{local>leave}" key="{local>leave}"/>
-							</items>
-			</ComboBox>
-
-			<u:Calendar id="calendar" width="100%" months="2"
-				intervalSelection="true" legend="legend" select="handleCalendarSelect" />
-				<u:CalendarLegend id="legend"/>
-		</Panel>
-		<Panel id="detailPanel" expanded="true" width="auto">
-			<HBox id="hbox1" width="100%" renderType="Bare">
+		<Panel id="leavedetails" expandable="true" expanded="true" width="auto"
+			headerText="Leave Entitlement" expand="onlDexpand">
+			<Table id="lDetailTable" inset="true" mode="none">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="idTitleLD" text="Items"/>
+						<ToolbarSpacer/>
+						<Label text="From" labelFor="idLDDate"/>
+						<DatePicker id="idLDDate" value="{local>/newLeaveRequest/Datefilter}" change="onDateChange" width="10rem" valueFormat="dd.MM.yyyy" />
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="idLt">
+						<Text text="Leave Type"/>
+					</Column>
+					<Column id="idValid">
+						<Text text="Validity"/>
+					</Column>
+					<Column id="idAvailable">
+						<Text text="Available"/>
+					</Column>
+					<Column id="idPlan">
+						<Text text="Planned"/>
+					</Column>
+					<Column id="idUsed">
+						<Text text="Used"/>
+					</Column>
+					<Column id="idEntlm">
+						<Text text="Entitlement"/>
+					</Column>
+				</columns>
 				<items>
-					<Label id="From" text="From" width="50%"/>
-					<Label id="label2" text="To" width="50%"/>
-	</items>
-</HBox>
-<HBox id="hbox2" width="100%" renderType="Bare">
-	<items>
-		<DatePicker id="idDateFrom" valueFormat="dd.MM.yyyy"
-			displayFormat="dd.MM.yyyy" value="{local>/newLeaveRequest/DateFrom}" ></DatePicker>
-			<DatePicker id="idDateto" valueFormat="dd.MM.yyyy"
-				displayFormat="dd.MM.yyyy" value="{local>/newLeaveRequest/DateTo}" ></DatePicker>
-</items>
-</HBox>
-		<Label id="notes" text="Notes" width="100%"/>
-		<TextArea id="area0" value="{local>/newLeaveRequest/Remarks}" width="100%" rows="4"/>
+					<ColumnListItem>
+						<cells>
+							<Text text="{local>/LeaveStatic/LeaveType}"></Text>
+							<Text text="{parts:[{
+								path:'local>/LeaveStatic/DateFrom',
+								type:'sap.ui.model.type.Date',
+								formatOptions: {
+									style:'medium'
+								},
+								constraints: {
+								displayFormat:'Date'}},
+								{path:'local>/LeaveStatic/DateTo',
+								type:'sap.ui.model.type.Date',
+								formatOptions: {
+									style:'medium'
+								},
+								constraints:{
+								displayFormat:'Date'
+								}}],formatter:'.formatter.formatLRdate'}"></Text>
+								<ObjectStatus id="idaval" text="{local>/LeaveStatic/Available}"
+										state="{path:'local>/LeaveStatic/Available', formatter:'.formatter.formatAvailable'}"
+									/>
+<!--							<Text text="{local>/LeaveStatic/Available}" ></Text>-->
+							<Text text="{local>/LeaveStatic/Planned}"></Text>
+							<Text text="{local>/LeaveStatic/Used}"></Text>
+							<Text text="{local>/LeaveStatic/TotalQuota}"></Text>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
 		</Panel>
-	</VBox>
+<Panel id="Panel2" expandable="true" expanded="true" headerText="Request Overview"
+	width="auto">
+<OverflowToolbar>
+	<ToolbarSpacer/>
+	<Label text="Show From" labelFor="idOvrDate"/>
+	<DatePicker id="idOvrDate" width="10rem" value="{local>/newLeaveRequest/Datefilter}"/>
+</OverflowToolbar>
+	<Table id="idTable2"	fixedLayout="true" items="{local>/LeaveRequests}" growing="true" growingThreshold="200" growingScrollToLoad="false" mode="none">
+		<columns>
+			<Column halign="Left">
+				<Label text="Validity" class="columnLabelStyle"/>
+			</Column>
+			<Column halign="Left">
+				<Label text="Status" class="columnLabelStyle"/>
+			</Column>
+			<Column halign="Left">
+				<Label text="Approver" class="columnLabelStyle"/>
+			</Column>
+			<Column halign="Left">
+				<Label text="Edit" class="columnLabelStyle"/>
+			</Column>
+			<Column halign="Left">
+				<Label text="Delete" class="columnLabelStyle"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem id="idColumnlist2" type="Navigation">
+				<cells>
+					<ObjectAttribute id="idObj"
+						text="{parts:[{
+							path:'local>DateFrom',
+							type:'sap.ui.model.type.Date',
+							formatOptions: {
+								style:'medium'
+							},
+							constraints: {
+							displayFormat:'Date'}},
+							{path:'local>DateTo',
+							type:'sap.ui.model.type.Date',
+							formatOptions: {
+								style:'medium'
+							},
+							constraints:{
+							displayFormat:'Date'
+							}}],formatter:'.formatter.formatLRdate'}"/>
+					<ObjectStatus id="idobjSt" text="{local>Status}"
+							state="{path:'local>Status', formatter:'.formatter.formatLRStatus'}"
+						/>
+					<Text text="{local>ApproverId}"></Text>
+					<Button id="idedit" icon="sap-icon://edit" press="onEdit" type="Transparent"/>
+					<Button id="iddelete" icon="sap-icon://sys-cancel" press="onDelete" type="Transparent"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</Panel>
+</VBox>
 </l:ResponsiveFlowLayout>
-<semantic:positiveAction>
-				<semantic:PositiveAction text="Send" press="onSend"/>
-			</semantic:positiveAction>
-			<semantic:negativeAction>
-				<semantic:NegativeAction text="Cancel" press="onCancel"/>
-			</semantic:negativeAction>
+<semantic:mainAction>
+	<semantic:MainAction id="idcreateleave" text="Create Request" press="onCreateLeave"/>
+</semantic:mainAction>
+
 </semantic:FullscreenPage>
 </mvc:View>

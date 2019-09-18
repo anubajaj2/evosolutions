@@ -1,0 +1,70 @@
+<mvc:View
+	controllerName="oft.fiori.controller.createLeave"
+	xmlns:l="sap.ui.layout"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns="sap.m">
+<semantic:FullscreenPage id="idspage"
+	title="Create Leave Request"
+	floatingFooter="true"
+	showNavButton="true"
+	navButtonPress="onBack"
+	>
+<semantic:content>
+<VBox>
+	<f:SimpleForm
+		id="idSFCL"
+		editable="true"
+		layout="ResponsiveGridLayout"
+		labelSpanXL="4"
+		labelSpanL="3"
+		labelSpanM="4"
+		labelSpanS="12"
+		adjustLabelSpan="false"
+		emptySpanXL="0"
+		emptySpanL="4"
+		emptySpanM="0"
+		emptySpanS="0"
+		columnsXL="2"
+		columnsL="1"
+		columnsM="1"
+		singleContainerFullSize="false">
+		<f:content>
+			<Label text="Leave Type"/>
+			<ComboBox id="idlType" items="{local>/leaveType}" selectedKey="{local>/newLeaveRequest/LeaveType}" selectionChange="onSelchange">
+				<items>
+					<core:Item text="{local>leave}" key="{local>leave}"/>
+				</items>
+			</ComboBox>
+
+			<Label id="idlblday" text="Start Day/End Day" labelFor="idDate"/>
+			<DateRangeSelection id="idDate"
+				delimiter="{path:'local>/LeaveStatic/delimiterDRS1'}"
+				dateValue="{path:'local>/LeaveStatic/dateValueDRS1'}"
+				secondDateValue="{path:'local>/LeaveStatic/secondDateValueDRS1'}"
+				displayFormat="{path:'local>/LeaveStatic/dateFormatDRS1'}"
+				change="onhandleChange"
+				/>
+				<Label id="idDPlblday" text="Start Day/End Day" labelFor="idDatePicker"/>
+				<DatePicker id="idDatePicker"
+					displayFormat="dd.MM.yyyy"
+					change="onDPhandleChange"
+					class="sapUiSmallMarginBottom"/>
+				<Label id="idnotes" text="NewNote" labelFor="idTxtArea"/>
+				<TextArea id="idTxtArea" rows="4" growing="true"
+					value="{local>/newLeaveRequest/Remarks}"/>
+			</f:content>
+</f:SimpleForm>
+</VBox>
+</semantic:content>
+<semantic:saveAction>
+	<semantic:SaveAction id="idSave" press="onSave"/>
+</semantic:saveAction>
+<semantic:cancelAction>
+	<semantic:CancelAction id="idCancel" press="onCancel"/>
+</semantic:cancelAction>
+</semantic:FullscreenPage>
+</mvc:View>

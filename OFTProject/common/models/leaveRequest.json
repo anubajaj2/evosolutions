@@ -7,7 +7,7 @@
     "validateUpsert": true
   },
   "properties": {
-    "TechnicalId": {
+    "AppUserId": {
       "type": "string",
       "required": true
     },
@@ -53,10 +53,10 @@
   },
   "validations": [],
   "relations": {
-    "TechnicalIdTo": {
+    "AppUserTo": {
 			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "TechnicalId"
+			 "model": "AppUser",
+			 "foreignKey": "AppUserId"
 		},
     "ChangedByTo": {
 			"type": "belongsTo",
