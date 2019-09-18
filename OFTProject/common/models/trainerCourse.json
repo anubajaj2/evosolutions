@@ -1,49 +1,40 @@
 {
-  "name": "CourseMst",
-  "plural": "CoursesMst",
+  "name": "TrainerCourse",
+  "plural": "TrainerCourses",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "CourseCode": {
+    "CourseId": {
       "type": "string",
       "required": true
     },
-    "CourseName": {
+    "TrainerId":{
       "type": "string",
       "required": true
     },
-    "Category": {
+    "FeeMode": {
       "type": "string"
     },
-    "CourseFee": {
-      "type": "number",
-      "default": 0,
-      "required": true
-    },
-    "MinFees": {
+    "FeeAmount": {
       "type": "number",
       "default": 0
-    },
-    "CreatedOn": {
-      "type": "date"
-    },
-    "CreatedBy": {
-      "type": "string",
-      "default": "null"
-    },
-    "ChangedOn": {
-      "type": "date"
-    },
-    "ChangedBy": {
-      "type": "string",
-      "default": "null"
     }
   },
   "validations": [],
   "relations": {
+    "ToCourse": {
+			"type": "belongsTo",
+			"model": "CoursesMst",
+			"foreignKey": "CourseId"
+		},
+    "ToTrainer": {
+			"type": "belongsTo",
+			"model": "Trainer",
+			"foreignKey": "TrainerId"
+		}
   },
   "acls": [
     {

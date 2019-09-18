@@ -7,7 +7,7 @@ module.exports = function(Inquiry) {
     var CourseMst = app.models.CourseMst;
     //validations
     Inquiry.validatesPresenceOf('FirstName', {message: 'Name Cannot be blank'})
-    Inquiry.validatesFormatOf('EmailId', {with: re, message: 'invalid email id'});
+    Inquiry..validatesLengthOf('state', {is: 10, message: {is: 'is not valid contact No'}});
     // Inquiry.validatesInclusionOf('CourseName', {
     //     in: ["UI5 and Fiori", "ABAP on HANA", "Launchpad", "HANA XS",  "Hybris C4C",
     //          ,"HANA Cloud Integration (HCI)","SAP Cloud Platform","ABAP", "OOPS ABAP", "Webdynpro", "Workflow", "FPM", "Other"
