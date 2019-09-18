@@ -6,7 +6,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 ], function(Controller, MessageBox, MessageToast, Formatter, Filter) {
 	"use strict";
 
-	return Controller.extend("oft.fiori.controller.server", {
+	return Controller.extend("oft.fiori.controller.newTrainer", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.

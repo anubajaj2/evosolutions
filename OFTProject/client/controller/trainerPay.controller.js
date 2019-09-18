@@ -7,7 +7,7 @@ sap.ui.define([
 ], function(Controller, MessageBox, MessageToast, Formatter, Filter) {
 	"use strict";
 
-	return Controller.extend("oft.fiori.controller.serverPayment", {
+	return Controller.extend("oft.fiori.controller.trainerPay", {
 		formatter: Formatter,
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
