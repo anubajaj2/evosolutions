@@ -16,7 +16,7 @@ module.exports = function(TrainerPayment) {
     ///Parse microsoft ISO Date while read : /Date(1540319400000)/
     //jsonDate = "/Date(1540319400000)/"; var date = new Date(parseInt(jsonDate.substr(6)));
     TrainerPayment.observe("before save",function(ctx, next){
-
+next();
     });
 
 

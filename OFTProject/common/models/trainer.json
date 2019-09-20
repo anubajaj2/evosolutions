@@ -14,7 +14,8 @@
     "LastName":{
       "type":"string",
       "default": "null"
-    },
+    }
+,
     "JoiningDate": {
       "type": "date"
     },
@@ -80,25 +81,25 @@
   "validations": [],
   "relations": {
     "ToOffering": {
-			"type": "hasMany",
-			"model": "TrainerCourse",
-			"foreignKey": "TrainerId"
-		},
-    "ToPayments": {
-			"type": "hasMany",
-			"model": "TrainerPayment",
-			"foreignKey": "TrainerId"
-		},
-    "ToChangedBy": {
-			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "ChangedBy"
-		},
-    "ToCreatedBy": {
-			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "CreatedBy"
-		}
+  			"type": "hasMany",
+  			"model": "TrainerCourse",
+  			"foreignKey": "TrainerId"
+  		},
+      "ToPayments": {
+  			"type": "hasMany",
+  			"model": "TrainerPayment",
+  			"foreignKey": "TrainerId"
+  		},
+      "ToChangedBy": {
+  			"type": "belongsTo",
+  			"model": "AppUser",
+  			"foreignKey": "ChangedBy"
+  		},
+      "ToCreatedBy": {
+  			"type": "belongsTo",
+  			"model": "AppUser",
+  			"foreignKey": "CreatedBy"
+  		}
   },
   "acls": [
     {
