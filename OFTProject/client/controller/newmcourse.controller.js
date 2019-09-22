@@ -23,6 +23,7 @@ sap.ui.define([
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			// this.clearForm();
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
+			this.Updatecourse = false;
 			// var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			// if (currentUser) {
 			// 	var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
@@ -65,7 +66,7 @@ sap.ui.define([
 		},
 			onSave: function(oEvent) {
 
-				debugger;
+
 				var oLocal = oEvent;
 				console.log(this.getView().getModel("local").getProperty("/newmcourse"));
 				var that = this;
@@ -83,7 +84,10 @@ sap.ui.define([
 							"CourseName":leadData.CourseName.toUpperCase(),
  						   "CourseFee":leadData.CourseFee,
  						   "MinFees":leadData.MinFees,
-	 							"ChangedBy": "Pooja",
+							 "WebLink":leadData.WebLink,
+							 "Category":leadData.Category,
+							 "CourseText":leadData.CourseText,
+	 							"ChangedBy": "",
 	 							"ChangedOn": new Date(),
 						};
 						var sPath1 = "/CoursesMst";
@@ -104,8 +108,11 @@ sap.ui.define([
 						 "CourseName":leadData.CourseName.toUpperCase(),
 						 "CourseFee":leadData.CourseFee,
 						 "MinFees":leadData.MinFees,
+						 "WebLink":leadData.WebLink,
+						 "Category":leadData.Category,
+						 "CourseText":leadData.CourseText,
 							"CreatedOn": new Date(),
-							"CreatedBy": "Pooja",
+							"CreatedBy": "",
 						// "SoftDelete": false
 					};
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
@@ -138,7 +145,7 @@ sap.ui.define([
 					path: "/CoursesMst",
 					template: new sap.m.DisplayListItem({
 						label: "{CourseName}",
-						value: "{CourseFee}"
+						value: "{Category}"
 					})
 				});
 			}
@@ -161,6 +168,9 @@ sap.ui.define([
 							that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
 							if (oData.results[0].MinFees) {
 							that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
+							that.getView().byId("idCategory").setSelectedKey(oData.results[0].Category);
+							that.getView().byId("idDesc").setValue(oData.results[0].CourseText);
+							that.getView().byId("idSite").setValue(oData.results[0].WebLink);
 						}
 						else
 						{
@@ -197,6 +207,9 @@ sap.ui.define([
 					that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
 					if (oData.results[0].MinFees) {
 					that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
+					that.getView().byId("idCategory").setSelectedKey(oData.results[0].Category);
+					that.getView().byId("idDesc").setValue(oData.results[0].CourseText);
+					that.getView().byId("idSite").setValue(oData.results[0].WebLink);
 				}
 				else
 				{
@@ -273,9 +286,19 @@ sap.ui.define([
 		},
 		onClearScreen: function(oEvent) {
 			debugger;
-			this.getView().getModel("local").setProperty("/newmcourse/CourseName", null);
-			this.getView().getModel("local").setProperty("/newmcourse/CourseFee", null);
-			this.getView().getModel("local").setProperty("/newmcourse/MinFees", null);
+			this.getView().getModel("local").setProperty("/newmcourse", {
+				"Category":"",
+				"CourseName":"",
+				"CourseFee":0,
+				"MinFees":0,
+				"WebLink":"",
+				"CourseText":"",
+				"CreatedOn":"",
+				"CreatedBy":"",
+				"ChangedBy":"",
+				"ChangedOn":"",
+				"id":""
+			});
 			this.getView().byId("idCreate").setText("Create");
 
 			this.Updatecourse = false;

@@ -1,62 +1,29 @@
 {
-  "name": "Inquiry",
-  "plural": "Inquries",
+  "name": "Trainer",
+  "plural": "Trainers",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "EmailId": {
-      "type": "string",
-      "required": true
-    },
-    "CourseName": {
-      "type": "string",
-      "default": "null",
-      "required": true
-    },
-    "Category":{
-      "type":"string",
-      "default": "null",
-      "required": true
-    },
     "FirstName": {
       "type": "string",
-      "default": "null"
+      "required": true
     },
-    "LastName": {
-      "type": "string",
+    "LastName":{
+      "type":"string",
       "default": "null"
-    },
-    "Date": {
+    }
+,
+    "JoiningDate": {
       "type": "date"
     },
+    "Address": {
+      "type": "string",
+      "default": "null"
+    },
     "City": {
-      "type": "string",
-      "default": "Gurgaon"
-    },
-    "CustType":{
-      "type": "string",
-      "default":"null"
-    },
-    "Organization":{
-      "type": "string",
-      "default":"null"
-    },
-    "Age":{
-      "type": "number",
-      "default": 0
-    },
-    "Address":{
-      "type": "string",
-      "default":"null"
-    },
-    "Phone": {
-      "type": "number",
-      "default":0
-    },
-    "EmailId2": {
       "type": "string",
       "default": "null"
     },
@@ -64,7 +31,31 @@
       "type": "string",
       "default": "null"
     },
-    "hearAbout":{
+    "ContactNo": {
+      "type": "string",
+      "default": "null"
+    },
+    "ContactNo1": {
+      "type": "string",
+      "default": "null"
+    },
+    "AccountNo": {
+      "type": "string",
+      "default": "null"
+    },
+    "AccountName": {
+      "type": "string",
+      "default": "null"
+    },
+    "IFSCCode": {
+      "type": "string",
+      "default": "null"
+    },
+    "AccountType": {
+      "type": "string",
+      "default": "null"
+    },
+    "PANNo": {
       "type": "string",
       "default": "null"
     },
@@ -85,33 +76,30 @@
     "ChangedBy": {
       "type": "string",
       "default": "null"
-    },
-    "fees":{
-      "type": "number",
-      "default": 18000
-    },
-    "currency":{
-      "type": "string",
-      "default": "INR"
     }
   },
   "validations": [],
   "relations": {
-    "CreatedByTo": {
-			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "CreatedBy"
-		},
-    "ChangedByTo": {
-			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "ChangedBy"
-		},
-    "ToCourse":{
-      "type":"belongsTo",
-      "model":"CourseMst",
-      "foreignKey":"CourseName"
-    }
+    "ToOffering": {
+  			"type": "hasMany",
+  			"model": "TrainerCourse",
+  			"foreignKey": "TrainerId"
+  		},
+      "ToPayments": {
+  			"type": "hasMany",
+  			"model": "TrainerPayment",
+  			"foreignKey": "TrainerId"
+  		},
+      "ToChangedBy": {
+  			"type": "belongsTo",
+  			"model": "AppUser",
+  			"foreignKey": "ChangedBy"
+  		},
+      "ToCreatedBy": {
+  			"type": "belongsTo",
+  			"model": "AppUser",
+  			"foreignKey": "CreatedBy"
+  		}
   },
   "acls": [
     {

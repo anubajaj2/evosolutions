@@ -50,11 +50,26 @@
            </suggestionItems>
          </Input>
 
+         <Label text="Category" />
+         <Select id="idCategory"
+           selectedKey="{local>/newmcourse/Category}" width="500px"
+           items="{
+             path: 'local>/courseCategory'
+           }">
+           <core:Item key="{local>text}" text="{local>text}"/>
+         </Select>
+
 				<Label text="Course Fees" />
         <Input id="idCourseFee" required="true" type="Number" value="{local>/newmcourse/CourseFee}" />
         <CheckBox id="idchkBox" editable="true" text="Min Fees Allowed" select="onSelect"/>
         <Label text="Min Fees"  />
 				<Input id="idMinFees" value="{local>/newmcourse/MinFees}" type="Number"/>
+
+        <Label text="Site Link" />
+        <Input id="idSite" required="true" type="Text" value="{local>/newmcourse/WebLink}" />
+        <Label text="Description" />
+        <TextArea id="idDesc" required="true" type="Text" value="{local>/newmcourse/CourseText}" />
+
 			</f:content>
 		</f:SimpleForm>
 	</VBox>

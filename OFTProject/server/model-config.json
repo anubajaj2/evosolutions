@@ -103,5 +103,17 @@
   "task":{
    "dataSource": "mongoatlas",
    "public": true
- }
+ },
+ "Trainer":{
+  "dataSource": "mongoatlas",
+  "public": true
+  },
+  "TrainerCourse":{
+   "dataSource": "mongoatlas",
+   "public": true
+  },
+  "TrainerPayment":{
+   "dataSource": "mongoatlas",
+   "public": true
+  }
 }

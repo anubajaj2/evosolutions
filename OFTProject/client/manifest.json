@@ -114,32 +114,27 @@
 							{
 								"pattern": "newreg",
 								"name": "newreg",
-
 								"target": ["donald", "newreg"]
 							},
 							{
-								"pattern": "server",
-								"name": "server",
-
-								"target": ["donald", "server"]
+								"pattern": "newTrainer",
+								"name": "newtrainer",
+								"target": ["donald", "newTrainer"]
 							},
 							{
-								"pattern": "serverDetails",
-								"name": "serverDetails",
-
-								"target": ["donald", "serverDet"]
+								"pattern": "newDemo",
+								"name": "newdemo",
+								"target": ["donald", "newDemo"]
 							},
 
 							{
 								"pattern": "batch",
 								"name": "batch",
-
 								"target": ["donald", "batch"]
 							},
 							{
 								"pattern": "adminPanel",
 								"name": "adminPanel",
-
 								"target": ["donald", "adminPanel"]
 							},
 							{
@@ -169,9 +164,9 @@
 								"target": ["analytical", "newCustomer"]
 							},
 							{
-								"pattern": "serverPayment",
-								"name": "serverPayment",
-								"target": ["analytical", "serverPayment"]
+								"pattern": "trainerPay",
+								"name": "trainerpay",
+								"target": ["analytical", "trainerPay"]
 							},
 							{
 								"pattern": "ServerOverview",
@@ -237,21 +232,21 @@
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},
-				"server": {
+				"newTrainer": {
 					"transition": "slide",
 					"controlId":"__xmlview0--idSplitApp",
 					"clearAggregation": true,
-					"viewName": "server",
-					"viewId": "idserver",
+					"viewName": "newTrainer",
+					"viewId": "idnewtrainer",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},
-				"serverDet": {
+				"newDemo": {
 					"transition": "slide",
 					"controlId":"__xmlview0--idSplitApp",
 					"clearAggregation": true,
-					"viewName": "ServerDetails",
-					"viewId": "idserverDet",
+					"viewName": "newDemo",
+					"viewId": "idnewdemo",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},
@@ -318,12 +313,12 @@
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},
-				"serverPayment": {
+				"trainerPay": {
 					"transition": "slide",
 					"controlId":"__xmlview0--idSplitApp",
 					"clearAggregation": true,
-					"viewName": "serverPayment",
-					"viewId": "idServerPayment",
+					"viewName": "trainerPay",
+					"viewId": "idtrainerPay",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},

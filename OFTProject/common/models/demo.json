@@ -1,70 +1,38 @@
 {
-  "name": "Inquiry",
-  "plural": "Inquries",
+  "name": "Demo",
+  "plural": "Demos",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "EmailId": {
+    "DemoId": {
       "type": "string",
       "required": true
     },
-    "CourseName": {
-      "type": "string",
-      "default": "null",
-      "required": true
-    },
-    "Category":{
+    "CourseId":{
       "type":"string",
       "default": "null",
       "required": true
     },
-    "FirstName": {
+    "TrainerId": {
       "type": "string",
-      "default": "null"
-    },
-    "LastName": {
-      "type": "string",
-      "default": "null"
+      "default": "null",
+      "required": true
     },
     "Date": {
       "type": "date"
     },
-    "City": {
-      "type": "string",
-      "default": "Gurgaon"
-    },
-    "CustType":{
-      "type": "string",
-      "default":"null"
-    },
-    "Organization":{
-      "type": "string",
-      "default":"null"
-    },
-    "Age":{
+    "TimeFrom": {
       "type": "number",
-      "default": 0
+      "default": "10"
     },
-    "Address":{
-      "type": "string",
-      "default":"null"
-    },
-    "Phone": {
+    "TimeTo": {
       "type": "number",
-      "default":0
-    },
-    "EmailId2": {
-      "type": "string",
-      "default": "null"
+      "default": "11"
     },
     "Remarks": {
-      "type": "string",
-      "default": "null"
-    },
-    "hearAbout":{
       "type": "string",
       "default": "null"
     },
@@ -87,30 +55,31 @@
       "default": "null"
     },
     "fees":{
-      "type": "number",
-      "default": 18000
-    },
-    "currency":{
       "type": "string",
-      "default": "INR"
+      "default": "18000"
     }
   },
   "validations": [],
   "relations": {
-    "CreatedByTo": {
+    "ToCourse": {
 			"type": "belongsTo",
-			"model": "AppUser",
-			"foreignKey": "CreatedBy"
+			"model": "CoursesMst",
+			"foreignKey": "CourseId"
 		},
-    "ChangedByTo": {
+    "ToChangedBy": {
 			"type": "belongsTo",
 			"model": "AppUser",
 			"foreignKey": "ChangedBy"
 		},
-    "ToCourse":{
+    "ToCreatedBy": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "CreatedBy"
+		},
+    "ToTrainer":{
       "type":"belongsTo",
-      "model":"CourseMst",
-      "foreignKey":"CourseName"
+      "model":"Trainer",
+      "foreignKey":"TrainerId"
     }
   },
   "acls": [

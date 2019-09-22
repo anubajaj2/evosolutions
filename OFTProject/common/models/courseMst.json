@@ -11,14 +11,23 @@
       "type": "string",
       "required": true
     },
+    "Category": {
+      "type": "string"
+    },
     "CourseFee": {
       "type": "number",
-      "default": "0",
+      "default": 0,
       "required": true
     },
     "MinFees": {
       "type": "number",
-      "default": "0"
+      "default": 0
+    },
+    "WebLink":{
+      "type": "string"
+    },
+    "CourseText":{
+      "type": "string"
     },
     "CreatedOn": {
       "type": "date"
@@ -37,6 +46,11 @@
   },
   "validations": [],
   "relations": {
+    "ToTrainerCourse":{
+      "type": "hasMany",
+      "model": "TrainerCourse",
+      "foreignKey": "CourseId"
+    }
   },
   "acls": [
     {

@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(Controller) {
 	"use strict";
 
-	return Controller.extend("oft.fiori.controller.ServerDetails", {
+	return Controller.extend("oft.fiori.controller.newDemo", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -13,9 +13,9 @@ sap.ui.define([
 			onInit: function() {
 				var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if(currentUser){
-			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;				
+			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 			}
-	    		loginUser = "Hey " + loginUser;				
+	    		loginUser = "Hey " + loginUser;
 				this.getView().byId("idUser").setText(loginUser);
 			}
 

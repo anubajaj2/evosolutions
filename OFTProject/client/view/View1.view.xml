@@ -11,21 +11,25 @@
 					mode="SingleSelectMaster" delete="onDelete"
 			      selectionChange="onSelectItem">
 				<items>
+
 					<StandardListItem id="newmcourse" icon="sap-icon://course-book" title="New Course" description=""></StandardListItem>
+					<StandardListItem id="newtrainer" icon="sap-icon://it-system" title="New Trainer" description=""></StandardListItem>
 					<StandardListItem id="newlead" icon="sap-icon://leads" title="New Lead" description=""></StandardListItem>
+					<StandardListItem id="newdemo" icon="sap-icon://customer-view" title="New Demo" description=""></StandardListItem>
 					<StandardListItem id="newCustomer" icon="sap-icon://customer" title="New Customer" description=""></StandardListItem>
 					<StandardListItem id="newreg" icon="sap-icon://collections-insight" title="New Registration" description=""></StandardListItem>
-					<StandardListItem id="server" icon="sap-icon://it-system" title="Server" description=""></StandardListItem>
-					<StandardListItem id="serverPayment" icon="sap-icon://batch-payments" title="Server Payments" description=""></StandardListItem>
-					<StandardListItem id="ServerOverview" icon="sap-icon://customer-view" title="Server Overview" description=""></StandardListItem>
+					<StandardListItem id="trainerpay" icon="sap-icon://batch-payments" title="Trainer Payments" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="batch" icon="sap-icon://sys-add" title="New Batch" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="subsSearch" icon="sap-icon://crm-sales" title="Manage Subscriptions" description=""></StandardListItem>
-					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="dataMaintenance" icon="sap-icon://database" title="Data Maintenance" description=""></StandardListItem>
+					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="dataMaintenance" icon="sap-icon://database" title="Data Maintenance" description=""></StandardListItem> -->
 					<!--<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="downloadQueries" icon="sap-icon://business-by-design" title="Reports and Run Queries" description=""></StandardListItem>-->
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="adminPanel" icon="sap-icon://key-user-settings" title="Admin Panel" description=""></StandardListItem>
-					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem>
-					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem>
+					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem>
+					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="leaveRequest" icon="sap-icon://create-leave-request" title="Leave request" description=""></StandardListItem>
+
+					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem> -->
+					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="dailytask" icon="sap-icon://task" title="Daily Tasks" description=""></StandardListItem>
 				</items>
 			</List>

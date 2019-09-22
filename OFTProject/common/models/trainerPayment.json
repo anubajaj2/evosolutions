@@ -1,0 +1,53 @@
+{
+  "name": "TrainerPayment",
+  "plural": "TrainerPayments",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "TrainerId": {
+      "type": "string",
+      "required": true
+    },
+    "Date": {
+      "type": "date",
+      "required": true
+    },
+    "FromAccount":{
+      "type": "string",
+      "required": true
+    },
+    "AmountPaid":{
+      "type": "number",
+      "required": true,
+      "default":0
+    },
+    "ReferenceNo": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "ToTrainer": {
+			"type": "belongsTo",
+			"model": "Trainer",
+			"foreignKey": "TrainerId"
+		},
+    "ToAccount": {
+			"type": "belongsTo",
+			"model": "Account",
+			"foreignKey": "FromAccount"
+		}
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

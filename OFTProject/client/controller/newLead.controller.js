@@ -256,12 +256,10 @@ sap.ui.define([
 				return "";
 			}
 			//get the Course set here and save the records
-			var course = leadData.courseSet.split(",");
-			for(var i=0; i<course.length; i++){
-				//var temp = course[i];
 			var payload = {
 				"EmailId": leadData.emailId.toLowerCase(),
-				"CourseName": course[i],
+				"CourseName": leadData.CourseName,
+				"Category": leadData.Category,
 				"FirstName": leadData.FirstName,
 				"LastName": leadData.LastName,
 				"Date": this.getView().byId("inqDate").getDateValue(),
@@ -270,22 +268,14 @@ sap.ui.define([
 				"Remarks": leadData.remarks,
 				"SoftDelete": false,
 				"CreatedOn": new Date(),
-		    "CreatedBy": "Pooja",
+		    "CreatedBy": "",
 		    "ChangedOn": new Date(),
-		    "ChangedBy": "Pooja",
-				"fees": "18000",
+		    "ChangedBy": "",
+				"fees": leadData.fees,
 				"currency": "INR",
 				"CustType": leadData.custType,
 				"Organization": leadData.organization
 			};
-			// var oDataModel = this.getView().getModel();
-			// oDataModel.create("/Inquries",payload,null, function(){
-			// 					sap.m.MessageBox.alert("done");
-			// 				},
-			// 				 function(){
-			// 					sap.m.MessageBox.alert("err");
-			// 				}
-			// 			);
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
 					payload, this)
 				.then(function(oData) {
@@ -391,11 +381,7 @@ sap.ui.define([
 					// this.oLeadDuplicate.
 
 				});
-			// $.post("/api/Inquries",payload,
-			// function(data, status){
-			//     sap.m.MessageBox.confirm("Wallah! Posted");
-			// });
-		}
+		
 		},
 		onApprove: function() {
 
@@ -421,17 +407,17 @@ sap.ui.define([
 					sap.m.MessageBox.error(xhr.responseText);
 				});
 		},
-		handleFinish: function(oEvent) {
-			var selectedItems = oEvent.getParameter("selectedItems");
-			var courses = ' ';
-			for (var i = 0; i < selectedItems.length; i++) {
-				courses += selectedItems[i].getKey();
-				if (i != selectedItems.length - 1) {
-					courses += ",";
-				}
-			}
-			this.getView().getModel("local").setProperty("/newLead/courseSet", courses);
-		},
+		// handleFinish: function(oEvent) {
+		// 	var selectedItems = oEvent.getParameter("selectedItem");
+		// 	// var courses = ' ';
+		// 	// for (var i = 0; i < selectedItems.length; i++) {
+		// 	// 	courses += selectedItems[i].getKey();
+		// 	// 	if (i != selectedItems.length - 1) {
+		// 	// 		courses += ",";
+		// 	// 	}
+		// 	// }
+		// 	this.getView().getModel("local").setProperty("/newLead/courseSet", selectedItems.getKey());
+		// },
 		onUpdateFinished:function(oEvent){
 			debugger;
 			var olist = oEvent.getSource();
