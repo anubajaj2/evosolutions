@@ -110,6 +110,11 @@
 			"usdFee": 350
 		}
 	],
+	"task": {
+		"CrDate": "",
+		"taskWorkedOn": "",
+		"noOfHours": ""
+	},
 	"newBatch": {
 		"courseId": "",
 		"courseName": "",
