@@ -87,6 +87,7 @@ sap.ui.define([
 							 "WebLink":leadData.WebLink,
 							 "Category":leadData.Category,
 							 "CourseText":leadData.CourseText,
+							 "youTube":leadData.youTube,
 	 							"ChangedBy": "",
 	 							"ChangedOn": new Date(),
 						};
@@ -111,6 +112,7 @@ sap.ui.define([
 						 "WebLink":leadData.WebLink,
 						 "Category":leadData.Category,
 						 "CourseText":leadData.CourseText,
+						 "youTube":leadData.youTube,
 							"CreatedOn": new Date(),
 							"CreatedBy": "",
 						// "SoftDelete": false
@@ -171,6 +173,7 @@ sap.ui.define([
 							that.getView().byId("idCategory").setSelectedKey(oData.results[0].Category);
 							that.getView().byId("idDesc").setValue(oData.results[0].CourseText);
 							that.getView().byId("idSite").setValue(oData.results[0].WebLink);
+							that.getView().byId("idYouTube").setValue(oData.results[0].youTube);
 						}
 						else
 						{
@@ -210,6 +213,7 @@ sap.ui.define([
 					that.getView().byId("idCategory").setSelectedKey(oData.results[0].Category);
 					that.getView().byId("idDesc").setValue(oData.results[0].CourseText);
 					that.getView().byId("idSite").setValue(oData.results[0].WebLink);
+					that.getView().byId("idYouTube").setValue(oData.results[0].youTube);
 				}
 				else
 				{
@@ -297,6 +301,7 @@ sap.ui.define([
 				"CreatedBy":"",
 				"ChangedBy":"",
 				"ChangedOn":"",
+				"youTube":"",
 				"id":""
 			});
 			this.getView().byId("idCreate").setText("Create");

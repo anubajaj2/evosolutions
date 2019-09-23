@@ -1106,75 +1106,86 @@ app.start = function() {
 				var nodemailer = require('nodemailer');
 				var smtpTransport = require('nodemailer-smtp-transport');
 				console.log(req.body);
-				var transporter = nodemailer.createTransport(smtpTransport({
-					service: 'gmail',
-					host: 'smtp.gmail.com',
-					auth: {
-						user: 'install.abap@gmail.com',
-						pass: req.body.password
-					}
-				}));
-				var Subject = req.body.Subject;
-				if (Subject === "" || Subject === "null") {
-					Subject = req.body.CourseName + " training";
-				}
-				//https://myaccount.google.com/lesssecureapps?pli=1
-				if (req.body.CourseName != "ABAP on HANA" && req.body.CourseName != "UI5 and Fiori" &&
-					req.body.CourseName != "HANA XS" &&
-					req.body.CourseName != "Launchpad" && req.body.CourseName != "Hybris C4C"
-					&&  req.body.CourseName != "S4HANA Extension"
-					&& req.body.CourseName != "SimpleLogistics" && req.body.CourseName != "SimpleFinance") {
-					req.body.CourseName = "Generic";
-
-					if (Subject === "" || Subject === "null") {
-						Subject = "[REPLY] Regarding SAP training";
-					}
-				}
-				if (req.body.FirstName === "" || req.body.FirstName == "null") {
-					req.body.FirstName = "Sir";
-				}
-				var contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + req.body.CourseName + '.html', 'utf8');
-				var result = req.body.FirstName.replace(/([A-Z])/g, " $1");
-				req.body.FirstName = result.charAt(0).toUpperCase() + result.slice(1);
-				contents = contents.replace('$$Name$$', req.body.FirstName)
+				var app = require('../server/server');
+				var CourseMst = app.models.CourseMst;
 				debugger;
-				if(req.body.fees !== "null" && req.body.fees !== ""){
- 				 contents = contents.replace("$$fees$$", req.body.fees);
-  				 contents = contents.replace("$$currency$$", req.body.currency);
- 			 }
+				CourseMst.findOne({
+						where: {
+								id: req.body.courseId
+							}
+					})
+					.then(function(courseFound) {
+						debugger;
+							if(courseFound){
+								function camelize(str) {
+								  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+								    return index == 0 ? word.toLowerCase() : word.toUpperCase();
+								  }).replace(/\s+/g, '');
+								}
+								var transporter = nodemailer.createTransport(smtpTransport({
+									service: 'gmail',
+									host: 'smtp.gmail.com',
+									auth: {
+										user: 'contact@evotrainingsolutions.com',
+										pass: req.body.password
+									}
+								}));
+								var Subject = courseFound.CourseName.camelize() + " training in Gurgaon";
 
+								//https://myaccount.google.com/lesssecureapps?pli=1
 
+								if (req.body.FirstName === "" || req.body.FirstName == "null") {
+									req.body.FirstName = "Sir";
+								}
+								var contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\Generic.html" , 'utf8');
+								var result = req.body.FirstName.replace(/([A-Z])/g, " $1");
+								req.body.FirstName = result.charAt(0).toUpperCase() + result.slice(1);
+								contents = contents.replace('$$Name$$', req.body.FirstName)
+								if(req.body.fees !== "null" && req.body.fees !== ""){
+				 				 contents = contents.replace("$$fees$$", req.body.fees);
+				  				 // contents = contents.replace("$$currency$$", req.body.currency);
+				 			 }
+							 if(courseFound.WebLink !== "null" && courseFound.WebLink !== ""){
+								contents = contents.replace("$$CoursePageLink$$", courseFound.WebLink);
+									// contents = contents.replace("$$currency$$", req.body.currency);
+								}
+								if(courseFound.CourseText !== "null" && courseFound.CourseText !== ""){
+								 contents = contents.replace("$$CourseDescription$$", courseFound.CourseText);
+									 // contents = contents.replace("$$currency$$", req.body.currency);
+								 }
+								 if(courseFound.youTube !== "null" && courseFound.youTube !== ""){
+								 contents = contents.replace("$$YouTube$$", courseFound.youTube);
+									 // contents = contents.replace("$$currency$$", req.body.currency);
+								 }else{
+									 contents = contents.replace("<p>Here is a free introductory YouTube video about the course</p><p>$$YouTube$$</p>", "");
+								 }
+								var ccs = [];
+								var mailOptions = {
+									from: 'contact@evotrainingsolutions.com',
+									to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
+									cc: ccs,
+									subject: 'Re: ' + Subject,
+									html: contents
+								};
 
-				var ccs = [];
-				if(req.body.CourseName === "SimpleLogistics"){
-						ccs.push("paramsaddy@gmail.com");
-				}else if (req.body.CourseName === "SimpleFinance") {
-					ccs.push("info@gaurav-consulting.com");
-				}
-
-				var mailOptions = {
-					from: 'install.abap@gmail.com',
-					to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
-					cc: ccs,
-					subject: 'Re: ' + Subject,
-					html: contents
-				};
-
-				transporter.sendMail(mailOptions, function(error, info) {
-					if (error) {
-						console.log(error);
-						if(error.code === "EAUTH"){
-								res.status(500).send('Username and Password not accepted, Please try again.');
-						}else{
-							res.status(500).send('Internal Error while Sending the email, Please try again.');
+								transporter.sendMail(mailOptions, function(error, info) {
+									if (error) {
+										console.log(error);
+										if(error.code === "EAUTH"){
+												res.status(500).send('Username and Password not accepted, Please try again.');
+										}else{
+											res.status(500).send('Internal Error while Sending the email, Please try again.');
+										}
+									} else {
+										console.log('Email sent: ' + info.response);
+										res.send("email sent");
+									}
+								}
+							);
 						}
-					} else {
-						console.log('Email sent: ' + info.response);
-						res.send("email sent");
-					}
 				});
-
-			});
+			}
+		);
 		mailContent: "",
 			app.post('/sendSubscriptionEmail',
 				function(req, res) {

@@ -14,5 +14,11 @@
     "database": "evo",
     "name": "mongoatlas",
     "connector": "mongodb"
+  },
+  "mongoatlasx": {
+    "url": "mongodb://evosolution:WODKb0WDEzUo0ceY@cluster0-shard-00-00-22kxb.mongodb.net:27017,cluster0-shard-00-01-22kxb.mongodb.net:27017,cluster0-shard-00-02-22kxb.mongodb.net:27017/evoprod?replicaSet=Cluster0-shard-0&ssl=true&authSource=admin",
+    "database": "evoprod",
+    "name": "mongoatlas",
+    "connector": "mongodb"
   }
 }

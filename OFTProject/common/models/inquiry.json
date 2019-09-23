@@ -64,6 +64,10 @@
       "type": "string",
       "default": "null"
     },
+    "youTube": {
+      "type": "string",
+      "default": "null"
+    },
     "hearAbout":{
       "type": "string",
       "default": "null"

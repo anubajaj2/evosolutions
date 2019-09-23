@@ -69,7 +69,8 @@
         <Input id="idSite" required="true" type="Text" value="{local>/newmcourse/WebLink}" />
         <Label text="Description" />
         <TextArea id="idDesc" required="true" type="Text" value="{local>/newmcourse/CourseText}" />
-
+        <Label text="YouTube Link" />
+        <Input id="idYouTube" required="false" type="Text" value="{local>/newmcourse/youTube}" />
 			</f:content>
 		</f:SimpleForm>
 	</VBox>

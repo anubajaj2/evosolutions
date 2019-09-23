@@ -29,6 +29,9 @@
     "CourseText":{
       "type": "string"
     },
+    "youTube":{
+      "type": "string"
+    },
     "CreatedOn": {
       "type": "date"
     },

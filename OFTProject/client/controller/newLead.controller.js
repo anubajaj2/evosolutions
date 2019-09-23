@@ -53,6 +53,7 @@ sap.ui.define([
 				}
 				loginPayload.password = this.passwords;
 				loginPayload.DollerQuote = this.getView().byId("doller").getSelected();
+				loginPayload.courseId =  this.getView().byId("idCourse1").getSelectedKey();
 				$.post('/sendInquiryEmail', loginPayload)
 					.done(function(data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
@@ -381,7 +382,7 @@ sap.ui.define([
 					// this.oLeadDuplicate.
 
 				});
-		
+
 		},
 		onApprove: function() {
 
