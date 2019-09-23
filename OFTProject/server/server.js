@@ -1162,7 +1162,7 @@ app.start = function() {
 								var ccs = [];
 								var mailOptions = {
 									from: 'contact@evotrainingsolutions.com',
-									to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
+									to: req.body.EmailId2, //req.body.EmailId    FirstName  CourseName
 									cc: ccs,
 									subject: 'Re: ' + Subject,
 									html: contents
