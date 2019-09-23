@@ -50,10 +50,13 @@
 				/>
 				<Label id="idDPlblday" text="Start Day/End Day" labelFor="idDatePicker"/>
 				<DatePicker id="idDatePicker"
-					displayFormat="dd.MM.yyyy"
+					enabled="true"
 					change="onDPhandleChange"
+					value="{local>/newLeaveRequest/DateFrom}"
 					class="sapUiSmallMarginBottom"/>
-				<Label id="idnotes" text="NewNote" labelFor="idTxtArea"/>
+				<Label id="idDays" text="Days"/>
+				<Text text="{local>/newLeaveRequest/Days}"/>
+				<Label id="idnotes" text="Remarks" labelFor="idTxtArea"/>
 				<TextArea id="idTxtArea" rows="4" growing="true"
 					value="{local>/newLeaveRequest/Remarks}"/>
 			</f:content>

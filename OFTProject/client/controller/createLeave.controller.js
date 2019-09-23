@@ -19,7 +19,10 @@ sap.ui.define([
 			var dateFrom = new Date();
 			this.getModel("local").setProperty("/LeaveStatic/dateValueDRS1",this.startDate);
 			this.getModel("local").setProperty("/LeaveStatic/secondDateValueDRS1",this.startDate);
+			this.getModel("local").setProperty("/newLeaveRequest/DateFrom", this.formatter.getFormattedDate(0));
 //			this.getView().byId("idDPlblday").setDateValue(new Date());
+			this.getView().byId("idDPlblday").setVisible(false);
+			this.getView().byId("idDatePicker").setVisible(false);
 			var dateTo = new Date();
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
@@ -35,11 +38,13 @@ sap.ui.define([
 // Set false
 		this.getView().byId("idDPlblday").setVisible(false);
 		this.getView().byId("idDatePicker").setVisible(false);
+		this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0)
 		}else{
 			this.getView().byId("idDPlblday").setVisible(true);
 			this.getView().byId("idDatePicker").setVisible(true)
 			this.getView().byId("idlblday").setVisible(false);
 			this.getView().byId("idDate").setVisible(false);
+			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
 		}
 
 	},
@@ -59,10 +64,26 @@ onBeforeRendering: function(){
 			var sTo = {};
 		   	sfrom = oEvent.getParameter("from");
 			 sTo = oEvent.getParameter("to");
+			 var diff = sTo - sfrom;
+			 var days =  diff / (1000 * 3600 * 24);
+			 if (days == 0) {
+			 	this.getView().getModel("local").setProperty("/newLeaveRequest/Days",1);
+			}else {
+			 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",days);
+		 }
 			var bValid = oEvent.getParameter("valid");
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
 		},
+		onDPhandleChange:function(oEvent){
+			var oDP = oEvent.getSource();
+			var sValue = oEvent.getParameter("value");
+			var bValid = oEvent.getParameter("valid");
+			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
+			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sValue);
+			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sValue);
+		},
+
 		onCancel:function(oEvent){
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom", this.formatter.getFormattedDate(0));
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo", this.formatter.getFormattedDate(0));
@@ -72,22 +93,60 @@ onBeforeRendering: function(){
 		onSave:function(oEvent){
 			var oLocal = oEvent;
 			var that = this;
+			var that2 = this;
 			that.getView().setBusy(true);
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			var leadData = this.getView().getModel("local").getProperty("/newLeaveRequest");
-			var diff = leadData.DateTo - leadData.DateFrom;
-			var days =  diff / (1000 * 3600 * 24);
+			var oStatic = this.getView().getModel("local").getProperty("/LeaveStatic");
+
 			if (leadData.DateFrom >  leadData.DateTo){
 			that.getView().setBusy(false);
 			sap.m.MessageBox.error("Date From Cannot be greater than Date To");
 			return;
 			}
+			var yearFrom = leadData.DateFrom.getFullYear();
+			var yearTo = leadData.DateFrom.getFullYear();
+			if (yearFrom != yearTo) {
+				that.getView().setBusy(false);
+				sap.m.MessageBox.error("Please do not span leaves over multiple years");
+				return;
+			}
+			if (leadData.Days > oStatic.Available) {
+				MessageBox.confirm("You can only apply for" + oStatic.Available +"days.Do you still want to proceed?", function(conf) {
+			if (conf == 'OK') {
+				var payload ={
+					"AppUserId": currentUser,
+					 "DateFrom": leadData.DateFrom,
+					 "DateTo": leadData.DateTo,
+					 "Days": leadData.Days,
+					 "LeaveType":leadData.LeaveType,
+					 "Status": "Not Approved",
+					 "ApproverId": "",
+					 "ApprovedOn": new Date(),
+					 "RequestedOn": new Date(),
+					 "Remarks": leadData.Remarks,
+					 "ChangedOn": new Date(),
+					 "ChangedBy": currentUser
+				};
+				that2.ODataHelper.callOData(that2.getOwnerComponent().getModel(),"/LeaveRequests","POST",{},
+					payload, that2)
+					.then(function(oData){
+						that.getView().setBusy(false);
+						sap.m.MessageToast.show("Leave Request send for Approval");
+						that.destroyMessagePopover();
+					}).catch(function(oError){
+						that.getView().setBusy(false);
+						var oPopover = that.getErrorMessage(oError);
+					});
 
+			}else { that.getView().setBusy(false); }
+		},"Confirmation");
+		}else{
 			var payload ={
 				"AppUserId": currentUser,
 				 "DateFrom": leadData.DateFrom,
 				 "DateTo": leadData.DateTo,
-				 "Days": days,
+				 "Days": leadData.Days,
 				 "LeaveType":leadData.LeaveType,
 				 "Status": "Not Approved",
 				 "ApproverId": "",
@@ -108,7 +167,7 @@ onBeforeRendering: function(){
 					var oPopover = that.getErrorMessage(oError);
 				});
 
-
+			}
 		}
 
 		/**

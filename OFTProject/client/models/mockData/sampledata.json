@@ -344,6 +344,8 @@
 		"TotalQuota":21,
 		"Planned":0,
 		"Used":0,
+		"FullConsumed":0,
+		"HalfConsumed":0,
 		"Available":0,
 		"DateFrom":"",
 		"DateTo":"",

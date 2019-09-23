@@ -89,7 +89,13 @@ sap.ui.define([], function() {
 				}
 			}
 		},
-
+		formatButtonStatus:function(oValue){
+			if (oValue == "Not Approved") {
+				return true;
+			}else {
+				return false;
+			}
+		},
 		formatIconColor: function(bValue) {
 			if (bValue === true) {
 				return "red";

@@ -45,48 +45,99 @@ onBeforeRendering: function(){
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 		//				this.getView().byId("idUser").setText(loginUser);
 		//			get details of all leaves submitted by the user
+		 var vFilterAct1 = new sap.ui.model.Filter("DateFrom", "GT", this.startDate);
+		 var vFilterAct2 = new sap.ui.model.Filter("DateTo", "LT", this.endDate);
 			 var that = this;
 				var payload = {};
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/AppUsers('" + currentUser + "')/leaveRequests","GET",{},payload,this)
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/AppUsers('" + currentUser + "')/leaveRequests","GET",{
+					filters:[vFilterAct1, vFilterAct2],
+					and: true
+				},payload,this)
 				.then(function(oData){
 					if (oData.results.length != 0) {
-						debugger;
+						var AppId = "";
+						var Appuser = "";
+						var countApproved = 0;
+						var countPending = 0;
+						var countFull = 0;
+						var countHalf = 0;
+						var status ="";
+						var leaveType = "";
 						that.getView().getModel("local").setProperty("/LeaveRequests", oData.results);
+						var oModel = that.getView().getModel("local").getProperty("/LeaveRequests");
+							for(var i =0 ;i < oData.results.length; i++){
+
+								AppId = oModel[i].ApproverId;
+								if (AppId==="") {
+									Appuser = that.getView().getModel("local").oData.AppUsers[oData.results[0].ApproverId].UserName;
+									oModel[i].ApproverId = Appuser;
+								}else {
+									oModel[i].ApproverId = " ";
+								}
+								status = oModel[i].Status;
+								leaveType = oModel[i].LeaveType;
+								switch (leaveType) {
+									case "Full Day":
+										countFull = countFull + parseInt(oModel[i].Days);
+										break;
+									case "Half Day":
+										countHalf = countHalf + parseFloat(oModel[i].Days);
+										break;
+
+								}
+							}
+//					Here set the values to Static model
+						var oStModel = that.getView().getModel("local");
+						oStModel.setProperty("/LeaveStatic/FullConsumed", countFull);
+						oStModel.setProperty("/LeaveStatic/HalfConsumed", countHalf);
+						var left = 21 - (parseFloat(countFull) + parseFloat(countHalf));
+						oStModel.setProperty("/LeaveStatic/Available",left);
 					}
 					else{
 					}
 				}).catch(function(oError){
 				});
-				var vFilterAct1 = new sap.ui.model.Filter("DateFrom", "GT", this.startDate);
-				var vFilterAct2 = new sap.ui.model.Filter("DateTo", "LT", this.endDate);
-				var vFilterAct3 = new sap.ui.model.Filter("Status", "EQ","Approved");
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/AppUsers('" + currentUser + "')/leaveRequests/$count","GET",{
-					filters:[vFilterAct1, vFilterAct2, vFilterAct3],
-					and: true
-				},null,this)
-					.then(function(oData) {
-						debugger;
-						var countAct = oData;
-						that.getModel("local").setProperty("/LeaveStatic/Planned",countAct);
-					})
-					.catch(function(oError) {});
-					var vFilterInAct4 = new sap.ui.model.Filter("Status", "EQ" ,"Not Approved");
-				  this.ODataHelper.callOData(this.getOwnerComponent().getModel(),"/AppUsers('" + currentUser + "')/leaveRequests/$count","GET",{
-					 	filters:[vFilterAct1, vFilterAct2, vFilterInAct4],
-					 	and: true
-					 },null,this)
-					 	.then(function(oData) {
-					 		var countInAct = oData;
-					 		that.getModel("local").setProperty("/LeaveStatic/Used",countInAct);
-						})
-					 	.catch(function(oError) {});
-						var sum = this.getModel("local").getProperty("/LeaveStatic/Planned") + this.getModel("local").getProperty("/LeaveStatic/Used");
-						var available = 21 - sum;
-						this.getModel("local").setProperty("/LeaveStatic/Available",available);
 		}
 		},
 			onCreateLeave: function(oEvent){
 				this.oRouter.navTo("createLeave");
+
+		},
+		indexDel:"",
+		onDelete:function(oEvent){
+			var sPath = oEvent.getSource().getBindingContext("local").getPath();
+			var that = this;
+			that.indexdel = sPath;
+			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+				if (conf == 'OK') {
+					var leaveId = that.getView().getModel("local").getProperty(sPath).id;
+					var delitem = "/LeaveRequests('" + leaveId + "')";
+//					"/AppUsers('5d51864fe11144c5d0be90c0')"
+
+						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), delitem, "DELETE", {}, {}, that)
+							.then(function(oData) {
+								that.getView().setBusy(false);
+								debugger;
+								var oSplit = that.indexdel.split('/');
+								var oIndex = oSplit[oSplit.length - 1];
+//								var oIndex = parseInt(that.indexdel.substring(that.indexdel.lastIndexOf('/') +1));
+								that.indexDel=null;
+								var oTable = that.getView().byId("idTable2");
+								var m = oTable.getModel("local");
+				       	var data = m.getProperty("/LeaveRequests");
+				       	var removed = data.splice(oIndex, 1);
+				       	m.setProperty("/LeaveRequests",data);
+								sap.m.MessageToast.show("Deleted succesfully");
+
+							}).catch(function(oError) {
+								that.getView().setBusy(false);
+								that.oPopover = that.getErrorMessage(oError);
+								that.getView().setBusy(false);
+							});
+
+
+				}
+			}, "Confirmation");
 
 		},
 		onSend:function(oEvent){
