@@ -66,6 +66,8 @@ onBeforeRendering: function(){
 			 sTo = oEvent.getParameter("to");
 			 var diff = sTo - sfrom;
 			 var days =  diff / (1000 * 3600 * 24);
+// to get the correct count add 1 to the days
+			 days = days + 1;
 			 if (days == 0) {
 			 	this.getView().getModel("local").setProperty("/newLeaveRequest/Days",1);
 			}else {
@@ -104,8 +106,10 @@ onBeforeRendering: function(){
 			sap.m.MessageBox.error("Date From Cannot be greater than Date To");
 			return;
 			}
-			var yearFrom = leadData.DateFrom.getFullYear();
-			var yearTo = leadData.DateFrom.getFullYear();
+			var tdate = new Date(leadData.DateFrom);
+			var yearFrom = tdate.getFullYear();
+			tdate = new Date(leadData.DateTo);
+			var yearTo = tdate.getFullYear();
 			if (yearFrom != yearTo) {
 				that.getView().setBusy(false);
 				sap.m.MessageBox.error("Please do not span leaves over multiple years");

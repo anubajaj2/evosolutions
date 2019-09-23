@@ -52,6 +52,8 @@
 				<DatePicker id="idDatePicker"
 					enabled="true"
 					change="onDPhandleChange"
+					displayFormat="{path:'local>/LeaveStatic/dateFormatDRS1'}"
+					
 					value="{local>/newLeaveRequest/DateFrom}"
 					class="sapUiSmallMarginBottom"/>
 				<Label id="idDays" text="Days"/>

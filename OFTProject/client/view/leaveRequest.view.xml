@@ -133,10 +133,13 @@
 <!--	<Label text="Show From" labelFor="idOvrDate"/>
 	<DatePicker id="idOvrDate" width="10rem" value="{local>/newLeaveRequest/Datefilter}"/>-->
 </OverflowToolbar>
-	<Table id="idTable2"	fixedLayout="true" items="{local>/LeaveRequests}" growing="true" growingThreshold="200" growingScrollToLoad="false" mode="none">
+	<Table id="idTable2"	 items="{local>/LeaveRequests}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="SingleSelectMaster">
 		<columns>
 			<Column halign="Left">
-				<Label text="Validity" class="columnLabelStyle"/>
+				<Label text="Requested Date" class="columnLabelStyle"/>
+			</Column>
+			<Column halign="Left">
+				<Label text="Days" class="columnLabelStyle"/>
 			</Column>
 			<Column halign="Left">
 				<Label text="Status" class="columnLabelStyle"/>
@@ -144,13 +147,15 @@
 			<Column halign="Left">
 				<Label text="Approver" class="columnLabelStyle"/>
 			</Column>
-
+			<Column halign="Left">
+				<Label text="Requested On" class="columnLabelStyle"/>
+			</Column>
 			<Column halign="Left">
 				<Label text="Delete" class="columnLabelStyle"/>
 			</Column>
 		</columns>
 		<items>
-			<ColumnListItem id="idColumnlist2" type="Navigation">
+			<ColumnListItem id="idColumnlist2">
 				<cells>
 					<ObjectAttribute id="idObj"
 						text="{parts:[{
@@ -169,11 +174,15 @@
 							constraints:{
 							displayFormat:'Date'
 							}}],formatter:'.formatter.formatLRdate'}"/>
+					<Text text="{local>Days}"></Text>		
 					<ObjectStatus id="idobjSt" text="{local>Status}"
 							state="{path:'local>Status', formatter:'.formatter.formatLRStatus'}"
 						/>
+
 					<Text text="{local>ApproverId}"></Text>
-	
+					<Text text="{ path: 'local>RequestedOn',
+						type:'sap.ui.model.type.Date',
+						formatOptions:{ pattern:'dd.MM.YYYY' } }"></Text>
 					<Button id="iddelete" icon="sap-icon://sys-cancel"
 						press="onDelete" type="Transparent"
 						enabled="{path:'local>Status', formatter:'.formatter.formatButtonStatus'}"

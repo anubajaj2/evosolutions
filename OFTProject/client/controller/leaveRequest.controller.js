@@ -127,6 +127,32 @@ onBeforeRendering: function(){
 				       	var data = m.getProperty("/LeaveRequests");
 				       	var removed = data.splice(oIndex, 1);
 				       	m.setProperty("/LeaveRequests",data);
+								var countApproved = 0;
+								var countPending = 0;
+								var countFull = 0;
+								var countHalf = 0;
+								var status ="";
+								var leaveType = "";
+								//Here re adjust the Summary Table
+								for(var i=0; i<data.length; i++){
+
+									 status = data[i].Status;
+									 leaveType = data[i].LeaveType;
+									switch (leaveType) {
+										case "Full Day":
+											countFull = countFull + parseInt(data[i].Days);
+											break;
+										case "Half Day":
+											countHalf = countHalf + parseFloat(data[i].Days);
+											break;
+										}
+
+								}
+								var oStModel = that.getView().getModel("local");
+								oStModel.setProperty("/LeaveStatic/FullConsumed", countFull);
+								oStModel.setProperty("/LeaveStatic/HalfConsumed", countHalf);
+								var left = 21 - (parseFloat(countFull) + parseFloat(countHalf));
+								oStModel.setProperty("/LeaveStatic/Available",left);
 								sap.m.MessageToast.show("Deleted succesfully");
 
 							}).catch(function(oError) {
