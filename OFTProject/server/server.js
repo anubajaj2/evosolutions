@@ -1130,7 +1130,7 @@ app.start = function() {
 										pass: req.body.password
 									}
 								}));
-								var Subject = courseFound.CourseName.camelize() + " training in Gurgaon";
+								var Subject = courseFound.CourseName + " training in Gurgaon";
 
 								//https://myaccount.google.com/lesssecureapps?pli=1
 
