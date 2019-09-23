@@ -1145,6 +1145,10 @@ app.start = function() {
 				 				 contents = contents.replace("$$fees$$", req.body.fees);
 				  				 // contents = contents.replace("$$currency$$", req.body.currency);
 				 			 }
+							 if(courseFound.CourseName !== "null" && courseFound.CourseName !== ""){
+								contents = contents.replace("$$CourseName$$", courseFound.CourseName);
+									// contents = contents.replace("$$currency$$", req.body.currency);
+							}
 							 if(courseFound.WebLink !== "null" && courseFound.WebLink !== ""){
 								contents = contents.replace("$$CoursePageLink$$", courseFound.WebLink);
 									// contents = contents.replace("$$currency$$", req.body.currency);

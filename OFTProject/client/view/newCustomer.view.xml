@@ -27,7 +27,7 @@
 					columnsM="1"
 					singleContainerFullSize="false">
 					<f:content>
-						<Label text="Email Id"/>
+						<Label text="Phone No"/>
 						<Input
 							required="true"
 							type="Email"
@@ -37,7 +37,7 @@
 							valueHelpRequest="onSelect"
 							liveChange="onEmail"
 							submit="onEnter"
-							placeholder="Enter Email Id ..."
+							placeholder="Phone No 10 Digits ..."
 							showSuggestion="true"
 							suggestionItems="{/Inquries}"
 							suggestionItemSelected="suggestionItemSelected">

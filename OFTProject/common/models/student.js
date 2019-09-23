@@ -6,11 +6,12 @@ module.exports = function(Student) {
     //validations
     Student.validatesPresenceOf('Name', {message: 'Name Cannot be blank'});
 
-    Student.validatesFormatOf('GmailId', {with: re, message: 'invalid email id'});
+    //Student.validatesFormatOf('GmailId', {with: re, message: 'invalid email id'});
+    Student.validatesLengthOf('GmailId', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
 
     Student.observe("before save",function(ctx, next){
       if(ctx.instance && ctx.instance.GmailId){
- 
+
         Student.findOne({where: {and: [{GmailId: ctx.instance.GmailId}]}, limit: 1})
           .then(function (stu) {
             console.log(ctx.instance.GmailId );
