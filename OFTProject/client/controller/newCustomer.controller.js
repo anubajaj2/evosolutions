@@ -757,7 +757,8 @@ sap.ui.define([
 			this.vEmail = oEvent.getParameters().value;
 			var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-			if (regEx.test(this.vEmail)) {
+			//if (regEx.test(this.vEmail)) {
+					if (this.vEmail.length==10) {
 				var that = this;
 				// that.getView().setBusy(true);
 
