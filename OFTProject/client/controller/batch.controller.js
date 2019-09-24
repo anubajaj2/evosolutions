@@ -284,14 +284,16 @@ sap.ui.define([
 			// alert("Hello");
 			this.getView().byId("idCourseId").setValue("");
 			this.getView().byId("batch").setValue("");
-			this.getView().byId("idLink").setValue("");
-			this.getView().byId("idTiming").setValue("");
-			this.getView().byId("idCalId").setValue("");
-			this.getView().byId("idEvent").setValue("");
-			this.getView().byId("idDrive").setValue("");
-			// this.getView().byId("idWeekend").setValue("");
+			this.getView().byId("idTrainer").setValue("");
+			this.getView().byId("idStartTime").setValue("");
+			this.getView().byId("idEndTime").setValue("");
+			this.getView().byId("idDemoDate").setValue("");
+			this.getView().byId("idStartDate").setValue("");
+			this.getView().byId("idEndDate").setValue("");
+			this.getView().byId("idFee").setValue("");
 			this.getView().byId("idStatus").setValue("");
-			this.getView().byId("idAnalysis").setValue("");
+			this.getView().byId("idWeekend").setSelected("");
+			this.getView().byId("idChkBtcHid").setSelected("");
 
 
 		},

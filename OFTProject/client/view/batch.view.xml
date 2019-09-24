@@ -27,7 +27,7 @@
 					<f:content>
 						<Label text="Batch Id" required="true"/>
 						<!-- <Input id="idCourseId" required="true" value="{local>/newBatch/courseName}_{local>/newBatch/startDate}_{local>/newBatch/startTime}_{local>/newBatch/trainerName}" showValueHelp="true" valueHelpRequest="onBatchSelect"/> -->
-								<Input id="idCourseId" required="true" value="{}" showValueHelp="true" valueHelpRequest="onBatchSelect"/>
+						<Input id="idCourseId" required="true" value="{local>/newBatch/batchName}" showValueHelp="true" valueHelpRequest="onBatchSelect"/>
 						<Label text="{i18n>courseName}"/>
 						<Input id="batch" required="true" valueHelpOnly="true" value="{local>/newBatch/courseName}" showValueHelp="true" valueHelpRequest="onSelect"/>
 						<Label text="Trainer Name"/>
