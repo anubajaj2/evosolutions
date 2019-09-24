@@ -77,7 +77,7 @@
 				<Input type="Number" value="{local>/newLead/phone}"></Input>
 
 				<Label text="EmailId" />
-				<Input value="{local>/newLead/emailId2}"></Input>
+				<Input value="{local>/newLead/EmailId2}"></Input>
 
         <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
