@@ -189,6 +189,11 @@
 								"target": ["donald", "leaveRequest"]
 							},
 							{
+								"pattern": "leaveApproval",
+								"name": "leaveApproval",
+								"target": ["donald", "leaveApproval"]
+							},
+							{
 								"pattern": "createLeave",
 								"name": "createLeave",
 								"target": ["donald", "createLeave"]
@@ -360,6 +365,16 @@
 					"clearAggregation": true,
 					"viewName": "leaveRequest",
 					"viewId": "idleaveRequest",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+
+				},
+				"leaveApproval":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "leaveApproval",
+					"viewId": "idleaveApproval",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 

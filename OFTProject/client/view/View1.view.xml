@@ -27,7 +27,7 @@
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="leaveRequest" icon="sap-icon://create-leave-request" title="Leave request" description=""></StandardListItem>
-
+          <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="leaveApproval" icon="sap-icon://approvals" title="Leave Approval" description=""></StandardListItem>
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem> -->
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="dailytask" icon="sap-icon://task" title="Daily Tasks" description=""></StandardListItem>
