@@ -263,6 +263,7 @@ sap.ui.define([
 				"Category": leadData.Category,
 				"FirstName": leadData.FirstName,
 				"LastName": leadData.LastName,
+				"EmailId2": leadData.EmailId2 ,
 				"Date": this.getView().byId("inqDate").getDateValue(),
 				"City": leadData.city,
 				"Phone": leadData.phone,
