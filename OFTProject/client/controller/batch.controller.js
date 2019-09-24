@@ -41,23 +41,26 @@ sap.ui.define([
 			// }
 
 			var payload = {
-				"BatchNo": batchData.courseId,
-				"Name": batchData.courseName,
+			//	"BatchNo": batchData.courseId,
+				"Name": batchData.batchName,
+				"CourseId": batchData.courseId,
+				"TrainerId": batchData.trainerId,
 				"DemoStartDate": this.getView().byId("idDemoDate").getDateValue(),
 				"StartDate": this.getView().byId("idStartDate").getDateValue(),
 				"EndDate": this.getView().byId("idEndDate").getDateValue(),
-				"BlogEndDate": this.getView().byId("idBlogEnd").getDateValue(),
-				"Link": batchData.link,
+			//	"BlogEndDate": this.getView().byId("idBlogEnd").getDateValue(),
+			//	"Link": batchData.link,
 				"Weekend": batchData.weekend,
 				"hidden": String(batchData.hidden),
-				"Timings": batchData.Timings,
+				"StartTime": batchData.startTime,
+				"EndTime": batchData.endTime,
 				"Fee": batchData.courseFee,
 				"CreatedOn": new Date(),
-				"CalendarId": batchData.CalendarId,
-				"EventId": batchData.EventId,
-				"DriveId": batchData.DriveId,
-				"status": batchData.status,
-				"analysis": batchData.analysis
+			//	"CalendarId": batchData.CalendarId,
+			//	"EventId": batchData.EventId,
+			//	"DriveId": batchData.DriveId,
+				"status": batchData.status
+			//	"analysis": batchData.analysis
 			};
 
 
@@ -124,17 +127,38 @@ sap.ui.define([
 			debugger;
 			alert("HELLOOO");
 		},
-
-		onSelect: function() {
+		setBatchId: function(oValue){
+			var oModel = this.getView().getModel("local");
+			var batchId = oModel.getProperty("/newBatch/courseName") + "_" +
+										oModel.getProperty("/newBatch/trainerName");
+			this.getView().byId("idCourseId").setValue(batchId);
+		},
+		onSelect: function(oEvent) {
 
 			this.flag = "courseName";
 			this.getCustomerPopup();
 			var title = this.getView().getModel("i18n").getProperty("course");
 			this.searchPopup.setTitle(title);
 			this.searchPopup.bindAggregation("items", {
-				path: "local>/courses",
+				path: "/CoursesMst",
 				template: new sap.m.DisplayListItem({
-					label: "{local>courseName}"
+					label: "{CourseName}",
+					value: "{Category}"
+				})
+			});
+		},
+
+		onTrainerSelect: function(oEvent) {
+
+			this.flag = "trainerName";
+			this.getCustomerPopup();
+			var title =  "Trainer Name";//this.getView().getModel("i18n").getProperty("trainer");
+			this.searchPopup.setTitle(title);
+			this.searchPopup.bindAggregation("items", {
+				path: "/Trainers",
+				template: new sap.m.DisplayListItem({
+					label: "{FirstName} {LastName}",
+					value: "{id}"
 
 				})
 			});
@@ -145,6 +169,15 @@ sap.ui.define([
 
 				var courseName = oEvent.getParameter("selectedItem").getLabel();
 				this.getView().getModel("local").setProperty("/newBatch/courseName", courseName);
+				var courseId = oEvent.getParameter("selectedItem").getBindingContextPath().split("'")[1];
+				this.getView().getModel("local").setProperty("/newBatch/courseId", courseId);
+			}
+			if (this.flag === "trainerName") {
+
+				var trainerName = oEvent.getParameter("selectedItem").getLabel();
+				this.getView().getModel("local").setProperty("/newBatch/trainerName", trainerName);
+				var trainerId = oEvent.getParameter("selectedItem").getBindingContextPath().split("'")[1];
+				this.getView().getModel("local").setProperty("/newBatch/trainerId", trainerId);
 			}
 
 			if (this.flag === "batchid") {

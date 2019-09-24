@@ -26,40 +26,34 @@
 					singleContainerFullSize="false">
 					<f:content>
 						<Label text="Batch Id" required="true"/>
-						<Input id="idCourseId" required="true" value="{local>/newBatch/courseId}" showValueHelp="true" valueHelpRequest="onBatchSelect"/>
+						<!-- <Input id="idCourseId" required="true" value="{local>/newBatch/courseName}_{local>/newBatch/startDate}_{local>/newBatch/startTime}_{local>/newBatch/trainerName}" showValueHelp="true" valueHelpRequest="onBatchSelect"/> -->
+								<Input id="idCourseId" required="true" value="{}" showValueHelp="true" valueHelpRequest="onBatchSelect"/>
 						<Label text="{i18n>courseName}"/>
 						<Input id="batch" required="true" valueHelpOnly="true" value="{local>/newBatch/courseName}" showValueHelp="true" valueHelpRequest="onSelect"/>
+						<Label text="Trainer Name"/>
+						<Input id="idTrainer" required="true" valueHelpOnly="true" value="{local>/newBatch/trainerName}" showValueHelp="true" valueHelpRequest="onTrainerSelect"/>
 						<Label text="Demo Start Date"/>
 						<DatePicker id="idDemoDate" displayFormat="dd.MM.yyyy" value="{local>/newBatch/demoStartDate}" valueFormat="dd.MM.yyyy"></DatePicker>
 						<Label text="Start Date"/>
 						<DatePicker id="idStartDate" displayFormat="dd.MM.yyyy" value="{local>/newBatch/startDate}" valueFormat="dd.MM.yyyy" change="onStartChange"></DatePicker>
 						<Label text="End Date"/>
 						<DatePicker id="idEndDate" enabled="true" displayFormat="dd.MM.yyyy" value="{local>/newBatch/endDate}" valueFormat="dd.MM.yyyy"></DatePicker>
-						<Label text="Blog End Date"/>
-						<DatePicker id="idBlogEnd" enabled="true" displayFormat="dd.MM.yyyy" value="{local>/newBatch/blogDate}" valueFormat="dd.MM.yyyy"></DatePicker>
 						<Label text="Minimum Fee"/>
 						<Input id="idFee" required="true" type="Number" value="{local>/newBatch/courseFee}"/>
-						<Label text="Link"/>
-						<Input id="idLink" value="{local>/newBatch/link}"/>
-						<Label text="Drive Id"/>
-						<Input id="idDrive" value="{local>/newBatch/DriveId}"/>
-						<Label text="Cal Id"/>
-						<Input id="idCalId" value="{local>/newBatch/CalendarId}"/>
-						<Label text="Event id"/>
-						<Input id="idEvent" value="{local>/newBatch/EventId}"/>
-						<Label text="Timing"/>
-						<Input id="idTiming" value="{local>/newBatch/timing}"/>
+						<Label text="Start Time"/>
+						<TimePicker id="idStartTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/startTime}"></TimePicker>
+						<Label text="End Time"/>
+						<TimePicker id="idEndTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/endTime}"></TimePicker>
 						<Label text="Weekend Batch"></Label>
 						<CheckBox id="idWeekend" selected="{local>/newBatch/weekend}"></CheckBox>
 						<!-- <CheckBox id="idWeekend" selected="{=${local>/newBatch/weekend} === false ? false : true}"></CheckBox> -->
 						<Label text="Hide Batch"></Label>
 						<CheckBox id="idChkBtcHid" selected="{local>/newBatch/hidden}"></CheckBox>
 						<Label text="Status"></Label>
-						<ComboBox id="idStatus"	items="{local>/status}" selectedKey="{local>/newBatch/status}">
+						<ComboBox id="idStatus"	items="{local>/courseStatus}" selectedKey="{local>/newBatch/status}">
 						<core:Item key="{local>key}" text="{local>value}"  />
 						</ComboBox>
-						<Label text="Analysis"/>
-						<CheckBox id="idAnalysis" selected="{local>/newBatch/analysis}"></CheckBox>
+
 					</f:content>
 				</f:SimpleForm>
 			</VBox>
