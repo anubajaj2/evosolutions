@@ -217,6 +217,35 @@ app.start = function() {
 
 		});
 
+		app.get('/sendSms', function(req, res) {
+
+				var http = require('http');
+				var urlencode = require('urlencode');
+				var msg=urlencode('This was a breakthorugh dude!');
+				var number='9560466944';
+				var username='anubhav.abap@gmail.com';
+				var hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
+				var sender='Evo Solutions';
+				var data='username='+username+'&hash='+hash+'&sender='+sender+'&numbers='+number+'&message='+msg
+				var options = {
+		 				 host: 'api.textlocal.in',
+			  	 	 path: '/send?'+data
+				};
+				callback = function(response) {
+				  var str = '';
+				  response.on('data', function (chunk) {
+				  str += chunk;
+				  });
+
+				  //the whole response has been recieved, so we just print it out here
+				  response.on('end', function () {
+				  console.log(str);
+				  });
+				}
+				//console.log('hello js'))
+				http.request(options, callback).end();
+		});
+
 		app.get('/getAmountPerAccount', function(req, res) {
 
 			// Courses.find().then(function(data) {

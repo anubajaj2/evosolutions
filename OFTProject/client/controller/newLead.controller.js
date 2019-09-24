@@ -62,6 +62,13 @@ sap.ui.define([
 						that.passwords = "";
 						sap.m.MessageBox.error(xhr.responseText);
 					});
+				$.get('/sendSms')
+						.done(function(data, status) {
+							sap.m.MessageToast.show("Message sent successfully");
+						})
+						.fail(function(xhr, status, error) {
+							sap.m.MessageBox.error(xhr.responseText);
+						});
 			}
 		},
 		onDataExport: function(oEvent) {
