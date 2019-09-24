@@ -118,6 +118,8 @@
 	"newBatch": {
 		"courseId": "",
 		"courseName": "",
+		"TrainerId": "",
+		"trainerName": "",
 		"batchName": "",
 		"startDate": "",
 		"endDate": "",
@@ -127,17 +129,18 @@
 		"link": "",
 		"weekend": false,
 		"hidden": false,
-		"timing": "",
+		"startTime": "",
+		"endTime":"",
 		"id": "",
-		"DriveId":"",
-		"EventId":"",
-		"CalendarId":"",
-		"status":"",
-		"analysis":false
+		"DriveId": "",
+		"EventId": "",
+		"CalendarId": "",
+		"status": "",
+		"analysis": false
 	},
 	"status": [{
 			"key": "L",
-			"value":"Live"
+			"value": "Live"
 		},
 		{
 			"key": "V",
@@ -146,11 +149,47 @@
 		{
 			"key": "A",
 			"value": "Live and Video"
-		 },
- 		{
- 			"key": " ",
- 			"value": "Blank"
- 		 }],
+		},
+		{
+			"key": " ",
+			"value": "Blank"
+		}
+	],
+
+	"courseStatus": [{
+			"key": "C",
+			"value": "Completed"
+		},
+		{
+			"key": "Y",
+			"value": "Yet To Start"
+		},
+		{
+			"key": "I",
+			"value": "In Process"
+		},
+		{
+			"key": "T",
+			"value": "Terminated"
+		},
+		{
+			"key": " ",
+			"value": ""
+		}
+	],
+	"trainers": [{
+			"trainerName": "Anubhav"
+		},
+		{
+			"trainerName": "Rahul"
+		},
+		{
+			"trainerName": "Priya"
+		},
+		{
+			"trainerName": "Rama"
+		}
+	],
 	"customersSet": [{
 			"key": "demo@gmail.com",
 			"value": "Ravi"

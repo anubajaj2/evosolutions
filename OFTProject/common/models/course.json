@@ -17,6 +17,16 @@
       "default": "null",
       "required": true
     },
+    "CourseId": {
+      "type": "string",
+      "default": "null",
+      "required": true
+    },
+    "TrainerId": {
+      "type": "string",
+      "default": "null",
+      "required": true
+    },
     "DemoStartDate": {
       "type": "date",
       "required": true
@@ -29,24 +39,15 @@
       "type": "date",
       "required": true
     },
-    "ReminderDate": {
-      "type": "date",
-      "required": false
-    },
-    "BlogEndDate": {
-      "type": "date",
-      "required": true
-    },
-    "Link": {
-      "type": "string",
-      "default": "null",
-      "required": true
-    },
     "Weekend": {
       "type": "boolean",
       "default": false
     },
-    "Timings": {
+    "StartTime": {
+      "type": "string",
+      "default": "null"
+    },
+    "EndTime": {
       "type": "string",
       "default": "null"
     },
@@ -55,31 +56,11 @@
       "required": true,
       "default": 15000
     },
-    "Extra": {
-      "type": "string",
-      "default": "null"
-    },
-    "Extra1": {
-      "type": "string",
-      "default": "null"
-    },
-    "CalendarId": {
-      "type": "string",
-      "default": "null"
-    },
-    "EventId": {
-      "type": "string",
-      "default": "null"
-    },
-    "DriveId": {
-      "type": "string",
-      "default": "null"
-    },
     "hidden": {
       "type": "boolean",
       "default": false
     },
-    "analysis": {
+    "weekend": {
       "type": "boolean",
       "default": false
     },
