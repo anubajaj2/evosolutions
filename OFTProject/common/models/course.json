@@ -7,11 +7,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "Name": {
-      "type": "string",
-      "required": true,
-      "default": "SAP UI5 and Fiori"
-    },
     "BatchNo": {
       "type": "string",
       "default": "null",

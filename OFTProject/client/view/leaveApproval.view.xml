@@ -1,0 +1,72 @@
+<mvc:View
+	controllerName="oft.fiori.controller.leaveApproval"
+	xmlns:l="sap.ui.layout"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns="sap.m"
+	>
+ <semantic:FullscreenPage id="page"
+	title="Leave Approval"
+	floatingFooter="false"
+	showNavButton="false"
+	navButtonPress="onNavButtonPress"
+	>
+	<semantic:content>
+	<VBox>
+		<f:SimpleForm
+			id="idSFCL"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false">
+	<f:content>
+		<Label text="Employees" />
+			<ComboBox id="idEmployee" items="{/AppUsers}">
+				<items>
+					<core:Item key="{TechnicalId}" text="{UserName}"/>
+				</items>
+				</ComboBox>
+	</f:content>
+</f:SimpleForm>
+
+<IconTabBar
+	id="idIconTabBar"
+	select="handleIconTabBarSelect"
+	class="sapUiResponsiveContentPadding">
+	<items>
+		<IconTabFilter
+			icon="sap-icon://pending"
+			count="3"
+			text="Pending"
+			key="Pending" >
+			<core:Fragment fragmentName="oft.fiori.fragments.pendingLeaveTable"
+									   type="XML" />
+										 	</IconTabFilter>
+		<IconTabFilter
+			icon="sap-icon://paid-leave"
+			count="6"
+			text="Approved"
+			key="approved" >
+			<core:Fragment fragmentName="oft.fiori.fragments.approvedLeaveTable"
+									   type="XML" />
+										 	</IconTabFilter>
+	</items>
+</IconTabBar>
+</VBox>
+</semantic:content>
+</semantic:FullscreenPage>
+</mvc:View>
