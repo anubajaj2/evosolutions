@@ -41,7 +41,7 @@
 						<Label text="Minimum Fee"/>
 						<Input id="idFee" required="true" type="Number" value="{local>/newBatch/courseFee}"/>
 						<Label text="Start Time"/>
-						<TimePicker id="idStartTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/startTime}"></TimePicker>
+						<TimePicker id="idStartTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/startTime}" change="onStartChange"></TimePicker>
 						<Label text="End Time"/>
 						<TimePicker id="idEndTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/endTime}"></TimePicker>
 						<Label text="Weekend Batch"></Label>

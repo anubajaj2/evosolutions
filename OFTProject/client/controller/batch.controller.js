@@ -15,6 +15,31 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf oft.fiori.view.View2
 		 */
+		 expandStartDate: function(startDate) {
+			 var month = new Array();
+				   month[0] = "JAN";
+				   month[1] = "FEB";
+				   month[2] = "MAR";
+				   month[3] = "APR";
+				   month[4] = "MAY";
+				   month[5] = "JUN";
+				   month[6] = "JUL";
+				   month[7] = "AUG";
+				   month[8] = "SEP";
+				   month[9] = "OCT";
+				   month[10] = "NOV";
+				   month[11] = "DEC";
+
+	var str = startDate.split(".");
+	var date = str[1] + "/" + str[0] + "/" + str[2];
+ 	//var mon = month[str[1]];
+	//var year = str[2];
+ var d = new Date(date);
+ var mon = month[d.getMonth()];
+ var year = d.getFullYear();
+ return mon + "_" + year;
+ 		},
+
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
@@ -22,7 +47,10 @@ sap.ui.define([
 			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 			loginUser = "Hey " + loginUser;
 			this.getView().byId("idUser").setText(loginUser);
+
 		},
+
+
 		onBack: function() {
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
@@ -34,15 +62,15 @@ sap.ui.define([
 			var that = this;
 			var batchData = this.getView().getModel("local").getProperty("/newBatch");
 			//busy indicator
-			that.getView().setBusy(true);
+		//	that.getView().setBusy(true);
 			// if(!this.getView().byId("inqDate").getDateValue()){
 			// 	sap.m.MessageToast.show("Enter a valid Date");
 			// 	return "";
 			// }
-
+			debugger;
 			var payload = {
-			//	"BatchNo": batchData.courseId,
-				"Name": batchData.batchName,
+				"BatchNo": batchData.batchName,
+			//	"Name": batchData.batchName,
 				"CourseId": batchData.courseId,
 				"TrainerId": batchData.trainerId,
 				"DemoStartDate": this.getView().byId("idDemoDate").getDateValue(),
@@ -106,11 +134,13 @@ sap.ui.define([
 			var dateObject = new Date(from[2], from[1] - 1, from[0]);
 			var endDate = this.formatter.getIncrementDate(dateObject, 2.5);
 			this.getView().getModel("local").setProperty("/newBatch/endDate", endDate);
-			dateObject = new Date(from[2], from[1] - 1, from[0]);
-			var blogDate = this.formatter.getIncrementDate(dateObject, 8);
-			this.getView().getModel("local").setProperty("/newBatch/blogDate", blogDate);
+			//dateObject = new Date(from[2], from[1] - 1, from[0]);
+			//var blogDate = this.formatter.getIncrementDate(dateObject, 8);
+			//this.getView().getModel("local").setProperty("/newBatch/blogDate", blogDate);
 			console.log(endDate);
-			console.log(blogDate);
+			//console.log(blogDate);
+			this.updateBatchName();
+
 		},
 		herculis: function(oEvent) {
 			if(oEvent.getParameter("name") !== "batch"){
@@ -127,12 +157,12 @@ sap.ui.define([
 			debugger;
 			alert("HELLOOO");
 		},
-		setBatchId: function(oValue){
-			var oModel = this.getView().getModel("local");
-			var batchId = oModel.getProperty("/newBatch/courseName") + "_" +
-										oModel.getProperty("/newBatch/trainerName");
-			this.getView().byId("idCourseId").setValue(batchId);
-		},
+		// setBatchId: function(oValue){
+		// 	var oModel = this.getView().getModel("local");
+		// 	var batchId = oModel.getProperty("/newBatch/courseName") + "_" +
+		// 								oModel.getProperty("/newBatch/trainerName");
+		// 	this.getView().byId("idCourseId").setValue(batchId);
+		// },
 		onSelect: function(oEvent) {
 
 			this.flag = "courseName";
@@ -164,6 +194,17 @@ sap.ui.define([
 			});
 		},
 
+		updateBatchName: function() {
+			var batchData = this.getModel("local").getProperty("/newBatch");
+			debugger;
+			var startDate = this.expandStartDate(batchData.startDate);
+			var time = batchData.startTime.split(":").join("");
+			//var startTime = time[0] + time[1];
+			batchData.batchName = batchData.courseName + "_" + startDate + "_" + time + "_" + batchData.trainerName;
+			batchData.batchName = batchData.batchName.split(" ").join("");
+			//COURSENAME-MON-YEAR-TIME-TRAINER
+		},
+
 		onConfirm: function(oEvent) {
 			if (this.flag === "courseName") {
 
@@ -171,6 +212,8 @@ sap.ui.define([
 				this.getView().getModel("local").setProperty("/newBatch/courseName", courseName);
 				var courseId = oEvent.getParameter("selectedItem").getBindingContextPath().split("'")[1];
 				this.getView().getModel("local").setProperty("/newBatch/courseId", courseId);
+
+				this.updateBatchName();
 			}
 			if (this.flag === "trainerName") {
 
@@ -178,6 +221,8 @@ sap.ui.define([
 				this.getView().getModel("local").setProperty("/newBatch/trainerName", trainerName);
 				var trainerId = oEvent.getParameter("selectedItem").getBindingContextPath().split("'")[1];
 				this.getView().getModel("local").setProperty("/newBatch/trainerId", trainerId);
+
+				this.updateBatchName();
 			}
 
 			if (this.flag === "batchid") {
