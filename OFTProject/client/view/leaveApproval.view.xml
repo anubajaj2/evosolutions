@@ -35,9 +35,9 @@
 			singleContainerFullSize="false">
 	<f:content>
 		<Label text="Employees" />
-			<ComboBox id="idEmployee" items="{/AppUsers}">
+			<ComboBox id="idEmployee" items="{local>/AppUsersCopy}" select="onSelect">
 				<items>
-					<core:Item key="{TechnicalId}" text="{UserName}"/>
+					<core:Item key="{local>TechnicalId}" text="{local>UserName}"/>
 				</items>
 				</ComboBox>
 	</f:content>
@@ -53,17 +53,47 @@
 			count="3"
 			text="Pending"
 			key="Pending" >
-			<core:Fragment fragmentName="oft.fiori.fragments.pendingLeaveTable"
-									   type="XML" />
-										 	</IconTabFilter>
+			<Table id="pendingLeaveTable" headerText="Pending Leaves">
+					<columns>
+						<Column>
+							<Text text="User Name"></Text>
+						</Column>
+						<Column>
+							<Text text="Date FROM and TO"></Text>
+						</Column>
+						<Column>
+							<Text text="Days"></Text>
+						</Column>
+						<Column>
+						</Column>
+						<Column>
+						</Column>
+					</columns>
+				</Table>
+				</IconTabFilter>
 		<IconTabFilter
 			icon="sap-icon://paid-leave"
 			count="6"
 			text="Approved"
 			key="approved" >
-			<core:Fragment fragmentName="oft.fiori.fragments.approvedLeaveTable"
-									   type="XML" />
-										 	</IconTabFilter>
+			<Table id="approvedLeaveTable" headerText="Approved Leaves">
+					<columns>
+						<Column>
+							<Text text="User Name"></Text>
+						</Column>
+						<Column>
+							<Text text="Date FROM and TO"></Text>
+						</Column>
+						<Column>
+							<Text text="Days"></Text>
+						</Column>
+						<Column>
+						</Column>
+						<Column>
+						</Column>
+					</columns>
+				</Table>
+				</IconTabFilter>
 	</items>
 </IconTabBar>
 </VBox>

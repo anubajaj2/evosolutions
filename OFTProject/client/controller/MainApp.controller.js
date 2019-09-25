@@ -95,6 +95,7 @@ sap.ui.define([
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(),
 							 "/AppUsers", "GET", {}, {}, that)
 								.then(function(oData) {
+									var newExcluseUser = [];
 									if (oData.results.length != 0) {
 										for (var i = 0; i < oData.results.length; i++) {
 											AppUsers[oData.results[i].TechnicalId] = oData.results[i];
@@ -104,10 +105,12 @@ sap.ui.define([
 												found = true;
 											}else{
 												that2.getView().getModel("local").setProperty("/Authorization", "");
+												newExcluseUser.push(oData.results[i]);
 											}
 										}
 										if(found === true){
 											that2.getView().getModel("local").setProperty("/AppUsers", AppUsers);
+											that2.getView().getModel("local").setProperty("/AppUsersCopy", newExcluseUser);
 											that2.oRouter.navTo("newlead");
 										}else{
 											sap.m.MessageBox.error("The user is not authorized, Contact Anubhav");

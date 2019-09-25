@@ -18,10 +18,78 @@ onBeforeRendering: function(){
 		onBack: function() {
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
-
+		formatDates: function(oDate1,oDate2){
+			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({pattern : "dd.MM.YYYY" });
+			var oDate1Ret = dateFormat.format(oDate1);
+			var oDate2Ret = dateFormat.format(oDate2);
+			return oDate1Ret + " - " + oDate2Ret;
+		},
+		onApprove: function(oEvent){},
+		onDelete: function(oEvent){
+			var that = this;
+			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+				if (conf == 'OK') {
+						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), oEvent.getParameter("selectedItem").getBindingContextPath(),
+								"DELETE", {}, {}, that)
+							.then(function(oData) {
+								sap.m.MessageToast.show("Deleted succesfully");
+							}).catch(function(oError) {
+								that.getView().setBusy(false);
+								that.oPopover = that.getErrorMessage(oError);
+								that.getView().setBusy(false);
+							});
+				}
+			}, "Confirmation");
+		},
+		onReject: function(oEvent){},
+		currentUser:"",
 		herculis: function(oEvent) {
-
+				debugger;
+				this.currentUser = this.getModel("local").getProperty("/CurrentUser");
+				this.reloadLeaves();
 			},
+	  reloadLeaves: function(){
+			this.getView().byId("pendingLeaveTable").bindItems({
+				path: "/LeaveRequests",
+				template: new sap.m.ColumnListItem({
+					cells: [new sap.m.Text({text: "{AppUserId}"}),
+									new sap.m.Text({text: {
+										parts: [{path: 'DateFrom'},{path: 'DateTo'}],
+										formatter: this.formatDates
+									}}),
+									new sap.m.Text({text: "{Days}"}),
+									new sap.m.Button({text: "Approve", press: this.onApprove}),
+									new sap.m.Button({text: "Reject", press: this.onReject})
+								]
+				})
+			});
+			this.getView().byId("pendingLeaveTable").getBinding("items").filter([
+				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved'),
+				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + currentUser + "'")
+			]);
+
+			this.getView().byId("approvedLeaveTable").bindItems({
+				path: "/LeaveRequests",
+				template: new sap.m.ColumnListItem({
+					cells: [new sap.m.Text({text: "{AppUserId}"}),
+									new sap.m.Text({text: {
+										parts: [{path: 'DateFrom'},{path: 'DateTo'}],
+										formatter: this.formatDates
+									}}),
+									new sap.m.Text({text: "{Days}"}),
+									new sap.m.Button({text: "Delete", press: this.onDelete})
+								]
+				})
+			});
+			this.getView().byId("approvedLeaveTable").getBinding("items").filter([
+				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved'),
+				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + currentUser + "'")
+			]);
+		},
+		onSelect: function(oEvent){
+			var selectedKey = oEvent.getSource().getSelectedKey();
+
+		},
 onApprove: function(){
 				this.oFragmentLeave = new sap.ui.xmlfragment("oft.fiori.fragments.approvedLeaveTable");
 				this.getView().addDependent(this.oFragmentSupplier);
