@@ -247,6 +247,13 @@ sap.ui.define([
 				var CourseName = this.getView().byId("batch");
 				CourseName.setValue(courseName);
 
+				debugger;
+					var trainerId = oModel.TrainerId;
+			      var oTrainerId = 'Trainers(\'' + trainerId + '\')';
+			      var trainerName = odata[oTrainerId].FirstName;// + " " odata[oTrainerId].LastName;
+			      var TrainerName = this.getView().byId("idTrainer");
+			      TrainerName.setValue(trainerName);
+
 					//Display Demo Start Date
 					var FormattedDate = this.onDateFormatted(oModel.DemoStartDate);
 					var oStartDate = this.getView().byId("idDemoDate");

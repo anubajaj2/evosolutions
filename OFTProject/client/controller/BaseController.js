@@ -36,7 +36,8 @@ sap.ui.define([
 		oTestcaseListModel: undefined,
 		sUrlTargetSystem: undefined,
 		allMasterData:{
-			"courseMst":[]
+			"courseMst":[],
+			"Trainers":[]
 		},
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
@@ -52,14 +53,22 @@ sap.ui.define([
 			// 		var oPopover = that.getErrorMessage(oError);
 			// 	});
 			var that = this;
-		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
-		.then(function(oData){
-			for(i =0 ;i < oData.results.length; i++){
-				that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
-			}
-		}).catch(function(oError) {
-			var oPopover = that.getErrorMessage(oError);
-		});
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
+			.then(function(oData){
+				for(i =0 ;i < oData.results.length; i++){
+					that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
+				}
+			}).catch(function(oError) {
+				var oPopover = that.getErrorMessage(oError);
+			});
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
+			.then(function(oData){
+				for(i =0 ;i < oData.results.length; i++){
+					that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
+				}
+			}).catch(function(oError) {
+				var oPopover = that.getErrorMessage(oError);
+			});
 		},
 		allStudnets: [],
 		loadAllStudents: function(){
