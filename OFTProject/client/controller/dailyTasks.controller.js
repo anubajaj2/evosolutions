@@ -9,16 +9,19 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.dailyTasks", {
 
   onInit: function() {
+	var	no = 1.
 	//Set the default date as todays date
 	var oDt = this.getView().byId("idCoDate1");
 	 oDt.setDateValue(new Date());
 
 	 var oRouter = this.getOwnerComponent().getRouter();
 	 oRouter.attachRoutePatternMatched(this.onDateChanged1, this);
+	 var oDel = this.getView().byId("idRowAction").setVisible(true);
 },
 
 //Function to filter data on initial load o page when the date EQ todays date
 onDateChanged1: function(oEvent) {
+this.byId("idRowAction").setVisible(false);
 	 var dDateStart = new Date();
 	 var dDateEnd = new Date(dDateStart);
 	 var aFilters = [];
@@ -68,8 +71,10 @@ onDateChanged1: function(oEvent) {
    //Compare entered date and disable save if it is NE todays date
 		 if(date1 != date)	{
 		 var oBtn = this.byId("idBtn").setEnabled(false);
+		 var oDel = this.byId("idRowAction").setVisible(false);
 		 }else{
 		 var oBtn = this.byId("idBtn").setEnabled(true);
+		 var oDel = this.byId("idRowAction").setVisible(true);
 		 }
 
    //Filter the data wrt date sekected by the user
@@ -103,6 +108,24 @@ onDateChanged1: function(oEvent) {
     this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
  },
 
+ onDelete: function(oEvent) {
+	var that = this;
+	var oPath = oEvent.getSource().getBindingContext().getPath();
+ sap.m.MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+	 if (conf == 'OK') 	{
+				 that.ODataHelper.callOData(that.getOwnerComponent().getModel(), oPath, "DELETE", {}, {}, that)
+					 .then(function(oData) {
+						 sap.m.MessageToast.show("Deleted succesfully");
+					 }).catch(function(oError) {
+						 that.getView().setBusy(false);
+						 that.oPopover = that.getErrorMessage(oError);
+						 that.getView().setBusy(false);
+					 });
+			 }
+	}, "Confirmation");
+
+ },
+
 //Funtion to save the entries in DB on click of save
 	onSave: function(oEvent) {
   	var that = this;
@@ -112,8 +135,10 @@ onDateChanged1: function(oEvent) {
           pattern: "yyyy-MM-dd"});
 
     myData.taskWorkedOn = this.getView().byId("idWOn").getValue();
-		myData.noOfHours = this.getView().byId("idWH").getValue();
-		myData.CrDate = this.getView().byId("idCoDate1").getDateValue();// dateFormat.format(new Date(this.getView().byId("idCoDate1").getDateValue()), true);//
+			if (this.getView().byId("idWH").getValue() <= '8'){
+		if (this.getView().byId("idWH").getValue() != '0'){myData.noOfHours = this.getView().byId("idWH").getValue()
+
+		myData.CrDate = this.getView().byId("idCoDate1").getDateValue();
 
 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks",
 																"POST", {}, myData, this)
@@ -125,6 +150,8 @@ onDateChanged1: function(oEvent) {
 		var oPopover = that.getErrorMessage(oError);
 		});
 		;
+  	}else{(sap.m.MessageToast.show("Hour with zero value not allowed"))};
+	}else{(sap.m.MessageToast.show("Hour greater that 8 value not allowed"))};
 	}
 });
 });

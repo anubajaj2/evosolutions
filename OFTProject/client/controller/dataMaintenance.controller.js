@@ -23,10 +23,10 @@ sap.ui.define([
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
-			
+
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
-			loginUser = "Hey " + loginUser;			
+			loginUser = "Hey " + loginUser;
 			this.getView().byId("idUser").setText(loginUser);
 		},
 		onBack: function(){
@@ -35,9 +35,9 @@ sap.ui.define([
 		herculis: function(oEvent){
 
 		},
-		
 
-		
+
+
 		onSelection: function(oEvent){
 			//alert("Table");
 
@@ -72,7 +72,7 @@ sap.ui.define([
 				this.displayTable(entitySet);
 			}
 		},
-		
+
 		displayTable: function(entitySet) {
 
 			oView = this.getView().byId("paneld");
@@ -84,7 +84,7 @@ sap.ui.define([
 				 success: function(oData, response) {
 						oModelJsonCC.setData(oData);
 	// ----DO This-------------------------------------------------
-			var count = CCModel.oAnnotations._oMetadata._getEntityTypeByName(entitySet).property.length;	
+			var count = CCModel.oAnnotations._oMetadata._getEntityTypeByName(entitySet).property.length;
 			var i = 0;
 			var columnData;
 			var columnData = [];
@@ -114,7 +114,6 @@ sap.ui.define([
 					that.oTable = new Table({
 						id: "DatabaseTable"
 
-
 					});
 
 					var oModel = new sap.ui.model.json.JSONModel();
@@ -133,20 +132,20 @@ sap.ui.define([
 							width: '180px'
 						});
 					});
-					
+
 					that.oTable.bindRows("/rows");
 					that.oTable.placeAt(oView);
 
 				}
 			});
 
-	// -----End of DO this--------------------------------------------					
+	// -----End of DO this--------------------------------------------
 				}
 
 					});
-	
+
 	}
-	
+
 	// 	onDelete:function(oEvent){
 	// 	var that = this;
 	// 	 MessageBox.confirm("Do you want to delete the selected records?",function(conf){
@@ -162,12 +161,12 @@ sap.ui.define([
 	// 				that.oPopover = that.getErrorMessage(oError);
 	// 				that.getView().setBusy(false);
 	// 			});
-	   	
+
 	//   }}
 	//  },"Confirmation");
 
-		
+
 	// }
-	
+
 	});
 });
