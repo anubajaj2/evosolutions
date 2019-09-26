@@ -13,6 +13,7 @@ sap.ui.define([
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 
 	},
+
 onBeforeRendering: function(){
 },
 		onBack: function() {
@@ -90,18 +91,66 @@ onBeforeRendering: function(){
 			var selectedKey = oEvent.getSource().getSelectedKey();
 
 		},
-onApprove: function(){
-				this.oFragmentLeave = new sap.ui.xmlfragment("oft.fiori.fragments.approvedLeaveTable");
-				this.getView().addDependent(this.oFragmentSupplier);
-			MessageBox.confirm("Do you want to approve?",{
-				title: "Approval"
-			});
+onApprove: function(oEvent){
+	debugger;
+        	var that = this;
+					//Get the selected item from the table
+					//Prepare the Payload with Status as Approved
+					//Call the Odata PUT to update the records
+					//Call the relaodLeave() to apply the filter Table with updated payload
+	         var lObject=oEvent.getSource().getBindingContext().getObject();
+					var lId= lObject.id;
+					var payload = {
+						"AppUserId": lObject.AppUserId,
+                "DateFrom": lObject.DateFrom,
+                "DateTo": lObject.DateTo,
+                "Days":lObject.Days,
+                "LeaveType": lObject.LeaveType,
+                "Status": "Approved",
+                "ApproverId": lObject.ApproverId,
+                "ApprovedOn": lObject.ApprovedOn,
+                "RequestedOn": lObject.RequestedOn,
+                "Remarks": lObject.Remarks,
+                "ChangedOn": lObject.ChangedOn,
+                "ChangedBy": lObject.ChangedBy,
+                "id": lObject.id,
+					};
+					var sPath1 = "/LeaveRequests";
+					sPath1 = sPath1 = sPath1 + "(" + "\'" + lId + "\'" + ")";
+
+						this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath1, "PUT", {},
+							payload, this)
+						.then(function(oData) {
+							debugger;
+							that.getView().setBusy(false);
+							sap.m.MessageToast.show("Leave Data updated successfully");
+							that.destroyMessagePopover();
+             this.reloadLeaves();
+						}).catch(function(oError) {
+							debugger;
+							that.getView().setBusy(false);
+							//sap.m.MessageToast.show(oError.responseText);
+							var oPopover = that.getErrorMessage(oError);
+							// var oMultiInput1 = .getView().getElementById("multiInputID");
+							// oMultiInput1.removeAllTokens();
+						});
+
+
+
+
+
 		},
 		onDelete: function(){
 			this.oFragmentLeave = new sap.ui.xmlfragment("oft.fiori.fragments.pendingLeaveTable");
 			this.getView().addDependent(this.oFragmentSupplier);
 					MessageBox.confirm("Do you want to delete?",{
 						title: "Delete"
+						// this.oFragmentLeave = new sap.ui.xmlfragment("oft.fiori.fragments.approvedLeaveTable");
+						// this.getView().addDependent(this.oFragmentSupplier);
+					// MessageBox.confirm("Do you want to approve?",{
+					// 	title: "Approval"
+							// });
+							
 					});
 				},
 
