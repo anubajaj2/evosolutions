@@ -29,6 +29,12 @@
     "BDay": {
       "type": "date"
     },
+    "Salary":{
+      "type": "number"
+    },
+    "MobileNo":{
+      "type": "string"
+    },
     "CreatedOn": {
       "type": "date"
     },
