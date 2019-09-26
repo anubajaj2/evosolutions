@@ -90,10 +90,10 @@ sap.ui.define([], function() {
 			}
 		},
 		formatButtonStatus:function(oValue){
-			if (oValue == "Not Approved") {
-				return true;
-			}else {
+			if (oValue == "Approved") {
 				return false;
+			}else {
+				return true;
 			}
 		},
 		formatIconColor: function(bValue) {

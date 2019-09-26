@@ -32,6 +32,10 @@
     "Salary":{
       "type": "number"
     },
+    "LeaveQuota":{
+      "type": "number",
+      "default": 8
+    },
     "MobileNo":{
       "type": "string"
     },

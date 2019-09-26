@@ -102,6 +102,8 @@ sap.ui.define([
 											if( oData.results[i].TechnicalId === data.userId ){
 												that2.getView().getModel("local").setProperty("/Role", oData.results[i].Role);
 												that2.getView().getModel("local").setProperty("/UserName", oData.results[i].UserName);
+												that2.getView().getModel("local").setProperty("/JoiningDate", oData.results[i].JoiningDate);
+												that2.getView().getModel("local").setProperty("/LeaveQuota", oData.results[i].LeaveQuota);
 												found = true;
 											}else{
 												that2.getView().getModel("local").setProperty("/Authorization", "");

@@ -26,8 +26,10 @@ sap.ui.define([
 				debugger;
 				var dateFilter = new Date(date.getFullYear(), 0, 1);
 				this.getModel("local").setProperty("/newLeaveRequest/Datefilter",dateFilter);
-				this.getModel("local").setProperty("/LeaveStatic/DateFrom",this.startDate);
+				this.getModel("local").setProperty("/LeaveStatic/DateFrom", this.getModel("local").getProperty("/JoiningDate"));
 				this.getModel("local").setProperty("/LeaveStatic/DateTo",this.endDate);
+				this.getModel("local").setProperty("/LeaveStatic/TotalQuota", this.getModel("local").getProperty("/LeaveQuota"));
+
 		}
 	},
 onBeforeRendering: function(){
@@ -76,21 +78,23 @@ onBeforeRendering: function(){
 								}
 								status = oModel[i].Status;
 								leaveType = oModel[i].LeaveType;
-								switch (leaveType) {
-									case "Full Day":
-										countFull = countFull + parseInt(oModel[i].Days);
-										break;
-									case "Half Day":
-										countHalf = countHalf + parseFloat(oModel[i].Days);
-										break;
+								if(status === "Approved"){
+									switch (leaveType) {
+										case "Full Day":
+											countFull = countFull + parseInt(oModel[i].Days);
+											break;
+										case "Half Day":
+											countHalf = countHalf + parseFloat(oModel[i].Days);
+											break;
 
+									}
 								}
 							}
 //					Here set the values to Static model
 						var oStModel = that.getView().getModel("local");
 						oStModel.setProperty("/LeaveStatic/FullConsumed", countFull);
 						oStModel.setProperty("/LeaveStatic/HalfConsumed", countHalf);
-						var left = 21 - (parseFloat(countFull) + parseFloat(countHalf));
+						var left = parseInt(that.getModel("local").getProperty("/LeaveQuota")) - (parseFloat(countFull) + parseFloat(countHalf));
 						oStModel.setProperty("/LeaveStatic/Available",left);
 					}
 					else{

@@ -3,6 +3,8 @@
 	"LoginUser": "",
 	"CurrentUser":"",
 	"Role":"",
+	"JoiningDate":"",
+	"LeaveQuota":8,
 	"messagesLength": "0",
 	"messages": [],
   "trueOrFalse":[
