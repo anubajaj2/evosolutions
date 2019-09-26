@@ -65,7 +65,7 @@ onBeforeRendering: function(){
 			});
 			this.getView().byId("pendingLeaveTable").getBinding("items").filter([
 				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved'),
-				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + currentUser + "'")
+				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + this.currentUser + "'")
 			]);
 
 			this.getView().byId("approvedLeaveTable").bindItems({
@@ -83,7 +83,7 @@ onBeforeRendering: function(){
 			});
 			this.getView().byId("approvedLeaveTable").getBinding("items").filter([
 				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved'),
-				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + currentUser + "'")
+				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + this.currentUser + "'")
 			]);
 		},
 		onSelect: function(oEvent){
