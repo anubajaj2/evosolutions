@@ -226,7 +226,7 @@ sap.ui.define([
 			}
 
 			if (this.flag === "batchid") {
-				// debugger;
+				debugger;
 
 				var data = this.getSelectedKey(oEvent);
 				this.getView().byId("idCourseId").setValue(data[0]);
@@ -234,14 +234,18 @@ sap.ui.define([
 				var oCourseId = 'Courses(\'' + data[2] + '\')';
 				var oModel = this.getView().getModel().oData[oCourseId];
 				var that = this;
+				var odata = this.getView().getModel().oData;
 
 				if (oModel) {
 
 					// Display Course Name
-					var oCourseName = oModel.Name;
-					var CourseName = this.getView().byId("batch");
-					CourseName.setValue(oCourseName);
+				//	var oCourseName = oModel.Name;
 
+				var courseId = oModel.CourseId;
+				var oCourseId1 = 'CoursesMst(\'' + courseId + '\')';
+				var courseName = odata[oCourseId1].CourseName;
+				var CourseName = this.getView().byId("batch");
+				CourseName.setValue(courseName);
 
 					//Display Demo Start Date
 					var FormattedDate = this.onDateFormatted(oModel.DemoStartDate);
@@ -264,9 +268,9 @@ sap.ui.define([
 
 					//Display Blog End Date
 					// var BlogEndDate = oModel.BlogEndDate;
-					var FormattedDate3 = this.onDateFormatted(oModel.BlogEndDate);
-					var oStartDate3 = this.getView().byId("idBlogEnd");
-					oStartDate3.setValue(FormattedDate3);
+					// var FormattedDate3 = this.onDateFormatted(oModel.BlogEndDate);
+					// var oStartDate3 = this.getView().byId("idBlogEnd");
+					// oStartDate3.setValue(FormattedDate3);
 
 					// Display Min Fee
 					var oFee = oModel.Fee;
@@ -274,13 +278,17 @@ sap.ui.define([
 					Fee.setValue(oFee);
 
 					//Display Link
-					var oLink = oModel.Link;
-					var Link = this.getView().byId("idLink");
-					Link.setValue(oLink);
+					// var oLink = oModel.Link;
+					// var Link = this.getView().byId("idLink");
+					// Link.setValue(oLink);
 
 					//Display Timing
-					var oTiming = oModel.Timings;
-					var timing = this.getView().byId("idTiming");
+					var oTiming = oModel.StartTime;
+					var timing = this.getView().byId("idStartTime");
+					timing.setValue(oTiming);
+
+					oTiming = oModel.EndTime;
+					var timing = this.getView().byId("idEndTime");
 					timing.setValue(oTiming);
 
 					//Guid
@@ -304,19 +312,24 @@ sap.ui.define([
 					}
 					//--- EOC - VCHIKKAM
 
-
- 					var oAnalysis = oModel.analysis;
-					if (oAnalysis === true) {
-						var analysis = this.getView().byId("idAnalysis").setSelected(true);
-					} else {
-						var analysis = this.getView().byId("idAnalysis").setSelected(false);
-					}
+					//Set status
+					var status = oModel.status;
+					var oStatus = this.getView().byId("idStatus");
+					oStatus.setSelectedKey(status);
 
 
-					this.getView().byId("idCalId").setValue(oModel.CalendarId);
-					this.getView().byId("idEvent").setValue(oModel.EventId);
-					this.getView().byId("idDrive").setValue(oModel.DriveId);
-					this.getView().byId("idStatus").setValue(oModel.status);
+ 					// var oAnalysis = oModel.analysis;
+					// if (oAnalysis === true) {
+					// 	var analysis = this.getView().byId("idAnalysis").setSelected(true);
+					// } else {
+					// 	var analysis = this.getView().byId("idAnalysis").setSelected(false);
+					// }
+					//
+					//
+					// this.getView().byId("idCalId").setValue(oModel.CalendarId);
+					// this.getView().byId("idEvent").setValue(oModel.EventId);
+					// this.getView().byId("idDrive").setValue(oModel.DriveId);
+					// this.getView().byId("idStatus").setValue(oModel.status);
 
 
 				}
