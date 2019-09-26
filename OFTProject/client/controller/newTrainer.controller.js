@@ -1,9 +1,9 @@
-sap.ui.define([	"oft/fiori/controller/BaseController",
+sap.ui.define(["oft/fiori/controller/BaseController",
 	"sap/m/MessageBox",
 	"sap/m/MessageToast",
 	"oft/fiori/models/formatter",
 	"sap/ui/model/Filter"
-], function(Controller, MessageBox, MessageToast, Formatter, Filter) {
+], function (Controller, MessageBox, MessageToast, Formatter, Filter) {
 	"use strict";
 
 	return Controller.extend("oft.fiori.controller.newTrainer", {
@@ -17,180 +17,84 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 		formatter: Formatter,
 		simpleForm: null,
 		endDate: null,
-		onInit: function() {
-
+		onInit: function () {
+			debugger;
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var that = this;
-			this.getView().byId("serverSubs").bindElement("local>/newServer");
-			this.getView().byId("serverUId").bindProperty("value", "local>User");
-			this.getView().byId("payDate").bindProperty("value", "local>PaymentDate");
-			this.getView().byId("customerId").bindProperty("value", "local>StudentId");
-			this.getView().byId("startDate").bindProperty("value", "local>StartDate");
-			this.getView().byId("endDate").bindProperty("value", "local>EndDate");
-			this.getView().byId("userEndDate").bindProperty("value", "local>UserEndDate");
-			this.getView().byId("rdpPass").bindProperty("value", "local>PassRDP");
-			this.getView().byId("passGui").bindProperty("value", "local>PassSAP");
-			this.getView().byId("amount").bindProperty("value", "local>Amount");
-			this.getView().byId("usage").bindProperty("value", "local>Usage");
-			this.getView().byId("freeAccess").bindProperty("selected", "local>FreeAccess");
-			this.getView().byId("Remarks").bindProperty("value", "local>Remarks");
-			var currentUser = this.getModel("local").getProperty("/CurrentUser");
-			if(currentUser){
-			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
-			}
-			loginUser = "Hey " + loginUser;
-			this.getView().byId("idUser").setText(loginUser);
-			that.getView().setBusy(true);
 
-			var oModel = this.getOwnerComponent().getModel();
-			if (oModel) {
-				this.getOwnerComponent().getModel().setUseBatch(false);
-			}
-
-			var oModel = this.getOwnerComponent().getModel();
-			if (oModel) {
-				this.getOwnerComponent().getModel().setUseBatch(false);
-			}
-
-			that.getView().setBusy(true);
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", null, null, this)
-				.then(function(oData) {
-					that.getView().setBusy(false);
-				}).catch(function(oError) {
-					var oPopover = that.getErrorMessage(oError);
-				});
-
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Servers", "GET", null, null, this)
-				.then(function(oData) {
-					that.getView().setBusy(false);
-				})
-				.catch(function(oError) {
-					var oPopover = that.getErrorMessage(oError);
-				});
 		},
-		onBack: function() {
+		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
 
-		onUpdateFinished: function(oEvent) {
+		onUpdateFinished: function (oEvent) {
 			var itemList = this.getView().byId("serverTable").getItems();
-			if(itemList[this.selIndex - 1]){
-			var vStudent = itemList[this.selIndex - 1].getCells()[2].getText();
-			var oStudentId = 'Students(\'' + vStudent + '\')';
-			var vModel = this.getView().getModel().oData[oStudentId];
-	     	itemList[this.selIndex - 1].getCells()[2].setText(vModel.GmailId);}
+			if (itemList[this.selIndex - 1]) {
+				var vStudent = itemList[this.selIndex - 1].getCells()[2].getText();
+				var oStudentId = 'Students(\'' + vStudent + '\')';
+				var vModel = this.getView().getModel().oData[oStudentId];
+				itemList[this.selIndex - 1].getCells()[2].setText(vModel.GmailId);
+			}
 		},
 
-		onSave: function() {
+		onSave: function () {
 			//TODO: Save to Coustomer Reg. table
-			if(this.getView().byId("accountNo").getSelectedKey() === ""){
-				sap.m.MessageBox.error("Account no is mandatory");
+			if (this.getView().byId("idFirstName").getValue() === "") {
+				sap.m.MessageBox.error("FirstName is mandatory");
 				return;
 			}
-			var serverData = this.getView().getModel("local").getProperty("/newServer");
+			var serverData = this.getView().getModel("local").getProperty("/newTrainer");
 			var today = new Date();
-			var payDate = this.getView().byId("payDate").getDateValue();
-
+			// var payDate = this.getView().byId("payDate").getDateValue();
+			debugger;
 			var that = this;
 
 			this.getView().setBusy(true);
 			var payload = {
-				"User": this.getView().byId("serverUId").getValue().toLocaleUpperCase().toLocaleUpperCase(),
-				"StudentId": this.getView().byId("cid").getValue(),
-				"PaymentDate": this.getView().byId("payDate").getDateValue(),
-				"StartDate": this.getView().byId("startDate").getDateValue(),
-				"EndDate": this.getView().byId("endDate").getDateValue(),
-				"UserEndDate": this.getView().byId("userEndDate").getDateValue(),
-				"Amount": this.getView().byId("amount").getValue(),
-				"Usage": this.getView().byId("usage").getValue(),
-				"FreeAccess": this.getView().byId("freeAccess").getSelected(),
-				"PassRDP": this.getView().byId("rdpPass").getValue(),
-				"PassSAP": this.getView().byId("passGui").getValue(),
-				"CreatedOn": new Date(),
-				"CreatedBy": 'Menakshi',
-				"Remarks": this.getView().byId("Remarks").getValue(),
-				"Extended": this.getView().byId("extended").getSelected(),
+				"FirstName": this.getView().byId("idFirstName").getValue().toLocaleUpperCase().toLocaleUpperCase(),
+				"LastName": this.getView().byId("idLastName").getValue(),
+				"JoiningDate": this.getView().byId("idJoiningDate").getDateValue(),
+				"Address": this.getView().byId("idAddress").getValue(),
+				"City": this.getView().byId("idCity").getValue(),
+				"Remarks": this.getView().byId("idRemarks").getValue(),
+				"ContactNo": this.getView().byId("idContactNo").getValue(),
+				"ContactNo1": this.getView().byId("idContactNo1").getValue(),
+				"AccountNo": this.getView().byId("idAccountNo").getValue(),
+				"AccountName": this.getView().byId("idAccountName").getValue(),
+				"IFSCCode": this.getView().byId("idIFSCCode").getValue(),
+				// "CreatedOn": new Date(),
+				// "CreatedBy": 'Menakshi',SoftDelete
+				"AccountType": this.getView().byId("idAccountType").getValue(),
+				"PANNo": this.getView().byId("idPANNo").getValue(),
+
+				"SoftDelete": this.getView().byId("idSoftDelete").getValue(),
+				"CreatedOn": this.getView().byId("idCreatedOn").getDateValue(),
+				"CreatedBy": this.getView().byId("idCreatedBy").getValue(),
+				"ChangedOn": this.getView().byId("idChangedOn").getDateValue(),
+				"ChangedBy": this.getView().byId("idChangedBy").getValue(),
 				"Update": 'C'
 			};
 
 			// this.getOwnerComponent().getModel().setUseBatch(false);
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Servers", "POST", {},
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "POST", {},
 					payload, this)
-				.then(function(oData) {
-					sap.m.MessageToast.show("Server Saved successfully");
+				.then(function (oData) {
+					sap.m.MessageToast.show("Trainer Saved successfully");
 					that.destroyMessagePopover();
-					that.getView().byId("serverTable").getBinding("items").refresh(true);
-					$.post('/updateBalanceInAccount', {
-						"AccountNo": that.getView().byId("accountNo").getSelectedKey()
-						, "Amount": that.getView().byId("amount").getValue()})
-						.done(function(data, status) {
-							sap.m.MessageToast.show("Server Entry and Balance Saved succesfully");
-						})
-						.fail(function(xhr, status, error) {
-							sap.m.MessageBox.error(xhr.responseText);
-						});
+					// that.getView().byId("traierTable").getBinding("items").refresh(true);
+
 					that.getView().setBusy(false);
 
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 					that.getView().setBusy(false);
 					that.oPopover = that.getErrorMessage(oError);
 					that.getView().setBusy(false);
 				});
 
 
-
-				// var payloadAccount = this.getView().getModel("local").getProperty("/accountBalance");
-				// //check if there is an entry with Remakrs AUTOSERVERBALANCE if yes, add new accountBalance
-				// //if no, create entry with balance
-				// payloadAccount.Remarks = "AUTOSERVERBALANCE";
-				// payloadAccount.CreatedOn = new Date();
-				// payloadAccount.AccountNo = this.getView().byId("accountNo").getSelectedKey();
-				// payloadAccount.Amount = this.getView().byId("amount").getValue();
-				//
-				// var Filter1 = new sap.ui.model.Filter("Remarks", "EQ", "AUTOSERVERBALANCE");
-				// var Filter2 = new sap.ui.model.Filter("AccountNo", "EQ", 	payloadAccount.AccountNo);
-				// var oFilter = new sap.ui.model.Filter({
-				// 	filters:[Filter1,Filter2]
-				// });
-				// this.ODataHelper.callOData(this.getOwnerComponent().getModel(),
-				// 	"/AccountBalances", "GET", {
-				// 		filters: [oFilter]
-				// 	}, {}, this).then(function(oData) {
-				// 		var that2 = that;
-				// 		if(oData.results[0]){
-				// 			var newPayload = oData.results[0];
-				// 			newPayload.Amount = newPayload.Amount +	payloadAccount.Amount;
-				// 			newPayload.CreatedOn = new Date();
-				// 			var sPath = "/AccountBalances('" + newPayload.id + "')";
-				// 			var payload3 = {
-				// 				"CreatedOn": new Date(),
-				// 				"Amount": newPayload.Amount +	payloadAccount.Amount
-				// 			};
-				// 			// that.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, that)
-				// 			// 	.then(function(oData) {
-				// 			//
-				// 			// 	}).catch(function(oError) {
-				// 			// 		var oPopover = that2.getErrorMessage(oError);
-				// 			// 	});
-				// 		}
-				// 		else{
-				// 			// that.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AccountBalances", "POST", {},
-				// 			// 		payloadAccount, that, true)
-				// 			// 	.then(function(oData) {
-				// 			// 		//sap.m.MessageToast.show("Account entry Saved successfully");
-				// 			// 	}).catch(function(oError) {
-				// 			// 		that2.getView().setBusy(false);
-				// 			// 		var oPopover = that.getErrorMessage(oError);
-				// 			// 	});
-				// 		}
-				//
-				// 	}).catch(function(oError) {
-				//
-				// 	});
-
 		},
-		getAdd8Mon: function(dd) {
+		getAdd8Mon: function (dd) {
 			var d = new Date(dd.getValue().substr(6, 4), dd.getValue().substr(3, 2), dd.getValue().substr(0, 2));
 			d.setMonth(d.getMonth() + 1);
 			var mm = d.getMonth() + 1; //January is 0!
@@ -204,7 +108,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			var endDate = dd + '.' + mm + '.' + yyyy;
 			return endDate;
 		},
-		onStartChange: function(oEvent) {
+		onStartChange: function (oEvent) {
 
 			var dateString = oEvent.getSource().getValue();
 			var from = dateString.split(".");
@@ -214,55 +118,54 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			if (oEvent.getSource().sId == "idSimpleForm--startDate") {
 				sap.ui.getCore().byId("idSimpleForm--endDate").setValue(endDate);
 				sap.ui.getCore().byId("idSimpleForm--userEndDate").setValue(endDate);
-			}
-			else if(oEvent.getSource().sId == "idSimpleFormRe--startDate"){
+			} else if (oEvent.getSource().sId == "idSimpleFormRe--startDate") {
 				sap.ui.getCore().byId("idSimpleFormRe--endDate").setValue(endDate);
 				sap.ui.getCore().byId("idSimpleFormRe--userEndDate").setValue(endDate);
-			}
-			else {
+			} else {
 				this.getView().byId("endDate").setValue(endDate);
 				this.getView().byId("userEndDate").setValue(endDate);
 			}
 
 		},
-		herculis: function(oEvent) {
-			if(oEvent.getParameter("name") !== "server"){
-				return;
-			}
+		herculis: function (oEvent) {
+			debugger;
+			// if(oEvent.getParameter("name") !== "server"){
+			// return;
+			// }
 			var that = this;
 
-			this.getView().getModel("local").setProperty("/newServer/StartDate", this.formatter.getFormattedDate(0));
-			this.getView().getModel("local").setProperty("/newServer/PaymentDate", this.formatter.getFormattedDate(0));
-			this.getView().getModel("local").setProperty("/newServer/EndDate", this.formatter.getFormattedDate(1));
-			this.getView().getModel("local").setProperty("/newServer/UserEndDate", this.formatter.getFormattedDate(1));
+			this.getView().getModel("/Trainers").setProperty("JoiningDate", this.formatter.getFormattedDate(0));
+			//this.getView().getModel("local").setProperty("/newTrainer/JoiningDate", this.formatter.getFormattedDate(0));
+			//this.getView().getModel("local").setProperty("/newServer/EndDate", this.formatter.getFormattedDate(1));
+			//this.getView().getModel("local").setProperty("/newServer/UserEndDate", this.formatter.getFormattedDate(1));
 
-			var date = new Date();
-			//this.getView().byId("serverTable").getBinding("items").refresh(true);
-			var vFilter1 = new sap.ui.model.Filter("EndDate", "GT", date);
-
-			var vFilter = new sap.ui.model.Filter({
-				filters: [vFilter1]
-			});
-			var arFilter = [vFilter];
-			this.getView().byId("serverTable").getBinding("items").filter(arFilter);
-			this.getView().byId("accountNo").setSelectedKey("50180025252811");
+			// var date = new Date();
+			// //this.getView().byId("serverTable").getBinding("items").refresh(true);
+			// var vFilter1 = new sap.ui.model.Filter("EndDate", "GT", date);
+			//
+			// var vFilter = new sap.ui.model.Filter({
+			// filters: [vFilter1]
+			// });
+			// var arFilter = [vFilter];
+			// this.getView().byId("serverTable").getBinding("items").filter(arFilter);
+			// this.getView().byId("accountNo").setSelectedKey("50180025252811");
 		},
 		searchPopup: null,
 		sId: "",
-		onSelect: function(oEvent) {
+		onSelect: function (oEvent) {
 			this.getCustomerPopup();
-			var title = this.getView().getModel("i18n").getProperty("customer");
+			var title = this.getView().getModel("i18n").getProperty("Trainer");
 			this.searchPopup.setTitle(title);
 			this.searchPopup.bindAggregation("items", {
-				path: "/Students",
+				path: "/Trainers",
 				template: new sap.m.DisplayListItem({
-					label: "{Name}",
-					value: "{GmailId}"
+					label: "{FirstName}",
+					value: "{LastName}"
 				})
 			});
 
 		},
-		onStudenIdChange: function(oEvent) {
+		onStudenIdChange: function (oEvent) {
 			var sPath = oEvent.getSource().oPropagatedProperties.oBindingContexts.undefined.sPath;
 			sPath = sPath.split("/")[1];
 			var oStudentId = this.getView().getModel().oData[sPath].StudentId;
@@ -274,7 +177,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			}
 		},
 
-		onCustomerIdChange: function(oEvent) {
+		onCustomerIdChange: function (oEvent) {
 			var sPath = oEvent.getSource().oParent.oParent.oParent.oParent.mObjectBindingInfos.undefined.path;
 			sPath = sPath.split("/")[1];
 			var oStudentId = this.getView().getModel().oData[sPath].StudentId;
@@ -290,7 +193,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 				}
 			}
 		},
-		onReassign: function(oEvent) {
+		onReassign: function (oEvent) {
 			this.oDialogPopup.close();
 			this.getReasgnPopup();
 			var title = this.getView().getModel("i18n").getProperty("serverUpdate");
@@ -359,7 +262,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 
 		},
 
-		onItemPress: function(oEvent) {
+		onItemPress: function (oEvent) {
 
 			// var sPath = oEvent.getSource().getBindingContextPath();
 			// this.getRouter().navTo("serverDetails");
@@ -390,7 +293,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			var oView = this.getView();
 
 			this.sPath = oEvent.getSource().getBindingContextPath();
-			 this.selIndex = oEvent.getSource().getParent().getItemNavigation().iFocusedIndex;
+			this.selIndex = oEvent.getSource().getParent().getItemNavigation().iFocusedIndex;
 			this.oSimpleForm.bindElement(this.sPath);
 			sap.ui.getCore().byId("idSimpleForm--payDate").bindProperty("value", {
 				path: 'PaymentDate',
@@ -439,7 +342,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			this.oDialogPopup.addContent(this.oSimpleForm);
 
 		},
-		onReUpdate: function(oEvent) {
+		onReUpdate: function (oEvent) {
 
 			var sPath = oEvent.getSource().getParent().mAggregations.content[0].getBindingContext().sPath;
 			var Servers = this.getView().getModel().oData[sPath.split("/")[1]];
@@ -470,20 +373,20 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {},
 					payloadRe, this)
-				.then(function(oData) {
+				.then(function (oData) {
 					sap.m.MessageToast.show("Server Updated successfully");
 
 					that.getView().byId("serverTable").getBinding("items").refresh(true);
 					that.onReClose();
 					that.getView().setBusy(false);
 
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 					that.getView().setBusy(false);
 					that.oPopover = that.getErrorMessage(oError);
 					that.getView().setBusy(false);
 				});
 		},
-		onUpdate: function(oEvent) {
+		onUpdate: function (oEvent) {
 
 			var sPath = oEvent.getSource().getParent().mAggregations.content[0].getBindingContext().sPath;
 			var Servers = this.getView().getModel().oData[sPath.split("/")[1]];
@@ -513,24 +416,24 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {},
 					payload1, this)
-				.then(function(oData) {
+				.then(function (oData) {
 					sap.m.MessageToast.show("Server Updated successfully");
 					that.getView().setBusy(false);
 					that.onClose();
 
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 					that.getView().setBusy(false);
 					that.oPopover = that.getErrorMessage(oError);
 					that.getView().setBusy(false);
 				});
 		},
-		onClose: function() {
+		onClose: function () {
 			this.oDialogPopup.close();
 		},
-		onReClose: function() {
+		onReClose: function () {
 			this.ReasgnPopup.close();
 		},
-		onSearch: function(oEvent) {
+		onSearch: function (oEvent) {
 			var queryString = this.getQuery(oEvent);
 
 			if (queryString) {
@@ -556,7 +459,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			}
 		},
 
-		onConfirm: function(oEvent) {
+		onConfirm: function (oEvent) {
 			var data = this.getSelectedKey(oEvent);
 			if (oEvent.getSource().getParent().oController.ReasgnPopup) {
 				sap.ui.getCore().byId("idSimpleFormRe--customerId").setValue(data[0]);
@@ -573,7 +476,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			}
 		},
 
-		onWaiver: function(oEvent) {
+		onWaiver: function (oEvent) {
 			var selected = oEvent.getParameter("selected");
 			if (oEvent.getSource().sId == "__component0---idserver--freeAccess") {
 				if (selected === true) {
@@ -581,15 +484,13 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 				} else {
 					this.getView().byId("amount").setValue(2500);
 				}
-			}
-			else if ((oEvent.getSource().sId == "idSimpleFormRe--freeAccess") ){
+			} else if ((oEvent.getSource().sId == "idSimpleFormRe--freeAccess")) {
 				if (selected === true) {
 					sap.ui.getCore().byId("idSimpleFormRe--amount").setValue(0);
 				} else {
 					sap.ui.getCore().byId("idSimpleFormRe--amount").setValue(2500);
 				}
-			}
-			else {
+			} else {
 				if (selected === true) {
 					sap.ui.getCore().byId("idSimpleForm--amount").setValue(0);
 				} else {
@@ -599,7 +500,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 
 		},
 
-		onTabSearch: function(oEvent) {
+		onTabSearch: function (oEvent) {
 			var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 			var queryString = this.getQuery(oEvent);
@@ -615,13 +516,13 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
 							filters: [Filter1]
 						}, payload, this)
-						.then(function(oData) {
+						.then(function (oData) {
 
 							var aFilter = [new sap.ui.model.Filter("StudentId", "EQ", "'" + oData.results[0].id + "'")];
 
 							that.getView().byId("serverTable").getBinding("items").filter(aFilter);
 
-						}).catch(function(oError) {
+						}).catch(function (oError) {
 
 						});
 
@@ -642,23 +543,22 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 		},
 
 
-
-		onClearScreen: function() {
+		onClearScreen: function () {
 			this.getView().getModel("local").setProperty("/newServer/User", null);
 			// this.getView().getModel("local").setProperty("/newServer/Amount", null);
 			this.getView().getModel("local").setProperty("/newServer/PassSAP", null);
 			this.getView().getModel("local").setProperty("/newServer/PassRDP", null);
 		},
-		onDelete: function(oEvent) {
+		onDelete: function (oEvent) {
 			var that = this;
-			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+			MessageBox.confirm("Do you want to delete the selected records?", function (conf) {
 				if (conf == 'OK') {
 					var items = that.getView().byId('serverTable').getSelectedContexts();
 					for (var i = 0; i < items["length"]; i++) {
 						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), items[i].sPath, "DELETE", {}, {}, that)
-							.then(function(oData) {
+							.then(function (oData) {
 								sap.m.MessageToast.show("Deleted succesfully");
-							}).catch(function(oError) {
+							}).catch(function (oError) {
 								that.getView().setBusy(false);
 								that.oPopover = that.getErrorMessage(oError);
 								that.getView().setBusy(false);
@@ -669,7 +569,7 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 			}, "Confirmation");
 
 		},
-		onSwitchToggle: function(oEvent) {
+		onSwitchToggle: function (oEvent) {
 
 			var oSwitch = oEvent.getSource().getState();
 			var date = new Date();
@@ -689,40 +589,40 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 
 		},
 		passwords: "",
-		onEmail: function(){
+		onEmail: function () {
 			var that = this;
-			var items =	that.getView().byId('serverTable').getSelectedContexts();
-			for(var i = 0; i<items["length"]; i++){
+			var items = that.getView().byId('serverTable').getSelectedContexts();
+			for (var i = 0; i < items["length"]; i++) {
 				var loginPayload = items[i].getModel().getProperty(items[i].getPath());
-				if(this.passwords === ""){
+				if (this.passwords === "") {
 					this.passwords = prompt("Please enter your password", "");
-					if(this.passwords === ""){
+					if (this.passwords === "") {
 						sap.m.MessageBox.error("Blank Password not allowed");
 						return;
 					}
 				}
 				loginPayload.password = this.passwords;
 				$.post('/sendServerEmail', loginPayload)
-					.done(function(data, status) {
+					.done(function (data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
-					.fail(function(xhr, status, error) {
+					.fail(function (xhr, status, error) {
 						that.passwords = "";
 						sap.m.MessageBox.error(xhr.responseText);
 					});
 			}
 		},
-		onDataExport: function(oEvent) {
+		onDataExport: function (oEvent) {
 			var state = this.getView().byId("idSwitch").getState();
 
 			if (state == true) {
 				$.ajax({
 					type: 'GET', // added,
 					url: 'ServerDownload',
-					success: function(data) {
+					success: function (data) {
 						sap.m.MessageToast.show("File Downloaded succesfully");
 					},
-					error: function(xhr, status, error) {
+					error: function (xhr, status, error) {
 						sap.m.MessageToast.show("error in downloading the excel file");
 					}
 				});
@@ -731,10 +631,10 @@ sap.ui.define([	"oft/fiori/controller/BaseController",
 				$.ajax({
 					type: 'GET', // added,
 					url: 'ServerDownloadAct',
-					success: function(data) {
+					success: function (data) {
 						sap.m.MessageToast.show("File Downloaded succesfully");
 					},
-					error: function(xhr, status, error) {
+					error: function (xhr, status, error) {
 						sap.m.MessageToast.show("error in downloading the excel file");
 					}
 				});

@@ -1,25 +1,228 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-    controllerName="oft.fiori.controller.newTrainer" xmlns:l="sap.ui.layout"
-	xmlns:f="sap.ui.layout.form"
-	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="New Trainer Registration"  navButtonPress="onBack">
-		<headerContent>
-			<Text id="idUser"></Text>
-			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
-		</headerContent>
-		<content>
-			<VBox class="sapUiSmallMargin">
-				<core:Fragment fragmentName="oft.fiori.fragments.ServerSimpleForm" type="XML" />
-	    	</VBox>
-				<core:Fragment fragmentName="oft.fiori.fragments.ServerDet" type="XML"></core:Fragment>
-		</content>
-		<footer>
-			<Toolbar>
-				<ToolbarSpacer />
-				<Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear"></Button>
-				<Button text="Save" type="Accept" press="onSave" id="idApr"></Button>
+<mvc:View
+controllerName="oft.fiori.controller.newTrainer"
+xmlns="sap.m"
+xmlns:core="sap.ui.core"
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:semantic="sap.m.semantic"
+xmlns:f="sap.ui.layout.form"
+xmlns:smartField="sap.ui.comp.smartfield"
+xmlns:footerbar="sap.ushell.ui.footerbar"
+xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-			</Toolbar>
-		</footer>
-	</Page>
+<semantic:FullscreenPage
+id="Trainers"
+navButtonPress="onNavBack"
+showNavButton="true"
+title="Manage Trainers"
+busy="{objectView>/busy}"
+busyIndicatorDelay="{objectView>/delay}">
+<semantic:customHeaderContent>
+<Button icon="sap-icon://full-screen" id="idFullScreenBtn"
+tooltip="fullscreen"
+iconFirst="true" press="toggleFullScreen"/>
+    </semantic:customHeaderContent>
+
+<semantic:content id="Header">
+<f:Form id="trainerHeader" editable="true">
+</f:Form>
+</semantic:content>
+
+<semantic:content>
+<f:SimpleForm
+minWidth="1024"
+maxContainerCols="2"
+editable="true"
+layout="ResponsiveGridLayout"
+labelSpanL="3"
+labelSpanM="3"
+emptySpanL="4"
+emptySpanM="4"
+columnsL="1"
+columnsM="1"
+class="editableForm">
+<f:content>
+   <!-- <Label text="Trainer Code" labelFor="trainerCode" required="true" />
+<Input id="idtrainerCode" submit="trainerCodeEnter" suggest="ValueChangetrainer"
+suggestionItems="{/trainers}" showSuggestion="true"
+enabled="{viewModel>/codeEnabled}"
+suggestionItemSelected="trainerCodeCheck" liveChange="onKeyPress"
+change="trainerCodeEnter">
+<suggestionItems>
+<core:ListItem text="{trainerCode}"
+additionalText="{Name}"/>
+</suggestionItems>
+</Input> -->
+<!-- <Label text="FirstName" required="true"/>
+<Input
+id="idFirstName"
+type="Text"
+value="{trainerModel>/FirstName}" >
+</Input> -->
+
+        <Label text="Trainer Name"  />
+        <Input required="true"
+          value="{trainerModel>/FirstName}"
+           id="idFirstName"
+           showValueHelp="true"
+           valueHelpRequest="onSelect"
+           liveChange="onTrainer"
+           submit="onEnter"
+           placeholder="Enter Trainer Name..."
+           showSuggestion="true"
+           suggestionItems="{/Trainers}"
+           suggestionItemSelected="suggestionItemSelected">
+           <suggestionItems>
+             <core:Item text="{FirstName}"/>
+           </suggestionItems>
+         </Input>
+        <Label text="LastName" />
+        <Input
+          id="idLastName"
+          type="Text"
+          value="{trainerModel>/LastName}" >
+        </Input>
+        <Label text="JoiningDate" />
+<DatePicker id="idJoiningDate"
+displayFormat="dd.MM.yyyy"
+value="{TrainerModel>/JoiningDate}"
+valueFormat="dd.MM.yyyy">
+</DatePicker>
+
+          <Label text="Address"/>
+          <Input
+                        id="idAddress"
+                        type="Text"
+                        value="{TrainerModel>/Address}">
+          </Input>
+          <Label text="City"/>
+          <Input
+                        id="idCity"
+                        type="Text"
+                        value="{TrainerModel>/City}">
+          </Input>
+          <Label text="Remarks"/>
+          <Input
+                        id="idRemarks"
+                        type="Text"
+                        value="{TrainerModel>/Remarks}">
+          </Input>
+          <Label text="Contact No"/>
+          <Input
+                        id="idContactNo"
+                        type="Text"
+                        value="{TrainerModel>/ContactNo}">
+          </Input>
+
+          <Label text="Contact No1"/>
+          <Input
+                        id="idContactNo1"
+                        type="Text"
+                        value="{TrainerModel>/ContactNo1}">
+          </Input>
+          <Label text="AccountNo"/>
+          <Input
+                        id="idAccountNo"
+                        type="Text"
+                        value="{TrainerModel>/AccountNo}">
+          </Input>
+
+          <Label text="AccountName"/>
+          <Input
+                        id="idAccountName"
+                        type="Text"
+                        value="{TrainerModel>/AccountName}">
+          </Input>
+
+          <Label text="IFSC Code"/>
+          <Input
+                        id="idIFSCCode"
+                        type="Text"
+                        value="{TrainerModel>/IFSCCode}">
+          </Input>
+
+          <Label text="Account type"/>
+          <Input
+                        id="idAccountType"
+                        type="Text"
+                        value="{TrainerModel>/AccountType}">
+          </Input>
+          <Label text="PAN Number"/>
+          <Input
+                        id="idPANNo"
+                        type="Text"
+                        value="{TrainerModel>/PANNo}">
+          </Input>
+          <Label text="SoftDelete"/>
+          <Input
+                        id="idSoftDelete"
+                        type="Text"
+                        value="{TrainerModel>/SoftDelete}">
+          </Input>
+          <Label text="CreatedOn"/>
+          <DatePicker id="idCreatedOn"
+            displayFormat="dd.MM.yyyy"
+            value="{TrainerModel>/CreatedOn}"
+            valueFormat="dd.MM.yyyy">
+          </DatePicker>
+          <Label text="CreatedBy"/>
+          <Input
+                        id="idCreatedBy"
+                        type="Text"
+                        value="{TrainerModel>/CreatedBy}">
+          </Input>
+          <Label text="ChangedOn"/>
+          <DatePicker id="idChangedOn"
+            displayFormat="dd.MM.yyyy"
+            value="{TrainerModel>/ChangedOn}"
+            valueFormat="dd.MM.yyyy">
+          </DatePicker>
+          <Label text="ChangedBy"/>
+          <Input
+                id="idChangedBy"
+                type="Text"
+                value="{TrainerModel>/ChangedBy}">
+          </Input>
+
+
+</f:content>
+</f:SimpleForm>
+    <Table id="idSubs" items="{/Trainers}" growing="true"
+      growingThreshold="200" growingScrollToLoad="false" mode="none">
+    <columns>
+      <Column hAlign="Left">
+        <Label text="FirstName" class="columnLabelStyle"/>
+      </Column>
+      <Column>
+        <Label text="LastName" class="columnLabelStyle"/>
+      </Column>
+      <Column hAlign="Left">
+                <Label text="JoiningDate" class="columnLabelStyle"/>
+      </Column>
+      <Column>
+        <Label text="Address" class="columnLabelStyle"/>
+      </Column>
+        <Column>
+        <Label text="City" class="columnLabelStyle"/>
+      </Column>
+    </columns>
+    <items>
+      <ColumnListItem id="idColumnlist" type="Active" >
+        <cells>
+          <Text text="{FirstName}" modelContextChange="onStudentIdChange"></Text>
+          <Text text="{LastName}" modelContextChange="onStudentIdChange"></Text>
+          <Text text="{JoiningDate}" modelContextChange="onStudentIdChange"></Text>
+            <Text text="{Address}" modelContextChange="onStudentIdChange"></Text>
+          <Text text="{City}" modelContextChange="onStudentIdChange"></Text>
+        </cells>
+      </ColumnListItem>
+    </items>
+  </Table>
+  </semantic:content>
+<semantic:customFooterContent>
+<Button text="Save" type="Accept" press="onSave"/>
+<Button text="Delete" type="Reject" press="deletetrainer" enabled="{viewModel>/deleteEnabled}"/>
+<Button text="Clear" type="Ghost" press="cleartrainer"/>
+</semantic:customFooterContent>
+</semantic:FullscreenPage>
+
 </mvc:View>
