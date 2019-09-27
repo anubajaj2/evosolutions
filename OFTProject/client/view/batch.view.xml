@@ -41,7 +41,7 @@
 						<Label text="Minimum Fee"/>
 						<Input id="idFee" required="true" type="Number" value="{local>/newBatch/courseFee}"/>
 						<Label text="Start Time"/>
-						<TimePicker id="idStartTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/startTime}" change="onStartChange"></TimePicker>
+						<TimePicker id="idStartTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/startTime}" change="onTimeChange"></TimePicker>
 						<Label text="End Time"/>
 						<TimePicker id="idEndTime" displayFormat="HH:mm" valueFormat="HH:mm" value="{local>/newBatch/endTime}"></TimePicker>
 						<Label text="Weekend Batch"></Label>
@@ -63,6 +63,7 @@
 				<ToolbarSpacer/>
 				<Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear"></Button>
 				<Button text="Save" type="Accept" press="onSave" id="idBatch"></Button>
+				<Button text="Delete" type="Reject" icon="sap-icon://decline" press="onDelete" id="idDelete"></Button>
 			</Toolbar>
 		</footer>
 	</Page>
