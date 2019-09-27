@@ -9,14 +9,13 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.dailyTasks", {
 
   onInit: function() {
-	var	no = 1.
 	//Set the default date as todays date
 	var oDt = this.getView().byId("idCoDate1");
 	 oDt.setDateValue(new Date());
 
 	 var oRouter = this.getOwnerComponent().getRouter();
 	 oRouter.attachRoutePatternMatched(this.onDateChanged1, this);
-	 var oDel = this.getView().byId("idRowAction").setVisible(true);
+	 //var oDel = this.getView().byId("idRowAction").setVisible(true);
 },
 
 //Function to filter data on initial load o page when the date EQ todays date
@@ -71,10 +70,8 @@ this.byId("idRowAction").setVisible(false);
    //Compare entered date and disable save if it is NE todays date
 		 if(date1 != date)	{
 		 var oBtn = this.byId("idBtn").setEnabled(false);
-		 var oDel = this.byId("idRowAction").setVisible(false);
 		 }else{
 		 var oBtn = this.byId("idBtn").setEnabled(true);
-		 var oDel = this.byId("idRowAction").setVisible(true);
 		 }
 
    //Filter the data wrt date sekected by the user

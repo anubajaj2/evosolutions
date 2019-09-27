@@ -8,45 +8,42 @@
       <f:SimpleForm editable="true" id="idform">
       	<f:content>
       		<Label text="Date" />
-      		<DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"  change="onDateChange" value="{'local>/tasks/CrDate'}"> </DatePicker>
+      		<DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
+            change="onDateChange" value="{'local>/tasks/CrDate'}"> </DatePicker>
       		<Label text="Task Worked On" />
       		<Input id="idWOn"></Input>
       		<Label text="No. of hours Worked" />
       		<Input width="100px" id="idWH"></Input>
       		<Button id="idBtn" text="Save" press="onSave"  enabled="true"></Button>
-
       	</f:content>
       </f:SimpleForm>
     </semantic:content>
         <semantic:content>
 <t:Table rows="{/tasks}"
-         id="idCoTable"
-         selectionMode="Single"
-         rowActionCount="1">
-          <t:columns>
-            <t:Column>
-                <Label text="{i18n>taskWorkedOn}"/>
-              <t:template> <Text text="{taskWorkedOn}"/></t:template>
-            </t:Column>
-            <t:Column>
-                <Label text="{i18n>hourWorked}" />
-              <t:template> <Text text="{noOfHours}"/> </t:template>
-            </t:Column>
-          </t:columns>
-
-          <t:rowActionTemplate class="g1" id="idRowAction2" visible="false">
-  <t:RowAction id="idRowAction" visible="false" >
-    <t:items>
-	  	<t:RowActionItem id="idRowAction1" type="Delete" press="onDelete" icon="sap-icon://delete" visible="true">
-      </t:RowActionItem>
-	  </t:items>
-	</t:RowAction>
-     </t:rowActionTemplate>
+  id="idCoTable"
+  selectionMode="Single"
+  rowActionCount="1">
+    <t:columns>
+      <t:Column>
+        <Label text="{i18n>taskWorkedOn}"/>
+        <t:template> <Text text="{taskWorkedOn}"/> </t:template>
+      </t:Column>
+      <t:Column>
+        <Label text="{i18n>hourWorked}" />
+        <t:template> <Text text="{noOfHours}"/> </t:template>
+      </t:Column>
+    </t:columns>
+    <t:rowActionTemplate class="g1" id="idRowAction2" visible="false">
+     <t:RowAction id="idRowAction" visible= "true" >
+      <t:items>
+	    	<t:RowActionItem id="idRowAction1" type="Delete" press="onDelete"
+                 icon="sap-icon://delete" visible="true" />
+	    </t:items>
+	   </t:RowAction>
+    </t:rowActionTemplate>
 </t:Table>
-        </semantic:content>
-
+</semantic:content>
     <semantic:customFooterContent>
-
     </semantic:customFooterContent>
-      </semantic:FullscreenPage>
+</semantic:FullscreenPage>
 </mvc:View>
