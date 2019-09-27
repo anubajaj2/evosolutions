@@ -270,7 +270,7 @@ sap.ui.define([
 					var trainerId = oModel.TrainerId;
 			     var oTrainerId = 'Trainers(\'' + trainerId + '\')';
 					 var TrainerName = this.getView().byId("idTrainer");
-					 if (!odata[oTrainerId] === "undefined") {
+					 if (odata[oTrainerId]) {
 						 var trainerName = odata[oTrainerId].FirstName + " " + odata[oTrainerId].LastName;
 						 TrainerName.setValue(trainerName);
 					 }

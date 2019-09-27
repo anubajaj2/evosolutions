@@ -17,6 +17,7 @@ sap.ui.define([
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.clearForm();
+			Controller.prototype.onInit.apply(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
