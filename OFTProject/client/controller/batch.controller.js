@@ -55,6 +55,10 @@ sap.ui.define([
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
 
+		onDelete: function(oEvent) {
+
+		},
+
 		onSave: function(oEvent) {
 			//TODO: Save to Coustomer Reg. table
 			console.log(this.getView().getModel("local").getProperty("/newBatch"));
@@ -142,6 +146,16 @@ sap.ui.define([
 			this.updateBatchName();
 
 		},
+
+		onTimeChange: function(oEvent) {
+			// var dateString = oEvent.getSource().getValue();
+			// var from = dateString.split(".");
+			// var dateObject = new Date(from[2], from[1] - 1, from[0]);
+			// var endDate = this.formatter.getIncrementDate(dateObject, 2.5);
+			// this.getView().getModel("local").setProperty("/newBatch/endDate", endDate);
+
+		},
+
 		herculis: function(oEvent) {
 			if(oEvent.getParameter("name") !== "batch"){
 				return;
@@ -188,7 +202,7 @@ sap.ui.define([
 				path: "/Trainers",
 				template: new sap.m.DisplayListItem({
 					label: "{FirstName} {LastName}",
-					value: "{id}"
+					value: "{city}"
 
 				})
 			});
@@ -198,9 +212,11 @@ sap.ui.define([
 			var batchData = this.getModel("local").getProperty("/newBatch");
 			debugger;
 			var startDate = this.expandStartDate(batchData.startDate);
-			var time = batchData.startTime.split(":").join("");
-			//var startTime = time[0] + time[1];
-			batchData.batchName = batchData.courseName + "_" + startDate + "_" + time + "_" + batchData.trainerName;
+
+			//9/25/2019 Anubhav confirmed that we dont need time as part of Batch Id
+			// var time = batchData.startTime.split(":").join("");
+			// var startTime = time[0] + time[1];
+			batchData.batchName = batchData.courseName + "_" + startDate + "_" + batchData.trainerName;
 			batchData.batchName = batchData.batchName.split(" ").join("");
 			//COURSENAME-MON-YEAR-TIME-TRAINER
 		},
@@ -229,8 +245,10 @@ sap.ui.define([
 				debugger;
 
 				var data = this.getSelectedKey(oEvent);
-				this.getView().byId("idCourseId").setValue(data[0]);
+				//Sample value for data["11:50", "SAPUI4X_SEP_2019_1150_SakshiPradhan", "5d8c58de26aac54ffcce73c0"]
 
+				this.getView().byId("idCourseId").setValue(data[1]);
+				this.getView().byId("idCourseId").setEnabled(false);
 				var oCourseId = 'Courses(\'' + data[2] + '\')';
 				var oModel = this.getView().getModel().oData[oCourseId];
 				var that = this;
@@ -246,14 +264,18 @@ sap.ui.define([
 				var courseName = odata[oCourseId1].CourseName;
 				var CourseName = this.getView().byId("batch");
 				CourseName.setValue(courseName);
+				CourseName.setEnabled(false);
 
 				debugger;
 					var trainerId = oModel.TrainerId;
-			      var oTrainerId = 'Trainers(\'' + trainerId + '\')';
-			      var trainerName = odata[oTrainerId].FirstName;// + " " odata[oTrainerId].LastName;
-			      var TrainerName = this.getView().byId("idTrainer");
-			      TrainerName.setValue(trainerName);
+			     var oTrainerId = 'Trainers(\'' + trainerId + '\')';
+					 var TrainerName = this.getView().byId("idTrainer");
+					 if (!odata[oTrainerId] === "undefined") {
+						 var trainerName = odata[oTrainerId].FirstName + " " + odata[oTrainerId].LastName;
+						 TrainerName.setValue(trainerName);
+					 }
 
+						TrainerName.setEnabled(false);
 					//Display Demo Start Date
 					var FormattedDate = this.onDateFormatted(oModel.DemoStartDate);
 					var oStartDate = this.getView().byId("idDemoDate");
@@ -265,7 +287,7 @@ sap.ui.define([
 					var FormattedDate1 = this.onDateFormatted(oModel.StartDate);
 					var oStartDate1 = this.getView().byId("idStartDate");
 					oStartDate1.setValue(FormattedDate1);
-
+					oStartDate1.setEnabled(false);
 					// Display End Date
 					// var endDate = oModel.EndDate;
 
@@ -348,12 +370,17 @@ sap.ui.define([
 		onClearScreen: function() {
 			// alert("Hello");
 			this.getView().byId("idCourseId").setValue("");
+			this.getView().byId("idCourseId").setEnabled(true);
 			this.getView().byId("batch").setValue("");
+			this.getView().byId("batch").setEnabled(true);
 			this.getView().byId("idTrainer").setValue("");
+			this.getView().byId("idTrainer").setEnabled(true);
 			this.getView().byId("idStartTime").setValue("");
+
 			this.getView().byId("idEndTime").setValue("");
 			this.getView().byId("idDemoDate").setValue("");
 			this.getView().byId("idStartDate").setValue("");
+			this.getView().byId("idStartDate").setEnabled(true);
 			this.getView().byId("idEndDate").setValue("");
 			this.getView().byId("idFee").setValue("");
 			this.getView().byId("idStatus").setValue("");
@@ -371,8 +398,8 @@ sap.ui.define([
 			this.searchPopup.bindAggregation("items", {
 				path: "/Courses",
 				template: new sap.m.DisplayListItem({
-					label: "{Name}",
-					value: "{BatchNo}"
+					label: "{BatchNo}",
+					value: "{StartTime}"
 				})
 			});
 
@@ -385,25 +412,72 @@ sap.ui.define([
 				queryString = oEvent.getParameter("value");
 			}
 
-			if (queryString) {
-				var oFilter1 = new sap.ui.model.Filter("courseName", sap.ui.model.FilterOperator.Contains, queryString);
+			if (oEvent.getSource().getTitle() === this.getView().getModel("i18n").getProperty("course")) {
+				if (queryString) {
+					var oFilter1 = new sap.ui.model.Filter("courseName", sap.ui.model.FilterOperator.Contains, queryString);
 
-				var oFilter = new sap.ui.model.Filter({
-					filters: [oFilter1],
-					and: false
-				});
-				var aFilter = [oFilter];
-				this.searchPopup.getBinding("items").filter(aFilter);
-			} else {
-				this.searchPopup.bindAggregation("items", {
-					path: "local>/courses",
-					template: new sap.m.DisplayListItem({
-						label: "{local>courseName}"
-					})
-				});
-				this.searchPopup.getBinding("items").filter([]);
+					var oFilter = new sap.ui.model.Filter({
+						filters: [oFilter1],
+						and: false
+					});
+					var aFilter = [oFilter];
+					this.searchPopup.getBinding("items").filter(aFilter);
+				} else {
+					this.searchPopup.bindAggregation("items", {
+						path: "local>/courses",
+						template: new sap.m.DisplayListItem({
+							label: "{local>courseName}"
+						})
+					});
+					this.searchPopup.getBinding("items").filter([]);
+				}
+
+			}
+			if (oEvent.getSource().getTitle() === this.getView().getModel("i18n").getProperty("batch")) {
+				if (queryString) {
+					var oFilter1 = new sap.ui.model.Filter("BatchNo", sap.ui.model.FilterOperator.Contains, queryString);
+
+					var oFilter = new sap.ui.model.Filter({
+						filters: [oFilter1],
+						and: false
+					});
+					var aFilter = [oFilter];
+					this.searchPopup.getBinding("items").filter(aFilter);
+				} else {
+					this.searchPopup.bindAggregation("items", {
+						path: "local>/Courses",
+						template: new sap.m.DisplayListItem({
+							label: "{local>BatchNo}",
+							value: "{local>StartTime}"
+						})
+					});
+					this.searchPopup.getBinding("items").filter([]);
+				}
+
 			}
 
+				if (oEvent.getSource().getTitle() === "Trainer Name") {
+					if (queryString) {
+						var oFilter1 = new sap.ui.model.Filter("FirstName", sap.ui.model.FilterOperator.Contains, queryString);
+						var oFilter2 = new sap.ui.model.Filter("LastName", sap.ui.model.FilterOperator.Contains, queryString);
+						var oFilter = new sap.ui.model.Filter({
+							filters: [oFilter1, oFilter2],
+							and: false
+						});
+						var aFilter = [oFilter];
+						this.searchPopup.getBinding("items").filter(aFilter);
+					} else {
+						this.searchPopup.bindAggregation("items", {
+							path: "local>/Trainers",
+							template: new sap.m.DisplayListItem({
+								label: "{FirstName} {LastName}",
+								value: "{city}"
+							})
+						});
+						this.searchPopup.getBinding("items").filter([]);
+					}
+
+				}
 		}
 
 	});
