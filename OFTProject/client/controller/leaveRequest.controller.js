@@ -201,6 +201,9 @@ onBeforeRendering: function(){
 					that.getView().setBusy(false);
 					sap.m.MessageToast.show("Leave Request send for Approval");
 					that.destroyMessagePopover();
+
+
+
 				}).catch(function(oError){
 					that.getView().setBusy(false);
 					var oPopover = that.getErrorMessage(oError);

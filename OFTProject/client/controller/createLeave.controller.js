@@ -132,11 +132,31 @@ onBeforeRendering: function(){
 					 "ChangedOn": new Date(),
 					 "ChangedBy": currentUser
 				};
+				var that3 = that2;
 				that2.ODataHelper.callOData(that2.getOwnerComponent().getModel(),"/LeaveRequests","POST",{},
 					payload, that2)
 					.then(function(oData){
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Leave Request send for Approval");
+
+						debugger;
+						var userName = that3.getModel("local").getProperty("/UserName");
+						var MobileNo = that3.getModel("local").getProperty("/MobileNo");
+						var loginPayload = {};
+						loginPayload.msgType =  "leaveRequest";
+						loginPayload.userName =  userName;
+						loginPayload.requested =  "leadData.LeaveType (" + payload.Days + ")";
+						loginPayload.balance =  "?";
+						loginPayload.Number =  MobileNo;
+						$.post('/requestMessage', loginPayload)
+							.done(function(data, status) {
+								sap.m.MessageToast.show("Message sent successfully");
+							})
+							.fail(function(xhr, status, error) {
+								that.passwords = "";
+								sap.m.MessageBox.error(xhr.responseText);
+							});
+
 						that.destroyMessagePopover();
 					}).catch(function(oError){
 						that.getView().setBusy(false);
@@ -165,6 +185,22 @@ onBeforeRendering: function(){
 				.then(function(oData){
 					that.getView().setBusy(false);
 					sap.m.MessageToast.show("Leave Request send for Approval");
+					var userName = that2.getModel("local").getProperty("/UserName");
+					var MobileNo = that2.getModel("local").getProperty("/MobileNo");
+					var loginPayload = {};
+					loginPayload.msgType =  "leaveRequest";
+					loginPayload.userName =  userName;
+					loginPayload.requested =  "leadData.LeaveType (" + payload.Days + ")";
+					loginPayload.balance =  "?";
+					loginPayload.Number =  MobileNo;
+					$.post('/requestMessage', loginPayload)
+						.done(function(data, status) {
+							sap.m.MessageToast.show("Message sent successfully");
+						})
+						.fail(function(xhr, status, error) {
+							that.passwords = "";
+							sap.m.MessageBox.error(xhr.responseText);
+						});
 					that.destroyMessagePopover();
 				}).catch(function(oError){
 					that.getView().setBusy(false);

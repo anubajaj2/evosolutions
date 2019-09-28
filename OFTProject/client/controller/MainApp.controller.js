@@ -104,6 +104,7 @@ sap.ui.define([
 												that2.getView().getModel("local").setProperty("/UserName", oData.results[i].UserName);
 												that2.getView().getModel("local").setProperty("/JoiningDate", oData.results[i].JoiningDate);
 												that2.getView().getModel("local").setProperty("/LeaveQuota", oData.results[i].LeaveQuota);
+												that2.getView().getModel("local").setProperty("/MobileNo", oData.results[i].MobileNo);
 												found = true;
 											}else{
 												that2.getView().getModel("local").setProperty("/Authorization", "");

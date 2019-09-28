@@ -217,15 +217,38 @@ app.start = function() {
 
 		});
 
-		app.get('/sendSms', function(req, res) {
+
+
+
+		app.post('/requestMessage', function(req, res) {
+			debugger;
+			var msg = "";
+			var typeMsg = req.body.msgType;
+			switch (typeMsg) {
+				case "leaveRequest":
+					msg = "Dear #FirstName#, You have requested for #Custom1# days of leaves. your leave balance is #Custom2#.";
+					break;
+				case "leaveReject":
+						msg = "Dear #FirstName#, Your leave request has been rejected.";
+						break;
+				case "leaveApproved":
+						msg = "Dear #FirstName#, Your leave request has been successfully approved.";
+							break;
+				default:
+					return;
+			}
+			msg = msg.replace("#FirstName#", req.body.userName);
+			msg = msg.replace("#Custom1#", req.body.requested);
+			msg = msg.replace("#Custom2#", req.body.balance);
+
 
 				var http = require('http');
 				var urlencode = require('urlencode');
-				var msg=urlencode('This was a breakthorugh dude!');
-				var number='9560466944';
+				msg=urlencode(msg);
+				var number=req.body.Number;
 				var username='anubhav.abap@gmail.com';
 				var hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
-				var sender='Evo Solutions';
+				var sender='ONLTRN';
 				var data='username='+username+'&hash='+hash+'&sender='+sender+'&numbers='+number+'&message='+msg
 				var options = {
 		 				 host: 'api.textlocal.in',
@@ -239,7 +262,8 @@ app.start = function() {
 
 				  //the whole response has been recieved, so we just print it out here
 				  response.on('end', function () {
-				  console.log(str);
+						res.send("message sent");
+				  	console.log(str);
 				  });
 				}
 				//console.log('hello js'))
