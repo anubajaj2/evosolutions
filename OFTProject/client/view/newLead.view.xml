@@ -95,6 +95,7 @@
 
         <Label text="How did you hear about us" />
         <Select id="idHearAbout" selectedKey="{local>/newLead/hearAbout}">
+          <core:Item key="JustDial" text="JustDial"></core:Item>
           <core:Item key="PaperAdd" text="PaperAdd"></core:Item>
           <core:Item key="Banner" text="Banner"></core:Item>
           <core:Item key="WhatsApp" text="WhatsApp"></core:Item>
@@ -108,7 +109,7 @@
 		</f:SimpleForm>
 	</VBox>
 	<VBox>
-		<List id="idRecent" growing="true" mode="MultiSelect"
+		<List id="idRecent" growing="true" mode="MultiSelect" itemPress="onInqSelect"
 			growingThreshold="100" growingScrollToLoad="false"
 			class="sapUiSizeCompact" updateFinished="onUpdateFinished">
       <headerToolbar>
@@ -120,7 +121,7 @@
         <Button icon="sap-icon://action" tooltip="send email" press="onEmail"/>
 				<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://delete" press="onDelete"/>
 				<Button	visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://download" press="onDataExport" />
-
+        <Button icon="sap-icon://refresh" press="reloadRefresh" /> 
 			</Toolbar>
 			</headerToolbar>
 		</List>
