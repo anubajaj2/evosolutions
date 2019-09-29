@@ -115,7 +115,10 @@
 	"task": {
 		"CrDate": "",
 		"taskWorkedOn": "",
-		"noOfHours": ""
+		"noOfHours": "",
+		"taskType":"",
+		"remarks":"",
+		"link":""
 	},
 	"newBatch": {
 		"courseId": "",

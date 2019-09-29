@@ -20,7 +20,7 @@ sap.ui.define([
 
 //Function to filter data on initial load o page when the date EQ todays date
 onDateChanged1: function(oEvent) {
-this.byId("idRowAction").setVisible(false);
+//this.byId("idRowAction").setVisible(false);
 	 var dDateStart = new Date();
 	 var dDateEnd = new Date(dDateStart);
 	 var aFilters = [];
@@ -68,11 +68,11 @@ this.byId("idRowAction").setVisible(false);
 		 var yyyy1 = date1.getFullYear();
 		 var date1 =  dd1 + "/" + mm1  + "/" + yyyy1;
    //Compare entered date and disable save if it is NE todays date
-		 if(date1 != date)	{
-		 var oBtn = this.byId("idBtn").setEnabled(false);
-		 }else{
-		 var oBtn = this.byId("idBtn").setEnabled(true);
-		 }
+		 // if(date1 != date)	{
+		 // var oBtn = this.byId("idBtn").setEnabled(false);
+		 // }else{
+		 // var oBtn = this.byId("idBtn").setEnabled(true);
+		 // }
 
    //Filter the data wrt date sekected by the user
 		 var dDateStart = oEvent.getSource().getProperty('dateValue');
@@ -136,7 +136,9 @@ this.byId("idRowAction").setVisible(false);
 		if (this.getView().byId("idWH").getValue() != '0'){myData.noOfHours = this.getView().byId("idWH").getValue()
 
 		myData.CrDate = this.getView().byId("idCoDate1").getDateValue();
-
+		myData.taskType = this.getView().byId("idTaskType").getSelectedKey();
+		myData.link = this.getView().byId("idLink").getValue();
+		myData.remarks = "";
 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks",
 																"POST", {}, myData, this)
 		.then(function(oData) {
