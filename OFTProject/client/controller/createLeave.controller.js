@@ -145,7 +145,7 @@ onBeforeRendering: function(){
 						var loginPayload = {};
 						loginPayload.msgType =  "leaveRequest";
 						loginPayload.userName =  userName;
-						loginPayload.requested =  "leadData.LeaveType (" + payload.Days + ")";
+						loginPayload.requested =   payload.Days ;
 						loginPayload.balance =  "?";
 						loginPayload.Number =  MobileNo;
 						$.post('/requestMessage', loginPayload)
@@ -190,7 +190,7 @@ onBeforeRendering: function(){
 					var loginPayload = {};
 					loginPayload.msgType =  "leaveRequest";
 					loginPayload.userName =  userName;
-					loginPayload.requested =  "leadData.LeaveType (" + payload.Days + ")";
+					loginPayload.requested =   payload.Days ;
 					loginPayload.balance =  "?";
 					loginPayload.Number =  MobileNo;
 					$.post('/requestMessage', loginPayload)
