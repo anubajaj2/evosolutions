@@ -24,9 +24,28 @@ onBeforeRendering: function(){
 			var oDate2Ret = dateFormat.format(oDate2);
 			return oDate1Ret + " - " + oDate2Ret;
 		},
+		onSend: function(sType,sId, days){
+			var userName = this.getModel("local").getProperty("/AppUsers")[sId].UserName;
+			var MobileNo = this.getModel("local").getProperty("/AppUsers")[sId].MobileNo;
+			var loginPayload = {};
+			loginPayload.msgType =  sType;
+			loginPayload.userName =  userName;
+			loginPayload.requested =   days ;
+			loginPayload.balance =  "?";
+			loginPayload.Number =  MobileNo;
+			$.post('/requestMessage', loginPayload)
+				.done(function(data, status) {
+					sap.m.MessageToast.show("Message sent successfully");
+				})
+				.fail(function(xhr, status, error) {
+					//that.passwords = "";
+					sap.m.MessageBox.error(xhr.responseText);
+				});
+		},
 		onApprove: function(oEvent){
 			debugger;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
+			var record =  oEvent.getSource().getModel().getProperty(sPath);
 			var that = this;
 			var payload3 = {
 				"Status": "Approved"
@@ -36,6 +55,7 @@ onBeforeRendering: function(){
 					MessageToast.show("The Leave request has been approved");
 					var oKey=that.getView().byId("idEmployee").getSelectedKey();
 					that.reloadLeaves();
+					that.onSend("leaveApproved",record.AppUserId,record.Days).bind(that);
 					if(oKey){
 						  that.getView().byId("pendingLeaveTable").getBinding("items").filter([
 							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
@@ -45,7 +65,7 @@ onBeforeRendering: function(){
 					  new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
 						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
 					]);
-
+					debugger;
 					}
 					else {
 
@@ -97,6 +117,7 @@ onBeforeRendering: function(){
 		onReject: function(oEvent){
 			debugger;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
+			var record =  oEvent.getSource().getModel().getProperty(sPath);
 			var that = this;
 			var payload3 = {
 				"Status": "Rejected"
@@ -106,6 +127,7 @@ onBeforeRendering: function(){
 				.then(function(oData) {
 					MessageToast.show("The Leave request has been Rejected");
 					that.reloadLeaves();
+					that.onSend("leaveReject",record.AppUserId,record.Days).bind(that);
 					if(oKey){
 							that.getView().byId("pendingLeaveTable").getBinding("items").filter([
 							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
@@ -115,7 +137,6 @@ onBeforeRendering: function(){
 						new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
 						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
 					]);
-
 					}
 					else {
 
