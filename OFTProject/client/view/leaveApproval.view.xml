@@ -53,6 +53,10 @@
 			id="pendingIcon"
 			text="Pending"
 			key="Pending" >
+			<Toolbar>
+				<ToolbarSpacer/>
+				  <Button id="refreshId" text="Refresh" press="onRefresh"/>
+         </Toolbar>
 			<Table id="pendingLeaveTable" headerText="Pending Leaves" updateFinished="onUpdateFinished">
 					<columns>
 						<Column>
@@ -71,11 +75,16 @@
 					</columns>
 				</Table>
 				</IconTabFilter>
+
 		<IconTabFilter
 			icon="sap-icon://paid-leave"
 			id="approveIcon"
 			text="Approved"
 			key="approved" >
+			<Toolbar>
+				<ToolbarSpacer/>
+				  <Button id="refreshId1" text="Refresh" press="onRefresh"/>
+         </Toolbar>
 			<Table id="approvedLeaveTable" headerText="Approved Leaves" updateFinished="onUpdateFinished">
 					<columns>
 						<Column>

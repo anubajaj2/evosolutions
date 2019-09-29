@@ -141,6 +141,28 @@ onBeforeRendering: function(){
 				this.reloadLeaves();
 
 				this.getView().byId("idEmployee").setValue("");
+				this.getView().byId("idEmployee").setSelectedKey("");
+
+			},
+			onRefresh:function(){
+				debugger;
+				var that=this;
+				var oKey=that.getView().byId("idEmployee").getSelectedKey();
+				that.reloadLeaves();
+				if(oKey){
+						that.getView().byId("pendingLeaveTable").getBinding("items").filter([
+						new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+						new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved')
+				]);
+				that.getView().byId("approvedLeaveTable").getBinding("items").filter([
+					new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+					 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
+				]);
+
+				}
+				else {
+
+			}
 
 			},
 			onSelect: function(oEvent){
