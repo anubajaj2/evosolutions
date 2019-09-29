@@ -2,7 +2,7 @@
 	xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic">
 	<semantic:FullscreenPage busyIndicatorDelay="0" title="Admin Panel" >
 		<semantic:customHeaderContent>
-			<Text id="idDB"> </Text>			
+			<Text id="idDB"> </Text>
 			<Text id="idUser"> </Text>
 			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
 		</semantic:customHeaderContent>
@@ -36,7 +36,27 @@
 						<header>
 							<Text text="Role"/>
 						</header>
-					</Column>					
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Salary"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Joining Date"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="BDay"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Mobile Number"/>
+						</header>
+					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
 						<header>
 							<Text text="Edit"/>
@@ -50,6 +70,10 @@
 							<Label text="{EmailId}"/>
 							<Label text="{UserName}"/>
 							<Label text="{Role}"/>
+							<Label text="{Salary}"/>
+							<Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
+							<Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
+							<Label text="{MobileNo}"/>
 							<Button icon="sap-icon://edit" press="editSecureField"/>
 						</cells>
 					</ColumnListItem>

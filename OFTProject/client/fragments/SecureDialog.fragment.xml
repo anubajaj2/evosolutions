@@ -9,16 +9,25 @@
 			            <items>
 			              <core:Item text="{TechnicalId}" key="{TechnicalId}"/>
 			            </items>
-			          </ComboBox>	
+			          </ComboBox>
 					<Label text="Role" required="true"/>
 					<ComboBox id="idRole" selectedKey="{Role}">
-						<core:Item text="Content" key="Content"/>	
+						<core:Item text="Content" key="Content"/>
 						<core:Item text="Admin" key="Admin"/>
+            <core:Item text="Super Admin Role" key="Super Admin Role"/>
 					</ComboBox>
 					<Label text="User Name" required="true"/>
 					<Input id="idUser" name="DescriptionName" value="{UserName}" valueLiveUpdate="true"/>
 					<Label text="Email" required="true"/>
 					<Input id="idEmail" name="Email"  value="{EmailId}" valueLiveUpdate="true"/>
+					<Label text="Salary"/>
+					<Input id="idSal" name="Salary"  value="{Salary}" valueLiveUpdate="true"/>
+					<Label text="Joining Date" required="true"/>
+					<DatePicker id="idJD" displayFormat="dd.MM.yyyy" value="{JoiningDate}"/>
+					<Label text="BDay" required="true"/>
+					<DatePicker id="idBday" displayFormat="dd.MM.yyyy" value="{BDay}"/>
+					<Label text="Mobile No." required="true"/>
+					<Input id="idMno" name="Mobile No."  value="{MobileNo}" valueLiveUpdate="true"/>
 				</f:content>
 			</f:SimpleForm>
 		</content>
@@ -26,5 +35,5 @@
 			<Button text="ok" press="onPressHandleSecureOkPopup"/>
 			<Button text="Cancel" press="onPressHandleSecureCancelPopup"/>
 		</buttons>
-	</Dialog>	
+	</Dialog>
 </core:FragmentDefinition>

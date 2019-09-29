@@ -55,7 +55,29 @@ sap.ui.define([
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
 
-		onDelete: function(oEvent) {
+		onDeleteBatch: function(oEvent) {
+
+				var that = this;
+				MessageBox.confirm("Do you want to delete the selected batch?", function(conf) {
+					if (conf == 'OK') {
+						//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
+						// that.totalCount = that.totalCount - items.length;
+						// for (var i = 0; i < items["length"]; i++) {
+						debugger;
+						var sPath = "/Courses('" + oGuid + "')";
+						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
+							.then(function(oData) {
+								//that.getView().byId("idDelete").setEnabled(false);
+								sap.m.MessageToast.show("Batch Deleted succesfully");
+								that.onClearScreen();
+							}).catch(function(oError) {
+								that.getView().setBusy(false);
+								that.oPopover = that.getErrorMessage(oError);
+								that.getView().setBusy(false);
+							});
+						// }
+					}
+				}, "Confirmation");
 
 		},
 
@@ -270,7 +292,7 @@ sap.ui.define([
 					var trainerId = oModel.TrainerId;
 			     var oTrainerId = 'Trainers(\'' + trainerId + '\')';
 					 var TrainerName = this.getView().byId("idTrainer");
-					 if (!odata[oTrainerId] === "undefined") {
+					 if (odata[oTrainerId]) {
 						 var trainerName = odata[oTrainerId].FirstName + " " + odata[oTrainerId].LastName;
 						 TrainerName.setValue(trainerName);
 					 }

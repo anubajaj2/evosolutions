@@ -63,7 +63,7 @@
 				<ToolbarSpacer/>
 				<Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear"></Button>
 				<Button text="Save" type="Accept" press="onSave" id="idBatch"></Button>
-				<Button text="Delete" type="Reject" icon="sap-icon://decline" press="onDelete" id="idDelete"></Button>
+				<Button text="Delete" type="Reject" icon="sap-icon://decline" press="onDeleteBatch" id="idDelete"></Button>
 			</Toolbar>
 		</footer>
 	</Page>

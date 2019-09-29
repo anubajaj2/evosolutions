@@ -55,7 +55,7 @@ sap.ui.define([
 			var that = this;
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
 			.then(function(oData){
-				for(i =0 ;i < oData.results.length; i++){
+				for(var i =0 ;i < oData.results.length; i++){
 					that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
 				}
 			}).catch(function(oError) {
@@ -63,7 +63,8 @@ sap.ui.define([
 			});
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
 			.then(function(oData){
-				for(i =0 ;i < oData.results.length; i++){
+				debugger;
+				for(var i =0 ;i < oData.results.length; i++){
 					that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
 				}
 			}).catch(function(oError) {

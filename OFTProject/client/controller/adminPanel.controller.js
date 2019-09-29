@@ -143,7 +143,7 @@ sap.ui.define([
 				onClose: function(oAction) {
 					if (oAction === sap.m.MessageBox.Action.OK) {
 						var items = that.getView().byId('viewSecureTable').getSelectedContexts();
-						for (var i = 0; i < items["length"]; i++) { 
+						for (var i = 0; i < items["length"]; i++) {
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), items[i].sPath, "DELETE", {}, {}, that)
 							.then(function(oData) {
 								sap.m.MessageToast.show("Deleted succesfully");
@@ -164,16 +164,20 @@ sap.ui.define([
 
 		},
 		onPressHandleSecureOkPopup: function(oEvent) {
-			    
+
 			    var that = this;
 			    var bindingPath = oEvent.getSource().getParent().getContent()[0].getBindingContext();
 			    var Payload = {
 			    "Role":	sap.ui.getCore().byId("Secure_Dialog--idRole").getValue(),
 			    "UserName":	sap.ui.getCore().byId("Secure_Dialog--idUser").getValue(),
 			    "EmailId":	sap.ui.getCore().byId("Secure_Dialog--idEmail").getValue(),
-			    "TechnicalId" :sap.ui.getCore().byId("Secure_Dialog--idTech").getValue()
+			    "TechnicalId" :sap.ui.getCore().byId("Secure_Dialog--idTech").getValue(),
+					"Salary" :sap.ui.getCore().byId("Secure_Dialog--idSal").getValue(),
+			    "JoiningDate":	sap.ui.getCore().byId("Secure_Dialog--idJD").getValue(),
+			    "BDay":	sap.ui.getCore().byId("Secure_Dialog--idBday").getValue(),
+			    "MobileNo" :sap.ui.getCore().byId("Secure_Dialog--idMno").getValue()
 			    };
-			    
+
 			    if(bindingPath){
 			    var sPath = oEvent.getSource().getBindingContext().sPath;
 
@@ -201,7 +205,7 @@ sap.ui.define([
 					that.getView().setBusy(false);
 					that.oPopover = that.getErrorMessage(oError);
 					that.getView().setBusy(false);
-				});					
+				});
 				}
 			// var oTable = this.getView().getModel();
 			// var secureListInfo = oTable.getData().appUsers;
@@ -238,6 +242,7 @@ sap.ui.define([
 			this._oDialogSecure = null;
 		},
 		onPressOpenAddSecureDialog: function(createMode) {
+			//this.editSecureField(false);
 			if (!this._oDialogSecure) {
 				debugger;
 				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "oft.fiori.fragments.SecureDialog", this);

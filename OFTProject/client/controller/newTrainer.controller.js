@@ -129,9 +129,9 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 		},
 		herculis: function (oEvent) {
 			debugger;
-			// if(oEvent.getParameter("name") !== "server"){
-			// return;
-			// }
+			if(oEvent.getParameter("name") !== "newTrainer"){
+			return;
+			}
 			var that = this;
 
 			this.getView().getModel("/Trainers").setProperty("JoiningDate", this.formatter.getFormattedDate(0));

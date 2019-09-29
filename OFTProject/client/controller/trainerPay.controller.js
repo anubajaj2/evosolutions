@@ -59,7 +59,7 @@ sap.ui.define([
 			sap.m.MessageBox.alert("Button was Hovered");
 		},
 		herculis: function(oEvent) {
-			if(oEvent.getParameter("name") !== "serverPayment"){
+			if(oEvent.getParameter("name") !== "trainerPay"){
 				return;
 			}
 			this.getView().byId("serTable").getBinding("items").refresh(true);

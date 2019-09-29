@@ -17,6 +17,7 @@ sap.ui.define([
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.clearForm();
+			Controller.prototype.onInit.apply(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
@@ -62,13 +63,6 @@ sap.ui.define([
 						that.passwords = "";
 						sap.m.MessageBox.error(xhr.responseText);
 					});
-				$.get('/sendSms')
-						.done(function(data, status) {
-							sap.m.MessageToast.show("Message sent successfully");
-						})
-						.fail(function(xhr, status, error) {
-							sap.m.MessageBox.error(xhr.responseText);
-						});
 			}
 		},
 		onDataExport: function(oEvent) {
@@ -145,6 +139,71 @@ sap.ui.define([
 				}
 			}
 		},
+		popupSave: function() {
+			var that = this;
+			debugger;
+			var payload3 = {
+				"EmailId2": this.getView().getDependents()[0].getContent()[0].getContent()[1].getValue(),
+				"Remarks": this.getView().getDependents()[0].getContent()[0].getContent()[3].getValue()
+			};
+			that.ODataHelper.callOData(that.getOwnerComponent().getModel(), this.sPath, "PUT", {}, payload3, that)
+				.then(function(oData) {
+					sap.m.MessageToast.show("The Data has been updated successfully");
+					that.inqChangeDialog.close();
+				}).catch(function(oError) {
+					that.getView().setBusy(false);
+					var oPopover = that.getErrorMessage(oError);
+
+				});
+
+		},
+		inqChangeDialog : null,
+		onInqSelect: function(oEvent){
+			var that = this;
+			this.sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			var modelData = oEvent.getSource().getModel().getProperty(this.sPath);
+			var oPopupModel = new sap.ui.model.json.JSONModel();
+			oPopupModel.setData({
+				"EmailId2": modelData.EmailId2,
+				"Remarks": modelData.Remarks
+			});
+			if(!this.inqChangeDialog){
+				this.inqChangeDialog = new sap.m.Dialog({
+					title: "Update Data"
+					// contentWidth: auto,
+					// contentHeight: auto
+				});
+
+				this.inqChangeDialog.addButton(new sap.m.Button({
+					text: "Save",
+					press: [that.popupSave, that]
+				}));
+				this.inqChangeDialog.addButton(new sap.m.Button({
+					text: "Cancel",
+					press: function() {
+						that.inqChangeDialog.close();
+					}
+				}));
+				this.getView().addDependent(this.inqChangeDialog);
+				var oCarousel = new sap.ui.layout.form.SimpleForm({
+					content: [new sap.m.Label({text: "Email"}),
+										new sap.m.Input({value:"{/EmailId2}"}),
+										new sap.m.Label({text: "Remarks"}),
+										new sap.m.Input({value:"{/Remarks}"})
+									]
+				});
+				this.inqChangeDialog.addContent(oCarousel);
+				this.inqChangeDialog.setModel(oPopupModel);
+			}else{
+				this.inqChangeDialog.setModel(oPopupModel);
+			}
+			this.inqChangeDialog.open();
+
+		},
+		reloadRefresh: function(){
+			var oList = this.getView().byId("idRecent");
+			oList.getBinding("items").refresh();
+		},
 		herculis: function(oEvent) {
 			if(oEvent.getParameter("name") !== "newlead"){
 				return;
@@ -159,8 +218,9 @@ sap.ui.define([
 			oList.bindAggregation("items", {
 				path: '/Inquries',
 				template: new sap.m.DisplayListItem({
-					label: "{EmailId} - {CourseName}",
-					value: "{fees} {currency} / {CreatedOn}-{CreatedBy}"
+					type: "Navigation",
+					label: "{EmailId} - {CourseName} - {EmailId2}",
+					value: "{fees} / {CreatedOn} - {CreatedBy}"
 				}),
 				filters: [new Filter("CreatedOn", "GE", newDate)],
 				sorter: oSorter
@@ -438,13 +498,23 @@ sap.ui.define([
 			var oValue = oItemList[i].mProperties.value.split("/");
 			var courseId = 'CoursesMst(\'' + course.trim() + '\')';
 			var courseDtl = this.getView().getModel().oData[courseId];
+			var inqBy = oItemList[i].mProperties.value.split("-")[1].trim();
 			debugger;
 			if (courseDtl) {
-				var olblArray =  oLbl.split("-");
-				var oLblName = olblArray[0] + '-' + courseDtl.CourseName;
-				var listValue = courseDtl.CourseFee + oValue[1];
-				oItemList[i].mProperties.label = oLblName;
-				oItemList[i].mProperties.value = listValue;
+			  var oLblName = oItemList[i].mProperties.label.replace(course.trim(), courseDtl.CourseName);
+				if(this.getView().getModel("local").getProperty("/AppUsers")[inqBy]){
+					var listValue = oItemList[i].mProperties.value.replace(inqBy,
+																							this.getView().getModel("local").getProperty("/AppUsers")[inqBy].UserName);
+				  olist.getItems()[i].setValue(listValue);
+				}
+
+				// var olblArray =  oLbl.split("-");
+				// var oLblName = olblArray[0] + '-' + courseDtl.CourseName;
+				// var listValue = courseDtl.CourseFee + oValue[1];
+				olist.getItems()[i].setLabel(oLblName);
+
+				// oItemList[i].mProperties.label = oLblName;
+				// oItemList[i].mProperties.value = listValue;
 			}
 
 
