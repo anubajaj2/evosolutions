@@ -25,6 +25,7 @@ onBeforeRendering: function(){
 			return oDate1Ret + " - " + oDate2Ret;
 		},
 		onApprove: function(oEvent){
+			debugger;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			var that = this;
 			var payload3 = {
@@ -33,17 +34,35 @@ onBeforeRendering: function(){
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
 				.then(function(oData) {
 					MessageToast.show("The Leave request has been approved");
+					var oKey=that.getView().byId("idEmployee").getSelectedKey();
 					that.reloadLeaves();
+					if(oKey){
+						  that.getView().byId("pendingLeaveTable").getBinding("items").filter([
+							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+							new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved')
+					]);
+					that.getView().byId("approvedLeaveTable").getBinding("items").filter([
+					  new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
+					]);
+
+					}
+					else {
+
+				}
 					///send sms
 				}).catch(function(oError) {
 					that.getView().setBusy(false);
 					var oPopover = that.getErrorMessage(oError);
 
 				});
+
 		},
 		onDelete: function(oEvent){
+			debugger;
 			var that = this;
 			var outSider = oEvent;
+				var oKey=that.getView().byId("idEmployee").getSelectedKey();
 			var deletePath = oEvent.getSource().getParent().getBindingContextPath();
 			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
 				if (conf == 'OK') {
@@ -52,6 +71,20 @@ onBeforeRendering: function(){
 							.then(function(oData) {
 								sap.m.MessageToast.show("Deleted succesfully");
 								that.reloadLeaves();
+								if(oKey){
+									  that.getView().byId("pendingLeaveTable").getBinding("items").filter([
+										new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+										new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved')
+								]);
+								that.getView().byId("approvedLeaveTable").getBinding("items").filter([
+								  new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+									 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
+								]);
+
+								}
+								else {
+
+							}
 							}).catch(function(oError) {
 								that.getView().setBusy(false);
 								that.oPopover = that.getErrorMessage(oError);
@@ -59,25 +92,44 @@ onBeforeRendering: function(){
 							});
 				}
 			}, "Confirmation");
+
 		},
 		onReject: function(oEvent){
+			debugger;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			var that = this;
 			var payload3 = {
 				"Status": "Rejected"
 			};
+			var oKey=that.getView().byId("idEmployee").getSelectedKey();
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
 				.then(function(oData) {
 					MessageToast.show("The Leave request has been Rejected");
 					that.reloadLeaves();
+					if(oKey){
+							that.getView().byId("pendingLeaveTable").getBinding("items").filter([
+							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+							new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved')
+					]);
+					that.getView().byId("approvedLeaveTable").getBinding("items").filter([
+						new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
+						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
+					]);
+
+					}
+					else {
+
+				}
 					///send sms
 				}).catch(function(oError) {
 					that.getView().setBusy(false);
 					var oPopover = that.getErrorMessage(oError);
 
 				});
+
 		},
 		currentUser:"",
+		techId:"",
 		getName: function(userId){
 			if(userId){
 					return this.getModel("local").oData.AppUsers[userId].UserName;
@@ -87,8 +139,27 @@ onBeforeRendering: function(){
 				debugger;
 				this.currentUser = this.getModel("local").getProperty("/CurrentUser");
 				this.reloadLeaves();
+
+				this.getView().byId("idEmployee").setValue("");
+
+			},
+			onSelect: function(oEvent){
+				debugger;
+           var techId=oEvent.getSource().getSelectedKey();
+
+					 this.reloadLeaves();
+				  	this.getView().byId("pendingLeaveTable").getBinding("items").filter([
+						 new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + techId + "'"),
+						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved')
+					]);
+					this.getView().byId("approvedLeaveTable").getBinding("items").filter([
+						new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved'),
+					  new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + techId + "'")
+					]);
+
 			},
 	  reloadLeaves: function(){
+			debugger;
 			this.getView().byId("pendingLeaveTable").bindItems({
 				path: "/LeaveRequests",
 				template: new sap.m.ColumnListItem({
@@ -110,11 +181,10 @@ onBeforeRendering: function(){
 				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Not Approved'),
 				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + this.currentUser + "'")
 			]);
-
 			this.getView().byId("approvedLeaveTable").bindItems({
 				path: "/LeaveRequests",
 				template: new sap.m.ColumnListItem({
-					cells: [new sap.m.Text({text: {path : 'AppUserId', formatter: [this.getName, this]}}),
+					cells: [new sap.m.Text({text: {path : 'AppUserId', formatter: this.getName.bind(this)}}),
 									new sap.m.Text({text: {
 										parts: [{path: 'DateFrom'},{path: 'DateTo'}],
 										formatter: this.formatDates
@@ -125,63 +195,24 @@ onBeforeRendering: function(){
 				})
 			});
 			this.getView().byId("approvedLeaveTable").getBinding("items").filter([
-				new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved'),
-				new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + this.currentUser + "'")
+				 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved'),
+				 new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.NE, "'" + this.currentUser + "'")
 			]);
-		},
-		onSelect: function(oEvent){
-			var selectedKey = oEvent.getSource().getSelectedKey();
 
 		},
-// onApprove: function(oEvent){
-// 	debugger;
-//         	var that = this;
-// 					//Get the selected item from the table
-// 					//Prepare the Payload with Status as Approved
-// 					//Call the Odata PUT to update the records
-// 					//Call the relaodLeave() to apply the filter Table with updated payload
-// 	         var lObject=oEvent.getSource().getBindingContext().getObject();
-// 					var lId= lObject.id;
-// 					var payload = {
-// 						"AppUserId": lObject.AppUserId,
-//                 "DateFrom": lObject.DateFrom,
-//                 "DateTo": lObject.DateTo,
-//                 "Days":lObject.Days,
-//                 "LeaveType": lObject.LeaveType,
-//                 "Status": "Approved",
-//                 "ApproverId": lObject.ApproverId,
-//                 "ApprovedOn": lObject.ApprovedOn,
-//                 "RequestedOn": lObject.RequestedOn,
-//                 "Remarks": lObject.Remarks,
-//                 "ChangedOn": lObject.ChangedOn,
-//                 "ChangedBy": lObject.ChangedBy,
-//                 "id": lObject.id,
-// 					};
-// 					var sPath1 = "/LeaveRequests";
-// 					sPath1 = sPath1 = sPath1 + "(" + "\'" + lId + "\'" + ")";
-//
-// 						this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath1, "PUT", {},
-// 							payload, this)
-// 						.then(function(oData) {
-// 							debugger;
-// 							that.getView().setBusy(false);
-// 							sap.m.MessageToast.show("Leave Data updated successfully");
-// 							that.destroyMessagePopover();
-//              this.reloadLeaves();
-// 						}).catch(function(oError) {
-// 							debugger;
-// 							that.getView().setBusy(false);
-// 							//sap.m.MessageToast.show(oError.responseText);
-// 							var oPopover = that.getErrorMessage(oError);
-// 							// var oMultiInput1 = .getView().getElementById("multiInputID");
-// 							// oMultiInput1.removeAllTokens();
-// 						});
-//
-//
-//
-//
-//
-// 		},
+		onUpdateFinished:function(oEvent){
+			debugger;
+		var oTable = this.getView().byId("pendingLeaveTable");
+     if(oTable.getBinding("items").isLengthFinal()) {
+				 var ocnt = oTable.getItems().length;
+		 }
+	 this.getView().byId("pendingIcon").setCount(ocnt);
+		var oTable1 = this.getView().byId("approvedLeaveTable");
+     if(oTable1.getBinding("items").isLengthFinal()) {
+				 var ocnt1 = oTable1.getItems().length;
+		 }
+	 this.getView().byId("approveIcon").setCount(ocnt1);
+		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

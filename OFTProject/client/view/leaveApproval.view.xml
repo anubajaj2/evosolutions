@@ -35,7 +35,7 @@
 			singleContainerFullSize="false">
 	<f:content>
 		<Label text="Employees" />
-			<ComboBox id="idEmployee" items="{local>/AppUsersCopy}" select="onSelect">
+			<ComboBox id="idEmployee" items="{local>/AppUsersCopy}" selectionChange="onSelect">
 				<items>
 					<core:Item key="{local>TechnicalId}" text="{local>UserName}"/>
 				</items>
@@ -50,10 +50,10 @@
 	<items>
 		<IconTabFilter
 			icon="sap-icon://pending"
-			count="3"
+			id="pendingIcon"
 			text="Pending"
 			key="Pending" >
-			<Table id="pendingLeaveTable" headerText="Pending Leaves">
+			<Table id="pendingLeaveTable" headerText="Pending Leaves" updateFinished="onUpdateFinished">
 					<columns>
 						<Column>
 							<Text text="User Name"></Text>
@@ -73,10 +73,10 @@
 				</IconTabFilter>
 		<IconTabFilter
 			icon="sap-icon://paid-leave"
-			count="6"
+			id="approveIcon"
 			text="Approved"
 			key="approved" >
-			<Table id="approvedLeaveTable" headerText="Approved Leaves">
+			<Table id="approvedLeaveTable" headerText="Approved Leaves" updateFinished="onUpdateFinished">
 					<columns>
 						<Column>
 							<Text text="User Name"></Text>
