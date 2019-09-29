@@ -55,7 +55,7 @@ onBeforeRendering: function(){
 					MessageToast.show("The Leave request has been approved");
 					var oKey=that.getView().byId("idEmployee").getSelectedKey();
 					that.reloadLeaves();
-					that.onSend("leaveApproved",record.AppUserId,record.Days).bind(that);
+					that.onSend("leaveApproved",record.AppUserId,record.Days);
 					if(oKey){
 						  that.getView().byId("pendingLeaveTable").getBinding("items").filter([
 							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
@@ -127,7 +127,7 @@ onBeforeRendering: function(){
 				.then(function(oData) {
 					MessageToast.show("The Leave request has been Rejected");
 					that.reloadLeaves();
-					that.onSend("leaveReject",record.AppUserId,record.Days).bind(that);
+					that.onSend("leaveReject",record.AppUserId,record.Days);
 					if(oKey){
 							that.getView().byId("pendingLeaveTable").getBinding("items").filter([
 							new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
