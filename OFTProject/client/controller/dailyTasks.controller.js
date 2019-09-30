@@ -15,9 +15,12 @@ sap.ui.define([
 
 	 var oRouter = this.getOwnerComponent().getRouter();
 	 oRouter.attachRoutePatternMatched(this.onDateChanged1, this);
+
 	 //var oDel = this.getView().byId("idRowAction").setVisible(true);
 },
-
+onChanged: function(oEvent){
+	debugger;
+},
 //Function to filter data on initial load o page when the date EQ todays date
 onDateChanged1: function(oEvent) {
 //this.byId("idRowAction").setVisible(false);
@@ -50,6 +53,17 @@ onDateChanged1: function(oEvent) {
 		value1: this.getView().getModel("local").getProperty("/CurrentUser")
 	}));
   var odata = this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
+	var oBinding = this.getView().byId("idCoTable").getBinding("rows");
+	var that = this;
+	 oBinding.attachDataReceived(function(sReason) {
+		 	debugger;
+		 	 var rows = oBinding.getLength();
+			 var total = 0;
+			 for (var i = 0; i < rows; i++) {
+				 total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
+			 }
+			 that.getView().byId("idCoTable").setTitle("Today worked on " + oBinding.getLength() + " tasks and " + total + " Hours");
+	 });
  },
 
 //Function to filter data wrt date selected and disable save button when date NE todays date
