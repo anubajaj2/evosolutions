@@ -195,6 +195,29 @@
 			"trainerName": "Rama"
 		}
 	],
+
+	"TrainerModel": {
+		"FirstName": "",
+		"LastName":"",
+		"JoiningDate":"",
+		"Address": "",
+		"City": "",
+		"Remarks": "",
+		"ContactNo": "",
+		"ContactNo1": "",
+		"AccountNo":"",
+		"AccountName":"",
+		"IFSCCode":"",
+		"AccountType":"",
+		"PANNo":"",
+		"SoftDelete":"",
+		"CreatedOn":"",
+		"CreatedBy":"",
+		"ChangedOn":"",
+		"ChangedBy":""
+
+	},
+
 	"customersSet": [{
 			"key": "demo@gmail.com",
 			"value": "Ravi"
