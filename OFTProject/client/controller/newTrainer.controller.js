@@ -154,6 +154,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 		sId: "",
 		onSelect: function (oEvent) {
 			this.getCustomerPopup();
+			this.flag = "trainerName";
 			var title = this.getView().getModel("i18n").getProperty("Trainer");
 			this.searchPopup.setTitle(title);
 			this.searchPopup.bindAggregation("items", {
@@ -386,6 +387,32 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 					that.getView().setBusy(false);
 				});
 		},
+
+		cleartrainer: function (oEvent) {
+			this.getView().byId("idFirstName").setValue("");
+			this.getView().byId("idFirstName").setEnabled(true);
+			this.getView().byId("idLastName").setValue("");
+			this.getView().byId("idLastName").setEnabled(true);
+			this.getView().byId("idJoiningDate").setValue("");
+			this.getView().byId("idJoiningDate").setEnabled(true);
+			this.getView().byId("idAccountName").setValue("");
+			this.getView().byId("idAccountNo").setValue("");
+			this.getView().byId("idAccountType").setValue("");
+			this.getView().byId("idAddress").setValue("");
+			this.getView().byId("idChangedBy").setValue("");
+			this.getView().byId("idChangedOn").setValue("");
+			this.getView().byId("idCity").setValue("");
+			this.getView().byId("idContactNo").setValue("");
+			this.getView().byId("idContactNo1").setValue("");
+			this.getView().byId("idCreatedBy").setValue("");
+			this.getView().byId("idCreatedOn").setValue("");
+			this.getView().byId("idIFSCCode").setValue("");
+			this.getView().byId("idPANNo").setValue("");
+			this.getView().byId("idRemarks").setValue("");
+			this.getView().byId("idSoftDelete").setValue("");
+
+		},
+
 		onUpdate: function (oEvent) {
 
 			var sPath = oEvent.getSource().getParent().mAggregations.content[0].getBindingContext().sPath;
@@ -461,18 +488,68 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 
 		onConfirm: function (oEvent) {
 			var data = this.getSelectedKey(oEvent);
-			if (oEvent.getSource().getParent().oController.ReasgnPopup) {
-				sap.ui.getCore().byId("idSimpleFormRe--customerId").setValue(data[0]);
-				sap.ui.getCore().byId("idSimpleFormRe--name").setText(data[1]);
-				sap.ui.getCore().byId("idSimpleFormRe--cid").setValue(data[2]);
+			// if (oEvent.getSource().getParent().oController.ReasgnPopup) {
+			// 	sap.ui.getCore().byId("idSimpleFormRe--customerId").setValue(data[0]);
+			// 	sap.ui.getCore().byId("idSimpleFormRe--name").setText(data[1]);
+			// 	sap.ui.getCore().byId("idSimpleFormRe--cid").setValue(data[2]);
+			//
+			// 	this.getView().byId("customerId").setValue(data[0]);
+			// 	this.getView().byId("name").setText(data[1]);
+			// 	this.getView().byId("cid").setValue(data[2]);
+			// } else {
+			// 	this.getView().byId("customerId").setValue(data[0]);
+			// 	this.getView().byId("name").setText(data[1]);
+			// 	this.getView().byId("cid").setValue(data[2]);
+			// }
 
-				this.getView().byId("customerId").setValue(data[0]);
-				this.getView().byId("name").setText(data[1]);
-				this.getView().byId("cid").setValue(data[2]);
-			} else {
-				this.getView().byId("customerId").setValue(data[0]);
-				this.getView().byId("name").setText(data[1]);
-				this.getView().byId("cid").setValue(data[2]);
+			if (this.flag === "trainerName") {
+				debugger;
+				var oTrainer = "Trainers(\'" + data[2] + "\')";
+				var oData = this.getView().getModel().oData[oTrainer];
+
+				this.getView().getModel("local").setProperty("/TrainerModel/FirstName", oData.FirstName);
+				this.getView().byId("idFirstName").setValue(oData.FirstName);
+				this.getView().byId("idFirstName").setEnabled(false);
+				this.getView().getModel("local").setProperty("/TrainerModel/LastName", oData.LastName);
+				this.getView().byId("idLastName").setValue(oData.LastName);
+				this.getView().byId("idLastName").setEnabled(false);
+				this.getView().getModel("local").setProperty("/TrainerModel/JoiningDate", oData.JoiningDate);
+				this.getView().byId("idJoiningDate").setValue(oData.JoiningDate);
+				this.getView().byId("idJoiningDate").setEnabled(false);
+				this.getView().getModel("local").setProperty("/TrainerModel/AccountName", oData.AccountName);
+				this.getView().byId("idAccountName").setValue(oData.AccountName);
+				this.getView().getModel("local").setProperty("/TrainerModel/AccountNo", oData.AccountNo);
+				this.getView().byId("idAccountNo").setValue(oData.AccountNo);
+				this.getView().getModel("local").setProperty("/TrainerModel/AccountType", oData.AccountType);
+				this.getView().byId("idAccountType").setValue(oData.AccountType);
+				this.getView().getModel("local").setProperty("/TrainerModel/Address", oData.Address);
+				this.getView().byId("idAddress").setValue(oData.Address);
+				this.getView().getModel("local").setProperty("/TrainerModel/ChangedBy", oData.ChangedBy);
+				this.getView().byId("idChangedBy").setValue(oData.ChangedBy);
+				this.getView().getModel("local").setProperty("/TrainerModel/ChangedOn", oData.ChangedOn);
+				this.getView().byId("idChangedOn").setValue(oData.ChangedOn);
+				this.getView().getModel("local").setProperty("/TrainerModel/City", oData.City);
+				this.getView().byId("idCity").setValue(oData.City);
+				this.getView().getModel("local").setProperty("/TrainerModel/ContactNo", oData.ContactNo);
+				this.getView().byId("idContactNo").setValue(oData.ContactNo);
+				this.getView().getModel("local").setProperty("/TrainerModel/ContactNo1", oData.ContactNo1);
+				this.getView().byId("idContactNo1").setValue(oData.ContactNo1);
+				this.getView().getModel("local").setProperty("/TrainerModel/CreatedBy", oData.CreatedBy);
+				this.getView().byId("idCreatedBy").setValue(oData.CreatedBy);
+				this.getView().getModel("local").setProperty("/TrainerModel/CreatedOn", oData.CreatedOn);
+				this.getView().byId("idCreatedOn").setValue(oData.CreatedOn);
+				this.getView().getModel("local").setProperty("/TrainerModel/IFSCCode", oData.IFSCCode);
+				this.getView().byId("idIFSCCode").setValue(oData.IFSCCode);
+				this.getView().getModel("local").setProperty("/TrainerModel/PANNo", oData.PANNo);
+				this.getView().byId("idPANNo").setValue(oData.PANNo);
+				this.getView().getModel("local").setProperty("/TrainerModel/Remarks", oData.Remarks);
+				this.getView().byId("idRemarks").setValue(oData.Remarks);
+				this.getView().getModel("local").setProperty("/TrainerModel/SoftDelete", oData.SoftDelete);
+				this.getView().byId("idSoftDelete").setValue(oData.SoftDelete);
+				//var trainerId = oEvent.getParameter("selectedItem").getBindingContextPath().split("'")[1];
+				//this.getView().getModel("local").setProperty("/newBatch/trainerId", trainerId);
+
+
 			}
 		},
 
