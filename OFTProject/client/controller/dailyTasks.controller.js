@@ -43,6 +43,12 @@ onDateChanged1: function(oEvent) {
    value1: dDateStart,
    value2: dDateEnd
 }));
+
+	aFilters.push(new Filter({
+		path: "CreatedBy",
+		operator: FilterOperator.Contains,
+		value1: this.getView().getModel("local").getProperty("/CurrentUser")
+	}));
   var odata = this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
  },
 
@@ -100,6 +106,12 @@ onDateChanged1: function(oEvent) {
 	   value1: dDateStart,
 	   value2: dDateEnd
  }));
+ debugger;
+	 aFilters.push(new Filter({
+		 path: "CreatedBy",
+		 operator: FilterOperator.Contains,
+		 value1: this.getView().getModel("local").getProperty("/CurrentUser")
+	 }));
 }
 //bind the filter to the table rows
     this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
