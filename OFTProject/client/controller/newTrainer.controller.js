@@ -1,3 +1,4 @@
+var oGuid;
 sap.ui.define(["oft/fiori/controller/BaseController",
 	"sap/m/MessageBox",
 	"sap/m/MessageToast",
@@ -506,7 +507,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 				debugger;
 				var oTrainer = "Trainers(\'" + data[2] + "\')";
 				var oData = this.getView().getModel().oData[oTrainer];
-
+				oGuid = data[2];
 				this.getView().getModel("local").setProperty("/TrainerModel/FirstName", oData.FirstName);
 				this.getView().byId("idFirstName").setValue(oData.FirstName);
 				this.getView().byId("idFirstName").setEnabled(false);
@@ -619,6 +620,30 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 
 		},
 
+		deletetrainer: function() {
+			var that = this;
+			MessageBox.confirm("Do you want to delete the selected trainer?", function(conf) {
+				if (conf == 'OK') {
+					//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
+					// that.totalCount = that.totalCount - items.length;
+					// for (var i = 0; i < items["length"]; i++) {
+					debugger;
+					var sPath = "/Trainers('" + oGuid + "')";
+					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
+						.then(function(oData) {
+							//that.getView().byId("idDelete").setEnabled(false);
+							sap.m.MessageToast.show("Trainer Deleted succesfully");
+							that.cleartrainer();
+						}).catch(function(oError) {
+							that.getView().setBusy(false);
+							that.oPopover = that.getErrorMessage(oError);
+							that.getView().setBusy(false);
+						});
+					// }
+				}
+			}, "Confirmation");
+
+		},
 
 		onClearScreen: function () {
 			this.getView().getModel("local").setProperty("/newServer/User", null);

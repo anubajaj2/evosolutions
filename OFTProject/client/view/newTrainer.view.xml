@@ -185,7 +185,10 @@ valueFormat="dd.MM.yyyy">
 
 
 </f:content>
+
+
 </f:SimpleForm>
+<!--
     <Table id="idSubs" items="{/Trainers}" growing="true"
       growingThreshold="200" growingScrollToLoad="false" mode="none">
     <columns>
@@ -217,6 +220,7 @@ valueFormat="dd.MM.yyyy">
       </ColumnListItem>
     </items>
   </Table>
+-->
   </semantic:content>
 <semantic:customFooterContent>
 <Button text="Save" type="Accept" press="onSave"/>
