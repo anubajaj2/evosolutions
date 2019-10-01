@@ -60,6 +60,11 @@
       "type":"hasMany",
       "model":"LeaveRequest",
       "foreignKey":"AppUserId"
+    },
+    "ToTasks":{
+      "type":"hasMany",
+      "model":"task",
+      "foreignKey":"CreatedBy"
     }
   },
   "acls": [

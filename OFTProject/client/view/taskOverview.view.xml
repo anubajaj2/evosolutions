@@ -1,0 +1,71 @@
+<mvc:View controllerName="oft.fiori.controller.taskOverview"
+  xmlns:l="sap.ui.layout"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns="sap.m"
+  xmlns:t="sap.ui.table"
+	>
+  <semantic:FullscreenPage
+    title="Task Overview">
+    <semantic:content id="idContent">
+    	<VBox>
+      <f:SimpleForm editable="true" id="idform">
+      	<f:content>
+      		<Label text="Date" />
+          <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
+            change="onDateChange" value="{'local>/tasks/CrDate'}"> </DatePicker>
+
+          <Label text="Users" />
+          <ComboBox id="idUser" items="{/AppUsers}" selectionChange="onSelect">
+    				<items>
+    					<core:Item key="{TechnicalId}" text="{UserName}"/>
+    				</items>
+    				</ComboBox>
+      	</f:content>
+      </f:SimpleForm>
+             <Table items="{/tasks}"
+               id="idCoTable"
+               selectionMode="None"
+               updateFinished="onUpdateFinished">
+                 <columns>
+                   <Column width="250px">
+                    <Label text="Create Date"></Label>
+
+                   </Column>
+                   <Column width="250px">
+                    <Label text="User"></Label>
+
+                   </Column>
+                   <Column width="250px">
+                     <Label text="Task Type" />
+
+                   </Column>
+                   <Column width="250px">
+                     <Label text="{i18n>taskWorkedOn}"/>
+
+                   </Column>
+                   <Column width="80px">
+                     <Label text="Hours" />
+
+                   </Column>
+                 </columns>
+                 <items>
+                   <ColumnListItem>
+                     <cells>
+                       <Text text="{CrDate}"/>
+                       <Text text="{CreatedBy}"/>
+                      <Text text="{path: 'taskType',
+                       formatter: '.formatter.getTaskText'}" />
+                      <Text text="{taskWorkedOn}"/>
+                      <Text text="{noOfHours}"/>
+                     </cells>
+                     </ColumnListItem>
+                 </items>
+               </Table>
+             </VBox>
+             </semantic:content>
+             </semantic:FullscreenPage>
+             </mvc:View>

@@ -51,6 +51,11 @@
   },
   "validations": [],
   "relations": {
+    "ToAppUsers": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "CreatedBy"
+		}
   },
   "acls": [
     {

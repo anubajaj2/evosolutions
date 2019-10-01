@@ -31,6 +31,7 @@
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="analytical" icon="sap-icon://bar-chart" title="Analytical Panel" description=""></StandardListItem> -->
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="dailytask" icon="sap-icon://task" title="Daily Tasks" description=""></StandardListItem>
+					<StandardListItem id="taskoverview" icon="sap-icon://activity-individual" title="Task Overview" description=""></StandardListItem>
 				</items>
 			</List>
 		</content>
