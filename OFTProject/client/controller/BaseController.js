@@ -47,6 +47,7 @@ sap.ui.define([
 		 */
 		onInit: function() {
 			var that = this;
+			//Use TechnicalId as Key
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
 				.then(function(oData) {
 					for(var i =0 ;i < oData.results.length; i++){
