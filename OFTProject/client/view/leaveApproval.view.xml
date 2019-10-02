@@ -14,6 +14,10 @@
 	showNavButton="false"
 	navButtonPress="onNavButtonPress"
 	>
+	<semantic:customHeaderContent>
+		<Text id="idUser"> </Text>
+		<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+	</semantic:customHeaderContent>
 	<semantic:content>
 	<VBox>
 		<f:SimpleForm

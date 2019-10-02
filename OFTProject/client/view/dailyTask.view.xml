@@ -4,6 +4,10 @@
   xmlns:f="sap.ui.layout.form">
   <semantic:FullscreenPage
     title="Daily Task">
+    <semantic:customHeaderContent>
+  		<Text id="idUser"> </Text>
+  		<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+  	</semantic:customHeaderContent>
     <semantic:content id="idContent">
       <f:SimpleForm editable="true" id="idform">
       	<f:content>

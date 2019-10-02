@@ -19,6 +19,12 @@ sap.ui.define([
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.onBankAccount, this);
 			this.getView().byId("idRegDate").setValue(new Date());
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			if (currentUser) {
+				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
+			}
+
 		},
 		formatter: Formatter,
 		onBankAccount: function(oEvent){

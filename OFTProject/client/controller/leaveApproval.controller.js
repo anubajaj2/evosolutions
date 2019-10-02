@@ -9,8 +9,14 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.leaveApproval", {
 
 		onInit: function() {
+				debugger;
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			if (currentUser) {
+				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
+			}
 	},
 
 onBeforeRendering: function(){

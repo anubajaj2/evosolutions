@@ -24,6 +24,12 @@ sap.ui.define([
 			// this.clearForm();
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			this.Updatecourse = false;
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			if (currentUser) {
+				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
+			}
+
 			// var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			// if (currentUser) {
 			// 	var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;

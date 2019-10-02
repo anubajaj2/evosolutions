@@ -15,6 +15,12 @@ sap.ui.define([
 
 	 var oRouter = this.getOwnerComponent().getRouter();
 	 oRouter.attachRoutePatternMatched(this.onDateChanged1, this);
+	 var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			if (currentUser) {
+				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
+			}
+
 
 	 //var oDel = this.getView().byId("idRowAction").setVisible(true);
 },

@@ -10,6 +10,10 @@
 	>
   <semantic:FullscreenPage
     title="Task Overview">
+    <semantic:customHeaderContent>
+  		<Text id="idUser"> </Text>
+  		<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+  	</semantic:customHeaderContent>
     <semantic:content id="idContent">
     	<VBox>
       <f:SimpleForm editable="true" id="idform">

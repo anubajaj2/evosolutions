@@ -20,8 +20,9 @@ sap.ui.define([
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
-			if (currentUser) {
+					if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
 				var date = new Date();
 				debugger;
 				var dateFilter = new Date(date.getFullYear(), 0, 1);

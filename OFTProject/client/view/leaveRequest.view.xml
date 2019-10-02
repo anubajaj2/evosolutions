@@ -13,6 +13,10 @@
 	showNavButton="false"
 	navButtonPress="onNavButtonPress"
 	>
+	<semantic:customHeaderContent>
+		<Text id="idUser"> </Text>
+		<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+	</semantic:customHeaderContent>
 	<l:ResponsiveFlowLayout>
 		<VBox renderType="Bare">
 		<layoutData>
@@ -174,7 +178,7 @@
 							constraints:{
 							displayFormat:'Date'
 							}}],formatter:'.formatter.formatLRdate'}"/>
-					<Text text="{local>Days}"></Text>		
+					<Text text="{local>Days}"></Text>
 					<ObjectStatus id="idobjSt" text="{local>Status}"
 							state="{path:'local>Status', formatter:'.formatter.formatLRStatus'}"
 						/>

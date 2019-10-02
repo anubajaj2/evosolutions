@@ -10,6 +10,12 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.taskOverview", {
    aFilters:[],
   onInit: function() {
+		var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			if (currentUser) {
+				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				this.getView().byId("idUser").setText(loginUser);
+			}
+
 },
 
 onUpdateFinished:function(oEvent){

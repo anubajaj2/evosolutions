@@ -121,7 +121,7 @@
         <Button icon="sap-icon://action" tooltip="send email" press="onEmail"/>
 				<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://delete" press="onDelete"/>
 				<Button	visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://download" press="onDataExport" />
-        <Button icon="sap-icon://refresh" press="reloadRefresh" /> 
+        <Button icon="sap-icon://refresh" press="reloadRefresh" />
 			</Toolbar>
 			</headerToolbar>
 		</List>

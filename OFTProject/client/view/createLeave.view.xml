@@ -13,6 +13,10 @@
 	showNavButton="true"
 	navButtonPress="onBack"
 	>
+	<semantic:customHeaderContent>
+		<Text id="idUser"> </Text>
+		<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+	</semantic:customHeaderContent>
 <semantic:content>
 <VBox>
 	<f:SimpleForm
@@ -53,7 +57,7 @@
 					enabled="true"
 					change="onDPhandleChange"
 					displayFormat="{path:'local>/LeaveStatic/dateFormatDRS1'}"
-					
+
 					value="{local>/newLeaveRequest/DateFrom}"
 					class="sapUiSmallMarginBottom"/>
 				<Label id="idDays" text="Days"/>

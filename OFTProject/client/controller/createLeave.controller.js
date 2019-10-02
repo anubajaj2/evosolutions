@@ -25,10 +25,11 @@ sap.ui.define([
 			this.getView().byId("idDatePicker").setVisible(false);
 			var dateTo = new Date();
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
-			if (currentUser) {
-				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+				if (currentUser) {
+					var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
+					this.getView().byId("idUser").setText(loginUser);
+				}
 
-		}
 	},
 	onSelchange: function(oEvent){
 		var sel = oEvent.getParameters("selectedItem");
