@@ -13,7 +13,7 @@ sap.ui.define([
 		var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
-				this.getView().byId("idUser").setText(loginUser);
+				this.getView().byId("idUserl").setText(loginUser);
 			}
 
 },
