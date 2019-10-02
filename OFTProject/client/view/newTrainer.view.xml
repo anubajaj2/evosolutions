@@ -153,12 +153,11 @@ valueFormat="dd.MM.yyyy">
                         value="{TrainerModel>/PANNo}">
           </Input>
           <Label text="SoftDelete"/>
-          <Input
+          <CheckBox
                         id="idSoftDelete"
-                        type="Text"
-                        value="{TrainerModel>/SoftDelete}">
-          </Input>
-          <Label text="CreatedOn"/>
+                        selected="{TrainerModel>/SoftDelete}">
+          </CheckBox>
+          <!-- <Label text="CreatedOn"/>
           <DatePicker id="idCreatedOn"
             displayFormat="dd.MM.yyyy"
             value="{TrainerModel>/CreatedOn}"
@@ -181,7 +180,7 @@ valueFormat="dd.MM.yyyy">
                 id="idChangedBy"
                 type="Text"
                 value="{TrainerModel>/ChangedBy}">
-          </Input>
+          </Input> -->
 
 
 </f:content>
