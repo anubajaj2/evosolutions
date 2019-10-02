@@ -26,30 +26,26 @@
     				</ComboBox>
       	</f:content>
       </f:SimpleForm>
+      <Label id="idTxt" design="Bold" />
              <Table items="{/tasks}"
                id="idCoTable"
                selectionMode="None"
                updateFinished="onUpdateFinished">
                  <columns>
-                   <Column width="250px">
+                   <Column>
                     <Label text="Create Date"></Label>
-
                    </Column>
-                   <Column width="250px">
-                    <Label text="User"></Label>
-
+                   <Column>
+                    <Label text="User Name"></Label>
                    </Column>
-                   <Column width="250px">
+                   <Column>
                      <Label text="Task Type" />
-
                    </Column>
-                   <Column width="250px">
+                  <Column>
                      <Label text="{i18n>taskWorkedOn}"/>
-
                    </Column>
-                   <Column width="80px">
-                     <Label text="Hours" />
-
+                   <Column>
+                     <Label text="Number Of Hours" />
                    </Column>
                  </columns>
                  <items>
@@ -57,7 +53,7 @@
                      <cells>
                        <Text text="{CrDate}"/>
                        <Text text="{CreatedBy}"/>
-                      <Text text="{path: 'taskType',
+                       <Text text="{path: 'taskType',
                        formatter: '.formatter.getTaskText'}" />
                       <Text text="{taskWorkedOn}"/>
                       <Text text="{noOfHours}"/>
