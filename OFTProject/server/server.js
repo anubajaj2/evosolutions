@@ -224,9 +224,24 @@ app.start = function() {
 			debugger;
 			var msg = "";
 			var typeMsg = req.body.msgType;
+			//var username='anubhav.abap@gmail.com';
+			var username='install.abap@gmail.com';
+			//var hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
+			var hash = 'eef684d01be7535d39d7f409a1b8e888f874e9a05243b4fb3db2426f99aed5ba';
+			//var sender='ONLTRN';
+			var sender = "txtlcl";
 			switch (typeMsg) {
+				case "inquiry":
+					msg = "Dear #FirstName#, Greetings from www.evotrainingsolutions.com, For #COURSE# course, please feel free to call us on 8448443349";
+					msg = msg.replace("#COURSE#", req.body.userName);
+					username='anubhav.abap@gmail.com';
+					hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
+					sender = "ONLTRN";
+					break;
 				case "leaveRequest":
 					msg = "Dear #FirstName#, You have requested for #Custom1# days of leaves. your leave balance is #Custom2#.";
+					msg = msg.replace("#Custom1#", req.body.requested);
+					msg = msg.replace("#Custom2#", req.body.balance);
 					break;
 				case "leaveReject":
 						msg = "Dear #FirstName#, Your leave request has been rejected.";
@@ -238,20 +253,13 @@ app.start = function() {
 					return;
 			}
 			msg = msg.replace("#FirstName#", req.body.userName);
-			msg = msg.replace("#Custom1#", req.body.requested);
-			msg = msg.replace("#Custom2#", req.body.balance);
 
 
 				var http = require('http');
 				var urlencode = require('urlencode');
 				msg=urlencode(msg);
 				var number=req.body.Number;
-				//var username='anubhav.abap@gmail.com';
-				var username='install.abap@gmail.com';
-				//var hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
-				var hash = 'eef684d01be7535d39d7f409a1b8e888f874e9a05243b4fb3db2426f99aed5ba';
-				//var sender='ONLTRN';
-				var sender = "txtlcl";
+
 				var data='username='+username+'&hash='+hash+'&sender='+sender+'&numbers='+number+'&message='+msg
 				var options = {
 		 				 host: 'api.textlocal.in',

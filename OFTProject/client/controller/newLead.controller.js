@@ -354,6 +354,28 @@ sap.ui.define([
 					if (that.getView().byId("idRecent").getBinding("items")) {
 						that.getView().byId("idRecent").getBinding("items").refresh();
 					}
+
+					try {
+						var userName = leadData.FirstName;
+						var MobileNo = leadData.emailId;
+						var loginPayload = {};
+						loginPayload.msgType =  "inquiry";
+						loginPayload.userName =  userName;
+						loginPayload.courseName = leadData.course;
+						loginPayload.Number =  MobileNo;
+						$.post('/requestMessage', loginPayload)
+							.done(function(data, status) {
+								sap.m.MessageToast.show("Message sent successfully");
+							})
+							.fail(function(xhr, status, error) {
+								//that.passwords = "";
+								sap.m.MessageBox.error(xhr.responseText);
+							});
+					} catch (e) {
+
+					} finally {
+
+					}
 				}).catch(function(oError) {
 					that.getView().setBusy(false);
 					// var oPopover = that.getErrorMessage(oError);
