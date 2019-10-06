@@ -361,7 +361,7 @@ sap.ui.define([
 						var loginPayload = {};
 						loginPayload.msgType =  "inquiry";
 						loginPayload.userName =  userName;
-						loginPayload.courseName = leadData.course;
+						loginPayload.courseName = that.getView().byId("idCourse1").getSelectedItem().getText();
 						loginPayload.Number =  MobileNo;
 						$.post('/requestMessage', loginPayload)
 							.done(function(data, status) {
