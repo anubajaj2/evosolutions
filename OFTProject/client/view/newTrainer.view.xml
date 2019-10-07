@@ -41,23 +41,6 @@ columnsL="1"
 columnsM="1"
 class="editableForm">
 <f:content>
-   <!-- <Label text="Trainer Code" labelFor="trainerCode" required="true" />
-<Input id="idtrainerCode" submit="trainerCodeEnter" suggest="ValueChangetrainer"
-suggestionItems="{/trainers}" showSuggestion="true"
-enabled="{viewModel>/codeEnabled}"
-suggestionItemSelected="trainerCodeCheck" liveChange="onKeyPress"
-change="trainerCodeEnter">
-<suggestionItems>
-<core:ListItem text="{trainerCode}"
-additionalText="{Name}"/>
-</suggestionItems>
-</Input> -->
-<!-- <Label text="FirstName" required="true"/>
-<Input
-id="idFirstName"
-type="Text"
-value="{trainerModel>/FirstName}" >
-</Input> -->
 
         <Label text="Trainer Name"  />
         <Input required="true"
@@ -88,138 +71,200 @@ value="{TrainerModel>/JoiningDate}"
 valueFormat="dd.MM.yyyy">
 </DatePicker>
 
-          <Label text="Address"/>
-          <Input
-                        id="idAddress"
-                        type="Text"
-                        value="{TrainerModel>/Address}">
-          </Input>
-          <Label text="City"/>
-          <Input
-                        id="idCity"
-                        type="Text"
-                        value="{TrainerModel>/City}">
-          </Input>
           <Label text="Remarks"/>
           <Input
                         id="idRemarks"
                         type="Text"
                         value="{TrainerModel>/Remarks}">
           </Input>
-          <Label text="Contact No"/>
-          <Input
-                        id="idContactNo"
-                        type="Text"
-                        value="{TrainerModel>/ContactNo}">
-          </Input>
 
-          <Label text="Contact No1"/>
-          <Input
-                        id="idContactNo1"
-                        type="Text"
-                        value="{TrainerModel>/ContactNo1}">
-          </Input>
-          <Label text="AccountNo"/>
-          <Input
-                        id="idAccountNo"
-                        type="Text"
-                        value="{TrainerModel>/AccountNo}">
-          </Input>
-
-          <Label text="AccountName"/>
-          <Input
-                        id="idAccountName"
-                        type="Text"
-                        value="{TrainerModel>/AccountName}">
-          </Input>
-
-          <Label text="IFSC Code"/>
-          <Input
-                        id="idIFSCCode"
-                        type="Text"
-                        value="{TrainerModel>/IFSCCode}">
-          </Input>
-
-          <Label text="Account type"/>
-          <Input
-                        id="idAccountType"
-                        type="Text"
-                        value="{TrainerModel>/AccountType}">
-          </Input>
-          <Label text="PAN Number"/>
-          <Input
-                        id="idPANNo"
-                        type="Text"
-                        value="{TrainerModel>/PANNo}">
-          </Input>
           <Label text="SoftDelete"/>
           <CheckBox
                         id="idSoftDelete"
                         selected="{TrainerModel>/SoftDelete}">
           </CheckBox>
-          <!-- <Label text="CreatedOn"/>
-          <DatePicker id="idCreatedOn"
-            displayFormat="dd.MM.yyyy"
-            value="{TrainerModel>/CreatedOn}"
-            valueFormat="dd.MM.yyyy">
-          </DatePicker>
-          <Label text="CreatedBy"/>
-          <Input
-                        id="idCreatedBy"
-                        type="Text"
-                        value="{TrainerModel>/CreatedBy}">
-          </Input>
-          <Label text="ChangedOn"/>
-          <DatePicker id="idChangedOn"
-            displayFormat="dd.MM.yyyy"
-            value="{TrainerModel>/ChangedOn}"
-            valueFormat="dd.MM.yyyy">
-          </DatePicker>
-          <Label text="ChangedBy"/>
-          <Input
-                id="idChangedBy"
-                type="Text"
-                value="{TrainerModel>/ChangedBy}">
-          </Input> -->
-
 
 </f:content>
-
-
 </f:SimpleForm>
-<!--
-    <Table id="idSubs" items="{/Trainers}" growing="true"
-      growingThreshold="200" growingScrollToLoad="false" mode="none">
-    <columns>
-      <Column hAlign="Left">
-        <Label text="FirstName" class="columnLabelStyle"/>
-      </Column>
-      <Column>
-        <Label text="LastName" class="columnLabelStyle"/>
-      </Column>
-      <Column hAlign="Left">
-                <Label text="JoiningDate" class="columnLabelStyle"/>
-      </Column>
-      <Column>
-        <Label text="Address" class="columnLabelStyle"/>
-      </Column>
-        <Column>
-        <Label text="City" class="columnLabelStyle"/>
-      </Column>
-    </columns>
-    <items>
-      <ColumnListItem id="idColumnlist" type="Active" >
-        <cells>
-          <Text text="{FirstName}" modelContextChange="onStudentIdChange"></Text>
-          <Text text="{LastName}" modelContextChange="onStudentIdChange"></Text>
-          <Text text="{JoiningDate}" modelContextChange="onStudentIdChange"></Text>
-            <Text text="{Address}" modelContextChange="onStudentIdChange"></Text>
-          <Text text="{City}" modelContextChange="onStudentIdChange"></Text>
-        </cells>
-      </ColumnListItem>
-    </items>
-  </Table>
--->
+
+<f:Form id="sideBySide" editable="true">
+<f:layout>
+<f:GridLayout labelSpanXL="2" labelSpanL="2" labelSpanM="2"
+              emptySpanXL="2" emptySpanL="2" emptySpanM="2"
+              columnsXL="8" columnsL="8" columnsM="8"
+              singleContainerFullSize="false"></f:GridLayout>
+</f:layout>
+
+<f:formContainers>
+<f:FormContainer title="Address Information">
+<f:formElements>
+<f:FormElement label="Address">
+  <f:fields>
+    <Input
+                  id="idAddress"
+                  type="Text"
+                  value="{TrainerModel>/Address}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="City">
+  <f:fields>
+    <Input
+                  id="idCity"
+                  type="Text"
+                  value="{TrainerModel>/City}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="Contact No">
+  <f:fields>
+    <Input
+                  id="idContactNo"
+                  type="Text"
+                  value="{TrainerModel>/ContactNo}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="Contact No1">
+  <f:fields>
+    <Input
+                  id="idContactNo1"
+                  type="Text"
+                  value="{TrainerModel>/ContactNo1}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+</f:formElements>
+<f:layoutData>
+<f:GridContainerData halfGrid="true"></f:GridContainerData>
+</f:layoutData>
+</f:FormContainer>
+
+<f:FormContainer title="Bank Information">
+<f:formElements>
+<f:FormElement label="Account #">
+  <f:fields>
+    <Input
+                  id="idAccountNo"
+                  type="Text"
+                  value="{TrainerModel>/AccountNo}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="Account Name">
+  <f:fields>
+    <Input
+                  id="idAccountName"
+                  type="Text"
+                  value="{TrainerModel>/AccountName}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="IFSC Code">
+  <f:fields>
+    <Input
+                  id="idIFSCCode"
+                  type="Text"
+                  value="{TrainerModel>/IFSCCode}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="Account Type">
+  <f:fields>
+    <Input
+                  id="idAccountType"
+                  type="Text"
+                  value="{TrainerModel>/AccountType}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+<f:FormElement label="PAN Number">
+  <f:fields>
+    <Input
+                  id="idPANNo"
+                  type="Text"
+                  value="{TrainerModel>/PANNo}">
+    </Input>
+
+  </f:fields>
+</f:FormElement>
+
+</f:formElements>
+<f:layoutData>
+<f:GridContainerData halfGrid="true"></f:GridContainerData>
+</f:layoutData>
+</f:FormContainer>
+
+</f:formContainers>
+
+</f:Form>
+
+<Table id="idTrainerCourse" items="{/CourseMst}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+				<headerToolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressOpenAddSecureDialog"/>
+						<OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
+							press="onPressDeleteSecureRow"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Course ID"/>
+						</header>
+					</Column>
+
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Course Name"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Fee Mode"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
+							<Text text="Fee Amount"/>
+						</header>
+					</Column>
+
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Label text="{Id}"/>
+							<Label text="{CourseName}"/>
+							<Label text="{}"/>
+							<Label text="{}"/>
+							<!-- <Label text="{Salary}"/>
+							<Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
+							<Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/> -->
+							<Button icon="sap-icon://edit" press="editTrainerCourse"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+
   </semantic:content>
 <semantic:customFooterContent>
 <Button text="Save" type="Accept" press="onSave"/>
