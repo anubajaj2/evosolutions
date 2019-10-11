@@ -175,6 +175,7 @@ sap.ui.define([
 					"Salary" :sap.ui.getCore().byId("Secure_Dialog--idSal").getValue(),
 			    "JoiningDate":	sap.ui.getCore().byId("Secure_Dialog--idJD").getValue(),
 			    "BDay":	sap.ui.getCore().byId("Secure_Dialog--idBday").getValue(),
+					"Holiday":	sap.ui.getCore().byId("Secure_Dialog--idHoliday").getSelectedKey(),
 			    "MobileNo" :sap.ui.getCore().byId("Secure_Dialog--idMno").getValue()
 			    };
 

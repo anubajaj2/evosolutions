@@ -59,6 +59,11 @@
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
 						<header>
+							<Text text="Holiday"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+						<header>
 							<Text text="Edit"/>
 						</header>
 					</Column>
@@ -74,6 +79,7 @@
 							<Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
 							<Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
 							<Label text="{MobileNo}"/>
+							<Label text="{Holiday}"/>
 							<Button icon="sap-icon://edit" press="editSecureField"/>
 						</cells>
 					</ColumnListItem>

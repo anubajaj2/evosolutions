@@ -28,6 +28,18 @@
 					<DatePicker id="idBday" displayFormat="dd.MM.yyyy" value="{BDay}"/>
 					<Label text="Mobile No." required="true"/>
 					<Input id="idMno" name="Mobile No."  value="{MobileNo}" valueLiveUpdate="true"/>
+					<Label text="Holiday" required="true"/>
+					<Select id="idHoliday" name="Holiday"  value="{Holiday}" valueLiveUpdate="true">
+						<items>
+								<core:Item key="Monday" text="Monday" />
+								<core:Item key="Tuesday" text="Tuesday" />
+								<core:Item key="Wednesday" text="Wednesday" />
+								<core:Item key="Thursday" text="Thursday" />
+								<core:Item key="Friday" text="Friday" />
+								<core:Item key="Saturday" text="Saturday" />
+								<core:Item key="Sunday" text="Sunday" />
+						</items>
+					</Select>
 				</f:content>
 			</f:SimpleForm>
 		</content>

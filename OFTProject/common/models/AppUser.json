@@ -36,6 +36,10 @@
       "type": "number",
       "default": 8
     },
+    "Holiday":{
+      "type": "string",
+      "default": "Monday"
+    },
     "MobileNo":{
       "type": "string"
     },
