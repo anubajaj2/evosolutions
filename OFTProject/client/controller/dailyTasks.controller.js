@@ -30,6 +30,9 @@ onChanged: function(oEvent){
 //Function to filter data on initial load o page when the date EQ todays date
 onDateChanged1: function(oEvent) {
 //this.byId("idRowAction").setVisible(false);
+	if(oEvent.getParameter("name") !== "dailyTask"){
+		return;
+	}
 	 var dDateStart = new Date();
 	 var dDateEnd = new Date(dDateStart);
 	 var aFilters = [];

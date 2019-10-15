@@ -22,6 +22,8 @@
               <core:Item text="Facebook Post" key="FP" />
               <core:Item text="Tweets" key="TW" />
               <core:Item text="SEO Tools MR,GSA" key="ST" />
+              <core:Item text="Anu Bot" key="AB" />
+              <core:Item text="Competitor Kill" key="CK" />
               <core:Item text="Customer Interaction Calls/Mails" key="CI" />
               <core:Item text="Pinetrust Post" key="PT" />
               <core:Item text="SAP Server Work" key="SW" />

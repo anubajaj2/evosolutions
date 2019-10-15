@@ -164,6 +164,9 @@ onBeforeRendering: function(){
 		},
 		herculis: function(oEvent) {
 				debugger;
+				if(oEvent.getParameter("name") !== "leaveApproval"){
+					return;
+				}
 				this.currentUser = this.getModel("local").getProperty("/CurrentUser");
 				this.reloadLeaves();
 

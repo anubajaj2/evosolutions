@@ -31,7 +31,7 @@
       	</f:content>
       </f:SimpleForm>
       <Label id="idTxt" design="Bold" />
-             <Table items="{/tasks}"
+             <Table
                id="idCoTable"
                selectionMode="None"
                updateFinished="onUpdateFinished">
@@ -52,18 +52,6 @@
                      <Label text="Number Of Hours" />
                    </Column>
                  </columns>
-                 <items>
-                   <ColumnListItem>
-                     <cells>
-                       <Text text="{CrDate}"/>
-                       <Text text="{CreatedBy}"/>
-                       <Text text="{path: 'taskType',
-                       formatter: '.formatter.getTaskText'}" />
-                      <Text text="{taskWorkedOn}"/>
-                      <Text text="{noOfHours}"/>
-                     </cells>
-                     </ColumnListItem>
-                 </items>
                </Table>
              </VBox>
              </semantic:content>
