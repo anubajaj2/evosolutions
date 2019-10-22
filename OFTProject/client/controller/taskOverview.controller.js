@@ -11,6 +11,7 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.taskOverview", {
    aFilters:[],
   onInit: function() {
+		debugger;
 		var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
@@ -28,10 +29,10 @@ herculis: function(oEvent) {
 		this.currentUser = this.getModel("local").getProperty("/CurrentUser");
 		this.fromDate = new Date();
 		this.toDate = new Date();
-		this.toDate.setMilliseconds(0);
-		this.toDate.setSeconds(0);
-		this.toDate.setMinutes(0);
-		this.toDate.setHours(0);
+		this.fromDate.setMilliseconds(0);
+		this.fromDate.setSeconds(0);
+		this.fromDate.setMinutes(0);
+		this.fromDate.setHours(0);
 
 		this.toDate.setMilliseconds(0);
 		this.toDate.setSeconds(59);
@@ -42,10 +43,13 @@ herculis: function(oEvent) {
 },
 reloadTasks: function(){
 	debugger;
+	var role=this.getModel("local").getProperty("/Role");
 	this.getView().byId("idCoTable").bindItems({
 		path: "/tasks",
 		template: new sap.m.ColumnListItem({
-			cells: [new sap.m.Text({text: { path: 'CrDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
+			cells: [
+				      new sap.m.Text({text: { path: 'CrDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
+              // new sap.m.Text({text: "{CrDate}"}),
 							new sap.m.Text({text: "{CreatedBy}"}),
 							new sap.m.Text({text: {path: 'taskType',
 							formatter: '.formatter.getTaskText'}}),
@@ -54,6 +58,17 @@ reloadTasks: function(){
 						]
 		})
 	});
+
+if(role=='Admin'){
+	var filters = [new sap.ui.model.Filter(
+					 "CrDate",
+					 FilterOperator.BT,
+					 this.fromDate,
+					 this.toDate // just example
+				)];
+	this.getView().byId("idCoTable").getBinding("items").filter(filters);
+}
+else {
 	var filters = [new sap.ui.model.Filter(
 					 'CreatedBy',
 					 'EQ',
@@ -65,6 +80,8 @@ reloadTasks: function(){
 					 this.toDate // just example
 				)];
 	this.getView().byId("idCoTable").getBinding("items").filter(filters);
+}
+
 
 },
 onUpdateFinished:function(oEvent){
@@ -93,59 +110,69 @@ onUpdateFinished:function(oEvent){
 				 this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
 },
 formatter: Formatter,
-onDateChange: function(oEvent) {
+onSelect:function(oEvent){
 	debugger;
-	// var dDateStart = oEvent.getSource().getProperty('dateValue');
-	// var dDateEnd = new Date(dDateStart + 1);
-  // var isValidDate = oEvent.getParameter("valid");
-	// var aFilters = [];
-	// if( isValidDate ) {
-	// 	dDateStart.setMilliseconds(0);
-	// 	dDateStart.setSeconds(0);
-	// 	dDateStart.setMinutes(0);
-	// 	dDateStart.setHours(0);
-	//
-	// 	dDateEnd.setMilliseconds(0);
-	// 	dDateEnd.setSeconds(0);
-	// 	dDateEnd.setMinutes(0);
-	// 	dDateEnd.setHours(0);
-	//
-	// 	aFilters.push(new Filter({
-	// 	   path: "CrDate",
-	// 	   operator: FilterOperator.BT,
-	// 	   value1: dDateStart,
-	// 	   value2: dDateEnd
-	// 	}));
-	// }
-	//
-	// this.byId("idCoTable").getBinding("items").filter(aFilters);
+	var techId=oEvent.getSource().getSelectedKey();
+	 this.reloadTasks();
+	 this.getView().byId("idCoTable").getBinding("items").filter([
+		new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + techId + "'")
+ ]);
+
+},
+onDateChange: function(oEvent) {
+	this.reloadTasks();
+	debugger;
+	var dDateStart = oEvent.getSource().getProperty('dateValue');
+	var dDateEnd = new Date(dDateStart + 1);
+  var isValidDate = oEvent.getParameter("valid");
+	var aFilters = [];
+	if( isValidDate ) {
+		dDateStart.setMilliseconds(0);
+		dDateStart.setSeconds(0);
+		dDateStart.setMinutes(0);
+		dDateStart.setHours(0);
+
+		dDateEnd.setMilliseconds(0);
+		dDateEnd.setSeconds(59);
+		dDateEnd.setMinutes(59);
+		dDateEnd.setHours(23);
+
+		aFilters.push(new Filter({
+		   path: "CrDate",
+		   operator: FilterOperator.BT,
+		   value1: dDateStart,
+		   value2: dDateEnd
+		}));
+	}
+
+	this.byId("idCoTable").getBinding("items").filter(aFilters);
 
 
-	var dateString = oEvent.getSource().getValue();
-	var from = dateString.split(".");
-	var dateObject = new Date(from[2], from[1] - 1, from[0]);
-	var newDate = new Date(from[2], from[1] - 1, from[0]);
-	var PaymentDueDate = this.formatter.getIncrementDate(dateObject, 1);
-	this.getView().getModel("local").setProperty("/newRegistration/PaymentDueDate", PaymentDueDate);
-
-
-	newDate.setHours(0, 0, 0, 0);
-	// var oSorter = new sap.ui.model.Sorter("PaymentDate", false);
-	var oSorter = new sap.ui.model.Sorter("CreatedOn", true);
-	// var oFilter1 = new sap.ui.model.Filter("PaymentDate", "LE", newDate);
-	var oFilter2 = new sap.ui.model.Filter("PaymentDate", "GE", newDate);
-	// var oFilter = new sap.ui.model.Filter({
-	// 	filters: [oFilter1, oFilter2],
-	// 	and: true
-	// });
-	var oTable = this.getView().byId("idCoTable");
-	var itemList = oTable.getItems();
-
-	// var noOfItems = itemList.length;
-	oTable.getBinding("items").filter(oFilter2); //oFilter
-	oTable.getBinding("items").sort(oSorter);
-
- }
+	// var dateString = oEvent.getSource().getValue();
+	// var from = dateString.split(".");
+	// var dateObject = new Date(from[2], from[1] - 1, from[0]);
+	// var newDate = new Date(from[2], from[1] - 1, from[0]);
+	// var PaymentDueDate = this.formatter.getIncrementDate(dateObject, 1);
+	// this.getView().getModel("local").setProperty("/newRegistration/PaymentDueDate", PaymentDueDate);
+ //
+ //
+	// newDate.setHours(0, 0, 0, 0);
+	// // var oSorter = new sap.ui.model.Sorter("PaymentDate", false);
+	// var oSorter = new sap.ui.model.Sorter("CreatedOn", true);
+	// // var oFilter1 = new sap.ui.model.Filter("PaymentDate", "LE", newDate);
+	// var oFilter2 = new sap.ui.model.Filter("PaymentDate", "GE", newDate);
+	// // var oFilter = new sap.ui.model.Filter({
+	// // 	filters: [oFilter1, oFilter2],
+	// // 	and: true
+	// // });
+	// var oTable = this.getView().byId("idCoTable");
+	// var itemList = oTable.getItems();
+ //
+	// // var noOfItems = itemList.length;
+	// oTable.getBinding("items").filter(oFilter2); //oFilter
+	// oTable.getBinding("items").sort(oSorter);
+ //
+  }
 
 });
 });
