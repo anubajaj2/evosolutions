@@ -47,46 +47,33 @@
       </f:SimpleForm>
     </semantic:content>
         <semantic:content>
-<t:Table rows="{/tasks}"
-  id="idCoTable"
-  selectionMode="Single"
-  rowActionCount="1">
-    <t:columns>
-      <!-- <t:Column>
-        <Label text="Date"/>
-        <t:template> <Text text="{CrDate}"/> </t:template>
-      </t:Column> -->
-      <t:Column width="250px">
-        <Label text="{i18n>taskWorkedOn}"/>
-        <t:template> <Text text="{taskWorkedOn}"/> </t:template>
-      </t:Column>
-      <t:Column width="250px">
-        <Label text="Task Type" />
-        <t:template> <Text text="{path: 'taskType',
-          formatter: '.formatter.getTaskText'}" /> </t:template>
-      </t:Column>
-      <t:Column width="80px">
-        <Label text="Hours" />
-        <t:template> <Text text="{noOfHours}"/> </t:template>
-      </t:Column>
-      <t:Column>
-        <Label text="Link" />
-        <t:template> <Link text="{link}" href="{link}"/> </t:template>
-      </t:Column>
-      <t:Column>
-        <Label text="Delete" />
-        <t:template> <Button press="onDelete" icon="sap-icon://delete"/> </t:template>
-      </t:Column>
-    </t:columns>
-    <!-- <t:rowActionTemplate class="g1" id="idRowAction2" visible="false">
-     <t:RowAction id="idRowAction" visible= "true" >
-      <t:items>
-	    	<t:RowActionItem id="idRowAction1" type="Delete" press="onDelete"
-                 icon="sap-icon://delete" visible="true" />
-	    </t:items>
-	   </t:RowAction>
-    </t:rowActionTemplate> -->
-</t:Table>
+            <Label id="idTxt" design="Bold" />
+          <Table
+            id="idCoTable"
+            selectionMode="None"
+            updateFinished="onUpdateFinished">
+
+              <columns>
+                <Column>
+                 <Label text="Task Worked On"></Label>
+                </Column>
+                <Column>
+                 <Label text="Date"></Label>
+                </Column>
+                <Column>
+                  <Label text="Task Type" />
+                </Column>
+               <Column>
+                  <Label text="Hours"/>
+                </Column>
+                <Column>
+                  <Label text="Link" />
+                </Column>
+                <Column>
+                   <Label text="Delete"/>
+                 </Column>
+              </columns>
+            </Table>
 </semantic:content>
     <semantic:customFooterContent>
     </semantic:customFooterContent>
