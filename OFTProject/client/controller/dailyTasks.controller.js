@@ -53,7 +53,6 @@ this.getView().byId("idCoTable").bindItems({
 	template: new sap.m.ColumnListItem({
      cells: [
 			 new sap.m.Text({text: "{taskWorkedOn}"}),
-			 new sap.m.Text({text: "{CreatedBy}"}),
 			 	new sap.m.Text({text: { path: 'CrDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
 				new sap.m.Text({text: {path: 'taskType',
 				formatter: '.formatter.getTaskText'}}),
