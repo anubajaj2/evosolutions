@@ -75,7 +75,7 @@ else {
 	var filters = [new sap.ui.model.Filter(
 					 'CreatedBy',
 					 'EQ',
-					  "'" + this.currentUser + "'" 
+					  "'" + this.currentUser + "'"
 				),new sap.ui.model.Filter(
 					 "CrDate",
 					 FilterOperator.BT,
@@ -123,8 +123,9 @@ formatter: Formatter,
 //
 // },
 onDateChange: function(oEvent) {
-	// this.reloadTasks();
+	this.reloadTasks();
 	debugger;
+		var role=this.getModel("local").getProperty("/Role");
 		var oVal=this.getView().byId("idUser").getValue();
 	var dDateStart = oEvent.getSource().getProperty('dateValue');
 	var dDateEnd = new Date(dDateStart + 1);
@@ -182,7 +183,9 @@ onDateChange: function(oEvent) {
 // 		 oVal)
 // 	],
 // 	and: true
-// }));
+// // }));
+//  var oFilter1 = new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd);
+//  this.getView().byId("idCoTable").getBinding("items").filter(oFilter1,true);
 
 // var oFilter1 = new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd);
 // var oFilter2 = new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.Equal, oVal);
@@ -191,12 +194,31 @@ onDateChange: function(oEvent) {
 // 	and: true
 // });
 
+
+if(role=='Admin'){
+	var oFilter1 = new Filter([
+			 new sap.ui.model.Filter("CreatedBy",sap.ui.model.FilterOperator.EQ, oVal)
+	],true);
+	var oFilter2 = new Filter([
+			 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+	]);
+
+
+	var oFilter = new sap.ui.model.Filter({
+		filters: [oFilter1, oFilter2],
+		and: true
+	});
+	this.getView().byId("idCoTable").getBinding("items").filter(oFilter);
+	}
+
+else{
+
 var oFilter1 = new Filter([
-     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+		 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
 ], true);
 
 var oFilter2 = new Filter([
-     new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, oVal)
+		 new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
 ]);
 
 var oFilter = new sap.ui.model.Filter({
@@ -204,6 +226,17 @@ var oFilter = new sap.ui.model.Filter({
 	and: true
 });
 this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+}
+
+// var oFilter2 = new Filter([
+//      new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, oVal)
+// ]);
+//
+// var oFilter = new sap.ui.model.Filter({
+// 	filters: [oFilter1, oFilter2],
+// 	and: true
+// });
+
 
 
 
