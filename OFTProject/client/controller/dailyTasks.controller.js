@@ -246,7 +246,6 @@ onDateChange: function(oEvent) {
 
  },
 
-//Funtion to save the entries in DB on click of save
 	onSave: function(oEvent) {
 			debugger;
   	var that = this;

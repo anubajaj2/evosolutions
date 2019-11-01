@@ -80,14 +80,14 @@ else {
 					 "CrDate",
 					 FilterOperator.BT,
 					 this.fromDate,
-					 this.toDate // just example
+					 this.toDate
 				)];
 	this.getView().byId("idCoTable").getBinding("items").filter(filters);
 }
 
 
 },
-onUpdateFinished:function(oEvent){
+ onUpdateFinished:function(oEvent){
 	debugger;
 	var oTable= oEvent.getSource();
 	var oTableItem = oTable.getItems();
@@ -113,24 +113,51 @@ onUpdateFinished:function(oEvent){
 				 this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
 },
 formatter: Formatter,
-// onSelect:function(oEvent){
-// 	debugger;
-// 	var techId=oEvent.getSource().getSelectedKey();
-// 	 this.reloadTasks();
-// 	 this.getView().byId("idCoTable").getBinding("items").filter([
-// 		new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + techId + "'")
-//  ]);
-//
-// },
+onSelect:function(oEvent){
+	debugger;
+	var techId=oEvent.getSource().getSelectedKey();
+	var dDateStart=this.getView().byId("idCoDate1").getDateValue();
+	var dDateEnd = new Date(dDateStart + 1);
+	dDateStart.setMilliseconds(0);
+	dDateStart.setSeconds(0);
+	dDateStart.setMinutes(0);
+	dDateStart.setHours(0);
+
+	dDateEnd.setMilliseconds(0);
+	dDateEnd.setSeconds(59);
+	dDateEnd.setMinutes(59);
+	dDateEnd.setHours(23);
+
+	 // this.reloadTasks();
+
+
+	 var oFilter1 = new Filter([
+				new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+	 ], true);
+
+ var oFilter2 = new Filter([
+ 		 new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + techId + "'")
+ ]);
+
+ var oFilter = new sap.ui.model.Filter({
+ 	filters: [oFilter1, oFilter2],
+ 	and: true
+ });
+ this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+
+
+},
 onDateChange: function(oEvent) {
-	this.reloadTasks();
+	// this.reloadTasks();
 	debugger;
 		var role=this.getModel("local").getProperty("/Role");
-		var oVal=this.getView().byId("idUser").getValue();
+		// var oVal=this.getView().byId("idUser").getValue();
+		var oVal=this.getView().byId("idUser").getSelectedKey();
 	var dDateStart = oEvent.getSource().getProperty('dateValue');
 	var dDateEnd = new Date(dDateStart + 1);
   var isValidDate = oEvent.getParameter("valid");
 	var aFilters = [];
+
 	// if( isValidDate ) {
 		dDateStart.setMilliseconds(0);
 		dDateStart.setSeconds(0);
@@ -147,68 +174,23 @@ onDateChange: function(oEvent) {
 		//    operator: FilterOperator.BT,
 		//    value1: dDateStart,
 		//    value2: dDateEnd
-		// }));
-	// 	this.byId("myList").getBinding("items").filter(new Filter({
-  //   filters: [
-	// 		new sap.ui.model.Filter("CrDate",
-	// 		FilterOperator.BT,
-	// 		dDateStart,
-	// 		dDateEnd),
-	//     new sap.ui.model.Filter('CreatedBy',
-	// 		'EQ',
-	// 		 oVal)
-  //   ],
-  //   and: true,
-  // }), FilterType.Application);
-
-// 		var InputFilter = [
-//     new sap.ui.model.Filter("CrDate",
-// 		FilterOperator.BT,
-// 		dDateStart,
-// 		dDateEnd),
-//     new sap.ui.model.Filter('CreatedBy',
-// 		'EQ',
-// 		 oVal)
-//   ],
-//   and: true
-// });
-//   this.getView().byId("idCoTable").getBinding("items").filter(new Filter({
-// 	filters: [
-// 		new sap.ui.model.Filter("CrDate",
-// 		FilterOperator.BT,
-// 		dDateStart,
-// 		dDateEnd),
-// 		new sap.ui.model.Filter("CreatedBy",
-// 		FilterOperator.EQ,
-// 		 oVal)
-// 	],
-// 	and: true
-// // }));
-//  var oFilter1 = new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd);
-//  this.getView().byId("idCoTable").getBinding("items").filter(oFilter1,true);
-
-// var oFilter1 = new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd);
-// var oFilter2 = new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.Equal, oVal);
-// var oFilter = new sap.ui.model.Filter({
-// 	filters: [oFilter1, oFilter2]
-// 	and: true
-// });
-
 
 if(role=='Admin'){
-	var oFilter1 = new Filter([
-			 new sap.ui.model.Filter("CreatedBy",sap.ui.model.FilterOperator.EQ, oVal)
-	],true);
-	var oFilter2 = new Filter([
-			 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
-	]);
 
+	var oFilter1 = new Filter([
+			 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+	], true);
+
+	var oFilter2 = new Filter([
+			 new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + oVal + "'")
+	]);
 
 	var oFilter = new sap.ui.model.Filter({
 		filters: [oFilter1, oFilter2],
 		and: true
 	});
-	this.getView().byId("idCoTable").getBinding("items").filter(oFilter);
+	this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+
 	}
 
 else{
@@ -227,19 +209,10 @@ var oFilter = new sap.ui.model.Filter({
 });
 this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
 }
+}
 
-// var oFilter2 = new Filter([
-//      new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, oVal)
-// ]);
-//
-// var oFilter = new sap.ui.model.Filter({
-// 	filters: [oFilter1, oFilter2],
-// 	and: true
-// });
-
-
-
-
+});
+});
 // this.oModel.read("/Products", {
 //   filters: [InputFilter],
 //   success: jQuery.proxy(this._fnSuccessGet, this),
@@ -292,7 +265,3 @@ this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
 	// oTable.getBinding("items").filter(oFilter2); //oFilter
 	// oTable.getBinding("items").sort(oSorter);
  //
-  }
-
-});
-});
