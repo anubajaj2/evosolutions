@@ -88,7 +88,9 @@ else {
 					 this.fromDate,
 					 this.toDate // just example
 				)];
+				// sap.m.MessageToast.show("Task Reloaded");
 	this.getView().byId("idCoTable").getBinding("items").filter(filters);
+
 }
 },
 

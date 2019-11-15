@@ -156,7 +156,9 @@ onDateChange: function(oEvent) {
 	var dDateStart = oEvent.getSource().getProperty('dateValue');
 	var dDateEnd = new Date(dDateStart + 1);
   var isValidDate = oEvent.getParameter("valid");
-	var aFilters = [];
+	var oFilter = [];
+	var oFilter1 = null;
+	var oFilter2 = null;
 
 	// if( isValidDate ) {
 		dDateStart.setMilliseconds(0);
@@ -177,33 +179,41 @@ onDateChange: function(oEvent) {
 
 if(role=='Admin'){
 
-	var oFilter1 = new Filter([
-			 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
-	], true);
+		oFilter1 = new Filter([
+				 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+		], true);
+				if(!oVal == "" ){
+							 			oFilter2 = new Filter([
+									 	new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + oVal + "'")
+										]);
+										 oFilter = new sap.ui.model.Filter({
+											filters: [oFilter1, oFilter2],
+											and: true
+										});
+												this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+								}
+					else {
+										 oFilter = new sap.ui.model.Filter({
+											filters: [oFilter1]
 
-	var oFilter2 = new Filter([
-			 new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + oVal + "'")
-	]);
+										});
+										this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+								}
 
-	var oFilter = new sap.ui.model.Filter({
-		filters: [oFilter1, oFilter2],
-		and: true
-	});
-	this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
 
 	}
 
 else{
 
-var oFilter1 = new Filter([
+ oFilter1 = new Filter([
 		 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
 ], true);
 
-var oFilter2 = new Filter([
+ oFilter2 = new Filter([
 		 new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
 ]);
 
-var oFilter = new sap.ui.model.Filter({
+ oFilter = new sap.ui.model.Filter({
 	filters: [oFilter1, oFilter2],
 	and: true
 });
