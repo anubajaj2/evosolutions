@@ -35,7 +35,7 @@ sap.ui.define([
 			oList.removeItem(oItemToBeDeleted);
 		},
 		onSelectItem: function(oEvent){
-
+			
 			var oListItem = oEvent.getParameter("listItem");
 			var sPath = oListItem.getBindingContextPath();
 			var viewId = oListItem.getId().split("--")[oListItem.getId().split("--").length - 1];

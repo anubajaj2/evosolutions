@@ -32,6 +32,7 @@
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="BankAccount" icon="sap-icon://money-bills" title="Accounts" description=""></StandardListItem> -->
 					<StandardListItem id="dailytask" icon="sap-icon://task" title="Daily Tasks" description=""></StandardListItem>
 					<StandardListItem id="taskoverview" icon="sap-icon://activity-individual" title="Task Overview" description=""></StandardListItem>
+					<StandardListItem id="timeTracker" icon="sap-icon://time-account" title="Time Tracker" description=""></StandardListItem>
 				</items>
 			</List>
 		</content>

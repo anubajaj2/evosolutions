@@ -207,6 +207,10 @@
 								"pattern": "taskOverview",
 								"name": "taskoverview",
 								"target": ["donald", "taskOverview"]
+							},{
+								"pattern": "timeTracker",
+								"name": "timeTracker",
+								"target": ["donald", "timeTracker"]
 							}
 
 						]
@@ -409,6 +413,15 @@
 					"clearAggregation": true,
 					"viewName": "taskOverview",
 					"viewId": "taskOverview",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+				},
+				"timeTracker":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "timeTracker",
+					"viewId": "idTimeTracker",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				}
