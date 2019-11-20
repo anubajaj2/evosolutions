@@ -54,7 +54,13 @@ herculis: function(oEvent) {
 	},
 	reloadTasks: function(){
 	debugger;
+	//var nInteractiveDates = this.getView().byId("idCalendar")._$interactiveDates.length;
 	var role=this.getModel("local").getProperty("/Role");
+//	var oDate = oEvent.getSource().getCurrentDate();
+// 	var startDate = new Date();
+// var dDateStart = DateFormatter.getFirstDateOfMonth(startDate);
+// var dMonthEnd = DateFormatter.getLastDateOfMonth(startDate);
+// var dMonthDays = DateFormatter.getNumberOfDaysInMonth(startDate);
 
 		if(role=='Admin'){
 			var filters = [new sap.ui.model.Filter(
@@ -63,10 +69,29 @@ herculis: function(oEvent) {
 							 this.fromDate,
 							 this.toDate
 						)];
-
-
-
 			this.getView().byId("idCalendar").getBinding("dependents").filter(filters);
+// 			for ( var i = 5; i < dMonthDays; i++) {
+//
+// 				// if (oEvent.getSource().getModel().oData[oEvent.getSource().getModel().aBindings[i].getContext().sPath].noOfHours;)
+// 										//oEvent.getSource().getDependents()[1].oBindingContexts.undefined.sPath;
+// //	var oContext = oEvent.getSource().getDependents()[i].oBindingContexts.undefined.sPath.split("/")[1];
+// 		var oContext = this.getView().byId("idCalendar").getBinding("dependents").aKeys[i]
+// //	var nHours = oEvent.getSource().getModel().oData[oContext].noOfHours;
+// 		var nHours = this.getView().byId("idCalendar").getBinding("dependents").oModel.oData[oContext].noOfHours;
+// 	//var CrDate = oEvent.getSource().getModel().oData[oContext].CrDate;
+// 		var CrDate = this.getView().byId("idCalendar").getBinding("dependents").oModel.oData[oContext].CrDate;
+// 	 //	if (oEvent.getSource().getDependents()[i].mProperties.text >= 8) {
+// 				 if(nHours == 8){
+// 				 // oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#9acd32";
+// 				 			this.getView().byId("idCalendar")._$interactiveDates[i].style.backgroundColor = "green";
+// 							 //oEvent.getSource()._$interactiveDates[i].style.backgroundColor="green";
+// 				 }else {
+// 				 debugger;
+// 				 //		 oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#ff4d4d";
+// 							 //oEvent.getSource()._$interactiveDates[i].style.backgroundColor="red";
+// 							 this.getView().byId("idCalendar")._$interactiveDates[i].style.backgroundColor = "red";
+// 						}
+// 	}
 		}
 		else {
 			this.getView().byId("idUser").setVisible(false);
@@ -80,7 +105,8 @@ herculis: function(oEvent) {
 							 this.fromDate,
 							 this.toDate
 						)];
-			this.getView().byId("idCalendar").getBinding("dependents").filter(filters);
+		//	this.getView().byId("idCalendar").getBinding("dependents").filter(filters);
+
 		}
 	},
 	onSelect:function(oEvent){
@@ -113,20 +139,26 @@ herculis: function(oEvent) {
 	 	filters: [oFilter1, oFilter2],
 	 	and: true
 	 });
-	 this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+	// this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
 
 
 	},
 
 
-	onStartDateChange:function(oEvent){
+	onChangeCurrentDate:function(oEvent){
 	//		var currentUser = this.getModel("local").getProperty("/CurrentUser");
+
+
 		debugger;
+	//		var userData=this.allMasterData.Tasks[userId];
 		var role=this.getModel("local").getProperty("/Role");
 		var oVal=this.getView().byId("idUser").getValue();
 	//	var oVal=this.getView().byId("idUser").getSelectedKey();
 //	var dDateStart = oEvent.getSource().getProperty('dateValue');
-		var startDate = oEvent.getSource().getStartDate();
+		//var startDate = oEvent.getSource().getStartDate();
+		var nInteractiveDates = oEvent.getSource()._$interactiveDates.length;
+		var oDate = oEvent.getSource().getCurrentDate();
+		var startDate = new Date(oDate);
 	var dDateStart = DateFormatter.getFirstDateOfMonth(startDate);
 	var dMonthEnd = DateFormatter.getLastDateOfMonth(startDate);
 	var dMonthDays = DateFormatter.getNumberOfDaysInMonth(startDate);
@@ -156,51 +188,43 @@ if(role=='Admin'){
 
 		oFilter1 = new Filter([
 				 new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dMonthEnd)
-		], true);
+		]);
+		oFilter2 = new Filter([
+		new sap.ui.model.Filter("CreatedBy",
 
-		//var myData = oEvent.getSource().getModel().getProperty("/tasks");
+		sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
+		]);
+		oFilter = new sap.ui.model.Filter({
+		 filters: [oFilter1]
 
-	//	oEvent.getSource().getModel().oData["tasks('5dbbd119a74bc333846f6853')"].CreatedBy;
-	//	oEvent.getSource().getModel().oData["tasks('5dbbd119a74bc333846f6853')"].CrDate;
-	//	oEvent.getSource().getModel().oData["tasks('5dbbd119a74bc333846f6853')"].noOfHours;
-	//	oEvent.getSource().getDependents().length;
-	//	oEvent.getSource().getDependents("/tasks");
+	 });
+	 //this.getView().byId("idCalendar").getBinding("dependents").filter(oFilter,true);
+	 var oStart = nInteractiveDates - dMonthDays;
+	 	 for ( var i = oStart; i < dMonthDays; i++) {
+			 		//	var nextDay = DateFormatter.getNextDate(oDate,i);
+				 // if (oEvent.getSource().getModel().oData[oEvent.getSource().getModel().aBindings[i].getContext().sPath].noOfHours;)
+										 //oEvent.getSource().getDependents()[1].oBindingContexts.undefined.sPath;
 
-			 for (var i = 0; i < dMonthDays; i++) {
-						// if (oEvent.getSource().getModel().oData[oEvent.getSource().getModel().aBindings[i].getContext().sPath].noOfHours;)
-												//oEvent.getSource().getDependents()[1].oBindingContexts.undefined.sPath;
-			var oContext = oEvent.getSource().getDependents()[i].oBindingContexts.undefined.sPath.split("/")[1];
-			var nHours = oEvent.getSource().getModel().oData[oContext].noOfHours;
-			var CrDate = oEvent.getSource().getModel().oData[oContext].CrDate;
-			 //	if (oEvent.getSource().getDependents()[i].mProperties.text >= 8) {
-			 	if(nHours == 8){
-						oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#9acd32";
-			 	}else {
+
+
+	// var oContext = oEvent.getSource().getDependents()[i].oBindingContexts.undefined.sPath.split("/")[1];
+		//var oContext = oEvent.getSource().getBinding("dependents").aKeys[i]
+		var oContext = oEvent.getSource().getBinding("dependents").aKeys[i].slice(7,31);
+	var nHours = this.allMasterData.Tasks[oContext].noOfHours;
+	var CrDate = this.allMasterData.Tasks[oContext].CrDate;
+//	 var nHours = oEvent.getSource().getModel().oData[oContext].noOfHours;
+	// var CrDate = oEvent.getSource().getModel().oData[oContext].CrDate;
+	 	//if(CrDate =  )
+		//	if (oEvent.getSource().getDependents()[i].mProperties.text >= 8) {
+					if(nHours == 8){
+					// oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#9acd32";
+								oEvent.getSource()._$interactiveDates[i].style.backgroundColor="green";
+					}else {
 					debugger;
-								oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#ff4d4d";
-}
-				 }
-
-
-		//	oEvent.getSource()._getVisibleDays()[2].getDate()
-				if(!oVal == "" ){
-							 			oFilter2 = new Filter([
-									 	new sap.ui.model.Filter("CreatedBy",
-										sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
-										]);
-										 oFilter = new sap.ui.model.Filter({
-											filters: [oFilter1, oFilter2],
-											and: true
-										});
-												this.getView().byId("idCalendar").getBinding("dependents").filter(oFilter,true);
-								}
-					else {
-										 oFilter = new sap.ui.model.Filter({
-											filters: [oFilter1]
-
-										});
-										this.getView().byId("idCalendar").getBinding("dependents").filter(oFilter,true);
-								}
+					//		 oEvent.getSource()._oSelectedMonth._oItemNavigation.aItemDomRefs[i].style.backgroundColor="#ff4d4d";
+								oEvent.getSource()._$interactiveDates[i].style.backgroundColor="red";
+						 }
+	 }
 		}
 
 else{

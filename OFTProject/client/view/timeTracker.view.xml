@@ -9,6 +9,7 @@
   xmlns:t="sap.ui.table"
   xmlns:cal="sap.gantt.shape.cal"
   xmlns:r="sap.gantt.shape.ext.ubc"
+  xmlns:me="sap.me"
 	>
   <semantic:FullscreenPage
     title="Track Your Time">
@@ -35,7 +36,7 @@
             <Label></Label>
             <Label></Label>
             <Label></Label>
-            <l:VerticalLayout>
+            <!-- <l:VerticalLayout>
                   <l:content>
                     <u:Calendar id="idCalendar" startDateChange="onStartDateChange" legend="legend1" nonWorkingDays="1" dependents="{/tasks}">
                       <u:dependents>
@@ -46,17 +47,33 @@
                     <u:CalendarLegend id="legend1" />
                     </l:content>
 
-                   <!-- <u:Calendar width="50%"
+                   <u:Calendar width="50%"
                     id="calendar1" legend="legend1"/>
                   <u:CalendarLegend id="legend1" />
-                  </l:content> -->
+                  </l:content>
                   <ToggleButton text="Apply Changes" press="handleShowSpecialDays"></ToggleButton>
-            </l:VerticalLayout>
+            </l:VerticalLayout> -->
+
 
 
       	</f:content>
-      </f:SimpleForm>
 
+      </f:SimpleForm>
+      <l:VerticalLayout width="100%" >
+              <!-- <l:HorizontalLayout>
+                  <RadioButton text="One Week" select="changeToOneWeek" groupName="rangeGroup"/>
+                  <RadioButton text="Two Weeks" select="changeToTwoWeeks" groupName="rangeGroup"/>
+                  <RadioButton text="One Month" select="changeToOneMonth" groupName="rangeGroup" selected="true"/>
+                  <RadioButton text="Two Months" select="changeToTwoMonths" groupName="rangeGroup"/>
+              </l:HorizontalLayout> -->
+              <me:Calendar id="idCalendar" firstDayOffset="1" changeCurrentDate="onChangeCurrentDate" dependents="{/tasks}"   width="640px" >
+                <me:dependents>
+                      <Label text="{taskWorkedOn}" ></Label>
+                      <Label text="{noOfHours}" ></Label>
+                </me:dependents>
+
+              </me:Calendar>
+      </l:VerticalLayout>
 
              </VBox>
 

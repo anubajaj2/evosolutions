@@ -38,7 +38,8 @@ sap.ui.define([
 		allMasterData:{
 			"courseMst":[],
 			"Trainers":[],
-			"AppUsers":[]
+			"AppUsers":[],
+			"Tasks":[]
 		},
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
@@ -52,6 +53,14 @@ sap.ui.define([
 				.then(function(oData) {
 					for(var i =0 ;i < oData.results.length; i++){
 						that.allMasterData.AppUsers[oData.results[i].TechnicalId] = oData.results[i];
+					}
+				}).catch(function(oError) {
+					var oPopover = that.getErrorMessage(oError);
+				});
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
+				.then(function(oData){
+					for(var i =0 ;i < oData.results.length; i++){
+						that.allMasterData.Tasks[oData.results[i].id] = oData.results[i];
 					}
 				}).catch(function(oError) {
 					var oPopover = that.getErrorMessage(oError);
