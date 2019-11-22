@@ -218,11 +218,11 @@ app.start = function() {
 		});
 
 		app.post('/getTimeTracker', function(req, res) {
-			var month = req.body.Month;
-			var empId = req.body.EmpId;
-			var startDateCurrent = new Date();
+			this.month = req.body.Month;
+			this.empId = req.body.EmpId;
+			this.startDateCurrent = new Date();
 			startDateCurrent.setDate(startDateCurrent.getMonth() - 1);
-			var endDateCurrent = new Date() ;
+			this.endDateCurrent = new Date() ;
 			var app = require('../server/server');
 			var AppUser = app.models.AppUser;
 			var LeaveRequest = app.models.LeaveRequest;
@@ -234,7 +234,7 @@ app.start = function() {
 			var that = this;
 			AppUser.find().then(function(empRecords) {
 				for (var i = 0; i < empRecords.length; i++) {
-					if (empId === empRecords[i].TechnicalId) {
+					if (that.empId === empRecords[i].TechnicalId) {
 						var empRecord = empRecords[i];
 						break;
 					}
@@ -243,7 +243,11 @@ app.start = function() {
 				that2.empRecord = empRecord;
 				var joiningDate = empRecord.JoiningDate;
 				var holiday = empRecord.Holiday;
-				LeaveRequest.find().then(function(leaveRecords){
+				LeaveRequest.find({where:
+					and: [
+					 {AppUserId: that2.empId}
+				 ]
+				 }).then(function(leaveRecords){
 					var that3 = that2;
 					that3.leaveRecords = leaveRecords;
 					taskTab.find().then(function(tasks){
