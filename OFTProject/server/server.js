@@ -221,7 +221,8 @@ app.start = function() {
 			var month = req.body.Month;
 			var empId = req.body.EmpId;
 			var startDateCurrent = new Date();
-			var endDateCurrent = new Date();
+			startDateCurrent.setDate(startDateCurrent.getMonth() - 1);
+			var endDateCurrent = new Date() ;
 			var app = require('../server/server');
 			var AppUser = app.models.AppUser;
 			var LeaveRequest = app.models.LeaveRequest;
@@ -230,28 +231,32 @@ app.start = function() {
 			//AppUser, leaveRequest, task
 			//anubhav is here
 			debugger;
-			AppUser.findById(empId).then(function(empRecord) {
+			var that = this;
+			AppUser.find().then(function(empRecords) {
+				for (var i = 0; i < empRecords.length; i++) {
+					if (empId === empRecords[i].TechnicalId) {
+						var empRecord = empRecords[i];
+						break;
+					}
+				}
+				var that2 = that;
+				that2.empRecord = empRecord;
 				var joiningDate = empRecord.JoiningDate;
 				var holiday = empRecord.Holiday;
-				LeaveRequest.find({where: {
-					and :[
-						{DateFrom: {
-							between: [startDateCurrent,endDateCurrent]
-						},
-						{DateTo: {
-							between: [startDateCurrent,endDateCurrent]
-						}
-					]
-				}}).then(function(leaveRecords){
-					taskTab.find({where: {and: [{CreatedBy: empId}, {CrDate: {
-						between: [startDateCurrent,endDateCurrent]
-					}]}}).then(function(tasks){
+				LeaveRequest.find().then(function(leaveRecords){
+					var that3 = that2;
+					that3.leaveRecords = leaveRecords;
+					taskTab.find().then(function(tasks){
 						// /empRecord
 						// leaveRecords
 						// tasks
 						//step 2: calculate and prepare a final table with below structure
 						//Date and Hour
 						//01.01.2019  8 , 02.01 6 , 03.01 Holiday, 04.01 LEAVE, 05.01 0, 06.01 7
+						//
+						console.log(that3.empRecord);
+						console.log(that3.leaveRecords);
+						//arr time will have all dates of month and hours
 						var arrTime = [];
 						arrTime.push({
 							date: '01.01.2019',
@@ -267,7 +272,7 @@ app.start = function() {
 						});
 						arrTime.push({
 							date: '04.01.2019',
-							hours: LEAVE
+							hours: 'LEAVE'
 						});
 						res.send(arrTime);
 
