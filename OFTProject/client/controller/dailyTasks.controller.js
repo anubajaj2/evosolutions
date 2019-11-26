@@ -10,10 +10,8 @@ sap.ui.define([
 
   onInit: function() {
 		debugger;
-	//Set the default date as todays date
 	var oDt = this.getView().byId("idCoDate1");
 	 oDt.setDateValue(new Date());
-
 	 var oRouter = this.getOwnerComponent().getRouter();
 	 oRouter.attachRoutePatternMatched(this.herculis, this);
 	 var currentUser = this.getModel("local").getProperty("/CurrentUser");
@@ -24,16 +22,26 @@ sap.ui.define([
 },
 
 herculis:function(){
+	debugger;
 	this.getView().byId("idCoDate1").setDateValue(new Date());
 		// if(oEvent.getParameter("name") !== "dailyTask"){
 		// 	return;
 		// }
+
 		this.getModel("local").setProperty("/tasks/CrDate", new Date());
 		this.currentUser = this.getModel("local").getProperty("/CurrentUser");
+
+    // this.fromDate = new Date();
+		// var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
+		// 	pattern: "yyyy-MM-ddTHH:mm:ss Z"
+		// 	});
+		// 	var oDate = oFormatDate.format(this.fromDate);
+		// 	oDate = oDate.split("T");
+		// 	var oDateActual = oDate[0];
+		// 	this.fromDate = new Date(oDateActual);
+
 		this.fromDate = new Date();
-		// this.toDate = new Date(this.fromDate + 1);
 		this.toDate = new Date();
-		// this.toDate = new Date(this.fromDate);
 		this.fromDate.setMilliseconds(0);
 		this.fromDate.setSeconds(0);
 		this.fromDate.setMinutes(0);
@@ -47,6 +55,7 @@ herculis:function(){
 },
 reloadTasks: function(oEvent) {
 		debugger;
+
 		var role=this.getModel("local").getProperty("/Role");
 this.getView().byId("idCoTable").bindItems({
 	path:"/tasks",
@@ -57,7 +66,7 @@ this.getView().byId("idCoTable").bindItems({
 				new sap.m.Text({text: {path: 'taskType',
 				formatter: '.formatter.getTaskText'}}),
 				new sap.m.Text({text: "{noOfHours}"}),
-				new sap.m.Link({text: { path: 'link'}}),//, href:'link'
+				new sap.m.Link({text: { path: 'link'}}),
 				new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
 		 ]
 
@@ -67,31 +76,34 @@ this.getView().byId("idCoTable").bindItems({
 
 
 if(role=='Admin'){
-	var filters = [new sap.ui.model.Filter(
+	var filters = [
+		new sap.ui.model.Filter(
 					 "CrDate",
 					 FilterOperator.BT,
 					 this.fromDate,
 					 this.toDate
 				)];
+		// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
 	this.getView().byId("idCoTable").getBinding("items").filter(filters);
 }
-
 else {
-
+	this.getView().byId("idUser").setVisible(false);
 	var filters = [new sap.ui.model.Filter(
 					 'CreatedBy',
 					 'EQ',
-						"'" + this.currentUser + "'"
-				),new sap.ui.model.Filter(
+					  "'" + this.currentUser + "'"
+				),
+				new sap.ui.model.Filter(
 					 "CrDate",
 					 FilterOperator.BT,
 					 this.fromDate,
-					 this.toDate // just example
+					 this.toDate
 				)];
-				// sap.m.MessageToast.show("Task Reloaded");
+				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
 	this.getView().byId("idCoTable").getBinding("items").filter(filters);
-
 }
+				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, this.fromDate)];
+
 },
 
 onUpdateFinished:function(oEvent){
@@ -191,29 +203,46 @@ onUpdateFinished:function(oEvent){
 //     this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
 //  },
 onDateChange: function(oEvent) {
+	debugger;
 	var role=this.getModel("local").getProperty("/Role");
 	// this.reloadTasks();
 	var dDateStart = oEvent.getSource().getProperty('dateValue');
-	var dDateEnd = new Date(dDateStart + 1);
-	var aFilters = [];
-		dDateStart.setMilliseconds(0);
-		dDateStart.setSeconds(0);
-		dDateStart.setMinutes(0);
-		dDateStart.setHours(0);
-		dDateEnd.setMilliseconds(0);
-		dDateEnd.setSeconds(59);
-		dDateEnd.setMinutes(59);
-		dDateEnd.setHours(23);
+
+	// var dDateEnd = new Date(dDateStart + 1);
+	// var dDateStart = new Date(dDateStart + 1);
+	// var aFilters = [];
+	// 	dDateStart.setMilliseconds(0);
+	// 	dDateStart.setSeconds(0);
+	// 	dDateStart.setMinutes(0);
+	// 	dDateStart.setHours(0);
+	// 	dDateEnd.setMilliseconds(0);
+	// 	dDateEnd.setSeconds(59);
+	// 	dDateEnd.setMinutes(59);
+	// 	dDateEnd.setHours(23);
+
+	var oDatePicker = oEvent.getSource();
+		var oNewDate = oDatePicker.getDateValue();
+			var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				pattern: "yyyy-MM-ddTHH:mm:ss Z"
+				});
+   var oDate = oFormatDate.format(oNewDate);
+        oDate = oDate.split("T");
+				var oDateActual = oDate[0];
+			oDatePicker.setDateValue(new Date(oDateActual));
+			var dDateStart = oDatePicker.getDateValue();
+
 		if(role=='Admin'){
 			var oFilter1 = new Filter([
-			     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+			     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)
+					 // new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart,dDateEnd)
 			], true);
 			this.getView().byId("idCoTable").getBinding("items").filter(oFilter1,true);
 		}
 		else{
 
 		var oFilter1 = new Filter([
-		     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)
+		     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)
+				 // new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart,dDateEnd)
 		], true);
 
 		var oFilter2 = new Filter([
@@ -228,6 +257,7 @@ onDateChange: function(oEvent) {
 }
 
 },
+
 
  onDelete: function(oEvent) {
 	 	debugger;
@@ -250,6 +280,7 @@ onDateChange: function(oEvent) {
 
 	onSave: function(oEvent) {
 			debugger;
+
   	var that = this;
 		var myData = this.getView().getModel("local").getProperty("/task");
 		var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
@@ -259,7 +290,24 @@ onDateChange: function(oEvent) {
 			if (this.getView().byId("idWH").getValue() <= '8'){
 		if (this.getView().byId("idWH").getValue() != '0'){
 			myData.noOfHours = this.getView().byId("idWH").getValue();
-		myData.CrDate = this.getView().byId("idCoDate1").getDateValue();
+// myData.CrDate = this.getView().byId("idCoDate1").getDateValue();
+
+		// var oDatePicker = this.getView().byId("idCoDate1");
+		// 	var oNewDate = oDatePicker.getDateValue();
+		// var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
+		// 	pattern: "yyyy-MM-ddTHH:mm:ss X"
+		// 	});
+		// 	var oDate = oFormatDate.format(oNewDate);
+		// 	oDate = oDate.split("T");
+		// 	var oDateActual = oDate[0];
+		// 	oDatePicker.setDateValue(new Date(oDateActual));
+		// 	myData.CrDate= oDatePicker.getDateValue();
+		var oDatePicker = this.getView().byId("idCoDate1");
+			var oNewDate = oDatePicker.getDateValue();
+ 		oNewDate.setMinutes(oNewDate.getMinutes() + oNewDate.getTimezoneOffset());
+		oDatePicker.setDateValue(new Date(oNewDate));
+		myData.CrDate = oDatePicker.getDateValue();
+
 		myData.taskType = this.getView().byId("idTaskType").getSelectedKey();
 		myData.link = this.getView().byId("idLink").getValue();
 		myData.remarks = "";
