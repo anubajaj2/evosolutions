@@ -57,7 +57,8 @@
                 }" /> -->
             <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
 change="onDateChange" dateValue="{'local>/tasks/CrDate'}"/>
-          <Label text="Task Type" />
+          <Label text="Task Type">
+          </Label>
           <Select id="idTaskType" select="onTypeSel">
             <items>
               <core:Item text="Google Business Post" key="GB" />
