@@ -243,10 +243,11 @@ app.start = function() {
 				that2.empRecord = empRecord;
 				var joiningDate = empRecord.JoiningDate;
 				var holiday = empRecord.Holiday;
-				LeaveRequest.find({where:
-					and: [
-					 {AppUserId: that2.empId}
-				 ]
+
+				LeaveRequest.find({where:{
+					and : [
+					 { AppUserId: that2.empId }
+				 ]}
 				 }).then(function(leaveRecords){
 					var that3 = that2;
 					that3.leaveRecords = leaveRecords;
