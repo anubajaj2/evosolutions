@@ -66,7 +66,8 @@
                   <RadioButton text="One Month" select="changeToOneMonth" groupName="rangeGroup" selected="true"/>
                   <RadioButton text="Two Months" select="changeToTwoMonths" groupName="rangeGroup"/>
               </l:HorizontalLayout> -->
-              <me:Calendar id="idCalendar" firstDayOffset="1" changeCurrentDate="onChangeCurrentDate" dependents="{/tasks}"   width="640px" >
+              <me:Calendar id="idCalendar" firstDayOffset="1"
+                changeCurrentDate="onChangeCurrentDate" dependents="{/tasks}"   width="640px" >
                 <me:dependents>
                       <Label text="{taskWorkedOn}" ></Label>
                       <Label text="{noOfHours}" ></Label>

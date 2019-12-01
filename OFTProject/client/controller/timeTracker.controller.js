@@ -147,9 +147,8 @@ herculis: function(oEvent) {
 
 	onChangeCurrentDate:function(oEvent){
 	//		var currentUser = this.getModel("local").getProperty("/CurrentUser");
+	setTimeout(this.afterCalChange, 2000);
 
-
-		debugger;
 	//		var userData=this.allMasterData.Tasks[userId];
 		var role=this.getModel("local").getProperty("/Role");
 		var oVal=this.getView().byId("idUser").getValue();
@@ -244,6 +243,10 @@ else{
 this.getView().byId("idCalendar").getBinding("dependents").filter(oFilter,true);
 }
 
+
+},
+afterCalChange: function() {
+	console.log(document.getElementsByClassName("sapMeCalendarMonthDay"));
 }
 
 });
