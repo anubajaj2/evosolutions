@@ -218,11 +218,188 @@ app.start = function() {
 		});
 
 		app.post('/getTimeTracker', function(req, res) {
-			this.month = req.body.Month;
+			var month = req.body.Month;
 			this.empId = req.body.EmpId;
-			this.startDateCurrent = new Date();
-			startDateCurrent.setDate(startDateCurrent.getMonth() - 1);
-			this.endDateCurrent = new Date() ;
+			var today = new Date();
+			debugger;
+
+
+			var oArrTime =[];
+
+			if (new Date(month).getMonth() === new Date(today).getMonth()) {
+				var monthStart = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),1);
+				var dayEnd = new Date();
+
+				monthStart.setMilliseconds(0);
+				monthStart.setSeconds(0);
+				monthStart.setMinutes(0);
+				monthStart.setHours(0);
+
+				dayEnd.setMilliseconds(0);
+				dayEnd.setSeconds(59);
+				dayEnd.setMinutes(59);
+				dayEnd.setHours(23);
+
+				var app = require('../server/server');
+				var AppUser = app.models.AppUser;
+				var LeaveRequest = app.models.LeaveRequest;
+				var taskTab = app.models.task;
+				//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
+				//AppUser, leaveRequest, task
+				//anubhav is here
+				var that = this;
+
+				AppUser.find().then(function(empRecords) {
+					for (var i = 0; i < empRecords.length; i++) {
+						if (that.empId === empRecords[i].TechnicalId) {
+							var empRecord = empRecords[i];
+							break;
+						}
+					}
+					var that2 = that;
+					that2.empRecord = empRecord;
+					//var joiningDate = empRecord.JoiningDate;
+					var holiday = empRecord.Holiday;
+					LeaveRequest.find({where:
+						{	and: [
+						 {DateFrom:{between:[monthStart,dayEnd]}},
+						 {AppUserId: that2.empId}
+					 ]},
+					 order:'DateFrom ASC'
+					 }).then(function(leaveRecords){
+						var that3 = that2;
+						that3.leaveRecords = leaveRecords;
+						that4 = that3;
+						taskTab.find({where:
+													{and:[
+													{CrDate:{between:[monthStart,dayEnd]}},
+													{CreatedBy:that4.empId}
+													]},
+													order:'CrDate ASC'
+													}).then(function(tasks){
+							// /empRecord
+							// leaveRecords
+							// tasks
+							//step 2: calculate and prepare a final table with below structure
+							//Date and Hour
+							//01.01.2019  8 , 02.01 6 , 03.01 Holiday, 04.01 LEAVE, 05.01 0, 06.01 7
+
+
+							//This For Loop is to calculate the No of hours for each day in a month
+							if(tasks.length){
+
+					 		for (var i = 0; i < today.getDate(); i++) {
+							var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
+								var flag = 0;
+								var nHr = 0;
+										for (var j = 0; j < tasks.length; j++) {
+										var crdate = tasks[j].__data.CrDate;
+
+										if (start.getDate() ===  crdate.getDate() )  {
+												flag = 1;
+											 var nHr  = 	nHr + parseInt(tasks[j].__data.noOfHours.valueOf());
+												 }
+
+											}
+											if(flag===0){
+												var h = 0;
+												oArrTime.push({date:start,hours:h});
+											}else{
+												oArrTime.push({date:start,hours:nHr});
+											}
+
+										 }
+					 		//this for loop is to calculate the Leaves taken by employee in a given month
+						 	for (var i = 0; i < oArrTime.length; i++) {
+							 var date = oArrTime[i].date.getDate();
+							 			var flag=0;
+							 for (var j = 0; j < leaveRecords.length; j++) {
+
+
+											if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
+												if(flag===0){
+													for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
+																flag=1;
+																oArrTime[i].hours = 'LEAVE';
+																i++;
+															}
+														}else {
+															break;
+														}
+											}
+
+									 }
+						  }
+						 	//this for loop is to find and assign Holiday for employee for given month
+							for (var i = 0; i < oArrTime.length; i++) {
+								if (empRecord.__data.Holiday === "Sunday") {
+										if (oArrTime[i].date.getDay() === 0) {
+											oArrTime[i].hours = 'Holiday';
+										}
+								}else if (empRecord.__data.Holiday  === "Monday") {
+									if (oArrTime[i].date.getDay() === 1) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Tuesday") {
+									if (oArrTime[i].date.getDay() === 2) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Wednesday") {
+									if (oArrTime[i].date.getDay() === 3) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Thursday") {
+									if (oArrTime[i].date.getDay() === 4) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Friday") {
+									if (oArrTime[i].date.getDay() === 5) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Saturday") {
+									if (oArrTime[i].date.getDay() === 6) {
+										oArrTime[i].hours = 'Holiday';
+									}
+								}
+							}
+							console.log(that3.empRecord);
+							console.log(that3.leaveRecords);
+							res.send(oArrTime);
+
+						}else {
+							console.log.console.error("There is no data available the selected month ");
+							res.send(oArrTime);
+						}
+
+						});
+
+					});
+
+				});
+
+
+
+			}else if (new Date(month).getMonth()  > new Date(today).getMonth() ) {
+
+				console.log("There is no data available the selected month ");
+				res.send(oArrTime);
+			}
+			else{
+
+			var startDateCurrent = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),1);
+			var noOfDays = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0).getDate();
+			endDateCurrent = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0) ;
+
+			startDateCurrent.setMilliseconds(0);
+			startDateCurrent.setSeconds(0);
+			startDateCurrent.setMinutes(0);
+			startDateCurrent.setHours(0);
+
+			endDateCurrent.setMilliseconds(0);
+			endDateCurrent.setSeconds(59);
+			endDateCurrent.setMinutes(59);
+			endDateCurrent.setHours(23);
+
 			var app = require('../server/server');
 			var AppUser = app.models.AppUser;
 			var LeaveRequest = app.models.LeaveRequest;
@@ -230,7 +407,6 @@ app.start = function() {
 			//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
 			//AppUser, leaveRequest, task
 			//anubhav is here
-			debugger;
 			var that = this;
 			AppUser.find().then(function(empRecords) {
 				for (var i = 0; i < empRecords.length; i++) {
@@ -243,49 +419,122 @@ app.start = function() {
 				that2.empRecord = empRecord;
 				var joiningDate = empRecord.JoiningDate;
 				var holiday = empRecord.Holiday;
-
-				LeaveRequest.find({where:{
-					and : [
-					 { AppUserId: that2.empId }
-				 ]}
+				LeaveRequest.find({where:
+					{	and: [
+					 {DateFrom:{between:[startDateCurrent,endDateCurrent]}},
+					 {AppUserId: that2.empId}
+				 ]},
+				 order:'DateFrom ASC'
 				 }).then(function(leaveRecords){
 					var that3 = that2;
 					that3.leaveRecords = leaveRecords;
-					taskTab.find().then(function(tasks){
+					that4 = that3;
+					taskTab.find({where:
+												{and:[
+												{CrDate:{between:[startDateCurrent,endDateCurrent]}},
+												{CreatedBy:that4.empId}
+												]},
+												order:'CrDate ASC'
+												}).then(function(tasks){
 						// /empRecord
 						// leaveRecords
 						// tasks
 						//step 2: calculate and prepare a final table with below structure
 						//Date and Hour
 						//01.01.2019  8 , 02.01 6 , 03.01 Holiday, 04.01 LEAVE, 05.01 0, 06.01 7
-						//
+
+						if (tasks.length) {
+
+
+						//This For Loop is to calculate the No of hours for each day in a month
+				 		for (var i = 0; i < noOfDays; i++) {
+						var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
+						var flag = 0;
+							var nHr = 0;
+									for (var j = 0; j < tasks.length; j++) {
+									var crdate = tasks[j].__data.CrDate;
+									if (start.getDate() ===  crdate.getDate() )  {
+										flag = 1;
+										 var nHr  = 	nHr + parseInt(tasks[j].__data.noOfHours.valueOf());
+											 }
+										}
+										if(flag===0){
+											var h = 0;
+											oArrTime.push({date:start,hours:h});
+										}else{
+											oArrTime.push({date:start,hours:nHr});
+										}
+
+									 }
+
+
+				 		//this for loop is to calculate the Leaves taken by employee in a given month
+					 	for (var i = 0; i < oArrTime.length; i++) {
+						 var date = oArrTime[i].date.getDate();
+						 var flag=0;
+									 for (var j = 0; j < leaveRecords.length; j++) {
+															if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
+																	if(flag===0){
+																					for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
+																								flag=1;
+																								oArrTime[i].hours = 'LEAVE';
+																								i++;
+																							}
+																		}else {
+																			break;
+																		}
+															}
+											 }
+					  }
+
+
+					 	//this for loop is to find and assign Holiday for employee for given month
+						for (var i = 0; i < oArrTime.length; i++) {
+							if (empRecord.__data.Holiday === "Sunday") {
+									if (oArrTime[i].date.getDay() === 0) {
+										oArrTime[i].hours = 'Holiday';
+									}
+							}else if (empRecord.__data.Holiday  === "Monday") {
+								if (oArrTime[i].date.getDay() === 1) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}else if (empRecord.__data.Holiday  === "Tuesday") {
+								if (oArrTime[i].date.getDay() === 2) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}else if (empRecord.__data.Holiday  === "Wednesday") {
+								if (oArrTime[i].date.getDay() === 3) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}else if (empRecord.__data.Holiday  === "Thursday") {
+								if (oArrTime[i].date.getDay() === 4) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}else if (empRecord.__data.Holiday  === "Friday") {
+								if (oArrTime[i].date.getDay() === 5) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}else if (empRecord.__data.Holiday  === "Saturday") {
+								if (oArrTime[i].date.getDay() === 6) {
+									oArrTime[i].hours = 'Holiday';
+								}
+							}
+						}
 						console.log(that3.empRecord);
 						console.log(that3.leaveRecords);
-						//arr time will have all dates of month and hours
-						var arrTime = [];
-						arrTime.push({
-							date: '01.01.2019',
-							hours: 8
-						});
-						arrTime.push({
-							date: '02.01.2019',
-							hours: 3
-						});
-						arrTime.push({
-							date: '03.01.2019',
-							hours: 0
-						});
-						arrTime.push({
-							date: '04.01.2019',
-							hours: 'LEAVE'
-						});
-						res.send(arrTime);
+						res.send(oArrTime);
+
+					}else {
+						console.log("There is no data available the selected month ");
+						res.send(oArrTime);
+					}
 
 					});
 
 				});
 
 			});
+		}
 
 		});
 
