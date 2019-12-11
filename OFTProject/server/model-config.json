@@ -115,5 +115,9 @@
   "TrainerPayment":{
    "dataSource": "mongoatlas",
    "public": true
-  }
+ },
+ "HolidayCalendar":{
+  "dataSource": "mongoatlas",
+  "public": true
+ }
 }

@@ -62,16 +62,23 @@ herculis: function(oEvent) {
 			$.post('/getTimeTracker',payload).done(function(data,status){
 
 					if (data.length) {
+
+						for (var i = 0; i <data.length; i++) {
+							var offSetDate =  data[i].date;
+								offSetDate = new Date(offSetDate);
+							//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+								data[i].date = offSetDate;
+						}
+
 						var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
 								for (var i = 7; i <= calDateLength; i++) {
-
 										var calDate = parseInt(document.getElementsByClassName("sapMeCalendarMonthDay")[i].id.split("--")[2].split("idCalendar-")[1].split("-")[2]);
-										var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
-
+									//	var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
+										var empDate = data[0].date.getDate();
 
 											if(empDate === calDate){
 
-												for (var j = 1; j < data.length; j++) {
+												for (var j = 0; j < data.length; j++) {
 
 												if (data[j].hours === 8) {
 													//	console.log("Green--" + data[j].hours);Green
@@ -109,7 +116,7 @@ herculis: function(oEvent) {
 				//document.getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCalendar-")[1];
 
 			}).fail(function(xhr,status,error){
-				
+
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
 			});
@@ -120,16 +127,24 @@ herculis: function(oEvent) {
 			$.post('/getTimeTracker',payload).done(function(data,status){
 
 					if (data.length) {
+
+						for (var i = 0; i <data.length; i++) {
+							var offSetDate =  data[i].date;
+								offSetDate = new Date(offSetDate);
+							//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+								data[i].date = offSetDate;
+						}
+
 						var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
 								for (var i = 7; i <= calDateLength; i++) {
 
 										var calDate = parseInt(document.getElementsByClassName("sapMeCalendarMonthDay")[i].id.split("--")[2].split("idCalendar-")[1].split("-")[2]);
-										var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
-
+										//var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
+											var empDate = data[0].date.getDate();
 
 											if(empDate === calDate){
 
-												for (var j = 1; j < data.length; j++) {
+												for (var j = 0; j < data.length; j++) {
 
 												if (data[j].hours === 8) {
 													//	console.log("Green--" + data[j].hours);Green
@@ -176,28 +191,12 @@ herculis: function(oEvent) {
 		debugger;
 		var techId=oEvent.getSource().getSelectedKey();
 		this.currentUser = techId;
+		setTimeout(this.loadCurrentUserData.bind(this), 1000);
 
-
-		this.reloadTasks();
+	//	this.reloadTasks();
 	},
-
-	onChangeCurrentDate:function(oEvent){
+	loadCurrentUserData:function(){
 		debugger;
-		var role=this.getModel("local").getProperty("/Role");
-		var oVal=this.getView().byId("idUser").getValue();
-
-if(role=='Admin'){
-	setTimeout(this.afterCalChange.bind(this), 1000);
-
-	}
-else{
-	setTimeout(this.afterCalChange.bind(this), 1000);
-
-}
-},
-afterCalChange: function() {
-		debugger;
-
 		var userId = this.getModel("local").getProperty("/CurrentUser");
 		var currentMonth = new Date(this.getView().byId("idCalendar").getCurrentDate());
 		var payload = {
@@ -209,15 +208,23 @@ afterCalChange: function() {
 
 			//document.getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCalendar-")[1];
 			if (data.length) {
+
+				for (var i = 0; i <data.length; i++) {
+					var offSetDate =  data[i].date;
+						offSetDate = new Date(offSetDate);
+					//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+						data[i].date = offSetDate;
+				}
+
 				var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
 						for (var i = 7; i <= calDateLength; i++) {
 
 								var calDate = parseInt(document.getElementsByClassName("sapMeCalendarMonthDay")[i].id.split("--")[2].split("idCalendar-")[1].split("-")[2]);
-								var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
-
+							//	var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
+										var empDate = data[0].date.getDate();
 									if(empDate === calDate){
 
-										for ( var j = 1; j < data.length; j++) {
+										for ( var j = 0; j < data.length; j++) {
 
 											if (data[j].hours === 8 ) {
 											//	console.log("Green--" + data[i].hours);Green
@@ -258,7 +265,95 @@ afterCalChange: function() {
 
 		});
 
-	console.log(document.getElementsByClassName("sapMeCalendarMonthDay"));
+
+	},
+
+	onChangeCurrentDate:function(oEvent){
+		debugger;
+		var role=this.getModel("local").getProperty("/Role");
+		var oVal=this.getView().byId("idUser").getValue();
+
+if(role=='Admin'){
+	setTimeout(this.afterCalChange.bind(this), 1000);
+
+	}
+else{
+	setTimeout(this.afterCalChange.bind(this), 1000);
+
+}
+},
+afterCalChange: function() {
+		debugger;
+
+		var userId = this.getModel("local").getProperty("/CurrentUser");
+		var currentMonth = new Date(this.getView().byId("idCalendar").getCurrentDate());
+		var payload = {
+			"Month":currentMonth,
+			"EmpId":this.currentUser
+		};
+
+		$.post('/getTimeTracker',payload).done(function(data,status){
+
+			//document.getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCalendar-")[1];
+			if (data.length) {
+
+				for (var i = 0; i <data.length; i++) {
+					var offSetDate =  data[i].date;
+						offSetDate = new Date(offSetDate);
+					//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+						data[i].date = offSetDate;
+				}
+
+				var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+						for (var i = 7; i <= calDateLength; i++) {
+
+								var calDate = parseInt(document.getElementsByClassName("sapMeCalendarMonthDay")[i].id.split("--")[2].split("idCalendar-")[1].split("-")[2]);
+							//	var empDate = parseInt(data[1].date.split("-")[2].split("T")[0]);
+										var empDate = data[0].date.getDate();
+									if(empDate === calDate){
+
+										for ( var j = 0; j < data.length; j++) {
+
+											if (data[j].hours === 8 ) {
+											//	console.log("Green--" + data[i].hours);Green
+												document.getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
+												i++;
+										}
+										else if (data[j].hours === "Holiday") {
+											//console.log("Yellow--" + data[j].hours );DimGray
+											document.getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
+											i++;
+										}else if (data[j].hours < 8 ) {
+											//console.log("Red--"+ data[j].hours);Red
+											document.getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
+											i++;
+										}else if (data[j].hours === 'LEAVE') {
+											//console.log("Blue--" + data[j].hours);SlateBlue
+											document.getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
+											i++;
+										}else if (data[j].hours > 8) {
+											//console.log("Pink--" + data[j].hours);
+											document.getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
+											i++;
+										}
+
+										}
+										break;
+									}
+
+								}
+
+			}else {
+				sap.m.MessageToast.show("You Don't have Data recorded for this month");
+			}
+
+
+		}).fail(function(xhr,status,error){
+			sap.m.MessageBox.console.error("Something is wrong in your Code");
+
+		});
+
+//	console.log(document.getElementsByClassName("sapMeCalendarMonthDay"));
 }
 
 });
