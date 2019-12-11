@@ -79,37 +79,16 @@ onBeforeRendering: function(){
 				"EmpId":currentUser
 			};
 
-				var that = this;
+			var that = this;
 			var oLeaveRecords=[];
 
 
-			$.post('/getLeaveValidator',payload).done(function(data,status){
-
-						if (data[0].valueOf()==0) {
-							sap.m.MessageToast.show("You have already applied leave for this Date...!Please select another Date");
-						}
-					// if (data.length) {
-					//
-					// 	 for (var i = 0; i <data.length; i++) {
-					// 	// 	if ((this.dateSelected.getDate() == new Date(data[i].DateFrom).getDate()) && (this.dateSelected.getMonth() == new Date(data[i].DateFrom).getMonth()) && (this.dateSelected.getFullYear() == new Date(data[i].DateFrom).getFullYear()) ){
-					// 	// 		sap.m.MessageToast.show("You have already applied leave for this Date,Please select another Date");
-					// 	// 	}
-					// 	data[i].ApprovedOn= new Date(data[i].ApprovedOn);
-					// 	data[i].ChangedOn = new Date(data[i].ChangedOn);
-					// 	data[i].DateFrom = new Date(data[i].DateFrom);
-					// 	data[i].DateTo = new Date(data[i].DateTo);
-					//
-					// 	oLeaveRecords[i] = data[i];
-					//
-					// 	}
-					// }
-
-
-			}).fail(function(xhr,status,error){
+			$.post('/getLeaveValidator',payload).done(this.successCallBack.bind(this)).
+			fail(function(xhr,status,error){
 
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
-			});
+			}.bind(this);
 
 
 // to get the correct count add 1 to the days
@@ -122,6 +101,29 @@ onBeforeRendering: function(){
 			var bValid = oEvent.getParameter("valid");
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
+		},
+		successCallBack: function(data,status){
+					debugger;
+					if (data[0].valueOf()==0) {
+						sap.m.MessageToast.show("You have already applied leave for this Date...!Please select another Date");
+					}
+				// if (data.length) {
+				//
+				// 	 for (var i = 0; i <data.length; i++) {
+				// 	// 	if ((this.dateSelected.getDate() == new Date(data[i].DateFrom).getDate()) && (this.dateSelected.getMonth() == new Date(data[i].DateFrom).getMonth()) && (this.dateSelected.getFullYear() == new Date(data[i].DateFrom).getFullYear()) ){
+				// 	// 		sap.m.MessageToast.show("You have already applied leave for this Date,Please select another Date");
+				// 	// 	}
+				// 	data[i].ApprovedOn= new Date(data[i].ApprovedOn);
+				// 	data[i].ChangedOn = new Date(data[i].ChangedOn);
+				// 	data[i].DateFrom = new Date(data[i].DateFrom);
+				// 	data[i].DateTo = new Date(data[i].DateTo);
+				//
+				// 	oLeaveRecords[i] = data[i];
+				//
+				// 	}
+				// }
+
+
 		},
 		onDPhandleChange:function(oEvent){
 			debugger;
