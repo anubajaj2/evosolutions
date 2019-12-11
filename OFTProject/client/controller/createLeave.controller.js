@@ -55,18 +55,63 @@ onBeforeRendering: function(){
 			this.oRouter.navTo("leaveRequest");
 		},
 		herculis: function(oEvent) {
-			if(oEvent.getParameter("name") !== "createLeave"){
-				return;
-			}
-		},
-		onhandleChange: function (oEvent) {
 
+			debugger;
+		},
+		//var oLeaveRequest : {},
+		onhandleChange: function (oEvent) {
+			debugger;
+
+			var oLeaveRequest={};
 			var sfrom = {};
 			var sTo = {};
-		   	sfrom = oEvent.getParameter("from");
+			 sfrom = oEvent.getParameter("from");
+			 var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
 			 sTo = oEvent.getParameter("to");
+
 			 var diff = sTo - sfrom;
 			 var days =  diff / (1000 * 3600 * 24);
+
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			var oDate = new Date();
+			var payload = {
+				"date":nextdate,
+				"EmpId":currentUser
+			};
+
+				var that = this;
+			var oLeaveRecords=[];
+
+
+			$.post('/getLeaveValidator',payload).done(function(data,status){
+
+						if (data[0].valueOf()==0) {
+							sap.m.MessageToast.show("You have already applied leave for this Date...!Please select another Date");
+						}
+					// if (data.length) {
+					//
+					// 	 for (var i = 0; i <data.length; i++) {
+					// 	// 	if ((this.dateSelected.getDate() == new Date(data[i].DateFrom).getDate()) && (this.dateSelected.getMonth() == new Date(data[i].DateFrom).getMonth()) && (this.dateSelected.getFullYear() == new Date(data[i].DateFrom).getFullYear()) ){
+					// 	// 		sap.m.MessageToast.show("You have already applied leave for this Date,Please select another Date");
+					// 	// 	}
+					// 	data[i].ApprovedOn= new Date(data[i].ApprovedOn);
+					// 	data[i].ChangedOn = new Date(data[i].ChangedOn);
+					// 	data[i].DateFrom = new Date(data[i].DateFrom);
+					// 	data[i].DateTo = new Date(data[i].DateTo);
+					//
+					// 	oLeaveRecords[i] = data[i];
+					//
+					// 	}
+					// }
+
+
+			}).fail(function(xhr,status,error){
+
+				sap.m.MessageBox.console.error("Something is wrong in your Code");
+
+			});
+
+
 // to get the correct count add 1 to the days
 			 days = days + 1;
 			 if (days == 0) {
@@ -79,6 +124,7 @@ onBeforeRendering: function(){
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
 		},
 		onDPhandleChange:function(oEvent){
+			debugger;
 			var oDP = oEvent.getSource();
 			var sValue = oEvent.getParameter("value");
 			var bValid = oEvent.getParameter("valid");

@@ -217,10 +217,47 @@ app.start = function() {
 
 		});
 
+		app.post('/getLeaveValidator',function(req,res){
+		//	debugger;
+			var date = req.body.date;
+			var selectedDay = new Date(date).getDate();
+			var selectedMonth = new Date(date).getMonth();
+			var selectedYear = new Date(date).getFullYear();
+			var tdate = new Date();
+			this.empId = req.body.EmpId;
+			var oStartDate = new Date(new Date(tdate).getFullYear(),0,1);
+			var oEndDate = new Date(date);
+			var LeaveRequest = app.models.LeaveRequest;
+			var flag = 0;
+				var oLeaveRecords = [flag];
+				LeaveRequest.find({where:
+					{	and: [
+					 {DateFrom:{between:[oStartDate,oEndDate]}},
+					 {AppUserId: this.empId}
+				 ]},
+				 order:'DateFrom ASC'
+				 }).then(function(leaveRecords){
+				//	var that3 = that2;
+			//		this.leaveRecords = leaveRecords;
+				//	var flag = 1;
+				for (var i = 0; i < leaveRecords.length; i++) {
+							if ((selectedDay==new Date(leaveRecords[i].__data.DateFrom).getDate())&&(selectedMonth==new Date(leaveRecords[i].__data.DateFrom).getMonth())&&(selectedYear==new Date(leaveRecords[i].__data.DateFrom).getFullYear())) {
+										oLeaveRecords[flag] = 1;
+										break;
+							}								// oLeaveRecords[i] =	leaveRecords[i];
+							 }
+							 //oLeaveRecords.push(flag);
+							 res.send(oLeaveRecords);
+							//	res.send(flag);
+				});
+
+		});
+
 		app.post('/getTimeTracker', function(req, res) {
 			var month = req.body.Month;
 			this.empId = req.body.EmpId;
 			var today = new Date();
+
 			debugger;
 
 
