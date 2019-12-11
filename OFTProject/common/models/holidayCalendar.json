@@ -19,7 +19,7 @@
     "Occasion": {
       "type": "string",
       "required": true,
-      "default": "null"      
+      "default": "null"
     },
     "CreatedOn": {
       "type": "date"
@@ -38,11 +38,6 @@
   },
   "validations": [],
   "relations": {
-    "ToCourse": {
-			"type": "belongsTo",
-			"model": "CoursesMst",
-			"foreignKey": "CourseId"
-		},
     "ToChangedBy": {
 			"type": "belongsTo",
 			"model": "AppUser",
@@ -52,12 +47,7 @@
 			"type": "belongsTo",
 			"model": "AppUser",
 			"foreignKey": "CreatedBy"
-		},
-    "ToTrainer":{
-      "type":"belongsTo",
-      "model":"Trainer",
-      "foreignKey":"TrainerId"
-    }
+		}
   },
   "acls": [
     {
