@@ -120,6 +120,11 @@
 		"remarks":"",
 		"link":""
 	},
+	"holidayCalendar": {
+		"Day": "",
+		"Date": "",
+		"Ocassion": ""
+		},
 	"newBatch": {
 		"courseId": "",
 		"courseName": "",
