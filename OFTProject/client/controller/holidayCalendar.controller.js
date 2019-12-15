@@ -54,6 +54,18 @@ herculis:function(){
 		this.getModel("local").setProperty("/holidayCalendar/Date", new Date());
 		this.currentUser = this.getModel("local").getProperty("/CurrentUser");
 
+		this.fromDate = new Date(2019,0,1);
+		this.toDate = new Date(2019,0,31);
+		this.fromDate.setMilliseconds(0);
+		this.fromDate.setSeconds(0);
+		this.fromDate.setMinutes(0);
+		this.fromDate.setHours(0);
+
+		this.toDate.setMilliseconds(0);
+		this.toDate.setSeconds(59);
+		this.toDate.setMinutes(59);
+		this.toDate.setHours(23);
+		this.reloadTasks();
 
 },
 reloadTasks: function(oEvent) {
@@ -75,34 +87,16 @@ this.getView().byId("idHolidayTable").bindItems({
 });
 
 
-// if(role=='Admin'){
-// 	var filters = [
-// 		new sap.ui.model.Filter(
-// 					 "Date",
-// 					 FilterOperator.BT,
-// 					 this.fromDate,
-// 					 this.toDate
-// 				)];
-// 		// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
-// 	this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
-// }
-// else {
-// 	this.getView().byId("idUser").setVisible(false);
-// 	var filters = [new sap.ui.model.Filter(
-// 					 'CreatedBy',
-// 					 'EQ',
-// 					  "'" + this.currentUser + "'"
-// 				),
-// 				new sap.ui.model.Filter(
-// 					 "Date",
-// 					 FilterOperator.BT,
-// 					 this.fromDate,
-// 					 this.toDate
-// 				)];
-// 				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
-// 	this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
-// }
-				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, this.fromDate)];
+if(role=='Admin'){
+	var filters = [
+		new sap.ui.model.Filter(
+					 "Date",
+					 FilterOperator.BT,
+					 this.fromDate,
+					 this.toDate
+				)];
+		}
+	this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
 
 },
 
@@ -125,7 +119,7 @@ onUpdateFinished:function(oEvent){
 onDateChange: function(oEvent) {
 	debugger;
 	var role=this.getModel("local").getProperty("/Role");
-	// this.reloadTasks();
+
 	var dDateStart = oEvent.getSource().getProperty('dateValue').getDay();
 
 	switch (dDateStart) {
@@ -186,11 +180,13 @@ onDateChange: function(oEvent) {
     myData.Day = this.getView().byId("idDay").getValue();
 		myData.Ocassion = this.getView().byId("idOcassion").getValue();
 
-		var oDatePicker = this.getView().byId("idHolidayTable");
+		var oDatePicker = this.getView().byId("idHoliday");
 			var oNewDate = oDatePicker.getDateValue();
- 		oNewDate.setMinutes(oNewDate.getMinutes() + oNewDate.getTimezoneOffset());
-		oDatePicker.setDateValue(new Date(oNewDate));
-		myData.Date = oDatePicker.getDateValue();
+ 		// oNewDate.setMinutes(oNewDate.getMinutes() + oNewDate.getTimezoneOffset());
+		// oDatePicker.setDateValue(new Date(oNewDate));
+		// myData.Date = oDatePicker.getDateValue();
+
+		myData.Date = oNewDate;
 
 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/holidayCalendars",
 																"POST", {}, myData, this)
