@@ -211,6 +211,11 @@
 								"pattern": "timeTracker",
 								"name": "timeTracker",
 								"target": ["donald", "timeTracker"]
+							},
+							{
+								"pattern": "holidayCalendar",
+								"name": "holidayCalendar",
+								"target": ["donald", "holidayCalendar"]
 							}
 
 						]
@@ -422,6 +427,15 @@
 					"clearAggregation": true,
 					"viewName": "timeTracker",
 					"viewId": "idTimeTracker",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+				},
+				"holidayCalendar":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "holidayCalendar",
+					"viewId": "idHolidayCalendar",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				}
