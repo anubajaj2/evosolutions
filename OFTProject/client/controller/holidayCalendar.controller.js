@@ -73,7 +73,7 @@ reloadTasks: function(oEvent) {
 
 		var role=this.getModel("local").getProperty("/Role");
 this.getView().byId("idHolidayTable").bindItems({
-	path:"/holidayCalendars",
+	path:"/HolidayCalendars",
 	template: new sap.m.ColumnListItem({
      cells: [
 			 new sap.m.Text({text: "{Day}"}),
@@ -188,7 +188,7 @@ onDateChange: function(oEvent) {
 
 		myData.Date = oNewDate;
 
-		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/holidayCalendars",
+		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/HolidayCalendars",
 																"POST", {}, myData, this)
 		.then(function(oData) {
 		that.getView().setBusy(false);
