@@ -29,7 +29,7 @@
           <Table
             id="idHolidayTable"
             selectionMode="None"
-            items="/HolidayCalendars"
+            items="{/HolidayCalendar}"
             updateFinished="onUpdateFinished">
 
               <columns>
