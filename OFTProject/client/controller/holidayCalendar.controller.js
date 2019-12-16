@@ -65,40 +65,40 @@ herculis:function(){
 		this.toDate.setSeconds(59);
 		this.toDate.setMinutes(59);
 		this.toDate.setHours(23);
-		this.reloadTasks();
+		//this.reloadTasks();
 
 },
-reloadTasks: function(oEvent) {
-		debugger;
-
-		var role=this.getModel("local").getProperty("/Role");
-this.getView().byId("idHolidayTable").bindItems({
-	path:"/HolidayCalendars",
-	template: new sap.m.ColumnListItem({
-     cells: [
-			 new sap.m.Text({text: "{Day}"}),
-			 	new sap.m.Text({text: { path: 'Date', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
-				new sap.m.Text({text: "{Ocassion}"}),
-				new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
-		 ]
-
-	})
-
-});
-
-
-	//if(role=='Admin'){
-	var filters = [
-		new sap.ui.model.Filter(
-					 "Date",
-					 FilterOperator.BT,
-					 this.fromDate,
-					 this.toDate
-				)];
-		}
-	//this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
-
-},
+// reloadTasks: function(oEvent) {
+// 		debugger;
+//
+// 		var role=this.getModel("local").getProperty("/Role");
+// 		this.getView().byId("idHolidayTable").bindItems({
+// 	path:"/HolidayCalendars",
+// 	template: new sap.m.ColumnListItem({
+//      cells: [
+// 			 new sap.m.Text({text: "{Day}"}),
+// 			 	new sap.m.Text({text: { path: 'Date', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
+// 				new sap.m.Text({text: "{Ocassion}"}),
+// 				new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
+// 		 ]
+//
+// 	})
+//
+// });
+//
+//
+// 	if(role=='Admin'){
+// 	var filters = [
+// 		new sap.ui.model.Filter(
+// 					 "Date",
+// 					 FilterOperator.BT,
+// 					 this.fromDate,
+// 					 this.toDate
+// 				)];
+// 		}
+// 	this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
+//
+// },
 
 onUpdateFinished:function(oEvent){
 	debugger;
