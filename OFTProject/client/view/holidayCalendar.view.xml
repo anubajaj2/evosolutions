@@ -29,6 +29,7 @@
           <Table
             id="idHolidayTable"
             selectionMode="None"
+            items="/HolidayCalendars"
             updateFinished="onUpdateFinished">
 
               <columns>
@@ -45,6 +46,17 @@
                    <Label text="Delete"/>
                  </Column>
               </columns>
+              <items>
+                <ColumnListItem>
+                  <cells>
+                    <Text text="{Day}" />
+                    <Text text="{Date}" />
+                    <Text text="{Ocassion}" />
+                    <Button icon="sap-icon://delete" />
+                  </cells>
+                </ColumnListItem>
+              </items>
+
             </Table>
 </semantic:content>
     <semantic:customFooterContent>
