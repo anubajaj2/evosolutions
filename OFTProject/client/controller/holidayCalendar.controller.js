@@ -87,16 +87,16 @@ this.getView().byId("idHolidayTable").bindItems({
 });
 
 
-if(role=='Admin'){
-	// var filters = [
-	// 	new sap.ui.model.Filter(
-	// 				 "Date",
-	// 				 FilterOperator.BT,
-	// 				 this.fromDate,
-	// 				 this.toDate
-	// 			)];
-	// 	}
-	// this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
+	//if(role=='Admin'){
+	var filters = [
+		new sap.ui.model.Filter(
+					 "Date",
+					 FilterOperator.BT,
+					 this.fromDate,
+					 this.toDate
+				)];
+		}
+	//this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
 
 },
 
