@@ -38,7 +38,7 @@
       </f:SimpleForm>
       <l:VerticalLayout width="100%" >
 
-              <me:Calendar id="idCalendar" firstDayOffset="1"
+              <me:Calendar id="idTimeTrackerCalendar" firstDayOffset="1"
                 changeCurrentDate="onChangeCurrentDate" dependents="{/tasks}"   width="640px" >
                 <me:dependents>
                       <Label text="{taskWorkedOn}" ></Label>

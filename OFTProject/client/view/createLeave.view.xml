@@ -75,7 +75,7 @@
 </f:SimpleForm>
 <l:VerticalLayout width="100%" >
 
-				<me:Calendar id="idCalendar" selectionMode="RANGE" changeRange="onChangeRange"  firstDayOffset="1"
+				<me:Calendar id="idCreateLeaveCalendar" selectionMode="RANGE" changeRange="onChangeRange"  firstDayOffset="1"
 					 tapOnDate="ontapOnDate" changeCurrentDate="onChangeCurrentDate" dependents="{}"   width="640px" >
 					<me:dependents>
 								<Label text="{}" ></Label>

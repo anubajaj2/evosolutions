@@ -65,11 +65,11 @@ onBeforeRendering: function(){
 		},
 		reloadTasks: function(){
 		debugger;
-		//var nInteractiveDates = this.getView().byId("idCalendar")._$interactiveDates.length;
+		//var nInteractiveDates = this.getView().byId("idCreateLeaveCalendar")._$interactiveDates.length;
 		var role=this.getModel("local").getProperty("/Role");
 		var userId = this.getModel("local").getProperty("/CurrentUser");
 		var currentMonth = new Date();
-		this.getView().byId("idCalendar").setCurrentDate(currentMonth);
+		this.getView().byId("idCreateLeaveCalendar").setCurrentDate(currentMonth);
 
 		var payload = {
 			"date":currentMonth,
@@ -94,27 +94,27 @@ onBeforeRendering: function(){
 								data[i].Date = offSetDate;
 						}
 
-						var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+						var calDateLength = document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay").length;
 								for (var i = 0; i <data.length;i++) {
 
 										var empDate = data[i].Date;
 
 												for (var j = 7; j <calDateLength ; j++) {
 
-											var calDate = new Date(document.getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCalendar-")[1]);
+											var calDate = new Date(document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCreateLeaveCalendar-")[1]);
 										if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
 												if (data[i].Mark === "PH") {
 													//	console.log("red--" + data[j].hours);Green#ff3333
-														document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "red";
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ff3333";
 														//i++;
 												}
 												else if (data[i].Holiday === "Holiday") {
-													//console.log("Yellow--" + data[j].hours );gray#666699
-													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "gray";
+													//console.log("Yellow--" + data[j].hours );#666699#666699
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#666699";
 													//i++;
 												}else if (data[i].Mark === "LEAVE") {
 													//console.log("Blue--" + data[j].hours);blue#4d79ff
-													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "blue";
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
 													//i++;
 												}
 												}
@@ -128,7 +128,7 @@ onBeforeRendering: function(){
 						sap.m.MessageToast.show("You Don't hava Data recorded for this Month");
 					}
 				debugger;
-				//document.getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCalendar-")[1];
+				//document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCreateLeaveCalendar-")[1];
 	},
 	onChangeCurrentDate:function(oEvent){
 		debugger;
@@ -137,7 +137,7 @@ onBeforeRendering: function(){
 afterCalChange: function() {
 
 	var userId = this.getModel("local").getProperty("/CurrentUser");
-	var currentMonth = new Date(this.getView().byId("idCalendar").getCurrentDate());
+	var currentMonth = new Date(this.getView().byId("idCreateLeaveCalendar").getCurrentDate());
 
 	var payload = {
 		"date":currentMonth,
@@ -155,31 +155,31 @@ afterCalChange: function() {
 							data[i].Date = offSetDate;
 					}
 
-				//	var tDays = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+				//	var tDays = document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay").length;
 					//var calDateLength = tDays/2;
-					var calDateLength  = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+					var calDateLength  = document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay").length;
 							for (var i = 0; i <data.length;i++) {
 
 									var empDate = data[i].Date;
 
 											for (var j = 7; j <calDateLength ; j++) {
 
-										var calDate = new Date(document.getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCalendar-")[1]);
+										var calDate = new Date(document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCreateLeaveCalendar-")[1]);
 									if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
 											if (data[i].Mark === "PH") {
-												//	console.log("red--" + data[j].hours);Green#ff3333
-													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "red";
+												//	console.log("#666699--" + data[j].hours);Green#ff3333
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ff3333";
 												//	i++;
 												break;
 											}
 											else if (data[i].Holiday === "Holiday") {
-												//console.log("Yellow--" + data[j].hours );gray#666699
-												document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "gray";
+												//console.log("Yellow--" + data[j].hours );#666699#666699
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#666699";
 											//	i++;
 											break;
 											}else if (data[i].Mark === "LEAVE") {
 												//console.log("Blue--" + data[j].hours);blue#4d79ff
-												document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "blue";
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
 											//	i++;
 											break;
 											}
@@ -250,8 +250,8 @@ afterCalChange: function() {
 			}
 
 			var leaveType = this.getView().byId("idlType").getSelectedKey();
-			var dFrom = new Date(this.getView().byId("idCalendar").getSelectedDates()[0]);
-			var dTo = new Date(this.getView().byId("idCalendar").getSelectedDates()[this.getView().byId("idCalendar").getSelectedDates().length-1]);
+			var dFrom = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[0]);
+			var dTo = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[this.getView().byId("idCreateLeaveCalendar").getSelectedDates().length-1]);
 			this.getView().byId("idDate").setFrom(new Date(dFrom));
 			this.getView().byId("idDate").setTo(new Date(dTo));
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",dFrom);
@@ -688,7 +688,7 @@ afterCalChange: function() {
 		}
 
 		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
+		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rende#ff3333
 		 * (NOT before the first rendering! onInit() is used for that one!).
 		 * @memberOf oft.fiori.view.View2
 		 */
