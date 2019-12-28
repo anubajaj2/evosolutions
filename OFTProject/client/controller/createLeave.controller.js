@@ -200,11 +200,8 @@ afterCalChange: function() {
 
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
-<<<<<<< HEAD
-			});
-=======
+
 			}).bind(this);
->>>>>>> cb23a3435c472a8a94bd792755bd09503e7a4d43
 
 
 },
