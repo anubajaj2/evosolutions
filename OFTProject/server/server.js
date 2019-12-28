@@ -218,16 +218,18 @@ app.start = function() {
 		});
 
 		app.post('/getLeaveValidator',function(req,res){
-		//	debugger;
+			debugger;
 			var date = req.body.date;
 			var selectedDay = new Date(date).getDate();
 			var selectedMonth = new Date(date).getMonth();
 			var selectedYear = new Date(date).getFullYear();
 			var tdate = new Date();
 			this.empId = req.body.EmpId;
-			var oStartDate = new Date(new Date(tdate).getFullYear(),0,1);
-			var oEndDate = new Date(date);
+			var oStartDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth(),1);
+			var oEndDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0);
 			var LeaveRequest = app.models.LeaveRequest;
+			var Holidays = app.models.HolidayCalendar;
+			var AppUser = app.models.AppUser;
 			var flag = 0;
 				var oLeaveRecords = [flag];
 				LeaveRequest.find({where:
@@ -239,16 +241,173 @@ app.start = function() {
 				 }).then(function(leaveRecords){
 				//	var that3 = that2;
 			//		this.leaveRecords = leaveRecords;
-				//	var flag = 1;
+				var flag = 0;
 				for (var i = 0; i < leaveRecords.length; i++) {
-							if ((selectedDay==new Date(leaveRecords[i].__data.DateFrom).getDate())&&(selectedMonth==new Date(leaveRecords[i].__data.DateFrom).getMonth())&&(selectedYear==new Date(leaveRecords[i].__data.DateFrom).getFullYear())) {
-										oLeaveRecords[flag] = 1;
-										break;
-							}								// oLeaveRecords[i] =	leaveRecords[i];
+							oLeaveRecords[i] =	leaveRecords[i];
 							 }
-							 //oLeaveRecords.push(flag);
-							 res.send(oLeaveRecords);
-							//	res.send(flag);
+
+				Holidays.find(
+					{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
+					).then(function(holidayRecords){
+				var tDate = new Date();
+					var holidayLeaveCal = [];
+					var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
+				//this loop will interate for 12 time month wise
+			// 				for (var i = 0; i < 12; i++) {
+			// 		//this loop will iterate each month Day wise
+			// 		var fDate = new Date(tDate.getFullYear(),i,1);
+			// 		 			for (var j = 0; j <  new Date(fDate.getFullYear(),fDate.getMonth()+1,0).getDate(); j++) {
+			// 						var monthDate = new Date(fDate.getFullYear(),fDate.getMonth(),j+1);
+			// 						var flag = 0;
+			// 						for (var k = 0; k < holidayRecords.length; k++) {
+			// 									var oDate =  holidayRecords[k].__data.Date;
+			// 						if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
+			// 								flag = 1;
+			// 								holidayLeaveCal.push({
+			// 								Day:holidayRecords[k].__data.Day,
+			// 								Date:holidayRecords[k].__data.Date,
+			// 								Occasion:holidayRecords[k].__data.Occasion,
+			// 								Mark:'PH',
+			// 								Available:'NA',
+			// 								LeaveType:'',
+			// 								LeaveStatus:'',
+			// 								Holiday:''
+			// 							});
+			// 							break;
+			// 						}
+			// 					}
+			// 					if (flag == 0) {
+			// 						holidayLeaveCal.push({
+			// 						Day:new Date(fDate.getFullYear(),fDate.getMonth(),j+1).getDay(),
+			// 						Date: new Date(fDate.getFullYear(),fDate.getMonth(),j+1),
+			// 						Occasion:'',
+			// 						Mark:'',
+			// 						Available:'',
+			// 						LeaveType:'',
+			// 						LeaveStatus:'',
+			// 						Holiday:''
+			// 					});
+			// 		}
+			//
+			// 	}
+			// }
+			for (var j = 0; j <  noOfDaysInMonth; j++) {
+				var monthDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth(),j+1);
+				var flag = 0;
+				for (var k = 0; k < holidayRecords.length; k++) {
+							var oDate =  holidayRecords[k].__data.Date;
+				if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
+						flag = 1;
+						holidayLeaveCal.push({
+						Day:holidayRecords[k].__data.Day,
+						Date:holidayRecords[k].__data.Date,
+						Occasion:holidayRecords[k].__data.Occasion,
+						Mark:'PH',
+						Available:'NA',
+						LeaveType:'',
+						LeaveStatus:'',
+						Holiday:''
+					});
+					break;
+				}
+			}
+			if (flag == 0) {
+				holidayLeaveCal.push({
+				Day:new Date(monthDate.getFullYear(),monthDate.getMonth(),j+1).getDay(),
+				Date: new Date(monthDate.getFullYear(),monthDate.getMonth(),j+1),
+				Occasion:'',
+				Mark:'',
+				Available:'',
+				LeaveType:'',
+				LeaveStatus:'',
+				Holiday:''
+			});
+}
+
+}
+
+					debugger;
+				//	var holidayCal = [];
+					for (var l = 0; l < holidayLeaveCal.length; l++) {
+						var oDate = holidayLeaveCal[l].Date ;
+							var flag = 0;
+
+						for (var i = 0; i < oLeaveRecords.length; i++) {
+									var dFrom =  oLeaveRecords[i].__data.DateFrom;
+									var nDays = oLeaveRecords[i].__data.Days;
+
+								if ((new Date(dFrom).getDate() == new Date(oDate).getDate()) && (new Date(dFrom).getMonth() == new Date(oDate).getMonth()) && (new Date(dFrom).getFullYear() == new Date(oDate).getFullYear() ) ){
+									if (flag == 0) {
+										for (var j = 0; j < nDays; j++) {
+												flag=1;
+													if (holidayLeaveCal[l].Mark == 'PH') {
+														holidayLeaveCal[l].Mark ='PH';
+														holidayLeaveCal[l].Available = 'NA';
+														holidayLeaveCal[l].LeaveType = oLeaveRecords[j].__data.LeaveType;
+														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[j].__data.Status;
+
+												}else {
+													holidayLeaveCal[l].Mark ='LEAVE';
+													holidayLeaveCal[l].Available = 'NA';
+													holidayLeaveCal[l].LeaveType = oLeaveRecords[j].__data.LeaveType;
+													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[j].__data.Status;
+												}
+													l++;
+												}
+
+									}else {
+										break;
+									}
+
+							}
+					}
+				}
+
+				AppUser.find().then(function(empRecords) {
+					for (var i = 0; i < empRecords.length; i++) {
+						if (this.empId === empRecords[i].TechnicalId) {
+							var empRecord = empRecords[i];
+							break;
+						}
+					}
+//this for loop will assign the Holiday assigned for this User
+					for (var i = 0; i < holidayLeaveCal.length; i++) {
+						if (empRecord.__data.Holiday === "Sunday") {
+								if (holidayLeaveCal[i].Date.getDay() === 0) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+						}else if (empRecord.__data.Holiday  === "Monday") {
+							if (holidayLeaveCal[i].Date.getDay() === 1) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}else if (empRecord.__data.Holiday  === "Tuesday") {
+							if (holidayLeaveCal[i].Date.getDay() === 2) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}else if (empRecord.__data.Holiday  === "Wednesday") {
+							if (holidayLeaveCal[i].Date.getDay() === 3) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}else if (empRecord.__data.Holiday  === "Thursday") {
+							if (holidayLeaveCal[i].Date.getDay() === 4) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}else if (empRecord.__data.Holiday  === "Friday") {
+							if (holidayLeaveCal[i].Date.getDay() === 5) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}else if (empRecord.__data.Holiday  === "Saturday") {
+							if (holidayLeaveCal[i].Date.getDay() === 6) {
+								holidayLeaveCal[i].Holiday = 'Holiday';
+							}
+						}
+					}
+						res.send(holidayLeaveCal);
+					});
+
+				});
+
+
 				});
 
 		});
@@ -360,6 +519,7 @@ app.start = function() {
 																oArrTime[i].hours = 'LEAVE';
 																i++;
 															}
+														//	i = leaveRecords[j].__data.Days - 1;
 														}else {
 															break;
 														}

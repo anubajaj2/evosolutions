@@ -78,25 +78,13 @@ reloadTasks: function(oEvent) {
 			     cells: [
 						 new sap.m.Text({text: "{Day}"}),
 						 	new sap.m.Text({text: { path: 'Date', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
-							new sap.m.Text({text: "{Ocassion}"}),
+							new sap.m.Text({text: "{Occasion}"}),
 							new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
 					 ]
 
 				})
 
 			});
-
-
-	// if(role=='Admin'){
-	// 		var filters = [
-	// 			new sap.ui.model.Filter(
-	// 						 "Date",
-	// 						 FilterOperator.BT,
-	// 						 this.fromDate,
-	// 						 this.toDate
-	// 					)];
-	// 	}
-	// 	this.getView().byId("idHolidayTable").getBinding("items").filter(filters);
 
 },
 
@@ -178,7 +166,7 @@ onDateChange: function(oEvent) {
           pattern: "yyyy-MM-dd"});
 
     myData.Day = this.getView().byId("idDay").getValue();
-		myData.Ocassion = this.getView().byId("idOcassion").getValue();
+		myData.Occasion = this.getView().byId("idOccasion").getValue();
 
 		var oDatePicker = this.getView().byId("idHoliday");
 			var oNewDate = oDatePicker.getDateValue();

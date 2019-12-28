@@ -17,8 +17,8 @@
             change="onDateChange" dateValue="{'local>/holidayCalendar/Date'}"/>
             <Label text="Day" />
             <Input id="idDay" width="30%" enabled="" ></Input>
-            <Label text="Ocassion" />
-            <Input width="100%" id="idOcassion"></Input>
+            <Label text="Occasion" />
+            <Input width="100%" id="idOccasion"></Input>
             <Label/>
       		<Button id="idHolidayBtn" width="20%" text="Save" press="onSave"  enabled="true"></Button>
       	</f:content>
@@ -29,7 +29,7 @@
           <Table
             id="idHolidayTable"
             selectionMode="None"
-            items="{/HolidayCalendar}"
+            items="{/HolidayCalendars}"
             updateFinished="onUpdateFinished">
 
               <columns>
@@ -40,7 +40,7 @@
                  <Label text="Date"></Label>
                 </Column>
                 <Column>
-                  <Label text="Ocassion" />
+                  <Label text="Occasion" />
                 </Column>
                 <Column>
                    <Label text="Delete"/>
@@ -51,7 +51,7 @@
                   <cells>
                     <Text text="{Day}" />
                     <Text text="{Date}" />
-                    <Text text="{Ocassion}" />
+                    <Text text="{Occasion}" />
                     <Button icon="sap-icon://delete" />
                   </cells>
                 </ColumnListItem>

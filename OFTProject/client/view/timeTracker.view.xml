@@ -19,7 +19,6 @@
   	</semantic:customHeaderContent>
     <semantic:content id="idContent">
     	<VBox>
-        <!-- <Label id="idTxt" design="Bold" /> -->
 
       <f:SimpleForm editable="true" id="idform">
       	<f:content>
@@ -29,43 +28,16 @@
               <core:Item key="{TechnicalId}" text="{UserName}"/>
             </items>
             </ComboBox>
-              <Label></Label>
-      		<!-- <Label text="Date" />
-          <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
-            change="onDateChange" value="{'local>/tasks/CrDate'}"> </DatePicker> -->
             <Label></Label>
             <Label></Label>
             <Label></Label>
-            <!-- <l:VerticalLayout>
-                  <l:content>
-                    <u:Calendar id="idCalendar" startDateChange="onStartDateChange" legend="legend1" nonWorkingDays="1" dependents="{/tasks}">
-                      <u:dependents>
-                            <Label text="{taskWorkedOn}" ></Label>
-                            <Label text="{noOfHours}" ></Label>
-                      </u:dependents>
-                    </u:Calendar>
-                    <u:CalendarLegend id="legend1" />
-                    </l:content>
-
-                   <u:Calendar width="50%"
-                    id="calendar1" legend="legend1"/>
-                  <u:CalendarLegend id="legend1" />
-                  </l:content>
-                  <ToggleButton text="Apply Changes" press="handleShowSpecialDays"></ToggleButton>
-            </l:VerticalLayout> -->
-
-
+            <Label></Label>
 
       	</f:content>
 
       </f:SimpleForm>
       <l:VerticalLayout width="100%" >
-              <!-- <l:HorizontalLayout>
-                  <RadioButton text="One Week" select="changeToOneWeek" groupName="rangeGroup"/>
-                  <RadioButton text="Two Weeks" select="changeToTwoWeeks" groupName="rangeGroup"/>
-                  <RadioButton text="One Month" select="changeToOneMonth" groupName="rangeGroup" selected="true"/>
-                  <RadioButton text="Two Months" select="changeToTwoMonths" groupName="rangeGroup"/>
-              </l:HorizontalLayout> -->
+
               <me:Calendar id="idCalendar" firstDayOffset="1"
                 changeCurrentDate="onChangeCurrentDate" dependents="{/tasks}"   width="640px" >
                 <me:dependents>

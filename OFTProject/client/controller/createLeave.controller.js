@@ -22,6 +22,8 @@ sap.ui.define([
 			this.getModel("local").setProperty("/newLeaveRequest/DateFrom", this.formatter.getFormattedDate(0));
 //			this.getView().byId("idDPlblday").setDateValue(new Date());
 			this.getView().byId("idDPlblday").setVisible(false);
+			//this.getView().byId("idMessage").setVisible(false);
+
 			this.getView().byId("idDatePicker").setVisible(false);
 			var dateTo = new Date();
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
@@ -29,6 +31,7 @@ sap.ui.define([
 					var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 					this.getView().byId("idUser").setText(loginUser);
 				}
+				this.getView().byId("idSave").setEnabled(false);
 
 	},
 	onSelchange: function(oEvent){
@@ -57,40 +60,338 @@ onBeforeRendering: function(){
 		herculis: function(oEvent) {
 
 			debugger;
+			this.reloadTasks();
+
 		},
-		//var oLeaveRequest : {},
-		onhandleChange: function (oEvent) {
-			debugger;
+		reloadTasks: function(){
+		debugger;
+		//var nInteractiveDates = this.getView().byId("idCalendar")._$interactiveDates.length;
+		var role=this.getModel("local").getProperty("/Role");
+		var userId = this.getModel("local").getProperty("/CurrentUser");
+		var currentMonth = new Date();
+		this.getView().byId("idCalendar").setCurrentDate(currentMonth);
 
-			var oLeaveRequest={};
-			var sfrom = {};
-			var sTo = {};
-			 sfrom = oEvent.getParameter("from");
-			 var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
-			 sTo = oEvent.getParameter("to");
+		var payload = {
+			"date":currentMonth,
+			"EmpId":userId
+		};
 
-			 var diff = sTo - sfrom;
-			 var days =  diff / (1000 * 3600 * 24);
+				$.post('/getLeaveValidator',payload).done(this.successCallBack2.bind(this)).
+				fail(function(xhr,status,error){
 
-			var currentUser = this.getModel("local").getProperty("/CurrentUser");
-			var oDate = new Date();
-			var payload = {
-				"date":nextdate,
-				"EmpId":currentUser
-			};
+					sap.m.MessageBox.console.error("Something is wrong in your Code");
 
-			var that = this;
-			var oLeaveRecords=[];
+				});
+		},
+		successCallBack2:function(data,status){
+
+					if (data.length) {
+
+						for (var i = 0; i <data.length; i++) {
+							var offSetDate =  data[i].Date;
+								offSetDate = new Date(offSetDate);
+							//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+								data[i].Date = offSetDate;
+						}
+
+						var calDateLength = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+								for (var i = 0; i <data.length;i++) {
+
+										var empDate = data[i].Date;
+
+												for (var j = 7; j <calDateLength ; j++) {
+
+											var calDate = new Date(document.getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCalendar-")[1]);
+										if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
+												if (data[i].Mark === "PH") {
+													//	console.log("red--" + data[j].hours);Green#ff3333
+														document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "red";
+														//i++;
+												}
+												else if (data[i].Holiday === "Holiday") {
+													//console.log("Yellow--" + data[j].hours );gray#666699
+													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "gray";
+													//i++;
+												}else if (data[i].Mark === "LEAVE") {
+													//console.log("Blue--" + data[j].hours);blue#4d79ff
+													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "blue";
+													//i++;
+												}
+												}
+												}
+											//	break;
 
 
-			$.post('/getLeaveValidator',payload).done(this.successCallBack.bind(this)).
+												}
+
+					}else {
+						sap.m.MessageToast.show("You Don't hava Data recorded for this Month");
+					}
+				debugger;
+				//document.getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCalendar-")[1];
+	},
+	onChangeCurrentDate:function(oEvent){
+		debugger;
+		setTimeout(this.afterCalChange.bind(this), 1000);
+},
+afterCalChange: function() {
+
+	var userId = this.getModel("local").getProperty("/CurrentUser");
+	var currentMonth = new Date(this.getView().byId("idCalendar").getCurrentDate());
+
+	var payload = {
+		"date":currentMonth,
+		"EmpId":userId
+	};
+
+			$.post('/getLeaveValidator',payload).done(function(data,status){
+
+				if (data.length) {
+
+					for (var i = 0; i <data.length; i++) {
+						var offSetDate =  data[i].Date;
+							offSetDate = new Date(offSetDate);
+						//	offSetDate.setMinutes(offSetDate.getMinutes() + offSetDate.getTimezoneOffset());
+							data[i].Date = offSetDate;
+					}
+
+				//	var tDays = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+					//var calDateLength = tDays/2;
+					var calDateLength  = document.getElementsByClassName("sapMeCalendarMonthDay").length;
+							for (var i = 0; i <data.length;i++) {
+
+									var empDate = data[i].Date;
+
+											for (var j = 7; j <calDateLength ; j++) {
+
+										var calDate = new Date(document.getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCalendar-")[1]);
+									if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
+											if (data[i].Mark === "PH") {
+												//	console.log("red--" + data[j].hours);Green#ff3333
+													document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "red";
+												//	i++;
+												break;
+											}
+											else if (data[i].Holiday === "Holiday") {
+												//console.log("Yellow--" + data[j].hours );gray#666699
+												document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "gray";
+											//	i++;
+											break;
+											}else if (data[i].Mark === "LEAVE") {
+												//console.log("Blue--" + data[j].hours);blue#4d79ff
+												document.getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "blue";
+											//	i++;
+											break;
+											}
+											}
+											}
+										//	break;
+
+
+											}
+
+				}else {
+					sap.m.MessageToast.show("You Don't hava Data recorded for this Month");
+				}
+
+
+			}).
 			fail(function(xhr,status,error){
 
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
-			}.bind(this);
+			});
 
 
+},
+	onChangeRange:function(oEvent){
+		debugger;
+	//	this.callLeaveValidator();
+	var currentUser = this.getModel("local").getProperty("/CurrentUser");
+	var oDate = new Date(oEvent.getParameters().fromDate);
+
+	var payload = {
+		"date":oDate,
+		"EmpId":currentUser
+	};
+	var that = this;
+	//since i was not able to access "this" variable inside asychronous function,i've used a seperate callback funcion and bind this varibale with it.
+	$.post('/getLeaveValidator',payload).done(this.sparta.bind(this)).
+	fail(function(xhr,status,error){
+		sap.m.MessageBox.console.error("Something is wrong in your Code");
+	});
+		var oLeaveRequest={};
+		var sfrom = {};
+		var sTo = {};
+		sfrom = oEvent.getParameter("from");
+		var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
+		sTo = oEvent.getParameter("to");
+		var diff = sTo - sfrom;
+		var days =  diff / (1000 * 3600 * 24);
+// to get the correct count add 1 to the days
+		 days = days + 1;
+		 if (days == 0) {
+			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",1);
+		}else {
+		 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",days);
+	 }
+		var bValid = oEvent.getParameter("valid");
+		this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
+		this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
+	},
+
+	sparta:function(data,status){
+
+			if (data.length) {
+				 for (var i = 0; i <data.length; i++) {
+					 data[i].Date = new Date(data[i].Date);
+				}
+			}
+
+			var leaveType = this.getView().byId("idlType").getSelectedKey();
+			var dFrom = new Date(this.getView().byId("idCalendar").getSelectedDates()[0]);
+			var dTo = new Date(this.getView().byId("idCalendar").getSelectedDates()[this.getView().byId("idCalendar").getSelectedDates().length-1]);
+			this.getView().byId("idDate").setFrom(new Date(dFrom));
+			this.getView().byId("idDate").setTo(new Date(dTo));
+			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",dFrom);
+			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",dTo);
+			if (dFrom > dTo) {
+				this.getView().byId("idSave").setEnabled(false);
+				sap.m.MessageBox.show("Please Select a valid Date Range...DateFrom can not be greater than DateTo");
+
+			}else if(dFrom == null && dTo == null) {
+					this.getView().byId("idSave").setEnabled(false);
+			}
+			var flag = 0;
+			if (leaveType === "Full Day") {
+					if ( dFrom != null && dTo != null ) {
+							var d2 = dTo;
+							var d1 = dFrom;
+							var nDays = (d2-d1)/(1000*3600*24);
+							var pubHoli = 0;
+							var nHol = 0;
+						for (var i = 0; i < data.length; i++) {
+							if (  (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+								for (var j = 0; j < nDays; j++) {
+										if (data[i].Mark == 'PH') {
+											pubHoli = pubHoli + 1;
+										}
+										else if (data[i].Holiday == "Holiday") {
+											if (data[i].Mark !=='PH') {
+												nHol = nHol+1;
+											}
+										}
+										i++;
+								}
+
+							}
+							}
+					 nDays =  nDays - (pubHoli + nHol )+1;
+					 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",nDays);
+
+
+						for (var i = 0; i < data.length; i++) {
+							if ( (data[i].Mark == 'LEAVE') && (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+								sap.m.MessageBox.show("You have already applied leave for " + dFrom.toDateString() +" Date,Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+								flag = 1;
+								break;
+							}
+							else if ((data[i].Mark == 'LEAVE') && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+								sap.m.MessageBox.show("You have already applied leave for " + dTo.toDateString() +" Date,Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+							else if ( ( data[i].Mark == 'LEAVE') && (dFrom < data[i].Date) && (dTo > data[i].Date) ) {
+								sap.m.MessageBox.show("You have already applied leave in between Selected Range,Please Create two seperate leaves from "+dFrom.toDateString()+" To " +data[i-1].Date.toDateString()+" and From "+data[i+1].Date.toDateString()+" To "+dTo.toDateString());
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+							else if ( (data[i].Mark == 'PH' ) &&  (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) )  {
+								sap.m.MessageBox.show("The Selected Date " + dFrom.toDateString() +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+							else if (  (data[i].Mark == 'PH')  && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear())) {
+								sap.m.MessageBox.show("The Selected Date " + dTo.toDateString() +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+							else if ( (data[i].Holiday == 'Holiday') && (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+								sap.m.MessageBox.show("The Selected Date " + dFrom.toDateString() +" is a already a holiday for you, Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+							else if ( (data[i].Holiday == 'Holiday') && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+								sap.m.MessageBox.show("The Selected Date " + dTo.toDateString() +" is a already a holiday for you, Please select another Date");
+								this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+							}
+						}
+										if (flag == 0) {
+											this.getView().byId("idSave").setEnabled(true);
+										}else {
+											this.getView().byId("idSave").setEnabled(false);
+										}
+					}
+					else {
+						this.getView().byId("idSave").setEnabled(false);
+					}
+				}
+				else if (leaveType == "Half Day") {
+						var selectedDate = this.getView().byId("idDatePicker").getDateValue();
+						var flag = 0
+						if (selectedDate != null) {
+							for (var i = 0; i < data.length; i++) {
+
+								if ( (data[i].Mark == 'LEAVE') && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear())) {
+										sap.m.MessageBox.show("You have already applied leave for " + selectedDate.toDateString() +" Date,Please select another Date");
+										this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+									}
+									else if ((data[i].Mark == 'PH') && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									sap.m.MessageBox.show("The Selected Date " + selectedDate.toDateString() +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+									}
+								else if ( (data[i].Holiday =="Holiday") && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear())) {
+									sap.m.MessageBox.show("The Selected Date " + selectedDate.toDateString() +" is a already a holiday for you, Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+							}
+							if (flag == 0) {
+								this.getView().byId("idSave").setEnabled(true);
+							}else {
+								this.getView().byId("idSave").setEnabled(false);
+							}
+						}
+						else {
+							this.getView().byId("idSave").setEnabled(false);
+						}
+				}
+
+	},
+		onhandleChange: function (oEvent) {
+			debugger;
+			this.callLeaveValidator();
+			var oLeaveRequest={};
+			var sfrom = {};
+			var sTo = {};
+			sfrom = oEvent.getParameter("from");
+			var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
+			sTo = oEvent.getParameter("to");
+			var diff = sTo - sfrom;
+			var days =  diff / (1000 * 3600 * 24);
 // to get the correct count add 1 to the days
 			 days = days + 1;
 			 if (days == 0) {
@@ -101,32 +402,155 @@ onBeforeRendering: function(){
 			var bValid = oEvent.getParameter("valid");
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
+				//this.getView().byId("idDate").setBusy(false);
+		},
+		callLeaveValidator:function(){
+			debugger;
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
+			var oDate = new Date();
+			var payload = {
+				"date":oDate,
+				"EmpId":currentUser
+			};
+			$.post('/getLeaveValidator',payload).done(this.successCallBack.bind(this)).
+			fail(function(xhr,status,error){
+				sap.m.MessageBox.console.error("Something is wrong in your Code");
+			});
 		},
 		successCallBack: function(data,status){
 					debugger;
-					if (data[0].valueOf()==0) {
-						sap.m.MessageToast.show("You have already applied leave for this Date...!Please select another Date");
+				if (data.length) {
+					 for (var i = 0; i <data.length; i++) {
+						 data[i].Date = new Date(data[i].Date);
 					}
-				// if (data.length) {
-				//
-				// 	 for (var i = 0; i <data.length; i++) {
-				// 	// 	if ((this.dateSelected.getDate() == new Date(data[i].DateFrom).getDate()) && (this.dateSelected.getMonth() == new Date(data[i].DateFrom).getMonth()) && (this.dateSelected.getFullYear() == new Date(data[i].DateFrom).getFullYear()) ){
-				// 	// 		sap.m.MessageToast.show("You have already applied leave for this Date,Please select another Date");
-				// 	// 	}
-				// 	data[i].ApprovedOn= new Date(data[i].ApprovedOn);
-				// 	data[i].ChangedOn = new Date(data[i].ChangedOn);
-				// 	data[i].DateFrom = new Date(data[i].DateFrom);
-				// 	data[i].DateTo = new Date(data[i].DateTo);
-				//
-				// 	oLeaveRecords[i] = data[i];
-				//
-				// 	}
-				// }
+				}
+
+				var leaveType = this.getView().byId("idlType").getSelectedKey();
+				var dFrom = this.getView().byId("idDate").getFrom();
+				var dTo = this.getView().byId("idDate").getTo();
+				var flag = 0;
+				if (leaveType === "Full Day") {
+						if ( dFrom != null && dTo != null ) {
+								var d2 = dTo;
+								var d1 = dFrom;
+								var nDays = (d2-d1)/(1000*3600*24);
+								var pubHoli = 0;
+								var nHol = 0;
+							for (var i = 0; i < data.length; i++) {
+								if (  (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									for (var j = 0; j < nDays; j++) {
+											if (data[i].Mark == 'PH') {
+												pubHoli = pubHoli + 1;
+											}
+											else if (data[i].Holiday == "Holiday") {
+												if (data[i].Mark !=='PH') {
+													nHol = nHol+1;
+												}
+											}
+											i++;
+									}
+
+								}
+								}
+						 nDays =  nDays - (pubHoli + nHol )+1;
+						 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",nDays);
 
 
-		},
+							for (var i = 0; i < data.length; i++) {
+								if ( (data[i].Mark == 'LEAVE') && (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									sap.m.MessageBox.show("You have already applied leave for " + dFrom +" Date,Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+									flag = 1;
+									break;
+								}
+								else if ((data[i].Mark == 'LEAVE') && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									sap.m.MessageBox.show("You have already applied leave for " + dTo +" Date,Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+								else if ( ( data[i].Mark == 'LEAVE') && (dFrom < data[i].Date) && (dTo > data[i].Date) ) {
+									sap.m.MessageBox.show("You have already applied leave in between " + dFrom.toLocaleDateString() + " and " + dTo.toLocaleDateString() +  " , Please Create two seperate leaves from "+dFrom.toLocaleDateString()+" To " +data[i-1].Date.toLocaleDateString()+" and From "+data[i+1].Date.toLocaleDateString()+" To "+dTo.toLocaleDateString());
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+								else if ( (data[i].Mark == 'PH' ) &&  (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) )  {
+									sap.m.MessageBox.show("The Selected Date " + dFrom +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+								else if (  (data[i].Mark == 'PH')  && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear())) {
+									sap.m.MessageBox.show("The Selected Date " + dTo +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+								else if ( (data[i].Holiday == 'Holiday') && (dFrom.getDate() == new Date(data[i].Date).getDate()) && (dFrom.getMonth() == new Date(data[i].Date).getMonth()) && (dFrom.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									sap.m.MessageBox.show("The Selected Date " + dFrom +" is a already a holiday for you, Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+								else if ( (data[i].Holiday == 'Holiday') && (dTo.getDate() == new Date(data[i].Date).getDate()) && (dTo.getMonth() == new Date(data[i].Date).getMonth()) && (dTo.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+									sap.m.MessageBox.show("The Selected Date " + dTo +" is a already a holiday for you, Please select another Date");
+									this.getView().byId("idSave").setEnabled(false);
+										flag = 1;
+										break;
+								}
+							}
+											if (flag == 0) {
+												this.getView().byId("idSave").setEnabled(true);
+											}else {
+												this.getView().byId("idSave").setEnabled(false);
+											}
+						}
+						else {
+							this.getView().byId("idSave").setEnabled(false);
+						}
+					}
+					else if (leaveType == "Half Day") {
+							var selectedDate = this.getView().byId("idDatePicker").getDateValue();
+							var flag = 0
+							if (selectedDate != null) {
+								for (var i = 0; i < data.length; i++) {
+
+									if ( (data[i].Mark == 'LEAVE') && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear())) {
+											sap.m.MessageBox.show("You have already applied leave for " + selectedDate +" Date,Please select another Date");
+											this.getView().byId("idSave").setEnabled(false);
+											flag = 1;
+											break;
+										}
+										else if ((data[i].Mark == 'PH') && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear()) ) {
+										sap.m.MessageBox.show("The Selected Date " + selectedDate +" is A public Holiday- " +  data[i].Occasion + "- Please select another Date");
+										this.getView().byId("idSave").setEnabled(false);
+											flag = 1;
+											break;
+										}
+									else if ( (data[i].Holiday =="Holiday") && (selectedDate.getDate() == new Date(data[i].Date).getDate()) && (selectedDate.getMonth() == new Date(data[i].Date).getMonth()) && (selectedDate.getFullYear() == new Date(data[i].Date).getFullYear())) {
+										sap.m.MessageBox.show("The Selected Date " + selectedDate +" is a already a holiday for you, Please select another Date");
+										this.getView().byId("idSave").setEnabled(false);
+											flag = 1;
+											break;
+									}
+								}
+								if (flag == 0) {
+									this.getView().byId("idSave").setEnabled(true);
+								}else {
+									this.getView().byId("idSave").setEnabled(false);
+								}
+							}
+							else {
+								this.getView().byId("idSave").setEnabled(false);
+							}
+					}
+
+					},
+
 		onDPhandleChange:function(oEvent){
 			debugger;
+			this.callLeaveValidator();
 			var oDP = oEvent.getSource();
 			var sValue = oEvent.getParameter("value");
 			var bValid = oEvent.getParameter("valid");
@@ -142,6 +566,8 @@ onBeforeRendering: function(){
 
 		},
 		onSave:function(oEvent){
+			debugger;
+		//	this.callLeaveValidator();
 			var oLocal = oEvent;
 			var that = this;
 			var that2 = this;
@@ -165,7 +591,8 @@ onBeforeRendering: function(){
 				return;
 			}
 			if (leadData.Days > oStatic.Available) {
-				MessageBox.confirm("You can only apply for" + oStatic.Available +"days.Do you still want to proceed?", function(conf) {
+			//	MessageBox.confirm("You can only apply for" + oStatic.Available +"days.Do you still want to proceed?", function(conf) {
+				MessageBox.confirm("Do you want to proceed with leave Creation ?", function(conf) {
 			if (conf == 'OK') {
 				var payload ={
 					"AppUserId": currentUser,
