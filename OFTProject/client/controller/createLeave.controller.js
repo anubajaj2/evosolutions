@@ -88,7 +88,7 @@ onBeforeRendering: function(){
 
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
-			}.bind(this);
+			}).bind(this);
 
 
 // to get the correct count add 1 to the days
