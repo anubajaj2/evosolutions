@@ -231,7 +231,7 @@ app.start = function() {
 			var Holidays = app.models.HolidayCalendar;
 			var AppUser = app.models.AppUser;
 			var flag = 0;
-				var oLeaveRecords = [flag];
+				var oLeaveRecords = [];
 				LeaveRequest.find({where:
 					{	and: [
 					 {DateFrom:{between:[oStartDate,oEndDate]}},
@@ -242,9 +242,11 @@ app.start = function() {
 				//	var that3 = that2;
 			//		this.leaveRecords = leaveRecords;
 				var flag = 0;
+				if(leaveRecords.length){
 				for (var i = 0; i < leaveRecords.length; i++) {
 							oLeaveRecords[i] =	leaveRecords[i];
 							 }
+						 }
 
 				Holidays.find(
 					{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
@@ -331,7 +333,7 @@ app.start = function() {
 					for (var l = 0; l < holidayLeaveCal.length; l++) {
 						var oDate = holidayLeaveCal[l].Date ;
 							var flag = 0;
-
+							if(oLeaveRecords.length){
 						for (var i = 0; i < oLeaveRecords.length; i++) {
 									var dFrom =  oLeaveRecords[i].__data.DateFrom;
 									var nDays = oLeaveRecords[i].__data.Days;
@@ -343,14 +345,15 @@ app.start = function() {
 													if (holidayLeaveCal[l].Mark == 'PH') {
 														holidayLeaveCal[l].Mark ='PH';
 														holidayLeaveCal[l].Available = 'NA';
-														holidayLeaveCal[l].LeaveType = oLeaveRecords[j].__data.LeaveType;
-														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[j].__data.Status;
+														holidayLeaveCal[l].LeaveType = oLeaveRecords[0].__data.LeaveType;
+														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[0].__data.Status;
+														j--;
 
 												}else {
 													holidayLeaveCal[l].Mark ='LEAVE';
 													holidayLeaveCal[l].Available = 'NA';
-													holidayLeaveCal[l].LeaveType = oLeaveRecords[j].__data.LeaveType;
-													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[j].__data.Status;
+													holidayLeaveCal[l].LeaveType = oLeaveRecords[0].__data.LeaveType;
+													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[0].__data.Status;
 												}
 													l++;
 												}
@@ -361,6 +364,7 @@ app.start = function() {
 
 							}
 					}
+				}
 				}
 
 				AppUser.find().then(function(empRecords) {
@@ -422,7 +426,7 @@ app.start = function() {
 
 			var oArrTime =[];
 
-			if (new Date(month).getMonth() === new Date(today).getMonth()) {
+			if ((new Date(month).getMonth() === new Date(today).getMonth()) && (new Date(month).getFullYear() === new Date(today).getFullYear())  ) {
 				var monthStart = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),1);
 				var dayEnd = new Date();
 
@@ -439,6 +443,7 @@ app.start = function() {
 				var app = require('../server/server');
 				var AppUser = app.models.AppUser;
 				var LeaveRequest = app.models.LeaveRequest;
+				var Holidays = app.models.HolidayCalendar;
 				var taskTab = app.models.task;
 				//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
 				//AppUser, leaveRequest, task
@@ -564,7 +569,7 @@ app.start = function() {
 							res.send(oArrTime);
 
 						}else {
-							console.log.console.error("There is no data available the selected month ");
+							console.log.console("There is no data available the selected month ");
 							res.send(oArrTime);
 						}
 
@@ -576,7 +581,7 @@ app.start = function() {
 
 
 
-			}else if (new Date(month).getMonth()  > new Date(today).getMonth() ) {
+			}else if (new Date(month) > new Date(today) ) {
 
 				console.log("There is no data available the selected month ");
 				res.send(oArrTime);

@@ -41,6 +41,7 @@ herculis:function(){
 			break;
 		case 4:
 			this.getView().byId("idDay").setValue("Thursday");
+			break;
 		case 5:
 			this.getView().byId("idDay").setValue("Friday");
 			break;
@@ -125,6 +126,7 @@ onDateChange: function(oEvent) {
 			break;
 		case 4:
 			this.getView().byId("idDay").setValue("Thursday");
+			break;
 		case 5:
 			this.getView().byId("idDay").setValue("Friday");
 			break;

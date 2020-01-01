@@ -117,6 +117,9 @@ onBeforeRendering: function(){
 												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
 													//i++;
 												}
+												// else {
+												// 			document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#38b099";
+												// }
 												}
 												}
 											//	break;
@@ -182,7 +185,10 @@ afterCalChange: function() {
 												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
 											//	i++;
 											break;
-											}
+										}
+										// else {
+										// 			document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#38b099";
+										// }
 											}
 											}
 										//	break;
@@ -201,7 +207,7 @@ afterCalChange: function() {
 				sap.m.MessageBox.console.error("Something is wrong in your Code");
 
 
-			}).bind(this);
+			})
 
 
 },
@@ -257,8 +263,8 @@ afterCalChange: function() {
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",dFrom);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",dTo);
 			if (dFrom > dTo) {
-				this.getView().byId("idSave").setEnabled(false);
-				sap.m.MessageBox.show("Please Select a valid Date Range...DateFrom can not be greater than DateTo");
+
+				sap.m.MessageBox.show("Please Select a valid Date Range...DateFrom can not be greater than DateTo",{onClose: this.onMessageBoxClose.bind(this)});
 
 			}else if(dFrom == null && dTo == null) {
 					this.getView().byId("idSave").setEnabled(false);
@@ -381,6 +387,9 @@ afterCalChange: function() {
 						}
 				}
 
+	},
+	onMessageBoxClose:function(oEvent){
+		this.getView().byId("idSave").setEnabled(false);
 	},
 		onhandleChange: function (oEvent) {
 			debugger;
