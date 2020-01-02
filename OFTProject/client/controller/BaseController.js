@@ -57,6 +57,7 @@ sap.ui.define([
 				}).catch(function(oError) {
 					var oPopover = that.getErrorMessage(oError);
 				});
+				debugger;
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
 				.then(function(oData){
 					for(var i =0 ;i < oData.results.length; i++){

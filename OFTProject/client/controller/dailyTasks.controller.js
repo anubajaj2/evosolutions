@@ -7,321 +7,353 @@ sap.ui.define([
 ], function(Controller, Filter, FilterOperator, Route) {
 	"use strict";
 	return Controller.extend("oft.fiori.controller.dailyTasks", {
+		allMasterData:{
+			"Tasks":[]
+		},
 
-  onInit: function() {
-		debugger;
-	var oDt = this.getView().byId("idCoDate1");
-	 oDt.setDateValue(new Date());
-	 var oRouter = this.getOwnerComponent().getRouter();
-	 oRouter.attachRoutePatternMatched(this.herculis, this);
-	 var currentUser = this.getModel("local").getProperty("/CurrentUser");
+		onInit: function() {
+			var oDt = this.getView().byId("idCoDate1");
+			oDt.setDateValue(new Date());
+			var oRouter = this.getOwnerComponent().getRouter();
+			oRouter.attachRoutePatternMatched(this.herculis, this);
+			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
-},
+			// ---------------Sreedhara------------------------
+			// this.setTaskModel();
 
-herculis:function(){
-	debugger;
-	this.getView().byId("idCoDate1").setDateValue(new Date());
-		// if(oEvent.getParameter("name") !== "dailyTask"){
-		// 	return;
-		// }
+			// var oJSONModel = this.chartDataModel();
+			// this.getView().setModel(oJSONModel, "chart");
+			// debugger;
+		},
 
-		this.getModel("local").setProperty("/tasks/CrDate", new Date());
-		this.currentUser = this.getModel("local").getProperty("/CurrentUser");
+		// chartDataModel : function() {
+		// 	var masterData = {
+		// 		tasks1 : [
+		// 			{
+		// 				// "CrDate": "2019-12-20T04:20:29.561Z",
+		// 				// "taskWorkedOn": "string",
+		// 				"taskType": "string",
+		// 				// "remarks": "string",
+		// 				// "link": "string",
+		// 				"noOfHours": "string",
+		// 				// "CreatedOn": "null",
+		// 				// "CreatedBy": "string",
+		// 				// "ChangedOn": "null",
+		// 				// "ChangedBy": "null",
+		// 				// "id": "string"
+		// 			}
+		// 		]
+		// 	};
+		// 	var aCourses = [];
+		// 	var oJsonModel = new sap.ui.model.json.JSONModel();
+		// 	this.ODataHelper.callOData( this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
+		// 	.then(function(oData){
+		// 		var oRes;
+		// 		var aChartData = {
+		// 			tasks1 : [
+		// 				{	"taskType": "",
+		// 					"noOfHours": "",
+		// 				}
+		// 			]
+		// 		};
+		// 		for(var i = 0; i < oData.results.length; i++){
+		// 			oRes = oData.results[i];
+		// 			debugger;
+		//
+		// 			// aChartData.tasks1[i].taskType = oRes.taskType;
+		// 			// aChartData.tasks1[i].noOfHours = oRes.noOfHours;
+		//
+		// 			aChartData.tasks1[i].push({taskType: oRes.taskType});
+		// 			aChartData.tasks1[i].push({noOfHours: oRes.noOfHours});
+		// 		}
+		// 		oJsonModel.setData(oData);
+		// 		return oJsonModel;
+		// 	}).catch(function(oError) {
+		// 		// var oPopover = this.getErrorMessage(oError);
+		// 	}); return oJsonModel;
+		// },
+    // ---------------Sreedhara------------------------
 
-    // this.fromDate = new Date();
-		// var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
-		// 	pattern: "yyyy-MM-ddTHH:mm:ss Z"
-		// 	});
-		// 	var oDate = oFormatDate.format(this.fromDate);
-		// 	oDate = oDate.split("T");
-		// 	var oDateActual = oDate[0];
-		// 	this.fromDate = new Date(oDateActual);
-
-		this.fromDate = new Date();
-		this.toDate = new Date();
-		this.fromDate.setMilliseconds(0);
-		this.fromDate.setSeconds(0);
-		this.fromDate.setMinutes(0);
-		this.fromDate.setHours(0);
-
-		this.toDate.setMilliseconds(0);
-		this.toDate.setSeconds(59);
-		this.toDate.setMinutes(59);
-		this.toDate.setHours(23);
-		this.reloadTasks();
-},
-reloadTasks: function(oEvent) {
-		debugger;
-
-		var role=this.getModel("local").getProperty("/Role");
-this.getView().byId("idCoTable").bindItems({
-	path:"/tasks",
-	template: new sap.m.ColumnListItem({
-     cells: [
-			 new sap.m.Text({text: "{taskWorkedOn}"}),
-			 	new sap.m.Text({text: { path: 'CrDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
-				new sap.m.Text({text: {path: 'taskType',
-				formatter: '.formatter.getTaskText'}}),
-				new sap.m.Text({text: "{noOfHours}"}),
-				new sap.m.Link({text: { path: 'link'}}),
-				new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
-		 ]
-
-	})
-
-});
+		// ---------------Sreedhara------------------------
+		// setTaskModel:function(oTt){
+		// 	debugger;
+		// 	var aData = {
+		// 		tasks : [
+		// 			{
+		// 				taskType:"TWITTER",
+		// 				noOfHours : 40
+		// 			},
+		// 			{
+		// 				taskType:"CCK",
+		// 				noOfHours : 45
+		// 			},
+		// 			{
+		// 				taskType:"FB",
+		// 				noOfHours : 65
+		// 			},
+		// 			{
+		// 				taskType:"TR",
+		// 				noOfHours : 35
+		// 			}
+		// 		]
+		// 	}
+		// 	var oTaskTrac = new sap.ui.model.json.JSONModel();
+		// 	oTaskTrac.setData(aData);
+		// 	this.setModel(oTaskTrac, "TaskTrac");
+		// 	// oTaskTrac.setData({"Ltask":[]});
+		// 	// this.setModel(oTaskTrac, "TaskTrac");
+		// 	// this.getView().getModel().read("/tasks",{
+		// 	// 	   success: function(data){
+		// 	// 		 this.getView().getModel("TaskTrac").setProperty("/Ltask", data.results);
+		// 	// 	}, error: function(){}
+		// 	// });
+		// },
+		// ---------------Sreedhara------------------------
 
 
-if(role=='Admin'){
-	var filters = [
-		new sap.ui.model.Filter(
-					 "CrDate",
-					 FilterOperator.BT,
-					 this.fromDate,
-					 this.toDate
-				)];
-		// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
-	this.getView().byId("idCoTable").getBinding("items").filter(filters);
-}
-else {
-	this.getView().byId("idUser").setVisible(false);
-	var filters = [new sap.ui.model.Filter(
-					 'CreatedBy',
-					 'EQ',
-					  "'" + this.currentUser + "'"
-				),
-				new sap.ui.model.Filter(
-					 "CrDate",
-					 FilterOperator.BT,
-					 this.fromDate,
-					 this.toDate
-				)];
-				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
-	this.getView().byId("idCoTable").getBinding("items").filter(filters);
-}
+
+		herculis:function(){
+			this.getView().byId("idCoDate1").setDateValue(new Date());
+			this.getModel("local").setProperty("/tasks/CrDate", new Date());
+			this.currentUser = this.getModel("local").getProperty("/CurrentUser");
+			this.fromDate = new Date();
+			this.toDate = new Date();
+			this.fromDate.setMilliseconds(0);
+			this.fromDate.setSeconds(0);
+			this.fromDate.setMinutes(0);
+			this.fromDate.setHours(0);
+			this.toDate.setMilliseconds(0);
+			this.toDate.setSeconds(59);
+			this.toDate.setMinutes(59);
+			this.toDate.setHours(23);
+			this.reloadTasks();
+		},
+
+		reloadTasks: function(oEvent) {
+			var role=this.getModel("local").getProperty("/Role");
+
+			this.getView().byId("idCoTable").bindItems({
+				path:"/tasks",
+				template: new sap.m.ColumnListItem({
+					cells: [
+						new sap.m.Text({text: "{taskWorkedOn}"}),
+						new sap.m.Text({text: { path: 'CrDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }}),
+						new sap.m.Text({text: {path: 'taskType',
+						formatter: '.formatter.getTaskText'}}),
+						new sap.m.Text({text: "{noOfHours}"}),
+						new sap.m.Link({text: { path: 'link'}}),
+						new sap.m.Button({text: "Delete", icon: "sap-icon://delete", press: [this.onDelete, this]})
+					]
+				})
+			});
+			if(role=='Admin'){
+				var filters = [
+					new sap.ui.model.Filter(
+						"CrDate",
+						sap.ui.model.FilterOperator.BT,
+						this.fromDate,
+						this.toDate
+					)];
+					// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
+					this.getView().byId("idCoTable").getBinding("items").filter(filters);
+				}
+				else {
+					this.getView().byId("idUser").setVisible(true); //Sreedhara false -> true
+					var filters = [new sap.ui.model.Filter(
+						'CreatedBy',
+						'EQ',
+						"'" + this.currentUser + "'"
+					),
+					new sap.ui.model.Filter(
+						"CrDate",
+						sap.ui.model.FilterOperator.BT,
+						this.fromDate,
+						this.toDate
+					)];
+					// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ,this.fromDate)];
+					this.getView().byId("idCoTable").getBinding("items").filter(filters);
+				}
 				// new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, this.fromDate)];
 
-},
+				//=====sreedhara============================ for chart control//
+				// this.getView().byId("idVizFrame").getBinding("items");
+				//=====sreedhara============================//
+			},
 
-onUpdateFinished:function(oEvent){
-	debugger;
-	var oTable= oEvent.getSource();
-	var oTableItem = oTable.getItems();
-	var noItems=oTableItem.length;
-	var cell;
-	    // for(var i=0; i < noItems; i++){
-      //   var userId=oTable.getItems()[i].getCells()[1].getText();
-			// 	var userData=this.allMasterData.AppUsers[userId];
-			// 	oTable.getItems()[i].getCells()[1].setText(userData.UserName);
-			// 	}
-				 var rows =this.getView().byId("idCoTable").getBinding("items").getLength();
-				 var oBinding =this.getView().byId("idCoTable").getBinding("items");
-				 var total = 0;
-				 for (var i = 0; i < rows; i++) {
-					 total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
-				 }
-				 this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
-},
-  // var odata = this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
-	// var oBinding = this.getView().byId("idCoTable").getBinding("rows");
-	// var that = this;
-	//  oBinding.attachDataReceived(function(sReason) {
-	// 	 	debugger;
-	// 	 	 var rows = oBinding.getLength();
-	// 		 var total = 0;
-	// 		 for (var i = 0; i < rows; i++) {
-	// 			 total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
-	// 		 }
-	// 		 that.getView().byId("idCoTable").setTitle("Today worked on " + oBinding.getLength() + " tasks and " + total + " Hours");
-	//  });
+			onUpdateFinished:function(oEvent){
 
-//  onDateChange: function(oEvent) {
-// 	 	debugger;
-//    //If date is changed set the new selected ate
-// 	 if (oEvent.getParameter('newValue')) {
-// 			 this.getView().getModel('local').setProperty('/task/CrDate' ,
-// 			 oEvent.getParameter('newValue'));
-// 			 }
-// 	 //todays date in time format
-// 		 var today = new Date();
-// 		 today.setDate(today.getDate());
-// 		 var dd = today.getDate();
-// 		 var mm = today.getMonth()+1; //January is 0!
-// 		 var yyyy = today.getFullYear();
-// 		 var date =  dd + "/" + mm  + "/" + yyyy;
-// 	 //date selected by user in time format
-// 		 var date1 = oEvent.getSource().getDateValue();
-// 		 date1.setDate(date1.getDate());
-// 		 var dd1 = date1.getDate();
-// 		 var mm1 = date1.getMonth()+1; //January is 0!
-// 		 var yyyy1 = date1.getFullYear();
-// 		 var date1 =  dd1 + "/" + mm1  + "/" + yyyy1;
-//    //Compare entered date and disable save if it is NE todays date
-// 		 // if(date1 != date)	{
-// 		 // var oBtn = this.byId("idBtn").setEnabled(false);
-// 		 // }else{
-// 		 // var oBtn = this.byId("idBtn").setEnabled(true);
-// 		 // }
-//
-//    //Filter the data wrt date sekected by the user
-// 		 var dDateStart = oEvent.getSource().getProperty('dateValue');
-// 		 var dDateEnd = new Date(dDateStart);
-// 		 var isValidDate = oEvent.getParameter('valid');
-// 		 var aFilters = [];
-//
-// 		 if( isValidDate ) {
-//    // Set start date with time 000000
-//      dDateStart.setMilliseconds(0);
-//      dDateStart.setSeconds(0);
-//      dDateStart.setMinutes(0);
-//      dDateStart.setHours(0);
-//
-//    // Set End date with time 235959
-//      dDateEnd.setMilliseconds(0);
-//      dDateEnd.setSeconds(59);
-//      dDateEnd.setMinutes(59);
-//      dDateEnd.setHours(23);
-//
-//    //dDateStart.set
-//      aFilters.push(new Filter({
-// 	   path: "CrDate",
-// 	   operator: FilterOperator.BT,
-// 	   value1: dDateStart,
-// 	   value2: dDateEnd
-//  }));
-//  debugger;
-// 	 aFilters.push(new Filter({
-// 		 path: "CreatedBy",
-// 		 operator: FilterOperator.Contains,
-// 		 value1: this.getView().getModel("local").getProperty("/CurrentUser")
-// 	 }));
-// }
-// //bind the filter to the table rows
-//     this.getView().byId("idCoTable").getBinding("rows").filter(aFilters);
-//  },
-onDateChange: function(oEvent) {
-	debugger;
-	var role=this.getModel("local").getProperty("/Role");
-	// this.reloadTasks();
-	var dDateStart = oEvent.getSource().getProperty('dateValue');
+				var oTable= oEvent.getSource();
+				var oTableItem = oTable.getItems();
+				var noItems=oTableItem.length;
+				var cell;
+				var rows =this.getView().byId("idCoTable").getBinding("items").getLength();
+				var oBinding =this.getView().byId("idCoTable").getBinding("items");
+				var total = 0;
+				for (var i = 0; i < rows; i++) {
+					total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
+				}
+				this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
+			},
 
-	// var dDateEnd = new Date(dDateStart + 1);
-	// var dDateStart = new Date(dDateStart + 1);
-	// var aFilters = [];
-	// 	dDateStart.setMilliseconds(0);
-	// 	dDateStart.setSeconds(0);
-	// 	dDateStart.setMinutes(0);
-	// 	dDateStart.setHours(0);
-	// 	dDateEnd.setMilliseconds(0);
-	// 	dDateEnd.setSeconds(59);
-	// 	dDateEnd.setMinutes(59);
-	// 	dDateEnd.setHours(23);
+			onDateChange: function(oEvent) {
 
-	var oDatePicker = oEvent.getSource();
-		var oNewDate = oDatePicker.getDateValue();
-			var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
-				pattern: "yyyy-MM-ddTHH:mm:ss Z"
-				});
-   var oDate = oFormatDate.format(oNewDate);
-        oDate = oDate.split("T");
-				var oDateActual = oDate[0];
-			oDatePicker.setDateValue(new Date(oDateActual));
-			var dDateStart = oDatePicker.getDateValue();
+				var role = this.getModel("local").getProperty("/Role");
+				var dDateStart = oEvent.getSource().getProperty('dateValue');
 
-		if(role=='Admin'){
-			var oFilter1 = new Filter([
-			     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)
-					 // new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart,dDateEnd)
-			], true);
-			this.getView().byId("idCoTable").getBinding("items").filter(oFilter1,true);
+				//=======================sreedhara==Commented==========================//
+				// var oDatePicker = oEvent.getSource();
+				// var oNewDate = oDatePicker.getDateValue();
+				// var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss Z"
+				// });
+				// var oDate = oFormatDate.format(oNewDate);
+				// oDate = oDate.split("T");
+				// var oDateActual = oDate[0];
+				// oDatePicker.setDateValue(new Date(oDateActual));
+				// var dDateStart = oDatePicker.getDateValue();
+				//
+				// if(role=='Admin'){
+				// 	var oFilter1 = new Filter([
+				// 		new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)], true);
+				// 		this.getView().byId("idCoTable").getBinding("items").filter(oFilter1,true);
+				// }
+				// else{
+				// 	var oFilter1 = new Filter([
+				// 		new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)
+				// 	], true);
+				//
+				// 	var oFilter2 = new Filter([
+				// 		new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
+				// 	], true);
+				//
+				// 	var oFilter = new sap.ui.model.Filter({
+				// 		filters: [oFilter1, oFilter2],
+				// 		and: true
+				// 	});
+				// 	this.getView().byId("idCoTable").getBinding("items").filter(oFilter, true);
+				// }
+
+				//=======================sreedhara============================//
+
+				var dDateStart = oEvent.getSource().getProperty('dateValue');
+				var dDateEnd = new Date(dDateStart + 1);
+				var oFilter = [];
+				var oFilter1 = null;
+				var oFilter2 = null;
+				dDateStart.setMilliseconds(0);
+				dDateStart.setSeconds(0);
+				dDateStart.setMinutes(0);
+				dDateStart.setHours(0);
+				dDateEnd.setMilliseconds(0);
+				dDateEnd.setSeconds(59);
+				dDateEnd.setMinutes(59);
+				dDateEnd.setHours(23);
+				if(role=='Admin'){
+					// oFilter1 = new Filter([
+					// 	new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart, dDateEnd)], true);
+					// oFilter = new sap.ui.model.Filter({ filters: [oFilter1]	});
+					// this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
+					var filters =	new sap.ui.model.Filter("CrDate",'BT', dDateStart, dDateEnd);
+					this.getView().byId("idCoTable").getBinding("items").filter(filters, true);
+				}
+				else {
+					var filters = [new sap.ui.model.Filter( "CreatedBy", 'EQ', "'" + this.currentUser + "'"	),
+					new sap.ui.model.Filter(	"CrDate",	sap.ui.model.FilterOperator.BT,
+					dDateStart,	dDateEnd )
+				];
+				this.getView().byId("idCoTable").getBinding("items").filter(filters, true);
+			}
+			//=====sreedhara============================//
+		},
+
+		onDelete: function(oEvent) {
+
+			var that = this;
+			var oPath = oEvent.getSource().getBindingContext().getPath();
+			sap.m.MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+				if (conf == 'OK') 	{
+					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), oPath, "DELETE", {}, {}, that)
+					.then(function(oData) {
+						sap.m.MessageToast.show("Deleted succesfully");
+					}).catch(function(oError) {
+						that.getView().setBusy(false);
+						that.oPopover = that.getErrorMessage(oError);
+						that.getView().setBusy(false);
+					});
+				}
+			}, "Confirmation");
+		},
+
+		onSave: function(oEvent) {
+
+			var that = this;
+			var myData = this.getView().getModel("local").getProperty("/task");
+			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "yyyy-MM-dd"});
+
+				myData.taskWorkedOn = this.getView().byId("idWOn").getValue();
+				if (this.getView().byId("idWH").getValue() <= '8'){
+					if (this.getView().byId("idWH").getValue() != '0'){
+						myData.noOfHours = this.getView().byId("idWH").getValue();
+						var oDatePicker = this.getView().byId("idCoDate1");
+						var oNewDate = oDatePicker.getDateValue();
+						//==================sreedhara============================//
+						// oNewDate.setMinutes(oNewDate.getMinutes() + oNewDate.getTimezoneOffset());
+						//===================sreedhara============================//
+
+						oDatePicker.setDateValue(new Date(oNewDate));
+						myData.CrDate = oDatePicker.getDateValue();
+						myData.taskType = this.getView().byId("idTaskType").getSelectedKey();
+						myData.link = this.getView().byId("idLink").getValue();
+						myData.remarks = "";
+
+						this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks",
+						"POST", {}, myData, this)
+						.then(function(oData) {
+							that.getView().setBusy(false);
+							sap.m.MessageToast.show("Data Saved Successfully");
+							//=======================sreedhara============================//
+							var dDateStart = oNewDate;
+							var dDateEnd = new Date(dDateStart + 1);
+							dDateStart.setMilliseconds(0);
+							dDateStart.setSeconds(0);
+							dDateStart.setMinutes(0);
+							dDateStart.setHours(0);
+							dDateEnd.setMilliseconds(0);
+							dDateEnd.setSeconds(59);
+							dDateEnd.setMinutes(59);
+							dDateEnd.setHours(23);
+							var role = that.getModel("local").getProperty("/Role");
+							if(role=='Admin'){
+
+								var filters =	new sap.ui.model.Filter("CrDate",'BT', dDateStart, dDateEnd);
+								that.getView().byId("idCoTable").getBinding("items").filter(filters, true);
+
+								// var filters = [	new sap.ui.model.Filter( "CrDate", sap.ui.model.FilterOperator.BT,
+								//                                          that.fromDate, that.toDate)];
+								// that.getView().byId("idCoTable").getBinding("items").filter(filters, true);
+							}
+							else {
+								// that.getView().byId("idUser").setVisible(false);
+								var filters = [new sap.ui.model.Filter("CreatedBy",sap.ui.model.FilterOperator.EQ, "'" + that.currentUser + "'"	),
+								new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT,
+								dDateStart, dDateEnd)
+							];
+
+							that.getView().byId("idCoTable").getBinding("items").filter(filters, true);
+						}
+
+						//=====sreedhara============================//
+
+					}).catch(function(oError) {
+						that.getView().setBusy(false);
+						var oPopover = that.getErrorMessage(oError);
+					});
+				}else{(sap.m.MessageToast.show("Hour with zero value not allowed"))};
+			}else{(sap.m.MessageToast.show("Hour greater that 8 value not allowed"))};
 		}
-		else{
-
-		var oFilter1 = new Filter([
-		     new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.EQ, dDateStart)
-				 // new sap.ui.model.Filter("CrDate", sap.ui.model.FilterOperator.BT, dDateStart,dDateEnd)
-		], true);
-
-		var oFilter2 = new Filter([
-		     new sap.ui.model.Filter("CreatedBy", sap.ui.model.FilterOperator.EQ, "'" + this.currentUser + "'")
-		]);
-
-		var oFilter = new sap.ui.model.Filter({
-			filters: [oFilter1, oFilter2],
-			and: true
-		});
-		this.getView().byId("idCoTable").getBinding("items").filter(oFilter,true);
-}
-
-},
-
-
- onDelete: function(oEvent) {
-	 	debugger;
-	var that = this;
-	var oPath = oEvent.getSource().getBindingContext().getPath();
- sap.m.MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
-	 if (conf == 'OK') 	{
-				 that.ODataHelper.callOData(that.getOwnerComponent().getModel(), oPath, "DELETE", {}, {}, that)
-					 .then(function(oData) {
-						 sap.m.MessageToast.show("Deleted succesfully");
-					 }).catch(function(oError) {
-						 that.getView().setBusy(false);
-						 that.oPopover = that.getErrorMessage(oError);
-						 that.getView().setBusy(false);
-					 });
-			 }
-	}, "Confirmation");
-
- },
-
-	onSave: function(oEvent) {
-			debugger;
-
-  	var that = this;
-		var myData = this.getView().getModel("local").getProperty("/task");
-		var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-          pattern: "yyyy-MM-dd"});
-
-    myData.taskWorkedOn = this.getView().byId("idWOn").getValue();
-			if (this.getView().byId("idWH").getValue() <= '8'){
-		if (this.getView().byId("idWH").getValue() != '0'){
-			myData.noOfHours = this.getView().byId("idWH").getValue();
-// myData.CrDate = this.getView().byId("idCoDate1").getDateValue();
-
-		// var oDatePicker = this.getView().byId("idCoDate1");
-		// 	var oNewDate = oDatePicker.getDateValue();
-		// var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
-		// 	pattern: "yyyy-MM-ddTHH:mm:ss X"
-		// 	});
-		// 	var oDate = oFormatDate.format(oNewDate);
-		// 	oDate = oDate.split("T");
-		// 	var oDateActual = oDate[0];
-		// 	oDatePicker.setDateValue(new Date(oDateActual));
-		// 	myData.CrDate= oDatePicker.getDateValue();
-		var oDatePicker = this.getView().byId("idCoDate1");
-			var oNewDate = oDatePicker.getDateValue();
- 		oNewDate.setMinutes(oNewDate.getMinutes() + oNewDate.getTimezoneOffset());
-		oDatePicker.setDateValue(new Date(oNewDate));
-		myData.CrDate = oDatePicker.getDateValue();
-
-		myData.taskType = this.getView().byId("idTaskType").getSelectedKey();
-		myData.link = this.getView().byId("idLink").getValue();
-		myData.remarks = "";
-		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks",
-																"POST", {}, myData, this)
-		.then(function(oData) {
-		that.getView().setBusy(false);
-		sap.m.MessageToast.show("Data Saved Successfully");
-		}).catch(function(oError) {
-		that.getView().setBusy(false);
-		var oPopover = that.getErrorMessage(oError);
-		});
-  	}else{(sap.m.MessageToast.show("Hour with zero value not allowed"))};
-	}else{(sap.m.MessageToast.show("Hour greater that 8 value not allowed"))};
-	}
-});
+	});
 });
