@@ -67,6 +67,85 @@ app.start = function() {
 				);
 		});
 
+
+		app.post('/getWorkAggregate', function(req, res) {
+			var responseData = [];
+			var app = require('../server/server');
+			var currentDate = req.body.currentDate;
+			var userId = req.body.userId;
+
+			//
+			var Task = app.models.task;
+
+			function getMonths() {
+				var iCount = 4;
+				var aMonths = [];
+
+				while (iCount > -1) {
+					var oDate = new Date();
+					oDate.setMonth(oDate.getMonth() - iCount);
+					var oStartDate = new Date(oDate.getFullYear(), oDate.getMonth(), 1);
+					var oEndDate = new Date(oDate.getFullYear(), oDate.getMonth() + 1, 0);
+
+					aMonths.push({
+						StartDate: oStartDate,
+						EndDate: oEndDate
+					})
+
+					iCount = iCount - 1;
+				}
+
+				return aMonths;
+			}
+
+			var aMonths = getMonths();
+			var oPeriodStartDate = aMonths[4].StartDate;
+			var oPeriodEnddate = aMonths[0].EndDate;
+			Task.find({
+				// where: {
+				// 	or: aOrCond
+				// }
+			}).then(function(data) {
+				Date.prototype.getMonthText = function() {
+					var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+					return months[this.getMonth()];
+				}
+				// var aStudents = [];
+				// for (var j = 0; j < aMonths.length; j++) {
+				//
+				// 	aStudents = data.filter(function(oRec) {
+				// 		return oRec.CreatedOn >= aMonths[j].StartDate && oRec.CreatedOn <= aMonths[j].EndDate
+				// 	})
+				//
+				// 	responseData.push({
+				// 		Month: aMonths[j].StartDate.getMonthText(),
+				// 		Count: aStudents.length
+				// 	})
+				//
+				// }
+
+				responseData = [{
+					taskType: "GB",
+					hourWorked: 10
+				},
+				{
+					taskType: "FP",
+					hourWorked: 3
+				},
+				{
+					taskType: "LP",
+					hourWorked: 4
+				},
+				{
+					taskType: "PT",
+					hourWorked: 8
+				}];
+				res.send(responseData);
+
+			})
+
+		});
+
 		app.get('/ServerDownloadAct', function(req, res) {
 			var date = new Date();
 			Server.find({

@@ -21,6 +21,14 @@ sap.ui.define([
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
+			$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
+				.done(function(data, status) {
+					console.log(data);
+					//you write code to render chart based on masterData
+				})
+				.fail(function(xhr, status, error) {
+
+				});
 			// ---------------Sreedhara------------------------
 			// this.setTaskModel();
 
