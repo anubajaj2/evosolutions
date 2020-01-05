@@ -101,14 +101,35 @@ app.start = function() {
 			var aMonths = getMonths();
 			var oPeriodStartDate = aMonths[4].StartDate;
 			var oPeriodEnddate = aMonths[0].EndDate;
+
+
+  		var date = new Date( );
+			date.setDate(1);
+
 			Task.find({
-				// where: {
-				// 	or: aOrCond
-				// }
+				 where: {
+					 and: [
+						 { CreatedBy : userId },
+						 { CreatedOn: {
+ 							gte: date
+ 							}  }
+					 ]
+				 }
 			}).then(function(data) {
-				Date.prototype.getMonthText = function() {
-					var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-					return months[this.getMonth()];
+				debugger;
+				var tempRep = [];
+				for (var i = 0; i < data.length; i++) {
+					var record = data[i];
+					if(tempRep[record.taskType]){
+						tempRep[record.taskType].hourWorked =
+						 parseInt(record.noOfHours) +
+						 tempRep[record.taskType].hourWorked;
+					}else{
+						tempRep[record.taskType] = {
+							taskType : record.taskType,
+							hourWorked : parseInt(record.noOfHours)
+						};
+					}
 				}
 				// var aStudents = [];
 				// for (var j = 0; j < aMonths.length; j++) {
@@ -123,23 +144,25 @@ app.start = function() {
 				// 	})
 				//
 				// }
-
-				responseData = [{
-					taskType: "GB",
-					hourWorked: 10
-				},
-				{
-					taskType: "FP",
-					hourWorked: 3
-				},
-				{
-					taskType: "LP",
-					hourWorked: 4
-				},
-				{
-					taskType: "PT",
-					hourWorked: 8
-				}];
+				for (item in tempRep){
+					responseData.push(tempRep[item]);
+				}
+				// responseData = [{
+				// 	taskType: "GB",
+				// 	hourWorked: 10
+				// },
+				// {
+				// 	taskType: "FP",
+				// 	hourWorked: 3
+				// },
+				// {
+				// 	taskType: "LP",
+				// 	hourWorked: 4
+				// },
+				// {
+				// 	taskType: "PT",
+				// 	hourWorked: 8
+				// }];
 				res.send(responseData);
 
 			})
