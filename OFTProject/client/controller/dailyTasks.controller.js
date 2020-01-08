@@ -21,10 +21,21 @@ sap.ui.define([
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
+     debugger;
+			var that = this;
+			var oDt = that.getView().byId("idCoDate1");
 			$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
 				.done(function(data, status) {
 					console.log(data);
+					debugger;
 					//you write code to render chart based on masterData
+          // ---------------Sreedhara------------------------
+					var oPieChartModel = new sap.ui.model.json.JSONModel();;
+					oPieChartModel.setData({
+						PieData: data
+					});
+					that.getView().setModel(oPieChartModel, "PieChartModel");
+					// ---------------Sreedhara------------------------
 				})
 				.fail(function(xhr, status, error) {
 
