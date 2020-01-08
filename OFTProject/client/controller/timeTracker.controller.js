@@ -87,8 +87,9 @@ herculis: function(oEvent) {
 												}
 												else if (data[j].hours === "Holiday") {
 													//console.log("Yellow--" + data[j].hours );gray
-													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
 													i++;
+													//j--;
 												}else if (data[j].hours < 8 ) {
 													//console.log("Red--"+ data[j].hours);red
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
@@ -97,6 +98,7 @@ herculis: function(oEvent) {
 													//console.log("Blue--" + data[j].hours);blue
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
 													i++;
+													//j--;
 												}else if (data[j].hours >8) {
 													//console.log("Pink--" + data[j].hours);
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
@@ -155,6 +157,7 @@ herculis: function(oEvent) {
 													//console.log("Yellow--" + data[j].hours );gray
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
 													i++;
+
 												}else if (data[j].hours < 8 ) {
 													//console.log("Red--"+ data[j].hours);red
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
@@ -163,6 +166,7 @@ herculis: function(oEvent) {
 													//console.log("Blue--" + data[j].hours);blue
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
 													i++;
+
 												}else if (data[j].hours >8) {
 													//console.log("Pink--" + data[j].hours);
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
@@ -235,6 +239,7 @@ herculis: function(oEvent) {
 											//console.log("Yellow--" + data[j].hours );DimGray
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
 											i++;
+
 										}else if (data[j].hours < 8 ) {
 											//console.log("Red--"+ data[j].hours);Red
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
@@ -243,6 +248,7 @@ herculis: function(oEvent) {
 											//console.log("Blue--" + data[j].hours);SlateBlue
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
 											i++;
+
 										}else if (data[j].hours > 8) {
 											//console.log("Pink--" + data[j].hours);
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
@@ -323,6 +329,7 @@ afterCalChange: function() {
 											//console.log("Yellow--" + data[j].hours );DimGray
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
 											i++;
+
 										}else if (data[j].hours < 8 ) {
 											//console.log("Red--"+ data[j].hours);Red
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
@@ -331,6 +338,7 @@ afterCalChange: function() {
 											//console.log("Blue--" + data[j].hours);SlateBlue
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
 											i++;
+										
 										}else if (data[j].hours > 8) {
 											//console.log("Pink--" + data[j].hours);
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";

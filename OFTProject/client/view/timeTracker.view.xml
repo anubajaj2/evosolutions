@@ -10,6 +10,7 @@
   xmlns:cal="sap.gantt.shape.cal"
   xmlns:r="sap.gantt.shape.ext.ubc"
   xmlns:me="sap.me"
+  xmlns:h ="http://www.w3.org/1999/xhtml"
 	>
   <semantic:FullscreenPage
     title="Track Your Time">
@@ -46,6 +47,19 @@
                 </me:dependents>
 
               </me:Calendar>
+              <h:Table class="tab1">
+        				<h:tr>
+        					<h:td><Label text="Leave:-" /></h:td>
+        					<h:td><h:div class="foo blue"></h:div></h:td>
+        					<h:td><Label text="Personal Holiday:-" /></h:td>
+        					<h:td><h:div class="foo gray"></h:div></h:td>
+        					<h:td><Label text="8HoursCompleted:-" /></h:td>
+        					<h:td><h:div class="foo green"></h:div></h:td>
+                  <h:td><Label text="less than 8 Hours:-" /></h:td>
+        					<h:td><h:div class="foo red"></h:div></h:td>
+
+        				</h:tr>
+        			</h:Table>
       </l:VerticalLayout>
 
              </VBox>

@@ -74,7 +74,7 @@ app.start = function() {
 			var currentDate = req.body.currentDate;
 			var userId = req.body.userId;
 
-		debugger;
+			//
 			var Task = app.models.task;
 
 			function getMonths() {
@@ -616,12 +616,14 @@ app.start = function() {
 						 	for (var i = 0; i < oArrTime.length; i++) {
 							 var date = oArrTime[i].date.getDate();
 							 			var flag=0;
+
 							 for (var j = 0; j < leaveRecords.length; j++) {
-
-
+								 		var dFrom = 	leaveRecords[j].__data.DateFrom;
+										var dTo = 	leaveRecords[j].__data.DateTo;
+										var dDiff = (dTo - dFrom)/(1000*3600*24)+1;
 											if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
 												if(flag===0){
-													for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
+													for (var k = 0; k < dDiff; k++) {
 																flag=1;
 																oArrTime[i].hours = 'LEAVE';
 																i++;

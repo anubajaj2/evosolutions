@@ -25,3 +25,37 @@
     position: relative;
     vertical-align: top;
 }
+
+.foo {
+  padding-bottom: 15px;
+  width: 30px;
+  height: 20px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.blue {
+  background: #4d79ff;
+}
+
+.gray{
+  background: #666699;
+}
+
+.red {
+  background: #ff3333;
+}
+.green {
+  background: #99e699;
+}
+.lbl{
+  float: left;
+}
+.tab{
+  left: 20px;
+  margin-left: 350px;
+}
+.tab1{
+  left: 20px;
+  margin-left: 200px;
+}

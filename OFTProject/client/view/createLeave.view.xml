@@ -7,6 +7,7 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:u="sap.ui.unified"
 	xmlns:me="sap.me"
+	xmlns:h ="http://www.w3.org/1999/xhtml"
 	xmlns="sap.m">
 <semantic:FullscreenPage id="idspage"
 	title="Create Leave Request"
@@ -83,9 +84,32 @@
 					</me:dependents>
 
 				</me:Calendar>
+				<!-- <f:SimpleForm editable="true">
+				<Label class="lbl" text="Leave"/>
+				<h:div class="foo blue"></h:div>
+				<Label class="lbl" text="Personal Holiday"/>
+				<h:div class="foo gray"></h:div>
+				<Label class="lbl" text="Public Holiday"/>
+				<h:div class="foo red"></h:div>
+
+			</f:SimpleForm> -->
+			<h:Table class="tab">
+				<h:tr>
+					<h:td><Label text="Leave:-" /></h:td>
+					<h:td><h:div class="foo blue"></h:div></h:td>
+					<h:td><Label text="Personal Holiday:-" /></h:td>
+					<h:td><h:div class="foo gray"></h:div></h:td>
+					<h:td><Label text="Public Holiday:-" /></h:td>
+					<h:td><h:div class="foo red"></h:div></h:td>
+				</h:tr>
+			</h:Table>
+
 </l:VerticalLayout>
 
 </VBox>
+
+
+
 
 </semantic:content>
 <semantic:saveAction>
