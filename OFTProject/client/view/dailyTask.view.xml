@@ -9,6 +9,7 @@
   xmlns:lt="sap.ui.layout"
   xmlns:viz="sap.viz.ui5.controls"
   xmlns:viz.data="sap.viz.ui5.data"
+  xmlns:chart="sap.suite.ui.commons"
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
 
 
@@ -22,11 +23,16 @@
         <f:content>
 
        <!-- Begin sreedhara-->
+
        <viz:VizFrame id="idVizFrame"
                      uiConfig="{applicationSet:'fiori'}"
                      vizType='pie'
                      width="auto"
-                     vizProperties="{title : {text:'Task Hours Performed for this Month'}}"
+                     vizProperties="{
+                     plotArea:{ dataLabel:{visible: true} },
+                     legendGroup:{layout:{position: 'left'}},
+                     title : {text:'Task Hours Performed for this Month'}
+                     }"
                      >
          <viz:dataset>
            <viz.data:FlattenedDataset data="{PieChartModel>/PieData}" >
@@ -43,50 +49,11 @@
            <viz.feeds:FeedItem uid="color" type="Dimension" values="TaskType" />
          </viz:feeds>
        </viz:VizFrame>
+       <!-- <viz:Popover id="idPopOver"></viz:Popover> -->
+       
        <!-- End sreedhara-->
 
 
-          <!-- <DatePicker value="{
-          path: 'fromDate',
-          type: 'sap.ui.model.type.Date',
-          formatOptions: {pattern: 'yyyy/MM/dd', strictParsing: true , UTC: true}}">
-        </DatePicker> -->
-        <!-- <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
-        change="onDateChange" dateValue="{'local>/tasks/CrDate'}"> </DatePicker> -->
-        <!-- <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
-        change="onDateChange" dateValue="{'local>/tasks/CrDate'}"
-        value="{
-        type: 'sap.ui.model.odata.type.DateTime',
-        constraints: {
-        displayFormat: 'Date',
-        nullable: false
-        }
-        }"
-
-        > </DatePicker> -->
-
-        <!-- <DatePicker value="{path: 'local>/tasks/CrDate',
-        type: 'sap.ui.model.type.Date',
-        formatOptions: {UTC: true}}"
-        width="10em" id="idCoDate1" required="true"  change="onDateChange" displayFormat="dd.MM.yyyy"/> -->
-        <!-- <DatePicker value="{path: 'local>/tasks/CrDate', type: 'sap.ui.model.type.Date',
-        formatOptions: {pattern: 'MM/dd/yyyy', strictParsing: true , UTC: true}}" width="10em" id="idCoDate1" required="true"
-        change="onDateChange"/> -->
-
-        <!-- <DatePicker id="idCoDate1" change="onDateChange" displayFormat="YYYY/MM/DD" valueFormat="YYYY/MM/DD" value="{
-        path: 'local>/tasks/CrDate',
-        type: 'sap.ui.model.type.Date',
-        formatOptions: {strictParsing: true , UTC: true}}">
-        pattern: 'yyyy/MM/dd',
-      </DatePicker> -->
-
-      <!-- <DatePicker id="idCoDate1"
-      value="{
-      path:'local>/tasks/CrDate',
-      type:'sap.ui.model.odata.type.DateTime',
-      constraints:{displayFormat:'Date'},
-      formatOptions:{pattern: 'MM-dd-yyyy'}
-      }" /> -->
       <Label text="Date" />
       <DatePicker id="idCoDate1" displayFormat="dd.MM.yyyy"
         change="onDateChange" dateValue="{'local>/tasks/CrDate'}"/>

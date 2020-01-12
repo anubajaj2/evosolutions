@@ -21,25 +21,33 @@ sap.ui.define([
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
-     debugger;
+			// ---------------Sreedhara------------------------PIE chart
+			debugger;
 			var that = this;
 			var oDt = that.getView().byId("idCoDate1");
 			$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
-				.done(function(data, status) {
-					console.log(data);
-					debugger;
-					//you write code to render chart based on masterData
-          // ---------------Sreedhara------------------------
-					var oPieChartModel = new sap.ui.model.json.JSONModel();;
-					oPieChartModel.setData({
-						PieData: data
-					});
-					that.getView().setModel(oPieChartModel, "PieChartModel");
-					// ---------------Sreedhara------------------------
-				})
-				.fail(function(xhr, status, error) {
+			.done(function(data, status) {
+				console.log(data);
+				debugger;
+				//you write code to render chart based on masterData
 
+				var oPieChartModel = new sap.ui.model.json.JSONModel();;
+				oPieChartModel.setData({
+					PieData: data
 				});
+				that.getView().setModel(oPieChartModel, "PieChartModel");
+
+
+				// var oPopOver = this.getView().byId("idPopOver");
+				// var vizPopover = new sap.viz.ui5.controls.Popover({});
+				// oPopOver.connect(oVizFrame.getVizUid());
+				// oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
+
+				// ---------------Sreedhara------------------------
+			})
+			.fail(function(xhr, status, error) {
+
+			});
 			// ---------------Sreedhara------------------------
 			// this.setTaskModel();
 
@@ -94,7 +102,7 @@ sap.ui.define([
 		// 		// var oPopover = this.getErrorMessage(oError);
 		// 	}); return oJsonModel;
 		// },
-    // ---------------Sreedhara------------------------
+		// ---------------Sreedhara------------------------
 
 		// ---------------Sreedhara------------------------
 		// setTaskModel:function(oTt){
@@ -215,6 +223,31 @@ sap.ui.define([
 					total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
 				}
 				this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
+
+				// ---------------Sreedhara---PIE chart update after save the taskin the view-----------
+				var currentUser = this.getModel("local").getProperty("/CurrentUser");
+				var that = this;debugger;
+				var oDt = that.getView().byId("idCoDate1");
+				$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
+				.done(function(data, status) {
+					console.log(data);
+					debugger;
+					//you write code to render chart based on masterData
+
+					var oPieChartModel = new sap.ui.model.json.JSONModel();;
+					oPieChartModel.setData({
+						PieData: data
+					});
+					that.getView().setModel(oPieChartModel, "PieChartModel");
+					})
+				.fail(function(xhr, status, error) {
+
+				});
+
+				// ---------------Sreedhara------------------------
+
+
+
 			},
 
 			onDateChange: function(oEvent) {
