@@ -100,7 +100,7 @@
 					<h:td><Label text="Personal Holiday:-" /></h:td>
 					<h:td><h:div class="foo gray"></h:div></h:td>
 					<h:td><Label text="Public Holiday:-" /></h:td>
-					<h:td><h:div class="foo red"></h:div></h:td>
+					<h:td><h:div class="foo Yellow"></h:div></h:td>
 				</h:tr>
 			</h:Table>
 

@@ -57,6 +57,8 @@
         					<h:td><h:div class="foo green"></h:div></h:td>
                   <h:td><Label text="less than 8 Hours:-" /></h:td>
         					<h:td><h:div class="foo red"></h:div></h:td>
+                  <h:td><Label text="Public Holiday:-" /></h:td>
+        					<h:td><h:div class="foo Yellow"></h:div></h:td>
 
         				</h:tr>
         			</h:Table>

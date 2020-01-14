@@ -398,6 +398,7 @@ app.start = function() {
 			for (var j = 0; j <  noOfDaysInMonth; j++) {
 				var monthDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth(),j+1);
 				var flag = 0;
+					if(holidayRecords.length){
 				for (var k = 0; k < holidayRecords.length; k++) {
 							var oDate =  holidayRecords[k].__data.Date;
 				if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
@@ -415,6 +416,7 @@ app.start = function() {
 					break;
 				}
 			}
+		}
 			if (flag == 0) {
 				holidayLeaveCal.push({
 				Day:new Date(monthDate.getFullYear(),monthDate.getMonth(),j+1).getDay(),
@@ -547,6 +549,7 @@ app.start = function() {
 				var LeaveRequest = app.models.LeaveRequest;
 				var Holidays = app.models.HolidayCalendar;
 				var taskTab = app.models.task;
+
 				//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
 				//AppUser, leaveRequest, task
 				//anubhav is here
@@ -589,9 +592,10 @@ app.start = function() {
 
 
 							//This For Loop is to calculate the No of hours for each day in a month
+							var noOfDays = new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
 							if(tasks.length){
 
-					 		for (var i = 0; i < today.getDate(); i++) {
+					 		for (var i = 0; i < noOfDays; i++) {
 							var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
 								var flag = 0;
 								var nHr = 0;
@@ -610,6 +614,7 @@ app.start = function() {
 											}else{
 												oArrTime.push({date:start,hours:nHr});
 											}
+
 
 										 }
 					 		//this for loop is to calculate the Leaves taken by employee in a given month
@@ -668,9 +673,49 @@ app.start = function() {
 									}
 								}
 							}
-							console.log(that3.empRecord);
-							console.log(that3.leaveRecords);
-							res.send(oArrTime);
+							// console.log(that3.empRecord);
+							// console.log(that3.leaveRecords);
+							//
+							var timeTrackerCalendar = [];
+							var oStartDate = new Date(today.getFullYear(),today.getMonth(),1);
+							var oEndDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+								Holidays.find(
+									{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
+									).then(function(holidayRecords){
+									var tDate = new Date();
+									var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
+
+									for (var i = 0; i < oArrTime.length; i++) {
+										var date = oArrTime[i].date;
+										var 	flag = 0;
+										for (var j = 0; j < holidayRecords.length; j++) {
+											var hDate = holidayRecords[j].__data.Date;
+											if (date.getDate() == hDate.getDate()) {
+												flag = 1;
+												timeTrackerCalendar.push({
+													Day:holidayRecords[j].__data.Day,
+													Occasion:holidayRecords[j].__data.Occasion,
+													remark:"PH",
+													hours:oArrTime[j].hours,
+													Date:oArrTime[j].date
+												});
+											}
+										}
+											if (flag==0) {
+												timeTrackerCalendar.push({
+													Day:"",
+													Occasion:"",
+													remark:"",
+													hours:oArrTime[i].hours,
+													Date:oArrTime[i].date
+												});
+											}
+
+										}
+										res.send(timeTrackerCalendar);
+
+								});
+
 
 						}else {
 							console.log.console("There is no data available the selected month ");
@@ -710,6 +755,7 @@ app.start = function() {
 			var AppUser = app.models.AppUser;
 			var LeaveRequest = app.models.LeaveRequest;
 			var taskTab = app.models.task;
+			var Holidays = app.models.HolidayCalendar;
 			//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
 			//AppUser, leaveRequest, task
 			//anubhav is here
@@ -826,9 +872,42 @@ app.start = function() {
 								}
 							}
 						}
-						console.log(that3.empRecord);
-						console.log(that3.leaveRecords);
-						res.send(oArrTime);
+						// console.log(that3.empRecord);
+						// console.log(that3.leaveRecords);
+						var timeTrackerCalendar = [];
+						Holidays.find(
+								{where:{Date:{between:[startDateCurrent,endDateCurrent]}},order:'Date ASC'}
+								).then(function(holidayRecords){
+								var noOfDaysInMonth = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0).getDate();
+								for (var i = 0; i < oArrTime.length; i++) {
+									var date = oArrTime[i].date;
+									var 	flag = 0;
+									for (var j = 0; j < holidayRecords.length; j++) {
+										var hDate = holidayRecords[j].__data.Date;
+										if (date.getDate() == hDate.getDate()) {
+											flag = 1;
+											timeTrackerCalendar.push({
+												Day:holidayRecords[j].__data.Day,
+												Occasion:holidayRecords[j].__data.Occasion,
+												remark:"PH",
+												hours:oArrTime[j].hours,
+												Date:oArrTime[j].date
+											});
+										}
+									}
+										if (flag==0) {
+											timeTrackerCalendar.push({
+												Day:"",
+												Occasion:"",
+												remark:"",
+												hours:oArrTime[i].hours,
+												Date:oArrTime[i].date
+											});
+										}
+
+									}
+									res.send(timeTrackerCalendar);
+							});
 
 					}else {
 						console.log("There is no data available the selected month ");

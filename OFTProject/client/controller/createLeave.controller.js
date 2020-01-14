@@ -49,6 +49,7 @@ sap.ui.define([
 			this.getView().byId("idlblday").setVisible(false);
 			this.getView().byId("idDate").setVisible(false);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
+			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom","")
 		}
 
 	},
@@ -104,8 +105,8 @@ onBeforeRendering: function(){
 											var calDate = new Date(document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCreateLeaveCalendar-")[1]);
 										if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
 												if (data[i].Mark === "PH") {
-													//	console.log("red--" + data[j].hours);Green#ff3333
-												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ff3333";
+													//	console.log("red--" + data[j].hours);Green#ffff4d
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ffff4d";
 														//i++;
 												}
 												else if (data[i].Holiday === "Holiday") {
@@ -170,8 +171,8 @@ afterCalChange: function() {
 										var calDate = new Date(document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCreateLeaveCalendar-")[1]);
 									if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
 											if (data[i].Mark === "PH") {
-												//	console.log("#666699--" + data[j].hours);Green#ff3333
-												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ff3333";
+												//	console.log("#666699--" + data[j].hours);Green#ffff4d
+												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ffff4d";
 												//	i++;
 												break;
 											}
@@ -227,24 +228,36 @@ afterCalChange: function() {
 	fail(function(xhr,status,error){
 		sap.m.MessageBox.console.error("Something is wrong in your Code");
 	});
-		var oLeaveRequest={};
-		var sfrom = {};
-		var sTo = {};
-		sfrom = oEvent.getParameter("from");
-		var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
-		sTo = oEvent.getParameter("to");
-		var diff = sTo - sfrom;
-		var days =  diff / (1000 * 3600 * 24);
-// to get the correct count add 1 to the days
-		 days = days + 1;
-		 if (days == 0) {
-			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",1);
-		}else {
-		 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",days);
-	 }
-		var bValid = oEvent.getParameter("valid");
-		this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
-		this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
+// 		var oLeaveRequest={};
+// 		var sfrom = {};
+// 		var sTo = {};
+// 	//	sfrom = oEvent.getParameter("from");
+// 			sfrom = new Date(oEvent.getParameters().fromDate);
+//
+// 		var nextdate = new Date(new Date(sfrom).getFullYear(),new Date(sfrom).getMonth(),new Date(sfrom).getDate()+1);
+// 		//sTo = oEvent.getParameter("to");
+// 			sTo = new Date(oEvent.getParameters().toDate);
+// 		var diff = sTo - sfrom;
+// 		var days =  diff / (1000 * 3600 * 24);
+// // to get the correct count add 1 to the days
+// 		 days = days + 1;
+// 		 if (days == 0) {
+// 			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",1);
+// 		}else {
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",days);
+// 	 }
+// 	 if (this.getView().byId("idlType")._getSelectedItemText()== "Half Day") {
+// 		 var sValue = new Date(oEvent.getParameters().fromDate);
+// 		 var bValid = oEvent.getParameter("valid");
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sValue);
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sValue);
+// 	 }else {
+// 		 var bValid = oEvent.getParameter("valid");
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sfrom);
+// 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sTo);
+// 	 }
+
 	},
 
 	sparta:function(data,status){
@@ -258,10 +271,6 @@ afterCalChange: function() {
 			var leaveType = this.getView().byId("idlType").getSelectedKey();
 			var dFrom = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[0]);
 			var dTo = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[this.getView().byId("idCreateLeaveCalendar").getSelectedDates().length-1]);
-			this.getView().byId("idDate").setFrom(new Date(dFrom));
-			this.getView().byId("idDate").setTo(new Date(dTo));
-			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",dFrom);
-			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",dTo);
 			if (dFrom > dTo) {
 
 				sap.m.MessageBox.show("Please Select a valid Date Range...DateFrom can not be greater than DateTo",{onClose: this.onMessageBoxClose.bind(this)});
@@ -271,6 +280,13 @@ afterCalChange: function() {
 			}
 			var flag = 0;
 			if (leaveType === "Full Day") {
+
+
+				this.getView().byId("idDate").setFrom(new Date(dFrom));
+				this.getView().byId("idDate").setTo(new Date(dTo));
+				this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",dFrom);
+				this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",dTo);
+
 					if ( dFrom != null && dTo != null ) {
 							var d2 = dTo;
 							var d1 = dFrom;
@@ -352,7 +368,14 @@ afterCalChange: function() {
 					}
 				}
 				else if (leaveType == "Half Day") {
-						var selectedDate = this.getView().byId("idDatePicker").getDateValue();
+					var selectedDate = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[0]);
+					this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
+
+ 		 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",selectedDate);
+				 this.getView().byId("idDatePicker").setDateValue(new Date(selectedDate));
+ 		 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",selectedDate);
+
+		 	//	 var bValid = oEvent.getParameter("valid");
 						var flag = 0
 						if (selectedDate != null) {
 							for (var i = 0; i < data.length; i++) {
@@ -697,7 +720,7 @@ afterCalChange: function() {
 		}
 
 		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rende#ff3333
+		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rende#ffff4d
 		 * (NOT before the first rendering! onInit() is used for that one!).
 		 * @memberOf oft.fiori.view.View2
 		 */

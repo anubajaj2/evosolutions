@@ -37,6 +37,9 @@
 .blue {
   background: #4d79ff;
 }
+.Yellow {
+  background: #ffff4d;
+}
 
 .gray{
   background: #666699;
@@ -57,5 +60,5 @@
 }
 .tab1{
   left: 20px;
-  margin-left: 200px;
+  margin-left: 150px;
 }
