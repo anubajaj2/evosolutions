@@ -96,7 +96,8 @@ sap.ui.define([
 			for(var i=0; i < noItems; i++){
 				var userId=oTable.getItems()[i].getCells()[1].getText();
 				var userData=this.allMasterData.AppUsers[userId];
-				oTable.getItems()[i].getCells()[1].setText(userData.UserName);
+				// oTable.getItems()[i].getCells()[1].setText(userData.UserName);
+				oTable.getItems()[i].getCells()[1].setText(userId);
 			}
 			var oKey=this.getView().byId("idUser").getValue();
 			// 	if(oKey){
@@ -107,10 +108,13 @@ sap.ui.define([
 			var rows =this.getView().byId("idCoTable").getBinding("items").getLength();
 			var oBinding =this.getView().byId("idCoTable").getBinding("items");
 			var total = 0;
+			debugger;
 			for (var i = 0; i < rows; i++) {
-				total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
+				total = total + parseFloat(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
+
 			}
 			this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
+
 		},
 		formatter: Formatter,
 		onSelect:function(oEvent){
