@@ -275,7 +275,8 @@ sap.ui.define([
 				var oBinding =this.getView().byId("idCoTable").getBinding("items");
 				var total = 0;
 				for (var i = 0; i < rows; i++) {
-					total = total + parseInt(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
+					// total = total + parseFloat(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours).toFixed(2);
+					total = total + parseFloat(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
 				}
 				this.getView().byId("idTxt").setText("Total number of tasks are " + oBinding.getLength() + " and Total number of hours worked are " + total + "");
 
