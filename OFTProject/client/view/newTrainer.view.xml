@@ -1,276 +1,276 @@
 <mvc:View
-controllerName="oft.fiori.controller.newTrainer"
-xmlns="sap.m"
-xmlns:core="sap.ui.core"
-xmlns:mvc="sap.ui.core.mvc"
-xmlns:semantic="sap.m.semantic"
-xmlns:f="sap.ui.layout.form"
-xmlns:smartField="sap.ui.comp.smartfield"
-xmlns:footerbar="sap.ushell.ui.footerbar"
-xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  controllerName="oft.fiori.controller.newTrainer"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:semantic="sap.m.semantic"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:smartField="sap.ui.comp.smartfield"
+  xmlns:footerbar="sap.ushell.ui.footerbar"
+  xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-<semantic:FullscreenPage
-id="Trainers"
-navButtonPress="onNavBack"
-showNavButton="true"
-title="Manage Trainers"
-busy="{objectView>/busy}"
-busyIndicatorDelay="{objectView>/delay}">
-<semantic:customHeaderContent>
-<Button icon="sap-icon://full-screen" id="idFullScreenBtn"
-tooltip="fullscreen"
-iconFirst="true" press="toggleFullScreen"/>
-    </semantic:customHeaderContent>
+  <semantic:FullscreenPage
+    id="Trainers"
+    navButtonPress="onNavBack"
+    showNavButton="true"
+    title="Manage Trainers"
+    busy="{objectView>/busy}"
+    busyIndicatorDelay="{objectView>/delay}">
+    <semantic:customHeaderContent>
+      <Button icon="sap-icon://full-screen" id="idFullScreenBtn"
+        tooltip="fullscreen"
+        iconFirst="true" press="toggleFullScreen"/>
+      </semantic:customHeaderContent>
 
-<semantic:content id="Header">
-<f:Form id="trainerHeader" editable="true">
-</f:Form>
-</semantic:content>
+      <semantic:content id="Header">
+        <f:Form id="trainerHeader" editable="true">
+        </f:Form>
+      </semantic:content>
 
-<semantic:content>
-<f:SimpleForm
-minWidth="1024"
-maxContainerCols="2"
-editable="true"
-layout="ResponsiveGridLayout"
-labelSpanL="3"
-labelSpanM="3"
-emptySpanL="4"
-emptySpanM="4"
-columnsL="1"
-columnsM="1"
-class="editableForm">
-<f:content>
+      <semantic:content>
+        <f:SimpleForm
+          minWidth="1024"
+          maxContainerCols="2"
+          editable="true"
+          layout="ResponsiveGridLayout"
+          labelSpanL="3"
+          labelSpanM="3"
+          emptySpanL="4"
+          emptySpanM="4"
+          columnsL="1"
+          columnsM="1"
+          class="editableForm">
+          <f:content>
 
-        <Label text="Trainer Name"  />
-        <Input required="true"
-          value="{trainerModel>/FirstName}"
-           id="idFirstName"
-           showValueHelp="true"
-           valueHelpRequest="onSelect"
-           liveChange="onTrainer"
-           submit="onEnter"
-           placeholder="Enter Trainer Name..."
-           showSuggestion="true"
-           suggestionItems="{/Trainers}"
-           suggestionItemSelected="suggestionItemSelected">
-           <suggestionItems>
-             <core:Item text="{FirstName}"/>
-           </suggestionItems>
-         </Input>
-        <Label text="LastName" />
-        <Input
-          id="idLastName"
-          type="Text"
-          value="{trainerModel>/LastName}" >
-        </Input>
-        <Label text="JoiningDate" />
-<DatePicker id="idJoiningDate"
-displayFormat="dd.MM.yyyy"
-value="{TrainerModel>/JoiningDate}"
-valueFormat="dd.MM.yyyy">
-</DatePicker>
+            <Label text="Trainer Name"  />
+            <Input required="true"
+              value="{trainerModel>/FirstName}"
+              id="idFirstName"
+              showValueHelp="true"
+              valueHelpRequest="onSelect"
+              liveChange="onTrainer"
+              submit="onEnter"
+              placeholder="Enter Trainer Name..."
+              showSuggestion="true"
+              suggestionItems="{/Trainers}"
+              suggestionItemSelected="suggestionItemSelected">
+              <suggestionItems>
+                <core:Item text="{FirstName}"/>
+              </suggestionItems>
+            </Input>
+            <Label text="LastName" />
+            <Input
+              id="idLastName"
+              type="Text"
+              value="{trainerModel>/LastName}" >
+            </Input>
+            <Label text="JoiningDate" />
+            <DatePicker id="idJoiningDate"
+              displayFormat="dd.MM.yyyy"
+              value="{TrainerModel>/JoiningDate}"
+              valueFormat="dd.MM.yyyy">
+            </DatePicker>
 
-          <Label text="Remarks"/>
-          <Input
-                        id="idRemarks"
-                        type="Text"
-                        value="{TrainerModel>/Remarks}">
-          </Input>
+            <Label text="Remarks"/>
+            <Input
+              id="idRemarks"
+              type="Text"
+              value="{TrainerModel>/Remarks}">
+            </Input>
 
-          <Label text="SoftDelete"/>
-          <CheckBox
-                        id="idSoftDelete"
-                        selected="{TrainerModel>/SoftDelete}">
-          </CheckBox>
+            <Label text="SoftDelete"/>
+            <CheckBox
+              id="idSoftDelete"
+              selected="{TrainerModel>/SoftDelete}">
+            </CheckBox>
 
-</f:content>
-</f:SimpleForm>
+          </f:content>
+        </f:SimpleForm>
 
-<f:Form id="sideBySide" editable="true">
-<f:layout>
-<f:GridLayout labelSpanXL="2" labelSpanL="2" labelSpanM="2"
+        <f:Form id="sideBySide" editable="true">
+          <f:layout>
+            <f:GridLayout labelSpanXL="2" labelSpanL="2" labelSpanM="2"
               emptySpanXL="2" emptySpanL="2" emptySpanM="2"
               columnsXL="8" columnsL="8" columnsM="8"
               singleContainerFullSize="false"></f:GridLayout>
-</f:layout>
+            </f:layout>
 
-<f:formContainers>
-<f:FormContainer title="Address Information">
-<f:formElements>
-<f:FormElement label="Address">
-  <f:fields>
-    <Input
-                  id="idAddress"
-                  type="Text"
-                  value="{TrainerModel>/Address}">
-    </Input>
+            <f:formContainers>
+              <f:FormContainer title="Address Information">
+                <f:formElements>
+                  <f:FormElement label="Address">
+                    <f:fields>
+                      <Input
+                        id="idAddress"
+                        type="Text"
+                        value="{TrainerModel>/Address}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="City">
-  <f:fields>
-    <Input
-                  id="idCity"
-                  type="Text"
-                  value="{TrainerModel>/City}">
-    </Input>
+                  <f:FormElement label="City">
+                    <f:fields>
+                      <Input
+                        id="idCity"
+                        type="Text"
+                        value="{TrainerModel>/City}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="Contact No">
-  <f:fields>
-    <Input
-                  id="idContactNo"
-                  type="Text"
-                  value="{TrainerModel>/ContactNo}">
-    </Input>
+                  <f:FormElement label="Contact No">
+                    <f:fields>
+                      <Input
+                        id="idContactNo"
+                        type="Text"
+                        value="{TrainerModel>/ContactNo}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="Contact No1">
-  <f:fields>
-    <Input
-                  id="idContactNo1"
-                  type="Text"
-                  value="{TrainerModel>/ContactNo1}">
-    </Input>
+                  <f:FormElement label="Contact No1">
+                    <f:fields>
+                      <Input
+                        id="idContactNo1"
+                        type="Text"
+                        value="{TrainerModel>/ContactNo1}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-</f:formElements>
-<f:layoutData>
-<f:GridContainerData halfGrid="true"></f:GridContainerData>
-</f:layoutData>
-</f:FormContainer>
+                </f:formElements>
+                <f:layoutData>
+                  <f:GridContainerData halfGrid="true"></f:GridContainerData>
+                </f:layoutData>
+              </f:FormContainer>
 
-<f:FormContainer title="Bank Information">
-<f:formElements>
-<f:FormElement label="Account #">
-  <f:fields>
-    <Input
-                  id="idAccountNo"
-                  type="Text"
-                  value="{TrainerModel>/AccountNo}">
-    </Input>
+              <f:FormContainer title="Bank Information">
+                <f:formElements>
+                  <f:FormElement label="Account #">
+                    <f:fields>
+                      <Input
+                        id="idAccountNo"
+                        type="Text"
+                        value="{TrainerModel>/AccountNo}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="Account Name">
-  <f:fields>
-    <Input
-                  id="idAccountName"
-                  type="Text"
-                  value="{TrainerModel>/AccountName}">
-    </Input>
+                  <f:FormElement label="Account Name">
+                    <f:fields>
+                      <Input
+                        id="idAccountName"
+                        type="Text"
+                        value="{TrainerModel>/AccountName}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="IFSC Code">
-  <f:fields>
-    <Input
-                  id="idIFSCCode"
-                  type="Text"
-                  value="{TrainerModel>/IFSCCode}">
-    </Input>
+                  <f:FormElement label="IFSC Code">
+                    <f:fields>
+                      <Input
+                        id="idIFSCCode"
+                        type="Text"
+                        value="{TrainerModel>/IFSCCode}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="Account Type">
-  <f:fields>
-    <Input
-                  id="idAccountType"
-                  type="Text"
-                  value="{TrainerModel>/AccountType}">
-    </Input>
+                  <f:FormElement label="Account Type">
+                    <f:fields>
+                      <Input
+                        id="idAccountType"
+                        type="Text"
+                        value="{TrainerModel>/AccountType}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-<f:FormElement label="PAN Number">
-  <f:fields>
-    <Input
-                  id="idPANNo"
-                  type="Text"
-                  value="{TrainerModel>/PANNo}">
-    </Input>
+                  <f:FormElement label="PAN Number">
+                    <f:fields>
+                      <Input
+                        id="idPANNo"
+                        type="Text"
+                        value="{TrainerModel>/PANNo}">
+                      </Input>
 
-  </f:fields>
-</f:FormElement>
+                    </f:fields>
+                  </f:FormElement>
 
-</f:formElements>
-<f:layoutData>
-<f:GridContainerData halfGrid="true"></f:GridContainerData>
-</f:layoutData>
-</f:FormContainer>
+                </f:formElements>
+                <f:layoutData>
+                  <f:GridContainerData halfGrid="true"></f:GridContainerData>
+                </f:layoutData>
+              </f:FormContainer>
 
-</f:formContainers>
+            </f:formContainers>
 
-</f:Form>
+          </f:Form>
 
-<Table id="idTrainerCourse" items="{/CourseMst}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
-				<headerToolbar>
-					<OverflowToolbar>
-						<ToolbarSpacer/>
-						<OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressOpenAddSecureDialog"/>
-						<OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
-							press="onPressDeleteSecureRow"/>
-					</OverflowToolbar>
-				</headerToolbar>
-				<columns>
+          <Table id="idTrainerCourse" items="{/CourseMst}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+            <headerToolbar>
+              <OverflowToolbar>
+                <ToolbarSpacer/>
+                <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressOpenAddSecureDialog"/>
+                <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
+                  press="onPressDeleteSecureRow"/>
+                </OverflowToolbar>
+              </headerToolbar>
+              <columns>
 
-					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
-						<header>
-							<Text text="Course ID"/>
-						</header>
-					</Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                  <header>
+                    <Text text="Course ID"/>
+                  </header>
+                </Column>
 
-					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
-						<header>
-							<Text text="Course Name"/>
-						</header>
-					</Column>
-					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
-						<header>
-							<Text text="Fee Mode"/>
-						</header>
-					</Column>
-					<Column minScreenWidth="Tablet" demandPopin="true" width="auto">
-						<header>
-							<Text text="Fee Amount"/>
-						</header>
-					</Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                  <header>
+                    <Text text="Course Name"/>
+                  </header>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                  <header>
+                    <Text text="Fee Mode"/>
+                  </header>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                  <header>
+                    <Text text="Fee Amount"/>
+                  </header>
+                </Column>
 
-				</columns>
-				<items>
-					<ColumnListItem vAlign="Middle">
-						<cells>
-							<Label text="{Id}"/>
-							<Label text="{CourseName}"/>
-							<Label text="{}"/>
-							<Label text="{}"/>
-							<!-- <Label text="{Salary}"/>
-							<Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
-							<Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/> -->
-							<Button icon="sap-icon://edit" press="editTrainerCourse"/>
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>
+              </columns>
+              <items>
+                <ColumnListItem vAlign="Middle">
+                  <cells>
+                    <Label text="{Id}"/>
+                    <Label text="{CourseName}"/>
+                    <Label text="{}"/>
+                    <Label text="{}"/>
+                    <!-- <Label text="{Salary}"/>
+                    <Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
+                    <Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/> -->
+                    <Button icon="sap-icon://edit" press="editTrainerCourse"/>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
 
-  </semantic:content>
-<semantic:customFooterContent>
-<Button text="Save" type="Accept" press="onSave"/>
-<Button text="Delete" type="Reject" press="deletetrainer" enabled="{viewModel>/deleteEnabled}"/>
-<Button text="Clear" type="Ghost" press="cleartrainer"/>
-</semantic:customFooterContent>
-</semantic:FullscreenPage>
+          </semantic:content>
+          <semantic:customFooterContent>
+            <Button text="Save" type="Accept" press="onSave"/>
+            <Button text="Delete" type="Reject" press="deletetrainer" enabled="{viewModel>/deleteEnabled}"/>
+            <Button text="Clear" type="Ghost" press="cleartrainer"/>
+          </semantic:customFooterContent>
+        </semantic:FullscreenPage>
 
-</mvc:View>
+      </mvc:View>

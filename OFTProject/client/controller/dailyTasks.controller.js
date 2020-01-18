@@ -2,9 +2,10 @@ sap.ui.define([
 	"oft/fiori/controller/BaseController",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/m/routing/RouteMatchedHandler"
+	"sap/m/routing/RouteMatchedHandler",
+	'sap/ui/Device'
 
-], function(Controller, Filter, FilterOperator, Route) {
+], function(Controller, Filter, FilterOperator, Route, Devise) {
 	"use strict";
 	return Controller.extend("oft.fiori.controller.dailyTasks", {
 		allMasterData:{
@@ -25,29 +26,83 @@ sap.ui.define([
 			debugger;
 			var that = this;
 			var oDt = that.getView().byId("idCoDate1");
+
+			// var oChart = that.getView().byId("idVizFrame");
+			// var vizPopover = new sap.viz.ui5.controls.Popover({});
+			// oChart.connect(vizFrame.getVizUid());
+			// oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
 			$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
 			.done(function(data, status) {
-				console.log(data);
-				debugger;
+				// console.log(data);
 				//you write code to render chart based on masterData
-
-				var oPieChartModel = new sap.ui.model.json.JSONModel();;
+				var oPieChartModel = new sap.ui.model.json.JSONModel();
 				oPieChartModel.setData({
 					PieData: data
 				});
+				debugger;
+				for (var i = 0; i < data.length; i++){
+
+					if ( data[i].taskType === 'GB' ) {
+						data[i].taskType = 'Google Business Post';
+					}
+					if ( data[i].taskType === 'LP' ) {
+						data[i].taskType = 'Linkedin Post';
+					}
+					if ( data[i].taskType === 'FP' ) {
+						data[i].taskType = 'Facebook Post';
+					}
+					if ( data[i].taskType === 'TW' ) {
+						data[i].taskType = 'Tweets';
+					}
+					if ( data[i].taskType === 'ST' ) {
+						data[i].taskType = 'SEO Tools MR,GSA';
+					}
+					if ( data[i].taskType === 'AB' ) {
+						data[i].taskType = 'Anu Bot';
+					}
+					if ( data[i].taskType === 'CK' ) {
+						data[i].taskType = 'Competitor Kill';
+					}
+					if ( data[i].taskType === 'CI' ) {
+						data[i].taskType = 'Customer Interaction Calls/Mails';
+					}
+					if ( data[i].taskType === 'PT' ) {
+						data[i].taskType = 'Pinetrust Post';
+					}
+					if ( data[i].taskType === 'SW' ) {
+						data[i].taskType = 'SAP Server Work';
+					}
+					if ( data[i].taskType === 'WD' ) {
+						data[i].taskType = 'Website Development';
+					}
+					if ( data[i].taskType === 'WR' ) {
+						data[i].taskType = 'Website Review posts';
+					}
+					if ( data[i].taskType === 'TR' ) {
+						data[i].taskType = 'Trainings';
+					}
+					if ( data[i].taskType === 'TM' ) {
+						data[i].taskType = 'Team Meeting';
+					}
+					if ( data[i].taskType === 'TE' ) {
+						data[i].taskType = 'Team Event';
+					}
+					if ( data[i].taskType === 'SE' ) {
+						data[i].taskType = 'Self Learning';
+					}
+					if ( data[i].taskType === 'OT' ) {
+						data[i].taskType = 'Others';
+					}
+					}
 				that.getView().setModel(oPieChartModel, "PieChartModel");
+         debugger;
 
-
-				// var oPopOver = this.getView().byId("idPopOver");
-				// var vizPopover = new sap.viz.ui5.controls.Popover({});
-				// oPopOver.connect(oVizFrame.getVizUid());
-				// oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
-
-				// ---------------Sreedhara------------------------
-			})
+   		})
 			.fail(function(xhr, status, error) {
 
 			});
+
+
 			// ---------------Sreedhara------------------------
 			// this.setTaskModel();
 
@@ -230,14 +285,68 @@ sap.ui.define([
 				var oDt = that.getView().byId("idCoDate1");
 				$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
 				.done(function(data, status) {
-					console.log(data);
-					debugger;
+					// console.log(data);
+
 					//you write code to render chart based on masterData
 
 					var oPieChartModel = new sap.ui.model.json.JSONModel();;
 					oPieChartModel.setData({
 						PieData: data
 					});
+					for (var i = 0; i < data.length; i++){
+
+						if ( data[i].taskType === 'GB' ) {
+							data[i].taskType = 'Google Business Post';
+						}
+						if ( data[i].taskType === 'LP' ) {
+							data[i].taskType = 'Linkedin Post';
+						}
+						if ( data[i].taskType === 'FP' ) {
+							data[i].taskType = 'Facebook Post';
+						}
+						if ( data[i].taskType === 'TW' ) {
+							data[i].taskType = 'Tweets';
+						}
+						if ( data[i].taskType === 'ST' ) {
+							data[i].taskType = 'SEO Tools MR,GSA';
+						}
+						if ( data[i].taskType === 'AB' ) {
+							data[i].taskType = 'Anu Bot';
+						}
+						if ( data[i].taskType === 'CK' ) {
+							data[i].taskType = 'Competitor Kill';
+						}
+						if ( data[i].taskType === 'CI' ) {
+							data[i].taskType = 'Customer Interaction Calls/Mails';
+						}
+						if ( data[i].taskType === 'PT' ) {
+							data[i].taskType = 'Pinetrust Post';
+						}
+						if ( data[i].taskType === 'SW' ) {
+							data[i].taskType = 'SAP Server Work';
+						}
+						if ( data[i].taskType === 'WD' ) {
+							data[i].taskType = 'Website Development';
+						}
+						if ( data[i].taskType === 'WR' ) {
+							data[i].taskType = 'Website Review posts';
+						}
+						if ( data[i].taskType === 'TR' ) {
+							data[i].taskType = 'Trainings';
+						}
+						if ( data[i].taskType === 'TM' ) {
+							data[i].taskType = 'Team Meeting';
+						}
+						if ( data[i].taskType === 'TE' ) {
+							data[i].taskType = 'Team Event';
+						}
+						if ( data[i].taskType === 'SE' ) {
+							data[i].taskType = 'Self Learning';
+						}
+						if ( data[i].taskType === 'OT' ) {
+							data[i].taskType = 'Others';
+						}
+						}
 					that.getView().setModel(oPieChartModel, "PieChartModel");
 					})
 				.fail(function(xhr, status, error) {
@@ -245,10 +354,8 @@ sap.ui.define([
 				});
 
 				// ---------------Sreedhara------------------------
-
-
-
 			},
+
 
 			onDateChange: function(oEvent) {
 
