@@ -49,6 +49,7 @@ sap.ui.define([
 			this.getView().byId("idlblday").setVisible(false);
 			this.getView().byId("idDate").setVisible(false);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
+			this.getView().getModel("local").setProperty("/newLeaveRequest/LeaveType","Half Day");
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom","")
 		}
 
@@ -103,7 +104,7 @@ onBeforeRendering: function(){
 												for (var j = 7; j <calDateLength ; j++) {
 
 											var calDate = new Date(document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].id.split("--")[2].split("idCreateLeaveCalendar-")[1]);
-										if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
+												if( (empDate.getMonth() == calDate.getMonth()) && (empDate.getDate() == calDate.getDate()) && (empDate.getFullYear() == calDate.getFullYear()) ){
 												if (data[i].Mark === "PH") {
 													//	console.log("red--" + data[j].hours);Green#ffff4d
 												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#ffff4d";
@@ -115,7 +116,13 @@ onBeforeRendering: function(){
 													//i++;
 												}else if (data[i].Mark === "LEAVE") {
 													//console.log("Blue--" + data[j].hours);blue#4d79ff
-												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+													if (data[i].LeaveType == "Full Day") {
+																document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+													}else {
+															document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+															document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.borderLeftWidth = "45px";
+													}
+
 													//i++;
 												}
 												// else {
@@ -183,7 +190,12 @@ afterCalChange: function() {
 											break;
 											}else if (data[i].Mark === "LEAVE") {
 												//console.log("Blue--" + data[j].hours);blue#4d79ff
-												document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+												if (data[i].LeaveType == "Full Day") {
+															document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+												}else {
+														document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.backgroundColor = "#4d79ff";
+														document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[j].style.borderLeftWidth = "45px";
+												}
 											//	i++;
 											break;
 										}
@@ -369,11 +381,11 @@ afterCalChange: function() {
 				}
 				else if (leaveType == "Half Day") {
 					var selectedDate = new Date(this.getView().byId("idCreateLeaveCalendar").getSelectedDates()[0]);
-					this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
-
- 		 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",selectedDate);
-				 this.getView().byId("idDatePicker").setDateValue(new Date(selectedDate));
- 		 		 this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",selectedDate);
+					this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5);
+					this.getView().getModel("local").setProperty("/newLeaveRequest/LeaveType","Half Day");
+ 		 		 	this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",selectedDate);
+				 	this.getView().byId("idDatePicker").setDateValue(new Date(selectedDate));
+ 		 		 	this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",selectedDate);
 
 		 	//	 var bValid = oEvent.getParameter("valid");
 						var flag = 0
@@ -590,6 +602,7 @@ afterCalChange: function() {
 			this.getView().getModel("local").setProperty("/newLeaveRequest/Days",0.5)
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateFrom",sValue);
 			this.getView().getModel("local").setProperty("/newLeaveRequest/DateTo",sValue);
+
 		},
 
 		onCancel:function(oEvent){

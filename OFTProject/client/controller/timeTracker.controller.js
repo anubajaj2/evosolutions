@@ -122,7 +122,12 @@ herculis: function(oEvent) {
 
 											}else if (data[j].hours === 'LEAVE') {
 												//console.log("Blue--" + data[j].hours);blue
-												document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
+												if (data[j].LeaveType == "Full Day") {
+															document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+												}else {
+														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "45px";
+												}
 												i++;
 												//j--;
 											}else if (data[j].hours >8) {
@@ -216,7 +221,12 @@ herculis: function(oEvent) {
 											i++;
 										}else if (data[j].hours === 'LEAVE') {
 											//console.log("Blue--" + data[j].hours);SlateBlue
-											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
+											if (data[j].LeaveType == "Full Day") {
+														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+											}else {
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "45px";
+											}
 											i++;
 
 										}else if (data[j].hours > 8) {
@@ -314,7 +324,12 @@ afterCalChange: function() {
 											i++;
 										}else if (data[j].hours === 'LEAVE') {
 											//console.log("Blue--" + data[j].hours);SlateBlue
-											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#4d79ff";
+											if (data[j].LeaveType == "Full Day") {
+														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+											}else {
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "45px";
+											}
 											i++;
 
 										}else if (data[j].hours > 8) {

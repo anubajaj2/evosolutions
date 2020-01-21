@@ -449,15 +449,15 @@ app.start = function() {
 													if (holidayLeaveCal[l].Mark == 'PH') {
 														holidayLeaveCal[l].Mark ='PH';
 														holidayLeaveCal[l].Available = 'NA';
-														holidayLeaveCal[l].LeaveType = oLeaveRecords[0].__data.LeaveType;
-														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[0].__data.Status;
+														holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
+														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
 														j--;
 
 												}else {
 													holidayLeaveCal[l].Mark ='LEAVE';
 													holidayLeaveCal[l].Available = 'NA';
-													holidayLeaveCal[l].LeaveType = oLeaveRecords[0].__data.LeaveType;
-													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[0].__data.Status;
+													holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
+													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
 												}
 													l++;
 												}
@@ -610,9 +610,9 @@ app.start = function() {
 											}
 											if(flag===0){
 												var h = 0;
-												oArrTime.push({date:start,hours:h});
+												oArrTime.push({date:start,hours:h,LeaveType:""});
 											}else{
-												oArrTime.push({date:start,hours:nHr});
+												oArrTime.push({date:start,hours:nHr,LeaveType:""});
 											}
 
 
@@ -631,6 +631,7 @@ app.start = function() {
 													for (var k = 0; k < dDiff; k++) {
 																flag=1;
 																oArrTime[i].hours = 'LEAVE';
+																oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
 																i++;
 															}
 														//	i = leaveRecords[j].__data.Days - 1;
@@ -697,7 +698,8 @@ app.start = function() {
 													Occasion:holidayRecords[j].__data.Occasion,
 													remark:"PH",
 													hours:oArrTime[j].hours,
-													Date:oArrTime[j].date
+													Date:oArrTime[j].date,
+													LeaveType:oArrTime[j].LeaveType
 												});
 											}
 										}
@@ -707,7 +709,8 @@ app.start = function() {
 													Occasion:"",
 													remark:"",
 													hours:oArrTime[i].hours,
-													Date:oArrTime[i].date
+													Date:oArrTime[i].date,
+													LeaveType:oArrTime[i].LeaveType
 												});
 											}
 
@@ -812,9 +815,9 @@ app.start = function() {
 										}
 										if(flag===0){
 											var h = 0;
-											oArrTime.push({date:start,hours:h});
+											oArrTime.push({date:start,hours:h,LeaveType:""});
 										}else{
-											oArrTime.push({date:start,hours:nHr});
+											oArrTime.push({date:start,hours:nHr,LeaveType:""});
 										}
 
 									 }
@@ -830,6 +833,7 @@ app.start = function() {
 																					for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
 																								flag=1;
 																								oArrTime[i].hours = 'LEAVE';
+																								oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
 																								i++;
 																							}
 																		}else {
@@ -891,7 +895,8 @@ app.start = function() {
 												Occasion:holidayRecords[j].__data.Occasion,
 												remark:"PH",
 												hours:oArrTime[j].hours,
-												Date:oArrTime[j].date
+												Date:oArrTime[j].date,
+												LeaveType:oArrTime[j].LeaveType
 											});
 										}
 									}
@@ -901,7 +906,8 @@ app.start = function() {
 												Occasion:"",
 												remark:"",
 												hours:oArrTime[i].hours,
-												Date:oArrTime[i].date
+												Date:oArrTime[i].date,
+												LeaveType:oArrTime[i].LeaveType
 											});
 										}
 
