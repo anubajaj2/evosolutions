@@ -216,6 +216,11 @@
 								"pattern": "holidayCalendar",
 								"name": "holidayCalendar",
 								"target": ["donald", "holidayCalendar"]
+							},
+							{
+								"pattern": "performanceAnalysis",
+								"name": "performanceAnalysis",
+								"target": ["donald", "performanceAnalysis"]
 							}
 
 						]
@@ -436,6 +441,15 @@
 					"clearAggregation": true,
 					"viewName": "holidayCalendar",
 					"viewId": "idHolidayCalendar",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+				},
+				"performanceAnalysis":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "performanceAnalysis",
+					"viewId": "idPerformanceAnalysis",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				}

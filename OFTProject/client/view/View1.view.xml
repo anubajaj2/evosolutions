@@ -34,6 +34,7 @@
 					<StandardListItem id="dailytask" icon="sap-icon://task" title="Daily Tasks" description=""></StandardListItem>
 					<StandardListItem id="taskoverview" icon="sap-icon://activity-individual" title="Task Overview" description=""></StandardListItem>
 					<StandardListItem id="timeTracker" icon="sap-icon://time-account" title="Time Tracker" description=""></StandardListItem>
+					<StandardListItem id="performanceAnalysis" icon="sap-icon://performance" title="Performace Analysis" description=""></StandardListItem>
 				</items>
 			</List>
 		</content>
