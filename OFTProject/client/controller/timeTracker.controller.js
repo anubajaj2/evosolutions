@@ -197,12 +197,14 @@ herculis: function(oEvent) {
 										for ( var j = 0; j < data.length; j++) {
 											if (data[j].remark ==="PH") {
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ffff4d";
+													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
 														i++;
 											}
 											else if (data[j].hours === 8 ) {
 											//	console.log("Green--" + data[i].hours);Green
 											if (data[j].Date <= new Date() ) {
 												document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
+												document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
 
 											}
 												i++;
@@ -210,20 +212,22 @@ herculis: function(oEvent) {
 										else if (data[j].hours === "Holiday") {
 											//console.log("Yellow--" + data[j].hours );DimGray
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#666699";
+											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
 											i++;
 
 										}else if (data[j].hours < 8 ) {
 											//console.log("Red--"+ data[j].hours);Red
 											if (data[j].Date <= new Date() ) {
 												document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#ff3333";
-
+												document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
 											}
 											i++;
 										}else if (data[j].hours === 'LEAVE') {
 											//console.log("Blue--" + data[j].hours);SlateBlue
 											if (data[j].LeaveType == "Full Day") {
 														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
-											}else {
+														document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
+											}else if (data[j].LeaveType == "Half Day")  {
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor = "#4d79ff";
 													document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "45px";
 											}
@@ -232,6 +236,7 @@ herculis: function(oEvent) {
 										}else if (data[j].hours > 8) {
 											//console.log("Pink--" + data[j].hours);
 											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.backgroundColor="#99e699";
+											document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[i].style.borderLeftWidth = "0.5px";
 											i++;
 										}
 
