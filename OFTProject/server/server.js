@@ -604,7 +604,7 @@ app.start = function() {
 
 										if (start.getDate() ===  crdate.getDate() )  {
 												flag = 1;
-											 var nHr  = 	nHr + parseInt(tasks[j].__data.noOfHours.valueOf());
+											 var nHr  = 	nHr + parseFloat(tasks[j].__data.noOfHours.valueOf());
 												 }
 
 											}
@@ -721,8 +721,123 @@ app.start = function() {
 
 
 						}else {
-							console.log.console("There is no data available the selected month ");
-							res.send(oArrTime);
+							// console.log("There is no data available the selected month ");
+							// res.send(oArrTime);
+							var oArrTime1 = [];
+							var noOfDays = new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
+							var h = 0;
+					 		for (var i = 0; i < noOfDays; i++) {
+							var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
+
+												oArrTime1.push({date:start,hours:h,LeaveType:""});
+
+										 }
+					 		//this for loop is to calculate the Leaves taken by employee in a given month
+							if (leaveRecords) {
+
+								for (var i = 0; i < oArrTime1.length; i++) {
+							 var date = oArrTime1[i].date.getDate();
+										var flag=0;
+							 for (var j = 0; j < leaveRecords.length; j++) {
+										var dFrom = 	leaveRecords[j].__data.DateFrom;
+										var dTo = 	leaveRecords[j].__data.DateTo;
+										var dDiff = (dTo - dFrom)/(1000*3600*24)+1;
+											if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
+												if(flag===0){
+													for (var k = 0; k < dDiff; k++) {
+																flag=1;
+																oArrTime1[i].hours = 'LEAVE';
+																oArrTime1[i].LeaveType = leaveRecords[j].__data.LeaveType;
+																i++;
+															}
+														//	i = leaveRecords[j].__data.Days - 1;
+														}else {
+															break;
+														}
+											}
+
+									 }
+							}
+
+							}
+
+						 	//this for loop is to find and assign Holiday for employee for given month
+							for (var i = 0; i < oArrTime1.length; i++) {
+								if (empRecord.__data.Holiday === "Sunday") {
+										if (oArrTime1[i].date.getDay() === 0) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+								}else if (empRecord.__data.Holiday  === "Monday") {
+									if (oArrTime1[i].date.getDay() === 1) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Tuesday") {
+									if (oArrTime1[i].date.getDay() === 2) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Wednesday") {
+									if (oArrTime1[i].date.getDay() === 3) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Thursday") {
+									if (oArrTime1[i].date.getDay() === 4) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Friday") {
+									if (oArrTime1[i].date.getDay() === 5) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}else if (empRecord.__data.Holiday  === "Saturday") {
+									if (oArrTime1[i].date.getDay() === 6) {
+										oArrTime1[i].hours = 'Holiday';
+									}
+								}
+							}
+							// console.log(that3.empRecord);
+							// console.log(that3.leaveRecords);
+							//
+							var timeTrackerCalendar = [];
+							var oStartDate = new Date(today.getFullYear(),today.getMonth(),1);
+							var oEndDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+								Holidays.find(
+									{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
+									).then(function(holidayRecords){
+									var tDate = new Date();
+									var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
+
+									for (var i = 0; i < oArrTime1.length; i++) {
+										var date = oArrTime1[i].date;
+										var 	flag = 0;
+										for (var j = 0; j < holidayRecords.length; j++) {
+											var hDate = holidayRecords[j].__data.Date;
+											if (date.getDate() == hDate.getDate()) {
+												flag = 1;
+												timeTrackerCalendar.push({
+													Day:holidayRecords[j].__data.Day,
+													Occasion:holidayRecords[j].__data.Occasion,
+													remark:"PH",
+													hours:oArrTime1[j].hours,
+													Date:oArrTime1[j].date,
+													LeaveType:oArrTime1[j].LeaveType
+												});
+											}
+										}
+											if (flag==0) {
+												timeTrackerCalendar.push({
+													Day:"",
+													Occasion:"",
+													remark:"",
+													hours:oArrTime1[i].hours,
+													Date:oArrTime1[i].date,
+													LeaveType:oArrTime1[i].LeaveType
+												});
+											}
+
+										}
+										res.send(timeTrackerCalendar);
+
+								});
+
 						}
 
 						});
