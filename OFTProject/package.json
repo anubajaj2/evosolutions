@@ -21,7 +21,7 @@
     "express-session": "^1.15.6",
     "googleapis": "latest",
     "log4js": "^0.6.38",
-    "loopback": "^2.22.0",
+    "loopback": "^3.25.1",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.3.1",
     "loopback-connector-cloudant": "latest",
