@@ -8,7 +8,7 @@
     "pretest": "jshint ."
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "axios": "^0.18.0",
     "backup-manager": "latest",
     "body-parser": "^1.14.1",
