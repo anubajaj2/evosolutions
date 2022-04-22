@@ -30,7 +30,7 @@
     "loopback-datasource-juggler": "^2.39.0",
     "mongodb": "^3.1.6",
     "n-odata-server": "^0.4.0",
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.4",
     "nodemailer": "^5.1.1",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^1.18.4",
