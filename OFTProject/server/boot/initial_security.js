@@ -1,23 +1,34 @@
 "use strict";
-//var log4js = require('log4js');
-//var logger = log4js.getLogger("odata");
+var log4js = require('log4js');
+var logger = log4js.getLogger("odata");
 var InitSecurity = (function () {
     function InitSecurity(app) {
         this.User = app.models.User;
         this.Role = app.models.Role;
         this.AppUser = app.models.AppUser;
         this.RoleMapping = app.models.RoleMapping;
-    }
-    ;
+    } ;
     InitSecurity.prototype.init = function () {
         var _this = this;
-
-
-
-        
-
+        this.User.findOne({where: {email: 'demo@gmail\.com'}}).then((user) => {
+    			if(!user) {
+    				// create user if not already exists
+    				this.User.create({username: 'demo', email: 'demo@gmail\.com', password: 'Welcome1'}).then((user) => {
+    					if(user) {
+    						logger.debug(`User created: ${JSON.stringify(user.toJSON())}`);
+    						this.initRoleForUser(user);
+    					} else {
+    						logger.error(`user 'kajol' could not be created. Program may not work as expected`);
+    					}
+    				});
+    			} else {
+            //user.user.updateAttribute('password', 'Welcome1');
+    				this.initRoleForUser(user);
+    			}
+    		}).catch((err) => {
+    			logger.error(`error: ${err}`);
+    		});
     };
-
     InitSecurity.prototype.initRoleForUser = function (user) {
         var _this = this;
         this.Role.findOne({ where: { name: 'r_admin' }, include: 'principals' }).then(function (role) {
@@ -84,9 +95,8 @@ var InitSecurity = (function () {
     };
     return InitSecurity;
 }());
-
 module.exports = function initial_security(app) {
-    //logger.debug("starting initial_security script");
+    logger.debug("starting initial_security script");
     var initSecurity = new InitSecurity(app);
     initSecurity.init();
 };
