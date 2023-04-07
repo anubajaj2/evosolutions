@@ -28,7 +28,16 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
-
+		onEmailChange: function(oEvent) {
+			var sEmail = oEvent.getParameter("newValue")
+			if(sEmail){
+				var oRegExp = /\S+@\S+\.\S+/;
+				var bValid = oRegExp.test(sEmail);
+				oEvent.getSource().setValueState(bValid ? "Success" : "Error");
+			}else{
+				oEvent.getSource().setValueState("None")
+			}
+		},
 		onUpdateFinished: function (oEvent) {
 			var itemList = this.getView().byId("serverTable").getItems();
 			if (itemList[this.selIndex - 1]) {

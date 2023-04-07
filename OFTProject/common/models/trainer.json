@@ -31,6 +31,10 @@
       "type": "string",
       "default": "null"
     },
+    "Email": {
+      "type": "string",
+      "default": "null"
+    },
     "ContactNo": {
       "type": "string",
       "default": "null"

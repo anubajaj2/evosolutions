@@ -91,6 +91,7 @@ sap.ui.define([
  						   "CourseFee":leadData.CourseFee,
  						   "MinFees":leadData.MinFees,
 							 "WebLink":leadData.WebLink,
+							 "CourseDuration": leadData.CourseDuration,
 							 "Category":leadData.Category,
 							 "CourseText":leadData.CourseText,
 							 "youTube":leadData.youTube,
@@ -103,6 +104,7 @@ sap.ui.define([
 					payload, this)
 					.then(function(oData){
 						that.getView().setBusy(false);
+						that.onClearScreen();
 						sap.m.MessageToast.show("Course Details Updated successfully");
 						that.destroyMessagePopover();
 					}).catch(function(oError){
@@ -116,6 +118,7 @@ sap.ui.define([
 						 "CourseFee":leadData.CourseFee,
 						 "MinFees":leadData.MinFees,
 						 "WebLink":leadData.WebLink,
+						 "CourseDuration": leadData.CourseDuration,
 						 "Category":leadData.Category,
 						 "CourseText":leadData.CourseText,
 						 "youTube":leadData.youTube,
@@ -126,15 +129,17 @@ sap.ui.define([
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
 							payload, this)
 							.then(function(oData) {
-
+							// debugger;
 							that.getView().setBusy(false);
 							//that.subsciptionSaved = "true";
+							that.onClearScreen();
 							sap.m.MessageToast.show("New Course Saved successfully");
 							that.destroyMessagePopover();
 						}).catch(function(oError) {
 
 							that.getView().setBusy(false);
 							//that.subsciptionSaved = "false";
+							// debugger;
 							var oPopover = that.getErrorMessage(oError);
 						});
 					break;
@@ -159,7 +164,7 @@ sap.ui.define([
 			}
 		},
 		onConfirm:function(oEvent) {
-			debugger;
+			// debugger;
 			if (this.sId.indexOf("idCourse") !== -1){
 				var oItem = oEvent.getParameter("selectedItem");
 				var oContext = oItem.getBindingContext();
@@ -174,6 +179,8 @@ sap.ui.define([
 							if(oData.results.length != 0){
 							that.getView().byId("idCourse").setValue(oData.results[0].CourseName);
 							that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
+							that.getView().byId("idCourseFee").setValue(oData.results[0].CourseFee);
+							that.getView().byId("idCourseDuration").setValue(oData.results[0].CourseDuration);
 							if (oData.results[0].MinFees) {
 							that.getView().byId("idMinFees").setValue(oData.results[0].MinFees);
 							that.getView().byId("idCategory").setSelectedKey(oData.results[0].Category);
@@ -295,10 +302,11 @@ sap.ui.define([
 			}, "Confirmation");
 		},
 		onClearScreen: function(oEvent) {
-			debugger;
+			// debugger;
 			this.getView().getModel("local").setProperty("/newmcourse", {
 				"Category":"",
 				"CourseName":"",
+				"CourseDuration": "",
 				"CourseFee":0,
 				"MinFees":0,
 				"WebLink":"",

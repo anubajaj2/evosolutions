@@ -477,6 +477,11 @@
 		"Remarks":""
 	},
 	"courseCategory":[
+		{"text": "Brain Development"},
+		{"text": "Coding Skills"},
+		{"text": "Vedic Math"},
+		{"text": "Art and Craft"},
+		{"text": "Acedamics"},
 		{"text": "SAP"},
 		{"text": "Cloud Development"},
 		{"text": "Full Stack Development"},

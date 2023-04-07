@@ -58,19 +58,29 @@
                 <core:Item text="{FirstName}"/>
               </suggestionItems>
             </Input>
-            <Label text="LastName" />
+            <Label text="Last Name" />
             <Input
               id="idLastName"
               type="Text"
               value="{trainerModel>/LastName}" >
             </Input>
+            <Label text="Email"/>
+            <Input value="{trainerModel>/Email}" type="Email" liveChange="onEmailChange"/>
+            <Label text="Mobile"/>
+            <Input value="{trainerModel>/ContactNo}" type="Phone"/>
+            <Label text="Experience"/>
+            <Input placeholder="Year" type="Number" value="{TrainerModel>/ExperienceYear}"/>
+            <Input placeholder="Month" type="Number" value="{TrainerModel>/ExperienceMonths}"/>
             <Label text="JoiningDate" />
             <DatePicker id="idJoiningDate"
               displayFormat="dd.MM.yyyy"
               value="{TrainerModel>/JoiningDate}"
               valueFormat="dd.MM.yyyy">
             </DatePicker>
-
+            <Label text="School Name"/>
+            <Input value="{TrainerModel>/SchoolName}"/>
+            <Label text="Alternate Mob."/>
+            <Input value="{trainerModel>/ContactNo1}" type="Phone"/>
             <Label text="Remarks"/>
             <Input
               id="idRemarks"

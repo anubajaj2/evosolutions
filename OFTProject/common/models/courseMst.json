@@ -14,6 +14,10 @@
     "Category": {
       "type": "string"
     },
+    "CourseDuration": {
+      "type": "number",
+      "default": 0
+    },
     "CourseFee": {
       "type": "number",
       "default": 0,
