@@ -19,7 +19,6 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 		simpleForm: null,
 		endDate: null,
 		onInit: function () {
-			debugger;
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var that = this;
@@ -57,7 +56,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			var serverData = this.getView().getModel("local").getProperty("/newTrainer");
 			var today = new Date();
 			// var payDate = this.getView().byId("payDate").getDateValue();
-			debugger;
+			// debugger;
 			var that = this;
 
 			this.getView().setBusy(true);
@@ -66,13 +65,18 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 				"LastName": this.getView().byId("idLastName").getValue(),
 				"JoiningDate": this.getView().byId("idJoiningDate").getDateValue(),
 				"Address": this.getView().byId("idAddress").getValue(),
-				"City": this.getView().byId("idCity").getValue(),
+				"City": this.getView().byId("idCity").getSelectedKey(),
 				"Remarks": this.getView().byId("idRemarks").getValue(),
 				"ContactNo": this.getView().byId("idContactNo").getValue(),
 				"ContactNo1": this.getView().byId("idContactNo1").getValue(),
 				"AccountNo": this.getView().byId("idAccountNo").getValue(),
 				"AccountName": this.getView().byId("idAccountName").getValue(),
 				"IFSCCode": this.getView().byId("idIFSCCode").getValue(),
+				"Email": this.getView().byId("idEmail").getValue(),
+				"Experience": this.getView().byId("idExperienceYear").getValue()*12+this.getView().byId("idExperienceMonth").getValue()*1,
+				"JoiningDate": this.getView().byId("idJoiningDate").getValue(),
+				"PartTime": this.getView().byId("idPartTime").getSelected(),
+				"SchoolName": this.getView().byId("idSchoolName").getValue(),
 				// "CreatedOn": new Date(),
 				// "CreatedBy": 'Menakshi',SoftDelete
 				"AccountType": this.getView().byId("idAccountType").getValue(),
@@ -88,7 +92,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 
 			if (this.flag === "trainerName") {
 				// this.getOwnerComponent().getModel().setUseBatch(false);
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers('" + oGuid + "')", "POST", {},
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers('" + oGuid + "')", "PUT", {},
 						payload, this)
 					.then(function (oData) {
 						sap.m.MessageToast.show("Trainer Updated Successfully");
@@ -159,7 +163,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 
 		},
 		herculis: function (oEvent) {
-			debugger;
+			// debugger;
 			if(oEvent.getParameter("name") !== "newTrainer"){
 			return;
 			}
@@ -310,12 +314,20 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			this.getView().byId("idCity").setValue("");
 			this.getView().byId("idContactNo").setValue("");
 			this.getView().byId("idContactNo1").setValue("");
+			this.getView().byId("idEmail").setValue("");
+			this.getView().byId("idExperienceYear").setValue("");
+			this.getView().byId("idExperienceMonth").setValue("");
+			this.getView().byId("idSchoolName").setValue("");
+			this.getView().byId("idPartTime").setSelected(false);
 			// this.getView().byId("idCreatedBy").setValue("");
 			// this.getView().byId("idCreatedOn").setValue("");
 			this.getView().byId("idIFSCCode").setValue("");
 			this.getView().byId("idPANNo").setValue("");
 			this.getView().byId("idRemarks").setValue("");
 			this.getView().byId("idSoftDelete").setSelected(false);
+			this.searchPopup.getBinding("items").filter([]);
+			this.getView().getModel("local").setProperty("/TrainerModel",{});
+			this.flag=null;
 
 		},
 
@@ -356,10 +368,13 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			var data = this.getSelectedKey(oEvent);
 
 			if (this.flag === "trainerName") {
-				debugger;
+				// debugger;
 				var oTrainer = "Trainers(\'" + data[2] + "\')";
 				var oData = this.getView().getModel().oData[oTrainer];
 				oGuid = data[2];
+				oData.ExperienceYear = Math.floor(oData.Experience / 12); // get the whole number of years
+				oData.ExperienceMonth = oData.Experience % 12; // get the remaining months
+				this.getView().getModel("local").setProperty("/TrainerModel", oData);
 				this.getView().getModel("local").setProperty("/TrainerModel/FirstName", oData.FirstName);
 				this.getView().byId("idFirstName").setValue(oData.FirstName);
 				this.getView().byId("idFirstName").setEnabled(false);

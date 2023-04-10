@@ -44,7 +44,7 @@
 
             <Label text="Trainer Name"  />
             <Input required="true"
-              value="{trainerModel>/FirstName}"
+              value="{local>/TrainerModel/FirstName}"
               id="idFirstName"
               showValueHelp="true"
               valueHelpRequest="onSelect"
@@ -62,36 +62,37 @@
             <Input
               id="idLastName"
               type="Text"
-              value="{trainerModel>/LastName}" >
+              value="{local>/TrainerModel/LastName}" >
             </Input>
             <Label text="Email"/>
-            <Input value="{trainerModel>/Email}" type="Email" liveChange="onEmailChange"/>
+            <Input id="idEmail" value="{local>/TrainerModel/Email}" type="Email" liveChange="onEmailChange"/>
             <Label text="Mobile"/>
-            <Input value="{trainerModel>/ContactNo}" type="Phone"/>
+            <Input id="idContactNo" value="{local>/TrainerModel/ContactNo}" type="Phone"/>
             <Label text="Experience"/>
-            <Input placeholder="Year" type="Number" value="{TrainerModel>/ExperienceYear}"/>
-            <Input placeholder="Month" type="Number" value="{TrainerModel>/ExperienceMonths}"/>
-            <Label text="JoiningDate" />
+            <Input id="idExperienceYear" placeholder="Year" type="Number" value="{local>/TrainerModel/ExperienceYear}"/>
+            <Input id="idExperienceMonth" placeholder="Month" type="Number" value="{local>/TrainerModel/ExperienceMonth}"/>
+            <Label text="Joining Date" />
             <DatePicker id="idJoiningDate"
               displayFormat="dd.MM.yyyy"
-              value="{TrainerModel>/JoiningDate}"
+              value="{local>/TrainerModel/JoiningDate}"
               valueFormat="dd.MM.yyyy">
             </DatePicker>
+            <CheckBox id="idPartTime" selected="{=${local>/TrainerModel/PartTime} ? true : false}" class="sapUiLargeMarginBegin" text="Part Time"/>
             <Label text="School Name"/>
-            <Input value="{TrainerModel>/SchoolName}"/>
+            <Input id="idSchoolName" value="{local>/TrainerModel/SchoolName}"/>
             <Label text="Alternate Mob."/>
-            <Input value="{trainerModel>/ContactNo1}" type="Phone"/>
+            <Input id="idContactNo1" value="{local>/TrainerModel/ContactNo1}" type="Phone"/>
             <Label text="Remarks"/>
             <Input
               id="idRemarks"
               type="Text"
-              value="{TrainerModel>/Remarks}">
+              value="{local>/TrainerModel/Remarks}">
             </Input>
 
-            <Label text="SoftDelete"/>
+            <Label text="Soft Delete"/>
             <CheckBox
               id="idSoftDelete"
-              selected="{TrainerModel>/SoftDelete}">
+              selected="{=${local>/TrainerModel/SoftDelete}? true : false}">
             </CheckBox>
 
           </f:content>
@@ -113,7 +114,7 @@
                       <Input
                         id="idAddress"
                         type="Text"
-                        value="{TrainerModel>/Address}">
+                        value="{local>/TrainerModel/Address}">
                       </Input>
 
                     </f:fields>
@@ -121,36 +122,45 @@
 
                   <f:FormElement label="City">
                     <f:fields>
-                      <Input
+                      <!-- <Input
                         id="idCity"
                         type="Text"
-                        value="{TrainerModel>/City}">
-                      </Input>
-
+                        value="{local>/TrainerModel/City}">
+                      </Input> -->
+                      <Select
+                        id="idCity"
+              					forceSelection="false"
+              					selectedKey="{local>/TrainerModel/City}"
+              					items="{
+              						path: 'local>/cities',
+              						sorter: { path: 'city' }
+              					}">
+              					<core:Item key="{local>city}" text="{local>city}" />
+              				</Select>
                     </f:fields>
                   </f:FormElement>
 
-                  <f:FormElement label="Contact No">
+                  <!-- <f:FormElement label="Contact No">
                     <f:fields>
                       <Input
                         id="idContactNo"
                         type="Text"
-                        value="{TrainerModel>/ContactNo}">
+                        value="{local>/TrainerModel/ContactNo}">
                       </Input>
 
                     </f:fields>
-                  </f:FormElement>
+                  </f:FormElement> -->
 
-                  <f:FormElement label="Contact No1">
+                  <!-- <f:FormElement label="Contact No1">
                     <f:fields>
                       <Input
                         id="idContactNo1"
                         type="Text"
-                        value="{TrainerModel>/ContactNo1}">
+                        value="{local>/TrainerModel/ContactNo1}">
                       </Input>
 
                     </f:fields>
-                  </f:FormElement>
+                  </f:FormElement> -->
 
                 </f:formElements>
                 <f:layoutData>
@@ -165,7 +175,7 @@
                       <Input
                         id="idAccountNo"
                         type="Text"
-                        value="{TrainerModel>/AccountNo}">
+                        value="{local>/TrainerModel/AccountNo}">
                       </Input>
 
                     </f:fields>
@@ -176,7 +186,7 @@
                       <Input
                         id="idAccountName"
                         type="Text"
-                        value="{TrainerModel>/AccountName}">
+                        value="{local>/TrainerModel/AccountName}">
                       </Input>
 
                     </f:fields>
@@ -187,7 +197,7 @@
                       <Input
                         id="idIFSCCode"
                         type="Text"
-                        value="{TrainerModel>/IFSCCode}">
+                        value="{local>/TrainerModel/IFSCCode}">
                       </Input>
 
                     </f:fields>
@@ -198,7 +208,7 @@
                       <Input
                         id="idAccountType"
                         type="Text"
-                        value="{TrainerModel>/AccountType}">
+                        value="{local>/TrainerModel/AccountType}">
                       </Input>
 
                     </f:fields>
@@ -209,7 +219,7 @@
                       <Input
                         id="idPANNo"
                         type="Text"
-                        value="{TrainerModel>/PANNo}">
+                        value="{local>/TrainerModel/PANNo}">
                       </Input>
 
                     </f:fields>

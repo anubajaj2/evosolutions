@@ -19,6 +19,14 @@
     "JoiningDate": {
       "type": "date"
     },
+    "PartTime": {
+      "type": "boolean",
+      "default": false
+    },
+    "Experience": {
+      "type": "number",
+      "default": 0
+    },
     "Address": {
       "type": "string",
       "default": "null"
