@@ -235,7 +235,7 @@
 
           </f:Form>
 
-          <Table id="idTrainerCourse" items="{/CourseMst}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+          <Table id="idTrainerCourse" items="{local>/TrainerModel/Courses}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
             <headerToolbar>
               <OverflowToolbar>
                 <ToolbarSpacer/>
@@ -246,40 +246,34 @@
               </headerToolbar>
               <columns>
 
-                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Course ID"/>
-                  </header>
-                </Column>
-
-                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
                   <header>
                     <Text text="Course Name"/>
                   </header>
                 </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
                   <header>
                     <Text text="Fee Mode"/>
                   </header>
                 </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" width="auto">
+                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
                   <header>
                     <Text text="Fee Amount"/>
                   </header>
                 </Column>
-
+                <Column minScreenWidth="Tablet" hAlign="End" demandPopin="true" width="auto">
+                  <header>
+                    <Text text="Active/Inactive"/>
+                  </header>
+                </Column>
               </columns>
               <items>
                 <ColumnListItem vAlign="Middle">
                   <cells>
-                    <Label text="{Id}"/>
-                    <Label text="{CourseName}"/>
-                    <Label text="{}"/>
-                    <Label text="{}"/>
-                    <!-- <Label text="{Salary}"/>
-                    <Label text="{ path: 'JoiningDate', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/>
-                    <Label text="{ path: 'BDay', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }"/> -->
-                    <Button icon="sap-icon://edit" press="editTrainerCourse"/>
+                    <Input value="{local>CourseName}"/>
+                    <Input value="{local>FeeMode}"/>
+                    <Input value="{local>FeeAmount}"/>
+                    <Switch state="{local>Active}"/>
                   </cells>
                 </ColumnListItem>
               </items>

@@ -13,7 +13,7 @@
     },
     "LastName":{
       "type":"string",
-      "default": "null"
+      "default": null
     }
 ,
     "JoiningDate": {
@@ -29,65 +29,86 @@
     },
     "Address": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "City": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "Remarks": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "Email": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ContactNo": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ContactNo1": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "AccountNo": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "AccountName": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "IFSCCode": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "AccountType": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "PANNo": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "SoftDelete": {
       "type": "boolean",
       "default": false
+    },
+    "Courses": {
+      "type": "array",
+      "properties": {
+        "CourseName": {
+          "type": "string",
+          "required": true
+        },
+        "FeeMode": {
+          "type": "string",
+          "default": null
+        },
+        "FeeAmount": {
+          "type": "string",
+          "default": null
+        },
+        "Active": {
+          "type": "boolean",
+          "default": true
+        }
+      }
     },
     "CreatedOn": {
       "type": "date"
     },
     "CreatedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ChangedOn": {
       "type": "date"
     },
     "ChangedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     }
   },
   "validations": [],

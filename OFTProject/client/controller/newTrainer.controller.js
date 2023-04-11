@@ -77,6 +77,9 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 				"JoiningDate": this.getView().byId("idJoiningDate").getValue(),
 				"PartTime": this.getView().byId("idPartTime").getSelected(),
 				"SchoolName": this.getView().byId("idSchoolName").getValue(),
+				"Courses": [{
+					CourseName: "CourseName"
+				}],
 				// "CreatedOn": new Date(),
 				// "CreatedBy": 'Menakshi',SoftDelete
 				"AccountType": this.getView().byId("idAccountType").getValue(),
