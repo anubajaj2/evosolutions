@@ -46,7 +46,30 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 				itemList[this.selIndex - 1].getCells()[2].setText(vModel.GmailId);
 			}
 		},
-
+		onPressAdd: function(){
+			var trainerModel = this.getView().getModel("local").getProperty("/TrainerModel");
+			trainerModel.Courses.push({
+				CourseName: null,
+				FeeMode: null,
+				FeeAmount: null,
+				Active: true
+			});
+			this.getView().getModel("local").setProperty("/TrainerModel", trainerModel);
+		},
+		onPressDeleteRow: function(oEvent){
+			var	selected = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var selectedIndex = [];
+			selected.forEach(item=>{
+				selectedIndex.push(parseInt(item.split('/')[3]));
+			});
+			selectedIndex.sort((a, b) => b - a);
+			var courses = this.getView().getModel("local").getProperty("/TrainerModel/Courses");
+			selectedIndex.forEach(item=>{
+				courses.splice(item,1);
+			});
+			this.getView().getModel("local").setProperty("/TrainerModel/Courses", courses);
+			oEvent.getSource().getParent().getParent().removeSelections();
+		},
 		onSave: function () {
 			//TODO: Save to Coustomer Reg. table
 			if (this.getView().byId("idFirstName").getValue() === "") {
@@ -58,7 +81,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			// var payDate = this.getView().byId("payDate").getDateValue();
 			// debugger;
 			var that = this;
-
+			var trainerModel = this.getView().getModel("local").getProperty("/TrainerModel");
 			this.getView().setBusy(true);
 			var payload = {
 				"FirstName": this.getView().byId("idFirstName").getValue().toLocaleUpperCase().toLocaleUpperCase(),
@@ -77,9 +100,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 				"JoiningDate": this.getView().byId("idJoiningDate").getValue(),
 				"PartTime": this.getView().byId("idPartTime").getSelected(),
 				"SchoolName": this.getView().byId("idSchoolName").getValue(),
-				"Courses": [{
-					CourseName: "CourseName"
-				}],
+				"Courses": trainerModel.Courses ? trainerModel.Courses.filter(item => Boolean(item.CourseName)) : [],
 				// "CreatedOn": new Date(),
 				// "CreatedBy": 'Menakshi',SoftDelete
 				"AccountType": this.getView().byId("idAccountType").getValue(),
@@ -331,7 +352,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			this.searchPopup.getBinding("items").filter([]);
 			this.getView().getModel("local").setProperty("/TrainerModel",{});
 			this.flag=null;
-
+			this.getView().byId("idTrainerCourse").removeSelections();
 		},
 
 		onClose: function () {

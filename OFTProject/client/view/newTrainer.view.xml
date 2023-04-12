@@ -239,9 +239,9 @@
             <headerToolbar>
               <OverflowToolbar>
                 <ToolbarSpacer/>
-                <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressOpenAddSecureDialog"/>
+                <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAdd"/>
                 <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
-                  press="onPressDeleteSecureRow"/>
+                  press="onPressDeleteRow"/>
                 </OverflowToolbar>
               </headerToolbar>
               <columns>
@@ -271,7 +271,15 @@
                 <ColumnListItem vAlign="Middle">
                   <cells>
                     <Input value="{local>CourseName}"/>
-                    <Input value="{local>FeeMode}"/>
+                    <Select selectedKey="{local>FeeMode}" forceSelection="false">
+                      <items>
+                        <core:Item text="Hour" key="Hour" />
+                        <core:Item text="Batch" key="Batch" />
+                        <core:Item text="Month" key="Month" />
+                        <core:Item text="Student" key="Student"/>
+                    </items>
+                    </Select>
+                    <!-- <Input value="{local>FeeMode}"/> -->
                     <Input value="{local>FeeAmount}"/>
                     <Switch state="{local>Active}"/>
                   </cells>
