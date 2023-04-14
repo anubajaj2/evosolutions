@@ -30,6 +30,8 @@
 				<Toolbar id="TB1">
 					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
 					<ToolbarSpacer />
+          <Label text="Parent Mode:"/>
+          <Switch state="true"/>
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
@@ -37,8 +39,10 @@
     			<Label text="Date" />
 				<DatePicker id="inqDate" valueFormat="dd.MM.yyyy"
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
-				<Label text="Mobile No"  />
+        <Label text="Email"  />
 				<Input required="true" type="number" value="{local>/newLead/emailId}" />
+        <Label text="Mobile No" />
+				<Input required="true" type="Number" value="{local>/newLead/phone}"></Input>
 		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
@@ -49,14 +53,14 @@
 		        </Select> -->
 
     			<Label text="Courses" />
-		        <Select id="idCourse1"
-		          selectedKey="{local>/newLead/CourseName}" width="500px"
+		        <MultiComboBox id="idCourse1"
+		          selectedKeys="{local>/newLead/CourseName}" width="500px"
 		          items="{
 		            path: '/CoursesMst',
 		            sorter: { path: 'CourseName' }
 		          }">
 		          <core:Item key="{id}" text="{CourseName}"/>
-		        </Select>
+		        </MultiComboBox>
 
     			<Label text="Quoted Fee" />
 				<Input type="Number" value="{local>/newLead/fees}" />
@@ -73,13 +77,10 @@
         			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
         		</ComboBox>
 
-				<Label text="Alternate Number" />
-				<Input type="Number" value="{local>/newLead/phone}"></Input>
-
-				<Label text="EmailId" />
+				<Label text="Alternate Email" />
 				<Input value="{local>/newLead/EmailId2}"></Input>
 
-        <Label text="Type"/>
+        <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
           <core:Item key="College" text="College"></core:Item>
@@ -88,7 +89,7 @@
           <core:Item key="Corporate" text="Corporate"></core:Item>
         </Select>
         <Label text="College/Company name" />
-        <Input value="{local>/newLead/organization}"/>
+        <Input value="{local>/newLead/organization}"/> -->
 				<Label text="Remarks" />
 				<TextArea value="{local>/newLead/remarks}">
 				</TextArea>
@@ -109,22 +110,78 @@
 		</f:SimpleForm>
 	</VBox>
 	<VBox>
-		<List id="idRecent" growing="true" mode="MultiSelect" itemPress="onInqSelect"
-			growingThreshold="100" growingScrollToLoad="false"
-			class="sapUiSizeCompact" updateFinished="onUpdateFinished">
+    <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
       <headerToolbar>
-				<Toolbar>
-        <Title
-            id="titletext2"/>
-				<ToolbarSpacer></ToolbarSpacer>
-        <CheckBox visible="{= ${local>/Role} === 'Admin'}" tooltip="Dollor Quote" id="doller" />
-        <Button icon="sap-icon://action" tooltip="send email" press="onEmail"/>
-				<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://delete" press="onDelete"/>
-				<Button	visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://download" press="onDataExport" />
-        <Button icon="sap-icon://refresh" press="reloadRefresh" />
-			</Toolbar>
-			</headerToolbar>
-		</List>
+        <OverflowToolbar>
+          <ToolbarSpacer/>
+          <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAdd"/>
+          <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
+            press="onPressDeleteRow"/>
+          </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Ward Name"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Gender"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Age"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Standard"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="School Name"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Weakness"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Mobile No"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Course Name"/>
+            </header>
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem vAlign="Middle">
+            <cells>
+              <Input value="{local>WardName}"/>
+              <Select selectedKey="{local>Gender}" forceSelection="false">
+                <items>
+                  <core:Item text="Male" key="M" />
+                  <core:Item text="Female" key="F" />
+              </items>
+              </Select>
+              <Input value="{local>Age}"/>
+              <Input value="{local>Standard}"/>
+              <Input state="{local>SchoolName}"/>
+              <Input state="{local>Weakness}"/>
+              <Input state="{local>MobileNo}"/>
+              <Input state="{local>CourseName}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
 	</VBox>
 
 		</content>
@@ -134,7 +191,6 @@
 						press="handleMessagePopoverPress"/>
 				<ToolbarSpacer/>
 				<Button text="Save" type="Accept" press="onSave" id="idApr"></Button>
-        <Button text="Get Account" press="onGetNext" />
 			</Toolbar>
 		</footer>
 	</Page>
