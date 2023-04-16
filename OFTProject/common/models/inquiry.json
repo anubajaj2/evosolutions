@@ -16,11 +16,6 @@
       "default": "null",
       "required": true
     },
-    "Category":{
-      "type":"string",
-      "default": "null",
-      "required": true
-    },
     "FirstName": {
       "type": "string",
       "default": "null"
@@ -36,18 +31,6 @@
       "type": "string",
       "default": "Gurgaon"
     },
-    "CustType":{
-      "type": "string",
-      "default":"null"
-    },
-    "Organization":{
-      "type": "string",
-      "default":"null"
-    },
-    "Age":{
-      "type": "number",
-      "default": 0
-    },
     "Address":{
       "type": "string",
       "default":"null"
@@ -60,21 +43,17 @@
       "type": "string",
       "default": "null"
     },
-    "Remarks": {
-      "type": "string",
-      "default": "null"
+    "SoftDelete": {
+      "type": "boolean",
+      "default": false
     },
-    "youTube": {
+    "Remarks": {
       "type": "string",
       "default": "null"
     },
     "hearAbout":{
       "type": "string",
       "default": "null"
-    },
-    "SoftDelete": {
-      "type": "boolean",
-      "default": false
     },
     "CreatedOn": {
       "type": "date"
@@ -94,9 +73,42 @@
       "type": "number",
       "default": 18000
     },
-    "currency":{
-      "type": "string",
-      "default": "INR"
+    "WardDetails":{
+      "type": "array",
+      "properties": {
+        "WardName": {
+          "type": "string",
+          "required": true
+        },
+        "Gender": {
+          "type": "string",
+          "default": null
+        },
+        "Age": {
+          "type": "number",
+          "default": 0
+        },
+        "Standard": {
+          "type": "string",
+          "default": null
+        },
+        "SchoolName": {
+          "type": "string",
+          "default": null
+        },
+        "Weakness": {
+          "type": "string",
+          "default": null
+        },
+        "MobileNo": {
+          "type": "string",
+          "default": null
+        },
+        "CourseName": {
+          "type": "string",
+          "default": null
+        }
+      }
     }
   },
   "validations": [],

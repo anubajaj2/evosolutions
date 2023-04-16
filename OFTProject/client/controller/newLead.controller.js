@@ -245,6 +245,44 @@ sap.ui.define([
 				}
 			}
 		},
+		onParentMode: function(oEvent){
+			// debugger;
+			if(oEvent.getParameter('state')){
+				this.getView().byId("inqDate").setVisible(false);
+				this.getView().byId("quotedFee").setVisible(false);
+			}else {
+				this.getView().byId("inqDate").setVisible(true);
+				this.getView().byId("quotedFee").setVisible(true);
+			}
+		},
+		onPressAdd: function(){
+			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");
+			wardDetails.push({
+				WardName: null,
+				Gender: "F",
+				Age: 0,
+				Standard: null,
+				SchoolName: null,
+				Weakness: null,
+				MobileNo: null,
+				CourseName: null
+			});
+			this.getView().getModel("local").setProperty("/newLead/WardDetails", wardDetails);
+		},
+		onPressDeleteRow: function(oEvent){
+			var	selected = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var selectedIndex = [];
+			selected.forEach(item=>{
+				selectedIndex.push(parseInt(item.split('/')[3]));
+			});
+			selectedIndex.sort((a, b) => b - a);
+			var courses = this.getView().getModel("local").getProperty("/newLead/WardDetails");
+			selectedIndex.forEach(item=>{
+				courses.splice(item,1);
+			});
+			this.getView().getModel("local").setProperty("/newLead/WardDetails", courses);
+			oEvent.getSource().getParent().getParent().removeSelections();
+		},
 		supplierPopup: null,
 		oInp: null,
 		onPopupConfirm: function(oEvent) {
@@ -327,7 +365,7 @@ sap.ui.define([
 			var payload = {
 				"EmailId": leadData.emailId.toLowerCase(),
 				"CourseName": leadData.CourseName,
-				"Category": leadData.Category,
+				// "Category": leadData.Category,
 				"FirstName": leadData.FirstName,
 				"LastName": leadData.LastName,
 				"EmailId2": leadData.EmailId2 ,
@@ -341,9 +379,10 @@ sap.ui.define([
 		    "ChangedOn": new Date(),
 		    "ChangedBy": "",
 				"fees": leadData.fees,
-				"currency": "INR",
-				"CustType": leadData.custType,
-				"Organization": leadData.organization
+				// "currency": "INR",
+				// "CustType": leadData.custType,
+				// "Organization": leadData.organization
+				"WardDetails": leadData.WardDetails
 			};
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
 					payload, this)
@@ -510,7 +549,7 @@ sap.ui.define([
 		// 	this.getView().getModel("local").setProperty("/newLead/courseSet", selectedItems.getKey());
 		// },
 		onUpdateFinished:function(oEvent){
-			debugger;
+			// debugger;
 			var olist = oEvent.getSource();
 			var oItemList = olist.getItems();
 			var noOfItems = oItemList.length;

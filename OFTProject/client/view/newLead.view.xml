@@ -31,13 +31,13 @@
 					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
 					<ToolbarSpacer />
           <Label text="Parent Mode:"/>
-          <Switch state="true"/>
+          <Switch state="true" change="onParentMode"/>
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
 
     			<Label text="Date" />
-				<DatePicker id="inqDate" valueFormat="dd.MM.yyyy"
+				<DatePicker visible="false" id="inqDate" valueFormat="dd.MM.yyyy"
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
         <Label text="Email"  />
 				<Input required="true" type="number" value="{local>/newLead/emailId}" />
@@ -63,7 +63,7 @@
 		        </MultiComboBox>
 
     			<Label text="Quoted Fee" />
-				<Input type="Number" value="{local>/newLead/fees}" />
+				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/fees}" />
 
 				<Label text="Name" />
 				<Input value="{local>/newLead/FirstName}"/>

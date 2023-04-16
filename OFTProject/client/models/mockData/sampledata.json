@@ -377,7 +377,8 @@
 		"ChangedBy":"",
 		"ChangedOn":"",
 		"courseSet":"",
-		"hearAbout":""
+		"hearAbout":"",
+		"WardDetails": []
 	},
 	"newmcourse":{
 		"Category":"",
