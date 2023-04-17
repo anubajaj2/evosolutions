@@ -12,17 +12,20 @@
       "required": true
     },
     "CourseName": {
-      "type": "string",
-      "default": "null",
-      "required": true
+      "type": "array",
+      "items": {
+        "type": "string",
+        "default": null,
+        "required": true
+      }
     },
     "FirstName": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "LastName": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "Date": {
       "type": "date"
@@ -33,7 +36,7 @@
     },
     "Address":{
       "type": "string",
-      "default":"null"
+      "default":null
     },
     "Phone": {
       "type": "number",
@@ -41,7 +44,7 @@
     },
     "EmailId2": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "SoftDelete": {
       "type": "boolean",
@@ -49,25 +52,25 @@
     },
     "Remarks": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "hearAbout":{
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "CreatedOn": {
       "type": "date"
     },
     "CreatedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ChangedOn": {
       "type": "date"
     },
     "ChangedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "fees":{
       "type": "number",

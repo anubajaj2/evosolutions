@@ -39,10 +39,13 @@
     			<Label text="Date" />
 				<DatePicker visible="false" id="inqDate" valueFormat="dd.MM.yyyy"
           displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
-        <Label text="Email"  />
-				<Input required="true" type="number" value="{local>/newLead/emailId}" />
         <Label text="Mobile No" />
-				<Input required="true" type="Number" value="{local>/newLead/phone}"></Input>
+				<Input required="true" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
+        valueHelpRequest="onSelectInq"
+        liveChange="onInq"
+        submit="onEnter"></Input>
+        <Label text="Email"  />
+				<Input required="true" type="number" value="{local>/newLead/EmailId}" />
 		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
@@ -63,17 +66,17 @@
 		        </MultiComboBox>
 
     			<Label text="Quoted Fee" />
-				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/fees}" />
+				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
 
 				<Label text="Name" />
 				<Input value="{local>/newLead/FirstName}"/>
         		<Input value="{local>/newLead/LastName}"/>
 
 				<Label text="Address" />
-        		<TextArea value="{local>/newLead/address}"></TextArea>
+        		<TextArea value="{local>/newLead/Address}"></TextArea>
 
         		<Label text="City" />
-        		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="Gurgaon">
+        		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
         			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
         		</ComboBox>
 
@@ -91,11 +94,11 @@
         <Label text="College/Company name" />
         <Input value="{local>/newLead/organization}"/> -->
 				<Label text="Remarks" />
-				<TextArea value="{local>/newLead/remarks}">
+				<TextArea value="{local>/newLead/Remarks}">
 				</TextArea>
 
         <Label text="How did you hear about us" />
-        <Select id="idHearAbout" selectedKey="{local>/newLead/hearAbout}">
+        <Select id="idHearAbout" selectedKey="{local>/newLead/HearAbout}">
           <core:Item key="JustDial" text="JustDial"></core:Item>
           <core:Item key="PaperAdd" text="PaperAdd"></core:Item>
           <core:Item key="Banner" text="Banner"></core:Item>

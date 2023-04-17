@@ -283,6 +283,34 @@ sap.ui.define([
 			this.getView().getModel("local").setProperty("/newLead/WardDetails", courses);
 			oEvent.getSource().getParent().getParent().removeSelections();
 		},
+		onSelectInq: function (oEvent) {
+			this.getCustomerPopup();
+			this.flag = "inquiry";
+			// var title = this.getView().getModel("i18n").getProperty("Trainer");
+			// this.searchPopup.setTitle(title);
+			this.searchPopup.bindAggregation("items", {
+				path: "/Inquries",
+				template: new sap.m.DisplayListItem({
+					label: "{FirstName}",
+					value: "{LastName}"
+				})
+			});
+
+		},
+		onConfirm: function (oEvent) {
+			var data = this.getSelectedKey(oEvent);
+			// debugger;
+			if (this.flag === "inquiry") {
+				var oTrainer = "Inquries(\'" + data[2] + "\')";
+				var oData = this.getView().getModel().oData[oTrainer];
+				var oGuid = data[2];
+				debugger;
+				this.getView().getModel("local").setProperty("/newLead", oData);
+			}
+		},
+		onCancel: function(){
+			this.flag = null;
+		},
 		supplierPopup: null,
 		oInp: null,
 		onPopupConfirm: function(oEvent) {
@@ -344,13 +372,6 @@ sap.ui.define([
 			this.supplierPopup.open();
 
 		},
-		onConfirm: function(anubhav) {
-			//debugger;
-			if (anubhav === "OK") {
-				MessageToast.show("Your fruit has been approved successfully");
-				this.getView().byId("idApr").setVisible(false);
-			}
-		},
 		onSave: function(oEvent) {
 			var oLocal = oEvent;
 			console.log(this.getView().getModel("local").getProperty("/newLead"));
@@ -363,154 +384,47 @@ sap.ui.define([
 			}
 			//get the Course set here and save the records
 			var payload = {
-				"EmailId": leadData.emailId.toLowerCase(),
+				"EmailId": leadData.EmailId.toLowerCase(),
 				"CourseName": leadData.CourseName,
 				// "Category": leadData.Category,
 				"FirstName": leadData.FirstName,
 				"LastName": leadData.LastName,
 				"EmailId2": leadData.EmailId2 ,
 				"Date": this.getView().byId("inqDate").getDateValue(),
-				"City": leadData.city,
-				"Phone": leadData.phone,
-				"Remarks": leadData.remarks,
+				"City": leadData.City,
+				"Address": leadData.Address,
+				"Phone": leadData.Phone,
+				"Remarks": leadData.Remarks,
 				"SoftDelete": false,
 				"CreatedOn": new Date(),
 		    "CreatedBy": "",
 		    "ChangedOn": new Date(),
 		    "ChangedBy": "",
-				"fees": leadData.fees,
+				"fees": leadData.Fees,
 				// "currency": "INR",
 				// "CustType": leadData.custType,
 				// "Organization": leadData.organization
 				"WardDetails": leadData.WardDetails
 			};
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
-					payload, this)
-				.then(function(oData) {
-					that.getView().setBusy(false);
-					sap.m.MessageToast.show("Inquiry Saved successfully");
-					that.destroyMessagePopover();
-					if (that.getView().byId("idRecent").getBinding("items")) {
-						that.getView().byId("idRecent").getBinding("items").refresh();
-					}
-
-					try {
-						var userName = leadData.FirstName;
-						var MobileNo = leadData.emailId;
-						var loginPayload = {};
-						loginPayload.msgType =  "inquiry";
-						loginPayload.userName =  userName;
-						loginPayload.courseName = that.getView().byId("idCourse1").getSelectedItem().getText();
-						loginPayload.Number =  MobileNo;
-						$.post('/requestMessage', loginPayload)
-							.done(function(data, status) {
-								sap.m.MessageToast.show("Message sent successfully");
-							})
-							.fail(function(xhr, status, error) {
-								//that.passwords = "";
-								sap.m.MessageBox.error(xhr.responseText);
-							});
-					} catch (e) {
-
-					} finally {
-
-					}
-				}).catch(function(oError) {
-					that.getView().setBusy(false);
-					// var oPopover = that.getErrorMessage(oError);
-					if(oError.responseText.indexOf(":") !== -1){
-						var sText = "Inquiry already Exists";
-						var userId = oError.responseText.split(":")[oError.responseText.split(":").length - 1].replace(" ","");
-						try {
-							var userName = that.getView().getModel("local").getProperty("/AppUsers")[userId].UserName
-
-						} catch (e) {
-							userName = "unknown";
-						}
-						try {
-							var ctry = oError.responseText.split(":")[oError.responseText.split(":").length - 2].replace(" ","").replace(" & Created by ","");
-						} catch (e) {
-							ctry = "US";
-						}
-						sText = oError.responseText.replace(userId,userName) + "Do you want to send again?";
-					}
-
-					if (that.oLeadDuplicate === undefined) {
-						var oLeadDuplicate
-						that.oLeadDuplicate = oLeadDuplicate = new sap.ui.xmlfragment("oft.fiori.fragments.Dialog", this);
-						that.getView().addDependent(oLeadDuplicate);
-						oLeadDuplicate.setTitle("Already Exist");
-						var that2 = that;
-						oLeadDuplicate.addButton(new sap.m.Button({
-							text: "Yes",
-							press: function() {
-								if (that2.passwords === "") {
-									that2.passwords = prompt("Please enter your password", "");
-									if (that2.passwords === "") {
-										sap.m.MessageBox.error("Blank Password not allowed");
-										return;
-									}
-								}
-								var loginPayload = payload;
-								loginPayload.password = that2.passwords;
-								loginPayload.DollerQuote = that2.getView().byId("doller").getSelected();
-								loginPayload.Country = ctry;
-								//read old inquiry country and update the new price only
-								var allCourses = that2.getView().getModel("local").getProperty("/courses");
-								if( loginPayload.Country === "IN" ){
-									for (var i = 0; i < allCourses.length; i++) {
-										if (allCourses[i].courseName === loginPayload.CourseName) {
-											loginPayload.fees = allCourses[i].fee;
-										  loginPayload.currency = "INR";
-											break;
-										}
-									}
-
-								}else{
-									for (var i = 0; i < allCourses.length; i++) {
-										if (allCourses[i].courseName === loginPayload.CourseName) {
-											loginPayload.fees = allCourses[i].usdFee;
-										  loginPayload.currency = "USD";
-											break;
-										}
-									}
-								}
-								$.post('/sendInquiryEmail', loginPayload)
-									.done(function(data, status) {
-										sap.m.MessageToast.show("Email sent successfully");
-									})
-									.fail(function(xhr, status, error) {
-										that2.passwords = "";
-										sap.m.MessageBox.error(xhr.responseText);
-									});
-								oLeadDuplicate.close();
-								oLeadDuplicate.destroyContent();
-							}
-						}));
-						oLeadDuplicate.addButton(new sap.m.Button({
-							text: "Close",
-							press: function() {
-								oLeadDuplicate.close();
-								oLeadDuplicate.destroyContent();
-							}
-						}));
-					}
-					//that.getView().getModel("local").getProperty("/AppUsers")["5c6d68266e62cf4cac9d8262"].UserName
-
-					if(oError.responseText.indexOf(":") !== -1){
-						that.oLeadDuplicate.addContent(new sap.m.Text({
-							text: sText
-						}));
-						that.oLeadDuplicate.open();
-					}else{
-						this.getErrorMessage(oError);
-						that.oLeadDuplicate.destroyContent();
-					}
-
-
-					// this.oLeadDuplicate.
-
-				});
+			if(this.flag==='inquiry'){
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "PUT", {},
+						payload, this)
+					.then(function(oData) {
+						that.getView().setBusy(false);
+						sap.m.MessageToast.show("Inquiry Saved successfully");
+					}).catch(function(oError) {
+						that.getView().setBusy(false);
+					});
+			}else{
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
+						payload, this)
+					.then(function(oData) {
+						that.getView().setBusy(false);
+						sap.m.MessageToast.show("Inquiry Saved successfully");
+					}).catch(function(oError) {
+						that.getView().setBusy(false);
+					});
+			}
 
 		},
 		onApprove: function() {
