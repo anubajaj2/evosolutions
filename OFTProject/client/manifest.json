@@ -126,7 +126,11 @@
 								"name": "newdemo",
 								"target": ["donald", "newDemo"]
 							},
-
+							{
+								"pattern": "idCard",
+								"name": "generateIdCard",
+								"target": ["donald", "idCard"]
+							},
 							{
 								"pattern": "batch",
 								"name": "batch",
@@ -276,6 +280,15 @@
 					"clearAggregation": true,
 					"viewName": "newDemo",
 					"viewId": "idnewdemo",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+				},
+				"idCard": {
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "generateIdCard",
+					"viewId": "idgenerateIdCard",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				},

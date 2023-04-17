@@ -21,6 +21,7 @@
 					<StandardListItem id="trainerpay" icon="sap-icon://batch-payments" title="Trainer Payments" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="batch" icon="sap-icon://sys-add" title="New Batch" description=""></StandardListItem>
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="subsSearch" icon="sap-icon://crm-sales" title="Manage Subscriptions" description=""></StandardListItem>
+					<StandardListItem id="generateIdCard" icon="sap-icon://business-card" title="Generate Id Card" description=""></StandardListItem>
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="dataMaintenance" icon="sap-icon://database" title="Data Maintenance" description=""></StandardListItem> -->
 					<!--<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="downloadQueries" icon="sap-icon://business-by-design" title="Reports and Run Queries" description=""></StandardListItem>-->
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="adminPanel" icon="sap-icon://key-user-settings" title="Admin Panel" description=""></StandardListItem> -->
