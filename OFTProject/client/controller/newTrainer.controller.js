@@ -349,8 +349,8 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			this.getView().byId("idPANNo").setValue("");
 			this.getView().byId("idRemarks").setValue("");
 			this.getView().byId("idSoftDelete").setSelected(false);
-			this.searchPopup.getBinding("items").filter([]);
-			this.getView().getModel("local").setProperty("/TrainerModel",{});
+			// this.searchPopup.getBinding("items").filter([]);
+			this.getView().getModel("local").setProperty("/TrainerModel",{Courses:[]});
 			this.flag=null;
 			this.getView().byId("idTrainerCourse").removeSelections();
 		},

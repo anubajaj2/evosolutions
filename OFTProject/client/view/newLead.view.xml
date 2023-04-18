@@ -35,17 +35,14 @@
 				</Toolbar>
 			</f:toolbar>
 			<f:content>
-
-    			<Label text="Date" />
-				<DatePicker visible="false" id="inqDate" valueFormat="dd.MM.yyyy"
-          displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
         <Label text="Mobile No" />
 				<Input required="true" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
         valueHelpRequest="onSelectInq"
         liveChange="onInq"
         submit="onEnter"></Input>
-        <Label text="Email"  />
-				<Input required="true" type="number" value="{local>/newLead/EmailId}" />
+    		<Label text="Date" />
+				<DatePicker visible="false" id="inqDate" valueFormat="dd.MM.yyyy"
+          displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
 		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
@@ -68,9 +65,10 @@
     			<Label text="Quoted Fee" />
 				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
 
-				<Label text="Name" />
-				<Input value="{local>/newLead/FirstName}"/>
-        		<Input value="{local>/newLead/LastName}"/>
+				<Label text="Father Name" />
+				<Input value="{local>/newLead/FatherName}"/>
+        <Label text="Mother Name"/>
+        <Input value="{local>/newLead/MotherName}"/>
 
 				<Label text="Address" />
         		<TextArea value="{local>/newLead/Address}"></TextArea>
@@ -79,10 +77,12 @@
         		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
         			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
         		</ComboBox>
-
-				<Label text="Alternate Email" />
-				<Input value="{local>/newLead/EmailId2}"></Input>
-
+        <Label text="Email"  />
+				<Input required="false" type="number" value="{local>/newLead/EmailId}" />
+				<Label text="Emergency Contact Name" />
+				<Input value="{local>/newLead/EmergencyContactName}"></Input>
+        <Label text="Emergency Contact No" />
+				<Input value="{local>/newLead/EmergencyContactNo}"></Input>
         <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>

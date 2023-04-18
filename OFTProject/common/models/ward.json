@@ -1,0 +1,83 @@
+{
+  "name": "Ward",
+  "plural": "Wards",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "RollNo": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "default": null
+    },
+    "DOB": {
+      "type": "date",
+      "default": null
+    },
+    "Standard": {
+      "type": "string",
+      "default": null
+    },
+    "SchoolName": {
+      "type": "string",
+      "default": null
+    },
+    "Weakness": {
+      "type": "string",
+      "default": null
+    },
+    "MobileNo": {
+      "type": "string",
+      "default": null
+    },
+    "CourseName": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "default": null,
+        "required": true
+      }
+    },
+    "BloodGroup": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "validations": [],
+  "relations": {
+    "CreatedByTo": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "CreatedBy"
+		},
+    "ChangedByTo": {
+			"type": "belongsTo",
+			"model": "AppUser",
+			"foreignKey": "ChangedBy"
+		},
+    "ToCourse":{
+      "type":"belongsTo",
+      "model":"CourseMst",
+      "foreignKey":"CourseName"
+    },
+    "ToInquiry":{
+      "type":"belongsTo",
+      "model":"Inquiry",
+      "foreignKey":"InquiryId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

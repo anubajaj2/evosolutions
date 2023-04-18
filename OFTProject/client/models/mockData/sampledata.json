@@ -219,7 +219,8 @@
 		"CreatedOn":"",
 		"CreatedBy":"",
 		"ChangedOn":"",
-		"ChangedBy":""
+		"ChangedBy":"",
+		"Courses": []
 
 	},
 
@@ -361,8 +362,8 @@
 		"CourseName": " ",
 		"Category":" ",
 		"Date": "",
-		"FirstName": "",
-		"LastName": "",
+		"FatherName": "",
+		"MotherName": "",
 		"City": "Gurgaon",
 		"Phone": "",
 		"EmailId2": "",
@@ -378,6 +379,8 @@
 		"ChangedOn":"",
 		"courseSet":"",
 		"HearAbout":"JustDial",
+		"EmergencyContactName":"",
+		"EmergencyContactNo":"",
 		"WardDetails": []
 	},
 	"newmcourse":{

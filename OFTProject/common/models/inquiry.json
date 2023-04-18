@@ -19,11 +19,11 @@
         "required": true
       }
     },
-    "FirstName": {
+    "FatherName": {
       "type": "string",
       "default": null
     },
-    "LastName": {
+    "MotherName": {
       "type": "string",
       "default": null
     },
@@ -42,7 +42,11 @@
       "type": "number",
       "default":0
     },
-    "EmailId2": {
+    "EmergencyContactName": {
+      "type": "string",
+      "default": null
+    },
+    "EmergencyContactNo": {
       "type": "string",
       "default": null
     },
@@ -130,6 +134,11 @@
       "type":"belongsTo",
       "model":"CourseMst",
       "foreignKey":"CourseName"
+    },
+    "ToWard":{
+      "type":"hasMany",
+      "model":"Ward",
+      "foreignKey":"InquiryId"
     }
   },
   "acls": [
