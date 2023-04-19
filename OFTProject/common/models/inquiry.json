@@ -2,7 +2,6 @@
   "name": "Inquiry",
   "plural": "Inquries",
   "base": "PersistedModel",
-  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -10,14 +9,6 @@
     "EmailId": {
       "type": "string",
       "required": true
-    },
-    "CourseName": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "default": null,
-        "required": true
-      }
     },
     "FatherName": {
       "type": "string",
@@ -40,7 +31,8 @@
     },
     "Phone": {
       "type": "number",
-      "default":0
+      "id": true,
+      "default":null
     },
     "EmergencyContactName": {
       "type": "string",
@@ -58,7 +50,7 @@
       "type": "string",
       "default": null
     },
-    "hearAbout":{
+    "HearAbout":{
       "type": "string",
       "default": null
     },
@@ -75,47 +67,6 @@
     "ChangedBy": {
       "type": "string",
       "default": null
-    },
-    "fees":{
-      "type": "number",
-      "default": 18000
-    },
-    "WardDetails":{
-      "type": "array",
-      "properties": {
-        "WardName": {
-          "type": "string",
-          "required": true
-        },
-        "Gender": {
-          "type": "string",
-          "default": null
-        },
-        "Age": {
-          "type": "number",
-          "default": 0
-        },
-        "Standard": {
-          "type": "string",
-          "default": null
-        },
-        "SchoolName": {
-          "type": "string",
-          "default": null
-        },
-        "Weakness": {
-          "type": "string",
-          "default": null
-        },
-        "MobileNo": {
-          "type": "string",
-          "default": null
-        },
-        "CourseName": {
-          "type": "string",
-          "default": null
-        }
-      }
     }
   },
   "validations": [],
@@ -130,11 +81,6 @@
 			"model": "AppUser",
 			"foreignKey": "ChangedBy"
 		},
-    "ToCourse":{
-      "type":"belongsTo",
-      "model":"CourseMst",
-      "foreignKey":"CourseName"
-    },
     "ToWard":{
       "type":"hasMany",
       "model":"Ward",

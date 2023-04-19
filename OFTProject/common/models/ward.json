@@ -7,8 +7,12 @@
     "validateUpsert": true
   },
   "properties": {
+    "InquiryId":{
+      "type": "number",
+      "required": true
+    },
     "RollNo": {
-      "type": "string",
+      "type": "number",
       "required": true
     },
     "Name": {
@@ -39,11 +43,14 @@
       "type": "array",
       "items": {
         "type": "string",
-        "default": null,
-        "required": true
+        "default": null
       }
     },
     "BloodGroup": {
+      "type": "string",
+      "default": null
+    },
+    "Photo": {
       "type": "string",
       "default": null
     }

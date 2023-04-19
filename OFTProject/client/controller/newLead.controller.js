@@ -385,26 +385,29 @@ sap.ui.define([
 			//get the Course set here and save the records
 			var payload = {
 				"EmailId": leadData.EmailId.toLowerCase(),
-				"CourseName": leadData.CourseName,
+				// "CourseName": leadData.CourseName,
 				// "Category": leadData.Category,
-				"FirstName": leadData.FirstName,
-				"LastName": leadData.LastName,
+				"FatherName": leadData.FatherName,
+				"MotherName": leadData.MotherName,
 				"EmailId2": leadData.EmailId2 ,
 				"Date": this.getView().byId("inqDate").getDateValue(),
 				"City": leadData.City,
 				"Address": leadData.Address,
+				"EmergencyContactName": leadData.EmergencyContactName,
+				"EmergencyContactNo": leadData.EmergencyContactNo,
 				"Phone": leadData.Phone,
 				"Remarks": leadData.Remarks,
+				"HearAbout": leadData.HearAbout,
 				"SoftDelete": false,
 				"CreatedOn": new Date(),
 		    "CreatedBy": "",
 		    "ChangedOn": new Date(),
 		    "ChangedBy": "",
-				"fees": leadData.Fees,
+				// "fees": leadData.Fees,
 				// "currency": "INR",
 				// "CustType": leadData.custType,
 				// "Organization": leadData.organization
-				"WardDetails": leadData.WardDetails
+				// "WardDetails": leadData.WardDetails
 			};
 			if(this.flag==='inquiry'){
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "PUT", {},

@@ -52,7 +52,7 @@
 		          <core:Item key="{local>text}" text="{local>text}"/>
 		        </Select> -->
 
-    			<Label text="Courses" />
+    			<!-- <Label text="Courses" />
 		        <MultiComboBox id="idCourse1"
 		          selectedKeys="{local>/newLead/CourseName}" width="500px"
 		          items="{
@@ -60,7 +60,7 @@
 		            sorter: { path: 'CourseName' }
 		          }">
 		          <core:Item key="{id}" text="{CourseName}"/>
-		        </MultiComboBox>
+		        </MultiComboBox> -->
 
     			<Label text="Quoted Fee" />
 				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
@@ -113,7 +113,7 @@
 		</f:SimpleForm>
 	</VBox>
 	<VBox>
-    <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+    <Table id="idWardDetails" editable="true" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
       <headerToolbar>
         <OverflowToolbar>
           <ToolbarSpacer/>
@@ -136,7 +136,7 @@
           </Column>
           <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
             <header>
-              <Text text="Age"/>
+              <Text text="DOB"/>
             </header>
           </Column>
           <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
@@ -164,6 +164,16 @@
               <Text text="Course Name"/>
             </header>
           </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Blood Group"/>
+            </header>
+          </Column>
+          <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+            <header>
+              <Text text="Photo"/>
+            </header>
+          </Column>
         </columns>
         <items>
           <ColumnListItem vAlign="Middle">
@@ -175,12 +185,32 @@
                   <core:Item text="Female" key="F" />
               </items>
               </Select>
-              <Input value="{local>Age}"/>
+              <DatePicker value="{local>DOB}"/>
               <Input value="{local>Standard}"/>
-              <Input state="{local>SchoolName}"/>
-              <Input state="{local>Weakness}"/>
-              <Input state="{local>MobileNo}"/>
-              <Input state="{local>CourseName}"/>
+              <Input value="{local>SchoolName}"/>
+              <Input value="{local>Weakness}"/>
+              <Input value="{local>MobileNo}"/>
+              <MultiComboBox id="idCourse1"
+  		          selectedKeys="{local>/newLead/CourseName}" width="500px"
+  		          items="{
+  		            path: '/CoursesMst',
+  		            sorter: { path: 'CourseName' }
+  		          }">
+  		          <core:Item key="{id}" text="{CourseName}"/>
+  		        </MultiComboBox>
+              <Select selectedKey="{local>Gender}" forceSelection="false">
+                <items>
+                  <core:Item text="O+" key="O+" />
+                  <core:Item text="O-" key="O-" />
+                  <core:Item text="A+" key="A+" />
+                  <core:Item text="A-" key="A-" />
+                  <core:Item text="B+" key="B+" />
+                  <core:Item text="B-" key="B-" />
+                  <core:Item text="AB+" key="AB+" />
+                  <core:Item text="AB-" key="AB-" />
+              </items>
+              </Select>
+              <Button text="View" press="viewPhoto"/>
             </cells>
           </ColumnListItem>
         </items>

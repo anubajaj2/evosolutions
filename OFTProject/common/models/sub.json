@@ -7,7 +7,7 @@
 		"validateUpsert": true
 	},
 	"properties": {
-		"StudentId": {
+		"WardId": {
 			"type": "string",
 			"default": "null",
 			"required": true
@@ -135,10 +135,10 @@
 	},
 	"validations": [],
 	"relations": {
-		"Student": {
+		"Ward": {
 			"type": "belongsTo",
-			"model": "Student",
-			"foreignKey": "StudentId"
+			"model": "Ward",
+			"foreignKey": "WardId"
 		},
 		"Course": {
 			"type": "belongsTo",

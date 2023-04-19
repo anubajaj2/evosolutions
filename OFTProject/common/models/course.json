@@ -84,6 +84,11 @@
       "type": "hasMany",
       "model": "Sub",
       "foreignKey": "CourseId"
+    },
+    "Course": {
+      "type": "belongsTo",
+      "model": "CourseMst",
+      "foreignKey": "CourseId"
     }
   },
   "acls": [
