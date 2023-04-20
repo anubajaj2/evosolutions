@@ -13,7 +13,7 @@
     },
     "RollNo": {
       "type": "number",
-      "required": true
+      "default": null
     },
     "Name": {
       "type": "string",
@@ -36,6 +36,10 @@
       "default": null
     },
     "MobileNo": {
+      "type": "string",
+      "default": null
+    },
+    "Address": {
       "type": "string",
       "default": null
     },

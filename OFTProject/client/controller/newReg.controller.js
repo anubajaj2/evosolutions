@@ -877,10 +877,10 @@ sap.ui.define([
 				var title = this.getView().getModel("i18n").getProperty("customer");
 				this.searchPopup.setTitle(title);
 				this.searchPopup.bindAggregation("items", {
-					path: "/Students",
+					path: "/Wards?$expand=ToInquiry",
 					template: new sap.m.DisplayListItem({
 						label: "{Name}",
-						value: "{GmailId}"
+						value: "{DOB}"
 					})
 				});
 				// this.searchPopup.bindAggregation("items", {

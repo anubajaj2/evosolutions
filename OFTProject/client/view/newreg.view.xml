@@ -30,7 +30,7 @@
 						<!--	</suggestionItems>-->
 						<!--</Input>-->
 
-					    <Input id="customerId" required="true" value="{local>/newRegistration/StudentId}" showValueHelp="true"
+					    <Input id="customerId" required="true" value="{local>/newRegistration/WardId}" showValueHelp="true"
 						   valueHelpRequest="onSelect" valueHelpOnly="true"/>
 
 						<Label text="Batch"/>

@@ -255,17 +255,20 @@ sap.ui.define([
 				this.getView().byId("quotedFee").setVisible(true);
 			}
 		},
-		onPressAdd: function(){
+		onPressAddWard: function(){
 			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");
 			wardDetails.push({
-				WardName: null,
+				RollNo:null,
+				Name: null,
 				Gender: "F",
-				Age: 0,
+				DOB: new Date(),
 				Standard: null,
 				SchoolName: null,
 				Weakness: null,
 				MobileNo: null,
-				CourseName: null
+				CourseName: null,
+				Address: null,
+				BloodGroup: null
 			});
 			this.getView().getModel("local").setProperty("/newLead/WardDetails", wardDetails);
 		},
@@ -291,8 +294,8 @@ sap.ui.define([
 			this.searchPopup.bindAggregation("items", {
 				path: "/Inquries",
 				template: new sap.m.DisplayListItem({
-					label: "{FirstName}",
-					value: "{LastName}"
+					label: "{FatherName}",
+					value: "{Phone}"
 				})
 			});
 
@@ -409,6 +412,7 @@ sap.ui.define([
 				// "Organization": leadData.organization
 				// "WardDetails": leadData.WardDetails
 			};
+			var wardDetails = leadData.WardDetails;
 			if(this.flag==='inquiry'){
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "PUT", {},
 						payload, this)
@@ -422,6 +426,17 @@ sap.ui.define([
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
 						payload, this)
 					.then(function(oData) {
+						for(var ward of wardDetails){
+							ward.InquiryId = oData.id;
+							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
+									ward, that)
+								.then(function(oData) {
+									that.getView().setBusy(false);
+									sap.m.MessageToast.show("Ward Saved successfully");
+								}).catch(function(oError) {
+									that.getView().setBusy(false);
+								});
+						}
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Inquiry Saved successfully");
 					}).catch(function(oError) {

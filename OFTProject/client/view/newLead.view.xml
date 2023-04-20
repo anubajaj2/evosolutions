@@ -117,7 +117,7 @@
       <headerToolbar>
         <OverflowToolbar>
           <ToolbarSpacer/>
-          <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAdd"/>
+          <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
           <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
             press="onPressDeleteRow"/>
           </OverflowToolbar>
@@ -178,7 +178,7 @@
         <items>
           <ColumnListItem vAlign="Middle">
             <cells>
-              <Input value="{local>WardName}"/>
+              <Input value="{local>Name}"/>
               <Select selectedKey="{local>Gender}" forceSelection="false">
                 <items>
                   <core:Item text="Male" key="M" />

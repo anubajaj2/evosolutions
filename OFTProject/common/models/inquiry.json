@@ -2,6 +2,7 @@
   "name": "Inquiry",
   "plural": "Inquries",
   "base": "PersistedModel",
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -31,8 +32,7 @@
     },
     "Phone": {
       "type": "number",
-      "id": true,
-      "default":null
+      "required": true
     },
     "EmergencyContactName": {
       "type": "string",
