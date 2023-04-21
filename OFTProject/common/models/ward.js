@@ -10,7 +10,7 @@ module.exports = function(Ward) {
       //Ward.count();
       //count++
       //ctx.instance.rollNo = counter
-      next();
+      return next();
     });
     // Inquiry.observe("before save",function(ctx, next){
     //   var app = require('../../server/server');
