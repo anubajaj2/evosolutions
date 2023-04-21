@@ -33,7 +33,7 @@ sap.ui.define([
 				"EmailId": "",
 				"CourseName": " ",
 				"Category":" ",
-				"Date": "",
+				"Date": new Date(),
 				"FatherName": "",
 				"MotherName": "",
 				"City": "Gurgaon",
@@ -54,6 +54,7 @@ sap.ui.define([
 				"EmergencyContactNo":"",
 				"WardDetails": []
 			});
+			this.flag = null;
 		},
 		passwords: "",
 		onEmail: function() {
@@ -226,7 +227,7 @@ sap.ui.define([
 				return;
 			}
 			//Restore the state of UI by fruitId
-			this.getView().getModel("local").setProperty("/newLead/date", this.formatter.getFormattedDate(0));
+			this.getView().getModel("local").setProperty("/newLead/Date", new Date());//this.formatter.getFormattedDate(0)
 			this.getView().getModel("local").setProperty("/newLead/country", "IN");
 			var newDate = new Date();
 			newDate.setHours(0, 0, 0, 0);
@@ -283,7 +284,7 @@ sap.ui.define([
 				SchoolName: null,
 				Weakness: null,
 				MobileNo: null,
-				CourseName: null,
+				CourseName: [],
 				Address: null,
 				BloodGroup: null
 			});
@@ -405,7 +406,7 @@ sap.ui.define([
 			var oLocal = oEvent;
 			console.log(this.getView().getModel("local").getProperty("/newLead"));
 			var that = this;
-			that.getView().setBusy(true);
+			// that.getView().setBusy(true);
 			var leadData = this.getView().getModel("local").getProperty("/newLead");
 			if (!this.getView().byId("inqDate").getDateValue()) {
 				sap.m.MessageToast.show("Enter a valid Date");
@@ -440,9 +441,33 @@ sap.ui.define([
 			};
 			var wardDetails = leadData.WardDetails;
 			if(this.flag==='inquiry'){
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "PUT", {},
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), `/Inquries('${leadData.id}')`, "PUT", {},
 						payload, this)
 					.then(function(oData) {
+						const inquiryId = leadData.id;
+						for(var ward of wardDetails){
+							if(ward.id){
+								that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/Wards('${ward.id}')`, "PUT", {},
+										ward, that)
+									.then(function(oData) {
+										that.getView().setBusy(false);
+										sap.m.MessageToast.show("Ward Saved successfully");
+									}).catch(function(oError) {
+										that.getView().setBusy(false);
+									});
+							}else{
+								ward.InquiryId = inquiryId;
+								that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
+										ward, that)
+									.then(function(oData) {
+										that.getView().setBusy(false);
+										sap.m.MessageToast.show("Ward Saved successfully");
+									}).catch(function(oError) {
+										that.getView().setBusy(false);
+									});
+							}
+
+						}
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Inquiry Saved successfully");
 					}).catch(function(oError) {
@@ -452,8 +477,9 @@ sap.ui.define([
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
 						payload, this)
 					.then(function(oData) {
+						const inquiryId = oData.id;
 						for(var ward of wardDetails){
-							ward.InquiryId = oData.id;
+							ward.InquiryId = inquiryId;
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
 									ward, that)
 								.then(function(oData) {

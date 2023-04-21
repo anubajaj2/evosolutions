@@ -41,8 +41,7 @@
         liveChange="onInq"
         submit="onEnter"></Input>
     		<Label text="Date" />
-				<DatePicker visible="false" id="inqDate" valueFormat="dd.MM.yyyy"
-          displayFormat="dd.MM.yyyy" value="{local>/newLead/date}" ></DatePicker>
+				<DatePicker visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
@@ -82,7 +81,7 @@
 				<Label text="Emergency Contact Name" />
 				<Input value="{local>/newLead/EmergencyContactName}"></Input>
         <Label text="Emergency Contact No" />
-				<Input value="{local>/newLead/EmergencyContactNo}"></Input>
+				<Input type="Number" value="{local>/newLead/EmergencyContactNo}"></Input>
         <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
@@ -185,20 +184,20 @@
                   <core:Item text="Female" key="F" />
               </items>
               </Select>
-              <DatePicker value="{local>DOB}"/>
-              <Input value="{local>Standard}"/>
+              <DatePicker displayFormat="dd.MM.yyyy" dateValue="{local>DOB}"/>
+              <Input type="Number" value="{local>Standard}"/>
               <Input value="{local>SchoolName}"/>
               <Input value="{local>Weakness}"/>
-              <Input value="{local>MobileNo}"/>
+              <Input type="Number" value="{local>MobileNo}"/>
               <MultiComboBox id="idCourse1"
-  		          selectedKeys="{local>/newLead/CourseName}" width="500px"
+  		          selectedKeys="{local>CourseName}" width="500px"
   		          items="{
   		            path: '/CoursesMst',
   		            sorter: { path: 'CourseName' }
   		          }">
   		          <core:Item key="{id}" text="{CourseName}"/>
   		        </MultiComboBox>
-              <Select selectedKey="{local>Gender}" forceSelection="false">
+              <Select selectedKey="{local>BloodGroup}" forceSelection="false">
                 <items>
                   <core:Item text="O+" key="O+" />
                   <core:Item text="O-" key="O-" />
