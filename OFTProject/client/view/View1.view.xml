@@ -11,15 +11,15 @@
 					mode="SingleSelectMaster" delete="onDelete"
 			      selectionChange="onSelectItem">
 				<items>
-
-					<StandardListItem id="newmcourse" icon="sap-icon://course-book" title="New Course" description=""></StandardListItem>
 					<StandardListItem id="newtrainer" icon="sap-icon://it-system" title="New Trainer" description=""></StandardListItem>
+					<StandardListItem id="newmcourse" icon="sap-icon://course-book" title="New Course" description=""></StandardListItem>
+					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="batch" icon="sap-icon://sys-add" title="New Batch" description=""></StandardListItem>
 					<StandardListItem id="newlead" icon="sap-icon://leads" title="New Lead" description=""></StandardListItem>
 					<!-- <StandardListItem id="newdemo" icon="sap-icon://customer-view" title="New Demo" description=""></StandardListItem> -->
 					<!-- <StandardListItem id="newCustomer" icon="sap-icon://customer" title="New Customer" description=""></StandardListItem> -->
 					<StandardListItem id="newreg" icon="sap-icon://collections-insight" title="New Registration" description=""></StandardListItem>
 					<!-- <StandardListItem id="trainerpay" icon="sap-icon://batch-payments" title="Trainer Payments" description=""></StandardListItem> -->
-					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="batch" icon="sap-icon://sys-add" title="New Batch" description=""></StandardListItem>
+
 					<StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="subsSearch" icon="sap-icon://crm-sales" title="Manage Subscriptions" description=""></StandardListItem>
 					<StandardListItem id="generateIdCard" icon="sap-icon://business-card" title="Generate Id Card" description=""></StandardListItem>
 					<!-- <StandardListItem visible="{= ${local>/Role} === 'Admin'}" id="dataMaintenance" icon="sap-icon://database" title="Data Maintenance" description=""></StandardListItem> -->
