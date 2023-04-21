@@ -25,18 +25,35 @@ sap.ui.define([
 				this.getView().byId("idUser").setText(loginUser);
 			}
 		},
-		clearForm: function() {
-			// this.getView().getModel("local").setProperty("/newLead",{
-			// 	"emailId": "",
-			// 	"course": " ",
-			// 	"date": "",
-			// 	"FirstName": "",
-			// 	"LastName": "",
-			// 	"country": "",
-			// 	"phone": "",
-			// 	"subject": "",
-			// 	"message": ""
-			// });
+		clearForm: function(){
+
+		},
+		onClearForm: function() {
+			this.getView().getModel("local").setProperty("/newLead",{
+				"EmailId": "",
+				"CourseName": " ",
+				"Category":" ",
+				"Date": "",
+				"FatherName": "",
+				"MotherName": "",
+				"City": "Gurgaon",
+				"Phone": "",
+				"EmailId2": "",
+				"Remarks": "",
+				"currency":"INR",
+				"Address":"",
+				"organization":"",
+				"custType":"",
+				"CreatedOn":"",
+				"CreatedBy":"",
+				"ChangedBy":"",
+				"ChangedOn":"",
+				"courseSet":"",
+				"HearAbout":"JustDial",
+				"EmergencyContactName":"",
+				"EmergencyContactNo":"",
+				"WardDetails": []
+			});
 		},
 		passwords: "",
 		onEmail: function() {
@@ -301,14 +318,23 @@ sap.ui.define([
 
 		},
 		onConfirm: function (oEvent) {
-			var data = this.getSelectedKey(oEvent);
+			var data = this.getSelectedKey(oEvent),
+			that = this;
 			// debugger;
 			if (this.flag === "inquiry") {
 				var oTrainer = "Inquries(\'" + data[2] + "\')";
 				var oData = this.getView().getModel().oData[oTrainer];
 				var oGuid = data[2];
-				debugger;
+				// debugger;
 				this.getView().getModel("local").setProperty("/newLead", oData);
+				that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oTrainer}/ToWard`, "GET", {},
+						{}, that)
+					.then(function(oData) {
+						that.getView().getModel("local").setProperty("/newLead/WardDetails", oData.results);
+						that.getView().setBusy(false);
+					}).catch(function(oError) {
+						that.getView().setBusy(false);
+					});
 			}
 		},
 		onCancel: function(){
