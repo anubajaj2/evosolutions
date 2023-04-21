@@ -224,6 +224,7 @@
 						press="handleMessagePopoverPress"/>
 				<ToolbarSpacer/>
 				<Button text="Save" type="Accept" press="onSave" id="idApr"></Button>
+        <Button text="Clear" type="Reject" press="onClearForm"></Button>
 			</Toolbar>
 		</footer>
 	</Page>
