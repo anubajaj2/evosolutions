@@ -5,7 +5,6 @@ module.exports = function(Ward) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var app = require('../../server/server');
 
-<<<<<<< HEAD
     // Ward.observe("before save", function (ctx,next) {
     //   console.log(ctx.instance);
     //   debugger;
@@ -14,15 +13,6 @@ module.exports = function(Ward) {
     //   //ctx.instance.rollNo = counter
     //   return next();
     // });
-=======
-    Ward.observe("before save", function (ctx,next) {
-      console.log(ctx.instance);
-      //Ward.count();
-      //count++
-      //ctx.instance.rollNo = counter
-      return next();
-    });
->>>>>>> 68a0f3ef19e8a74847d142304ab095bc1bdfb2a5
     // Inquiry.observe("before save",function(ctx, next){
     //   var app = require('../../server/server');
     //   var AppUser = app.models.AppUser;
