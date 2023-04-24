@@ -263,6 +263,19 @@ sap.ui.define([
 				}
 			}
 		},
+		onFullScreen: function(oEvent) {
+			var oSource = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+			var oMode = oSource.getMode();
+			if (oMode === "ShowHideMode") {
+				oSource.setMode("HideMode");
+				oEvent.getSource().setIcon("sap-icon://exit-full-screen");
+				oEvent.getSource().setText("Exit Fullscreen");
+			} else {
+				oSource.setMode("ShowHideMode");
+				oEvent.getSource().setIcon("sap-icon://full-screen");
+				oEvent.getSource().setText("Show Fullscreen");
+			}
+		},
 		onParentMode: function(oEvent){
 			// debugger;
 			if(oEvent.getParameter('state')){
@@ -417,6 +430,7 @@ sap.ui.define([
 				"EmailId": leadData.EmailId.toLowerCase(),
 				// "CourseName": leadData.CourseName,
 				// "Category": leadData.Category,
+				"RollNo": leadData.RollNo,
 				"FatherName": leadData.FatherName,
 				"MotherName": leadData.MotherName,
 				"EmailId2": leadData.EmailId2 ,

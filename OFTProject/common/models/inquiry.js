@@ -6,8 +6,8 @@ module.exports = function(Inquiry) {
     var app = require('../../server/server');
     // var CourseMst = app.models.CourseMst;
     //validations
-    // Inquiry.validatesPresenceOf('FirstName', {message: 'Name Cannot be blank'})
-    // Inquiry.validatesLengthOf('EmailId', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
+    Inquiry.validatesPresenceOf('FatherName', {message: 'Name Cannot be blank'})
+    Inquiry.validatesLengthOf('Phone', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
     // Inquiry.validatesInclusionOf('CourseName', {
     //     in: ["UI5 and Fiori", "ABAP on HANA", "Launchpad", "HANA XS",  "Hybris C4C",
     //          ,"HANA Cloud Integration (HCI)","SAP Cloud Platform","ABAP", "OOPS ABAP", "Webdynpro", "Workflow", "FPM", "Other"
