@@ -32,6 +32,7 @@
 
 					    <Input id="customerId" required="true" value="{local>/newRegistration/WardId}" showValueHelp="true"
 						   valueHelpRequest="onSelect" valueHelpOnly="true"/>
+						   <Text id="idCustomer" text=""/>
 
 						<Label text="Batch"/>
 						<!--<Input id="courseId" required="true" value="{local>/newRegistration/CourseId}" showValueHelp="true" valueHelpOnly="true"-->
@@ -44,27 +45,27 @@
 						<Input id="courseId" required="true" value="{local>/newRegistration/CourseId}" showValueHelp="true"
 						   valueHelpRequest="onSelect" valueHelpOnly="true"/>
 						<Text id="idCourseName" text=""/>
-						<Label text="Training Mode"/>
+						<!-- <Label text="Training Mode"/>
 						<Select id="trainingMode" selectedKey="{local>/newRegistration/Mode}">
 							<core:Item key="L" text="Live Mode"></core:Item>
 							<core:Item key="V" text="Video Mode"></core:Item>
-						</Select>
+						</Select> -->
 						<Label text="Reg. Date"/>
 						<DatePicker id="idRegDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/StartDate}" valueFormat="dd.MM.yyyy"
 							change="onStartChange"></DatePicker>
-						<Label text="Blog End Date"/>
-						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker>
+						<!-- <Label text="Blog End Date"/>
+						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker> -->
 						<Label text="Payment Mode"/>
 						<Select id="paymentMode" required="true" selectedKey="{local>/newRegistration/PaymentMode}">
 							<core:Item key="IMPS" text="Internet Banking"></core:Item>
 							<core:Item key="PAYTM" text="PayTM"></core:Item>
-							<core:Item key="PAYPAL" text="Paypal/Xoom"></core:Item>
-							<core:Item key="USA" text="Wire Transfer"></core:Item>
+							<core:Item key="UPI" text="UPI"></core:Item>
+							<core:Item key="GPay" text="Google Pay"></core:Item>
+							<core:Item key="Gateway" text="Gateway"></core:Item>
 						</Select>
-						<Label text="Account Details"/>
-						<!--<Input id="accountDetails" type="Email" required="true" value="{local>/newRegistration/AccountName}" showValueHelp="true"-->
+						<!-- <Label text="Account Details"/>
 						<Input id="accountDetails" required="false" value="{local>/newRegistration/AccountName}" showValueHelp="true" valueHelpOnly="true"
-							valueHelpRequest="onSelect"/>
+							valueHelpRequest="onSelect"/> -->
 						<Label text="Amount"/>
 						<Input id="idAmount" type="Number" value="{local>/newRegistration/Amount}" liveChange="onAmountChange"></Input>
 						<Label text="Pending Amount"/>
@@ -80,10 +81,10 @@
 						<!--<CheckBox selected="{local>/newRegistration/Moved}"></CheckBox>-->
 						<Label text="Waiver Provided"></Label>
 						<CheckBox id="idWaiver" selected="{local>/newRegistration/Waiver}" select="onWaiver"></CheckBox>
-						<Label text="Attachments"/>
-						<u:FileUploader id="imageUploader" maximumFileSize="0.1" fileType="png,jpg" fileSizeExceed="handleSizeExceed" typeMissmatch="handleTypeMissmatch" fileAllowed='fnOnUpLoadFile' placeholder="Payment Screenshot - PNG/JPG"></u:FileUploader>
-						<Label text="Interested in next batch flag"></Label>
-						<CheckBox id="idInterested"></CheckBox>
+						<!-- <Label text="Attachments"/>
+						<u:FileUploader id="imageUploader" maximumFileSize="0.1" fileType="png,jpg" fileSizeExceed="handleSizeExceed" typeMissmatch="handleTypeMissmatch" fileAllowed='fnOnUpLoadFile' placeholder="Payment Screenshot - PNG/JPG"></u:FileUploader> -->
+						<!-- <Label text="Interested in next batch flag"></Label>
+						<CheckBox id="idInterested"></CheckBox> -->
 						<!--<Button width="33%" padding="0px" margin="0px" text="Upload" press="onUpload" icon="sap-icon://upload"></Button>-->
 					</f:content>
 				</f:SimpleForm>
@@ -137,9 +138,9 @@
 					<Column>
 						<Label text="Created By" class="columnLabelStyle"/>
 					</Column>
-					<Column>
+					<!-- <Column>
 						<Label text="Screen Shot" class="columnLabelStyle"/>
-					</Column>
+					</Column> -->
 					<Column visible="{= ${local>/Role} === 'Admin'}">
 						<Label text="Amount" class="columnLabelStyle"/>
 					</Column>
@@ -153,7 +154,9 @@
 				<items>
 					<ColumnListItem id="idColumnlist" press="onItemPress"  type="Active" >
 						<cells>
-							<Text text="{StudentId}" modelContextChange="onStudentIdChange" ></Text>
+
+							<!-- modelContextChange="onStudentIdChange"  -->
+							<ObjectStatus active="true" text="{StudentId}" press="onStudentLinkPress" ></ObjectStatus>
 							<Text text="{CourseId}"></Text>
 							<HBox>
 								<Button text="{Status}" press="onApprove"></Button>
@@ -162,7 +165,7 @@
 							<Text text="{ path: 'CreatedOn', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }" > </Text>
 							<Text text="{CreatedBy}"> </Text>
 							<!-- <Button text="{CourseId}" press="onScreenShot"></Button> -->
-							<Link text="Payment Proof" href="" press="onScreenShot" />
+							<!-- <Link text="Payment Proof" href="" press="onScreenShot" /> -->
 							<Text visible="{= ${local>/Role} === 'Admin'}"
 									  text="{Amount}" />
 							<Text visible="{= ${local>/Role} === 'Admin'}"

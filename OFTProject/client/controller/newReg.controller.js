@@ -9,14 +9,15 @@ sap.ui.define([
 	"oft/fiori/models/formatter",
 	"sap/ui/model/Filter", //PJHA,
 	'sap/m/Token',
-	"sap/ui/model/FilterOperator"
-], function(Controller, MessageBox, MessageToast, Formatter, oFilter, oToken, FilterOperator) { //PJHA
+	"sap/ui/model/FilterOperator",
+	"sap/ui/core/Fragment"
+], function (Controller, MessageBox, MessageToast, Formatter, oFilter, oToken, FilterOperator, Fragment) { //PJHA
 	"use strict";
 
 	return Controller.extend("oft.fiori.controller.newReg", {
 		formatter: Formatter,
 
-		fnOnUpLoadFile: function(oEvent) {
+		fnOnUpLoadFile: function (oEvent) {
 			var oFileUploader = this.getView().byId("imageUploader");
 			var domRef = oFileUploader.getFocusDomRef();
 			var file = domRef.files[0];
@@ -26,7 +27,7 @@ sap.ui.define([
 				this.fileName = file.name;
 				this.fileType = file.type;
 				var reader = new FileReader();
-				reader.onload = function(e) {
+				reader.onload = function (e) {
 
 					//get an access to the content of the file
 					that.imgContent = e.currentTarget.result; //e.currentTarget.result.replace("data:image/jpeg;base64,", "");
@@ -37,9 +38,9 @@ sap.ui.define([
 			}
 		},
 
-		handleTypeMissmatch: function(oEvent) {
+		handleTypeMissmatch: function (oEvent) {
 			var aFileTypes = oEvent.getSource().getFileType();
-			jQuery.each(aFileTypes, function(key, value) {
+			jQuery.each(aFileTypes, function (key, value) {
 				aFileTypes[key] = "*." + value;
 			});
 			var sSupportedFileTypes = aFileTypes.join(", ");
@@ -48,16 +49,16 @@ sap.ui.define([
 				sSupportedFileTypes);
 		},
 
-		handleSizeExceed: function(oEvent) {
+		handleSizeExceed: function (oEvent) {
 			var fFileSize = oEvent.getSource().getMaximumFileSize();
 			MessageToast.show("Maximun file size allowed is " + fFileSize + " MB");
 		},
 
-		onScreenShot: function(oEvent) {
+		onScreenShot: function (oEvent) {
 			var that = this;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "GET", {}, {}, this)
-				.then(function(oData) {
+				.then(function (oData) {
 					var imgContent = oData.PaymentScreenshot;
 
 					var oDialog = new sap.m.Dialog({
@@ -68,7 +69,7 @@ sap.ui.define([
 
 					oDialog.addButton(new sap.m.Button({
 						text: "OK",
-						press: function() {
+						press: function () {
 							oDialog.close();
 							oDialog.destroyContent();
 						}
@@ -89,12 +90,12 @@ sap.ui.define([
 					oDialog.addContent(oCarousel);
 					oDialog.open();
 
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 					var oPopover = that.getErrorMessage(oError);
 				});
 		},
 
-		onInit: function() {
+		onInit: function () {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.totalCount = 0;
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
@@ -121,30 +122,30 @@ sap.ui.define([
 			var oModelJsonCC = new sap.ui.model.json.JSONModel();
 			// var oStuModel = this.getOwnerComponent().getModel();
 			oStuModel.read('/Students', {
-				success: function(oData, response) {
+				success: function (oData, response) {
 					oModelJsonCC.setData(oData);
 				},
-				error: function(response) {}
+				error: function (response) { }
 			});
 
 			//var oModelJsonCC = new sap.ui.model.json.JSONModel();
 			var oCourseModel = this.getOwnerComponent().getModel();
 			oCourseModel.read('/Courses', {
-				success: function(oData, response) {
+				success: function (oData, response) {
 					oModelJsonCC.setData(oData);
 				},
-				error: function(response) {}
+				error: function (response) { }
 			});
 
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 
 		},
-		onBack: function() {
+		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
 		},
 		siteLink: "",
 		eMailId: "",
-		onGiveAccess: function(oEvent) {
+		onGiveAccess: function (oEvent) {
 			var that = this;
 			var items = that.getView().byId('idSubsRecent').getSelectedContexts();
 
@@ -173,24 +174,24 @@ sap.ui.define([
 
 
 				$.post('/giveAccess', loginPayload)
-					.done(function(data, status) {
+					.done(function (data, status) {
 						sap.m.MessageToast.show("Access has been provided");
 					})
-					.fail(function(xhr, status, error) {
+					.fail(function (xhr, status, error) {
 						sap.m.MessageBox.error("Error in access");
 					});
 			}
 		},
-		onClearToken: function(){
+		onClearToken: function () {
 			$.post('/clearToken')
-				.done(function(data, status) {
+				.done(function (data, status) {
 					sap.m.MessageToast.show("Token is now reset");
 				})
-				.fail(function(xhr, status, error) {
+				.fail(function (xhr, status, error) {
 					sap.m.MessageBox.error("Error in access");
 				});
 		},
-		onSendEmail: function(oEvent) {
+		onSendEmail: function (oEvent) {
 			var that = this;
 			var items = that.getView().byId('idSubsRecent').getSelectedContexts();
 
@@ -230,10 +231,10 @@ sap.ui.define([
 				loginPayload.password = that.passwords;
 				loginPayload.includeX = that.getView().byId("includeX").getSelected();
 				$.post('/sendSubscriptionEmail', loginPayload)
-					.done(function(data, status) {
+					.done(function (data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
-					.fail(function(xhr, status, error) {
+					.fail(function (xhr, status, error) {
 						that.passwords = "";
 						sap.m.MessageBox.error(xhr.responseText);
 					});
@@ -241,11 +242,12 @@ sap.ui.define([
 
 		},
 		oSuppPopup: null,
-		destoryDialog: function(){
+		destoryDialog: function () {
 			this.oSuppPopup.destroy();
 			this.oSuppPopup = null;
 		},
-		onItemPress: function(oEvent) {
+		onItemPress: function (oEvent) {
+			debugger;
 			if (!this.oSuppPopup) {
 				this.oSuppPopup = new sap.ui.xmlfragment("oft.fiori.fragments.subSearch", this);
 				sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
@@ -306,17 +308,17 @@ sap.ui.define([
 			this.oSuppPopup.open();
 		},
 
-		onDelete: function(oEvent) {
+		onDelete: function (oEvent) {
 			var that = this;
-			MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
+			MessageBox.confirm("Do you want to delete the selected records?", function (conf) {
 				if (conf == 'OK') {
 					var items = that.getView().byId('idSubsRecent').getSelectedContexts();
 					//that.totalCount = that.totalCount - items.length;
 					for (var i = 0; i < items["length"]; i++) {
 						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), items[i].sPath, "DELETE", {}, {}, that)
-							.then(function(oData) {
+							.then(function (oData) {
 								sap.m.MessageToast.show("Deleted succesfully");
-							}).catch(function(oError) {
+							}).catch(function (oError) {
 								that.getView().setBusy(false);
 								that.oPopover = that.getErrorMessage(oError);
 								that.getView().setBusy(false);
@@ -330,7 +332,7 @@ sap.ui.define([
 
 
 
-		onRefresh: function() {
+		onRefresh: function () {
 
 			var dateString = this.getView().byId("idPayDate");
 			var from = dateString._lastValue.split(".");
@@ -358,7 +360,7 @@ sap.ui.define([
 
 
 		},
-		onSaveSubs: function(oEvent) {
+		onSaveSubs: function (oEvent) {
 			//TODO: Save to Coustomer Reg. table
 			//console.log(this.getView().getModel("local").getProperty("/newRegistration"));
 			this.subsciptionSaved = "false";
@@ -513,14 +515,14 @@ sap.ui.define([
 
 
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Subs", "POST", {},
-					payload, this)
-				.then(function(oData) {
+				payload, this)
+				.then(function (oData) {
 
 					that.getView().setBusy(false);
 					that.subsciptionSaved = "true";
 					sap.m.MessageToast.show("Subscription Saved successfully");
 					that.destroyMessagePopover();
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 
 					that.getView().setBusy(false);
 					that.subsciptionSaved = "false";
@@ -528,7 +530,7 @@ sap.ui.define([
 				});
 		},
 
-		onStartChange: function(oEvent) {
+		onStartChange: function (oEvent) {
 			var dateString = oEvent.getSource().getValue();
 			var from = dateString.split(".");
 			var dateObject = new Date(from[2], from[1] - 1, from[0]);
@@ -537,7 +539,7 @@ sap.ui.define([
 			this.getView().getModel("local").setProperty("/newRegistration/EndDate", endDate);
 			//	console.log(endDate);
 		},
-		onPayDateChange: function(oEvent) {
+		onPayDateChange: function (oEvent) {
 
 			var dateString = oEvent.getSource().getValue();
 			var from = dateString.split(".");
@@ -564,8 +566,8 @@ sap.ui.define([
 			oTable.getBinding("items").sort(oSorter);
 		},
 
-		herculis: function(oEvent) {
-			if(oEvent.getParameter("name") !== "newreg"){
+		herculis: function (oEvent) {
+			if (oEvent.getParameter("name") !== "newreg") {
 				return;
 			}
 			var newDate = new Date();
@@ -665,7 +667,7 @@ sap.ui.define([
 
 		},
 		oSuppPopup: null,
-		onCustomer: function() {
+		onCustomer: function () {
 			if (!this.oSuppPopup) {
 				this.oSuppPopup = new sap.ui.xmlfragment("oft.fiori.fragments.newCustomer", this);
 				sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
@@ -702,7 +704,7 @@ sap.ui.define([
 			this.oSuppPopup.open();
 		},
 
-		onUpdateFinished: function(oEvent) {
+		onUpdateFinished: function (oEvent) {
 			var oTable = this.getView().byId("idSubsRecent");
 			var itemList = oTable.getItems();
 			var noOfItems = itemList.length;
@@ -711,14 +713,14 @@ sap.ui.define([
 			var cell;
 
 			var isAdmin = this.getView().getModel("local").getProperty("/Role");
-			if(isAdmin === 'Admin'){
+			if (isAdmin === 'Admin') {
 				var totalAmount = 0;
 				for (var i = 0; i < itemList.length; i++) {
 					totalAmount = totalAmount + parseInt(itemList[i].getCells()[6].getText());
 				}
 				oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems + "  Amount:" + totalAmount);
 
-			}else{
+			} else {
 				oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems);
 
 			}
@@ -728,7 +730,7 @@ sap.ui.define([
 				var oCourseId = 'Courses(\'' + vCourse + '\')';
 				var oModel = this.getView().getModel().oData[oCourseId];
 				if (oModel) {
-					var CourseName = oModel.BatchNo + ': ' + oModel.Name; //got the course anme from screen
+					var CourseName = oModel.BatchNo ; //got the course anme from screen
 					itemList[i].getCells()[1].setText(CourseName);
 				}
 				var vStudent = itemList[i].getCells()[0].getText();
@@ -773,17 +775,17 @@ sap.ui.define([
 		},
 		passwords: "",
 
-		onBank: function(oEvent){
+		onBank: function (oEvent) {
 			this.oEvent_approve = oEvent;
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			var that = this;
 			var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
-			if(loginPayload.AccountName){
+			if (loginPayload.AccountName) {
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Accounts",
-				 "GET", {
-					 filters: [new sap.ui.model.Filter("accountNo","EQ",loginPayload.AccountName)]
-				 }, {}, this)
-					.then(function(oData) {
+					"GET", {
+					filters: [new sap.ui.model.Filter("accountNo", "EQ", loginPayload.AccountName)]
+				}, {}, this)
+					.then(function (oData) {
 						console.log(oData.results[0].userId);
 						try {
 							navigator.clipboard.writeText(oData.results[0].userId);
@@ -793,7 +795,7 @@ sap.ui.define([
 
 						}
 						window.open(oData.results[0].extra1);
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						that.getView().setBusy(false);
 						var oPopover = that.getErrorMessage(oError);
 
@@ -801,7 +803,7 @@ sap.ui.define([
 			}
 
 		},
-		onApprove: function(oEvent) {
+		onApprove: function (oEvent) {
 
 			this.oEvent_approve = oEvent;
 			if (oEvent.getSource().getText() == "Approve") {
@@ -811,10 +813,10 @@ sap.ui.define([
 					"Status": "Approved"
 				};
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
-					.then(function(oData) {
+					.then(function (oData) {
 
 
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						that.getView().setBusy(false);
 						var oPopover = that.getErrorMessage(oError);
 
@@ -832,16 +834,16 @@ sap.ui.define([
 				loginPayload.password = that.passwords;
 				loginPayload.includeX = that.getView().byId("includeX").getSelected();
 				$.post('/sendSubscriptionEmail', loginPayload)
-					.done(function(data, status) {
+					.done(function (data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
-					.fail(function(xhr, status, error) {
+					.fail(function (xhr, status, error) {
 						sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
 					});
 
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
-					.then(function(oData) {
+					.then(function (oData) {
 
 						// var that2 = that;
 						// that.passwords= null;
@@ -858,7 +860,7 @@ sap.ui.define([
 						// 					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
 						// 		});
 
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						that.getView().setBusy(false);
 						var oPopover = that.getErrorMessage(oError);
 
@@ -866,7 +868,7 @@ sap.ui.define([
 			}
 		},
 		// searchPopup: null,
-		onSelect: function(oEvent) {
+		onSelect: function (oEvent) {
 			this.sId = oEvent.getSource().getId();
 
 			var sTitle = "",
@@ -877,10 +879,16 @@ sap.ui.define([
 				var title = this.getView().getModel("i18n").getProperty("customer");
 				this.searchPopup.setTitle(title);
 				this.searchPopup.bindAggregation("items", {
-					path: "/Wards?$expand=ToInquiry",
-					template: new sap.m.DisplayListItem({
-						label: "{Name}",
-						value: "{DOB}"
+					path: "/Wards",
+					// template: new sap.m.DisplayListItem({
+					// 	label: "{SchoolName} - {RollNo} ",
+					// 	value: "{Name}",
+					// 	additional
+					// })
+					template: new sap.m.ObjectListItem({
+						title: "{Name}",
+						intro: "{SchoolName}",
+						number: "{RollNo}"
 					})
 				});
 				// this.searchPopup.bindAggregation("items", {
@@ -902,6 +910,7 @@ sap.ui.define([
 						value: "{FirstName}"
 					})
 				});
+				
 			} else if (this.sId.indexOf("courseId") !== -1) {
 				var oBatchFilter = new sap.ui.model.Filter("hidden", FilterOperator.EQ, false);
 				this.getCustomerPopup();
@@ -921,12 +930,13 @@ sap.ui.define([
 					// })
 
 					template: new sap.m.ObjectListItem({
-										title: "{Name}",
-										intro: "{BatchNo}",
-										number: {
-											path: "status",
-								formatter: this.formatter.formatStatusValue}
-									})
+						title: "{Name}",
+						intro: "{BatchNo}",
+						number: {
+							path: "status",
+							formatter: this.formatter.formatStatusValue
+						}
+					})
 
 
 				});
@@ -961,15 +971,17 @@ sap.ui.define([
 				// this.searchPopup.getBinding("items").filter(aFilters);
 			}
 		},
-		onConfirm: function(oEvent) {
-
+		onConfirm: function (oEvent) {
+			debugger;
 			if (this.sId.indexOf("accountDetails") !== -1) {
 
 				var bankName = oEvent.getParameter("selectedItem").getValue();
 				this.getView().getModel("local").setProperty("/newRegistration/AccountName", bankName);
 			} else if (this.sId.indexOf("customerId") !== -1) {
 
-				var data = this.getSelectedKey(oEvent);
+				// var data = this.getSelectedKey(oEvent);
+				var data = this.getObjListSelectedkey(oEvent);
+				// this.getView().byId("idCustomer").setText(data[0]);
 				this.getView().byId("customerId").setValue(data[0]);
 				this.customerId = data[2];
 
@@ -981,9 +993,9 @@ sap.ui.define([
 				// this.courseId = data[2];
 
 				var data = this.getObjListSelectedkey(oEvent);
-			this.getView().byId("idCourseName").setText(data[0]);
-			this.getView().byId("courseId").setValue(data[1]);
-			this.courseId = data[3];
+				this.getView().byId("idCourseName").setText(data[0]);
+				this.getView().byId("courseId").setValue(data[1]);
+				this.courseId = data[3];
 
 				var oItem = oEvent.getParameter("selectedItem");
 				var oContext = oItem.getBindingContext();
@@ -996,8 +1008,8 @@ sap.ui.define([
 
 				var x = new Date(oContext.getObject().DemoStartDate);
 				x.setMonth(x.getMonth() + 1);
-				if(x > new Date()){
-						this.getView().byId("idPayDueDate").setDateValue(x);
+				if (x > new Date()) {
+					this.getView().byId("idPayDueDate").setDateValue(x);
 				}
 
 
@@ -1034,9 +1046,9 @@ sap.ui.define([
 
 					var Filter1 = new sap.ui.model.Filter("GmailId", "EQ", oContext.getObject().EmailId);
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
-							filters: [Filter1]
-						}, payload, this)
-						.then(function(oData) {
+						filters: [Filter1]
+					}, payload, this)
+						.then(function (oData) {
 							if (oData.results.length != 0) {
 								sap.ui.getCore().byId("idEmailCust").setValue(oData.results[0].GmailId);
 								sap.ui.getCore().byId("idName").setValue(oData.results[0].Name);
@@ -1113,7 +1125,7 @@ sap.ui.define([
 								that.UpdateCustomer = false;
 								//that.CreateCustomer = true;
 							}
-						}).catch(function(oError) {
+						}).catch(function (oError) {
 
 							var vLastName;
 							var vFirstName;
@@ -1159,7 +1171,7 @@ sap.ui.define([
 			//this.searchPopup.close();
 		},
 
-		suggestionItemSelected: function(oEvent) {
+		suggestionItemSelected: function (oEvent) {
 
 			var oItem = oEvent.getParameter("selectedItem");
 			var oContext = oItem.getBindingContext();
@@ -1185,9 +1197,9 @@ sap.ui.define([
 
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
-						filters: [Filter1]
-					}, payload, this)
-					.then(function(oData) {
+					filters: [Filter1]
+				}, payload, this)
+					.then(function (oData) {
 						if (oData.results.length != 0) {
 							sap.ui.getCore().byId("idEmailCust").setValue(oData.results[0].GmailId);
 							sap.ui.getCore().byId("idName").setValue(oData.results[0].Name);
@@ -1264,7 +1276,7 @@ sap.ui.define([
 							that.UpdateCustomer = false;
 							//that.CreateCustomer = true;
 						}
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 
 						var vLastName;
 						var vFirstName;
@@ -1341,7 +1353,7 @@ sap.ui.define([
 
 		},
 
-		onAmountChange: function(oEvent) {
+		onAmountChange: function (oEvent) {
 
 			var value = parseInt(oEvent.getParameter("value"));
 			if (value < CourseFee) {
@@ -1354,7 +1366,7 @@ sap.ui.define([
 			}
 		},
 
-		onWaiver: function(oEvent) {
+		onWaiver: function (oEvent) {
 			var selected = oEvent.getParameter("selected");
 			if (selected === true) {
 				this.getView().getModel("local").setProperty("/newRegistration/PendingAmount", 0);
@@ -1373,7 +1385,8 @@ sap.ui.define([
 				}
 			}
 		},
-		onSearch: function(oEvent) {
+		onSearch: function (oEvent) {
+			debugger;
 			// var oFilter1 = new sap.ui.model.Filter("text", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
 			// var oFilter2 = new sap.ui.model.Filter("key", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
 			// var oFilter = new sap.ui.model.Filter({
@@ -1446,16 +1459,16 @@ sap.ui.define([
 			}
 
 		},
-		onCancel: function(oEvent) {
+		onCancel: function (oEvent) {
 			this.searchPopup.close();
 		},
-		onClose: function() {
+		onClose: function () {
 			// var MultiInput = sap.ui.getCore().getElementById("multiInputID");
 			// MultiInput.removeAllTokens();
 			this.oSuppPopup.close();
 		},
 
-		onCreateCust: function(oEvent) {
+		onCreateCust: function (oEvent) {
 			//TODO: Create POST Request to create customer
 			//console.log(this.getView().getModel("local").getProperty("/newCustomer"));
 			var oLocal = oEvent;
@@ -1492,7 +1505,7 @@ sap.ui.define([
 					(file_ext == "msword") || (file_ext == "MSWORD")) {
 
 					var reader = new FileReader();
-					reader.onload = function(e) {
+					reader.onload = function (e) {
 
 						//get an access to the content of the file
 						if ((file_ext == "PDF") || (file_ext == "pdf")) {
@@ -1536,8 +1549,8 @@ sap.ui.define([
 				};
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "POST", {},
-						payload, this)
-					.then(function(oData) {
+					payload, this)
+					.then(function (oData) {
 
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Customer Saved successfully");
@@ -1546,7 +1559,7 @@ sap.ui.define([
 						//oMultiInput.removeAllTokens();
 						that.oSuppPopup.close();
 
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						that.getView().setBusy(false);
 						//sap.m.MessageToast.show(oError.responseText);
 						var oPopover = that.getErrorMessage(oError);
@@ -1598,8 +1611,8 @@ sap.ui.define([
 				sPath1 = sPath1 + "(" + "\'" + that.customerGUID + "\'" + ")";
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath1, "PUT", {},
-						payload, this)
-					.then(function(oData) {
+					payload, this)
+					.then(function (oData) {
 
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Customer updated successfully");
@@ -1608,7 +1621,7 @@ sap.ui.define([
 						//oMultiInput.removeAllTokens();
 						that.oSuppPopup.close();
 
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 
 						that.getView().setBusy(false);
 						//sap.m.MessageToast.show(oError.responseText);
@@ -1619,7 +1632,7 @@ sap.ui.define([
 			}
 		},
 
-		onLiveSearch: function(oEvent) {
+		onLiveSearch: function (oEvent) {
 
 			var queryString = oEvent.getParameter("query");
 			if (!queryString) {
@@ -1728,7 +1741,7 @@ sap.ui.define([
 			}
 
 		},
-		onClearScreen: function(oEvent) {
+		onClearScreen: function (oEvent) {
 			this.getView().getModel("local").setProperty("/newRegistration/StartDate", this.formatter.getFormattedDate(0));
 			this.getView().getModel("local").setProperty("/newRegistration/PaymentDate", this.formatter.getFormattedDate(0));
 			this.getView().getModel("local").setProperty("/newRegistration/EndDate", this.formatter.getFormattedDate(8));
@@ -1760,11 +1773,11 @@ sap.ui.define([
 
 		},
 
-		handleSkillChange: function(oEvent) {
+		handleSkillChange: function (oEvent) {
 
 		},
 
-		handleSkillFinish: function(oEvent) {
+		handleSkillFinish: function (oEvent) {
 			var selectedItems = oEvent.getParameter("selectedItems");
 
 			var SkillSet = ' ';
@@ -1777,10 +1790,10 @@ sap.ui.define([
 			this.getView().getModel("local").setProperty("/newCustomer/Skills", SkillSet);
 		},
 
-		onEmail: function(oEvent) {
+		onEmail: function (oEvent) {
 			sap.ui.getCore().byId("idName").setEnabled(true);
 		},
-		onEmailExist: function(oEvent) {
+		onEmailExist: function (oEvent) {
 			//
 			var oLocal = oEvent;
 			var that = this;
@@ -1795,10 +1808,10 @@ sap.ui.define([
 
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
-						filters: [Filter1]
-					}, payload, this)
+					filters: [Filter1]
+				}, payload, this)
 
-					.then(function(oData) {
+					.then(function (oData) {
 						if (oData.results.length != 0) {
 							sap.ui.getCore().byId("createNew").setText("Update");
 							that.UpdateCustomer = true;
@@ -1810,7 +1823,7 @@ sap.ui.define([
 							that.UpdateCustomer = false;
 							//that.CreateCustomer = true;
 						}
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						//	that.getView().setBusy(false);
 
 						sap.m.MessageToast.show("New Customer");
@@ -1826,7 +1839,7 @@ sap.ui.define([
 			}
 
 		},
-		onEnter: function(oEvent) {
+		onEnter: function (oEvent) {
 
 
 			// var oItem = oEvent.getParameter("selectedItem");
@@ -1858,9 +1871,9 @@ sap.ui.define([
 
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
-						filters: [Filter1]
-					}, payload, this)
-					.then(function(oData) {
+					filters: [Filter1]
+				}, payload, this)
+					.then(function (oData) {
 						if (oData.results.length != 0) {
 							sap.ui.getCore().byId("idEmailCust").setValue(oData.results[0].GmailId);
 							sap.ui.getCore().byId("idName").setValue(oData.results[0].Name);
@@ -1910,9 +1923,9 @@ sap.ui.define([
 
 
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Inquries", "GET", {
-									filters: [Filter1]
-								}, payload, that)
-								.then(function(oData) {
+								filters: [Filter1]
+							}, payload, that)
+								.then(function (oData) {
 									if (oData.results.length != 0) {
 										sap.ui.getCore().byId("idEmailCust").setValue(oData.results[0].EmailId);
 										sap.ui.getCore().byId("idName").setValue(oData.results[0].Name);
@@ -1951,13 +1964,13 @@ sap.ui.define([
 										sap.ui.getCore().byId("createNew").setText("Create");
 										that2.UpdateCustomer = false;
 									}
-								}).catch(function(oError) {
+								}).catch(function (oError) {
 									//that2.getView().setBusy(false);
 									//sap.m.MessageToast.show(oError.responseText);
 									var oPopover = that2.getErrorMessage(oError);
 								});
 						}
-					}).catch(function(oError) {
+					}).catch(function (oError) {
 						//that.getView().setBusy(false);
 						//sap.m.MessageToast.show(oError.responseText);
 						var oPopover = that.getErrorMessage(oError);
@@ -1969,8 +1982,42 @@ sap.ui.define([
 			}
 
 		},
-		onUpload: function(oEvent) {
-
+		onStudentLinkPress:function(oEvent){
+			var that = this;
+			this.oStudentId = oEvent.getSource().getBindingContext().getObject().StudentId;
+			var oUrl = "/Wards('"+this.oStudentId+"')/ToInquiry";
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(),oUrl, "GET", null, null, this)
+				.then(function(oData) {
+					that.getView().getModel("local").setProperty("/parentDetails", oData);
+					debugger;
+				}).catch(function(oError) {
+					debugger;
+					// MessageBox.show(oError);
+				});
+			// $.ajax({
+			// 	type: 'GET', // added,
+			// 	url: oUrl,
+			// 	success: function(data) {
+			// 		debugger;
+			// 	},
+			// 	error: function(xhr, status, error) {
+			// 		debugger;
+			// 	}
+			// });
+			var oButton = oEvent.getSource(),
+				oView = this.getView();
+			if (!this._oPopover) { 
+				this._oPopover = Fragment.load({
+					name: "oft.fiori.fragments.UserMenu",
+					controller: this,
+				}).then(function (oPopover) {
+					oView.addDependent(oPopover);
+					return oPopover;
+				});
+			}
+			this._oPopover.then(function (oPopover) {
+				oPopover.openBy(oButton);
+			});
 		}
 
 		//End of PJHA

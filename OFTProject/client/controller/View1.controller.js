@@ -58,6 +58,7 @@ sap.ui.define([
 			// //debugger;
 		},
 		onSearch: function(oEvent){
+			debugger;
 			//debugger;
 			var searchStr = oEvent.getParameter("query");
 			if(!searchStr){

@@ -379,7 +379,7 @@ sap.ui.define([
 
 		},
 		onSearch: function(oEvent) {
-
+			debugger;
 			if (this.sId.indexOf("customerId") !== -1) {
 				var queryString = this.getQuery(oEvent);
 
