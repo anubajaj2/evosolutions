@@ -28,6 +28,48 @@ sap.ui.define([
 		clearForm: function(){
 
 		},
+		onViewPhoto: function(oEvent){
+			var oView = this.getView();
+			var that = this;
+			that.photoPath = oEvent.getSource().getParent().getBindingContextPath();
+			var photo = this.getView().getModel('local').getProperty(that.photoPath+'/Photo');
+			if(!that.oViewAndUploadPhoto){
+				that.oViewAndUploadPhoto = sap.ui.core.Fragment.load({
+			    id: oView.getId(),
+			    name: "oft.fiori.fragments.viewAndUploadPhoto",
+			    controller: this
+			  });
+				that.oViewAndUploadPhoto.then(function(oDialog){
+			    oView.addDependent(oDialog);
+					oDialog.getContent()[0].getItems()[0].getItems()[0].setSrc(photo);
+					oDialog.open();
+			  });
+			}else{
+				that.oViewAndUploadPhoto.then(function(oDialog){
+					oDialog.getContent()[0].getItems()[0].getItems()[0].setSrc(photo);
+					oDialog.getContent()[0].getItems()[1].getItems()[0].setValue();
+			    oDialog.open();
+			  });
+			}
+		},
+		onUploadPhotoClose: function(){
+			this.oViewAndUploadPhoto.then(function(oDialog){
+				oDialog.close();
+			});
+		},
+		onFileUploaderChange: function(oEvent){
+			var that = this;
+			if(oEvent.getParameter('files').length>0){
+				var oFile = oEvent.getParameter('files')[0];
+				var oImage = oEvent.getSource().getParent().getParent().getItems()[0].getItems()[0];
+				var oReader = new FileReader();
+				oReader.onload = function(e) {
+				  oImage.setSrc(e.target.result);
+					that.getView().getModel('local').setProperty(that.photoPath+'/Photo', e.target.result);
+				};
+				oReader.readAsDataURL(oFile);
+			}
+		},
 		onClearForm: function() {
 			this.getView().getModel("local").setProperty("/newLead",{
 				"EmailId": "",
@@ -467,6 +509,7 @@ sap.ui.define([
 										that.getView().setBusy(false);
 										sap.m.MessageToast.show("Ward Saved successfully");
 									}).catch(function(oError) {
+										MessageBox.error(oError.responseText);
 										that.getView().setBusy(false);
 									});
 							}else{
@@ -477,6 +520,7 @@ sap.ui.define([
 										that.getView().setBusy(false);
 										sap.m.MessageToast.show("Ward Saved successfully");
 									}).catch(function(oError) {
+										MessageBox.error(oError.responseText);
 										that.getView().setBusy(false);
 									});
 							}
@@ -485,6 +529,7 @@ sap.ui.define([
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Inquiry Saved successfully");
 					}).catch(function(oError) {
+						MessageBox.error(oError.responseText);
 						that.getView().setBusy(false);
 					});
 			}else{
@@ -506,6 +551,7 @@ sap.ui.define([
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Inquiry Saved successfully");
 					}).catch(function(oError) {
+						MessageBox.error(oError.responseText);
 						that.getView().setBusy(false);
 					});
 			}

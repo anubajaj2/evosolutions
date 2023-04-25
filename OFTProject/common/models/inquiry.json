@@ -32,6 +32,7 @@
     },
     "Phone": {
       "type": "string",
+      "unique": true,
       "required": true
     },
     "EmergencyContactName": {
@@ -40,7 +41,7 @@
     },
     "EmergencyContactNo": {
       "type": "string",
-      "default": null
+      "required": false
     },
     "SoftDelete": {
       "type": "boolean",

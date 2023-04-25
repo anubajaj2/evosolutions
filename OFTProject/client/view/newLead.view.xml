@@ -215,7 +215,7 @@
                   <core:Item text="AB-" key="AB-" />
               </items>
               </Select>
-              <Button text="View" press="viewPhoto"/>
+              <Button text="View" press="onViewPhoto"/>
             </cells>
           </ColumnListItem>
         </items>

@@ -6,8 +6,34 @@ module.exports = function(Inquiry) {
     var app = require('../../server/server');
     // var CourseMst = app.models.CourseMst;
     //validations
-    Inquiry.validatesPresenceOf('FatherName', {message: 'Name Cannot be blank'})
+    Inquiry.validatesPresenceOf('FatherName', {message: 'FatherName Cannot be blank'});
     Inquiry.validatesLengthOf('Phone', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
+    // Inquiry.validatesLengthOf('EmergencyContactNo', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}}, function(err) {
+    //   const instance = this;
+    //   if (instance.EmergencyContactNo && instance.EmergencyContactNo.length !== 10) {
+    //     err();
+    //   }
+    // });
+    Inquiry.observe('before save', function validateDuplicates(ctx, next) {
+      const instance = ctx.instance || ctx.currentInstance;
+      if (instance) {
+        Inquiry.find({ where: { Phone: instance.Phone }}, function (err, models) {
+          if (err) {
+            return next(err);
+          }
+          if (models.length > 0 && models[0].id.toString() !== (instance.id ? instance.id.toString() : instance.id)) {
+            const error = new Error('Instance with same Number already exists');
+            error.statusCode = 422;
+            next(error);
+          } else {
+            next();
+          }
+        });
+      } else {
+        next();
+      }
+    });
+
     // Inquiry.validatesInclusionOf('CourseName', {
     //     in: ["UI5 and Fiori", "ABAP on HANA", "Launchpad", "HANA XS",  "Hybris C4C",
     //          ,"HANA Cloud Integration (HCI)","SAP Cloud Platform","ABAP", "OOPS ABAP", "Webdynpro", "Workflow", "FPM", "Other"
