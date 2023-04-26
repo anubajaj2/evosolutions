@@ -121,7 +121,7 @@ sap.ui.define([
 			var oStuModel = this.getOwnerComponent().getModel();
 			var oModelJsonCC = new sap.ui.model.json.JSONModel();
 			// var oStuModel = this.getOwnerComponent().getModel();
-			oStuModel.read('/Students', {
+			oStuModel.read('/Wards', {
 				success: function (oData, response) {
 					oModelJsonCC.setData(oData);
 				},
@@ -463,12 +463,12 @@ sap.ui.define([
 			// }
 			//--- EOC  -Venkat -19/02/2019
 
-			var interested = this.getView().byId("idInterested").getSelected();
-			if (interested == true) {
-				leadData.ExtraN1 = 1;
-			} else {
-				leadData.ExtraN1 = 0;
-			}
+			// var interested = this.getView().byId("idInterested").getSelected();
+			// if (interested == true) {
+			// 	leadData.ExtraN1 = 1;
+			// } else {
+			// 	leadData.ExtraN1 = 0;
+			// }
 
 			var vStatus = null;
 			if (this.UserRole == "Admin") {
@@ -477,7 +477,7 @@ sap.ui.define([
 				vStatus = "Pending";
 			}
 			debugger;
-			that.getView().setBusy(true);
+			that.getView().setBusy(false);
 
 			var payload = {
 				"StudentId": this.customerId, //customerGUID, //leadData.StudentId,
@@ -528,7 +528,9 @@ sap.ui.define([
 					that.subsciptionSaved = "false";
 					var oPopover = that.getErrorMessage(oError);
 				});
+			this.getView().getModel().refresh();
 		},
+
 
 		onStartChange: function (oEvent) {
 			var dateString = oEvent.getSource().getValue();
@@ -705,6 +707,7 @@ sap.ui.define([
 		},
 
 		onUpdateFinished: function (oEvent) {
+			debugger;
 			var oTable = this.getView().byId("idSubsRecent");
 			var itemList = oTable.getItems();
 			var noOfItems = itemList.length;
@@ -730,14 +733,15 @@ sap.ui.define([
 				var oCourseId = 'Courses(\'' + vCourse + '\')';
 				var oModel = this.getView().getModel().oData[oCourseId];
 				if (oModel) {
-					var CourseName = oModel.BatchNo ; //got the course anme from screen
+					var CourseName = oModel.BatchNo; //got the course anme from screen
 					itemList[i].getCells()[1].setText(CourseName);
 				}
+				debugger;
 				var vStudent = itemList[i].getCells()[0].getText();
-				var oStudentId = 'Students(\'' + vStudent + '\')';
+				var oStudentId = 'Wards(\'' + vStudent + '\')';
 				var vModel = this.getView().getModel().oData[oStudentId];
 				if (vModel) {
-					var StudMail = vModel.GmailId;
+					var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
 					itemList[i].getCells()[0].setText(StudMail);
 				}
 				//var vButtonTxt = itemList[i].getCells()[2].getText();
@@ -769,6 +773,17 @@ sap.ui.define([
 				if (value1) {
 					itemList[i].getCells()[4].setText(value1);
 				}
+				var that = this
+				var oUrl = "/Wards('" + vStudent + "')";
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
+					.then(function (oData) {
+						debugger;
+						var sNewStudentId = oData.Name + oData.RollNo;
+						// itemList[i].getCells()[4].setText(sNewStudentId);
+						// that.getView().getModel('local').setProperty('/sNewStudentName', sNewStudentId);
+					}).catch(function (oError) {
+						debugger;
+					});
 			}
 
 
@@ -837,6 +852,7 @@ sap.ui.define([
 					.done(function (data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
+
 					.fail(function (xhr, status, error) {
 						sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
 					});
@@ -910,7 +926,7 @@ sap.ui.define([
 						value: "{FirstName}"
 					})
 				});
-				
+
 			} else if (this.sId.indexOf("courseId") !== -1) {
 				var oBatchFilter = new sap.ui.model.Filter("hidden", FilterOperator.EQ, false);
 				this.getCustomerPopup();
@@ -983,7 +999,7 @@ sap.ui.define([
 				var data = this.getObjListSelectedkey(oEvent);
 				// this.getView().byId("idCustomer").setText(data[0]);
 				this.getView().byId("customerId").setValue(data[0]);
-				this.customerId = data[2];
+				this.customerId = data[3];
 
 			} else if (this.sId.indexOf("courseId") !== -1) {
 
@@ -1410,10 +1426,11 @@ sap.ui.define([
 					this.searchPopup.getBinding("items").filter(aFilter);
 				} else {
 					this.searchPopup.bindAggregation("items", {
-						path: "/Students",
-						template: new sap.m.DisplayListItem({
-							label: "{Name}",
-							value: "{GmailId}"
+						path: "/Wards",
+						template: new sap.m.ObjectListItem({
+							title: "{Name}",
+							intro: "{SchoolName}",
+							number: "{RollNo}"
 						})
 						// template: new sap.m.StandardListItem({
 						// 	title: "{Name}",
@@ -1643,7 +1660,7 @@ sap.ui.define([
 				if (queryString) {
 
 					var oFilter1 = new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, queryString);
-					var oFilter2 = new sap.ui.model.Filter("GmailId", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter2 = new sap.ui.model.Filter("SchoolName", sap.ui.model.FilterOperator.Contains, queryString);
 					var oFilter = new sap.ui.model.Filter({
 						filters: [oFilter1, oFilter2],
 						and: false
@@ -1654,10 +1671,11 @@ sap.ui.define([
 
 				} else {
 					this.searchPopup.bindAggregation("items", {
-						path: "/Students",
-						template: new sap.m.DisplayListItem({
-							label: "{Name}",
-							value: "{GmailId}"
+						path: "/Wards",
+						template: new sap.m.ObjectListItem({
+							title: "{Name}",
+							intro: "{SchoolName}",
+							number: "{RollNo}"
 						})
 					});
 					this.searchPopup.getBinding("items").filter([]);
@@ -1768,7 +1786,7 @@ sap.ui.define([
 			this.getView().getModel("local").setProperty("/newCustomer/Skills", null);
 			this.getView().getModel("local").setProperty("/newCustomer/Star", false);
 			this.getView().getModel("local").setProperty("/newCustomer/Defaulter", false);
-			this.getView().byId("imageUploader").clear();
+			// this.getView().byId("imageUploader").clear();
 			// sap.ui.getCore().byId("idSkills").clearSelection();
 
 		},
@@ -1982,15 +2000,15 @@ sap.ui.define([
 			}
 
 		},
-		onStudentLinkPress:function(oEvent){
+		onStudentLinkPress: function (oEvent) {
 			var that = this;
 			this.oStudentId = oEvent.getSource().getBindingContext().getObject().StudentId;
-			var oUrl = "/Wards('"+this.oStudentId+"')/ToInquiry";
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(),oUrl, "GET", null, null, this)
-				.then(function(oData) {
+			var oUrl = "/Wards('" + this.oStudentId + "')/ToInquiry";
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
+				.then(function (oData) {
 					that.getView().getModel("local").setProperty("/parentDetails", oData);
 					debugger;
-				}).catch(function(oError) {
+				}).catch(function (oError) {
 					debugger;
 					// MessageBox.show(oError);
 				});
@@ -2006,7 +2024,7 @@ sap.ui.define([
 			// });
 			var oButton = oEvent.getSource(),
 				oView = this.getView();
-			if (!this._oPopover) { 
+			if (!this._oPopover) {
 				this._oPopover = Fragment.load({
 					name: "oft.fiori.fragments.UserMenu",
 					controller: this,
