@@ -1046,64 +1046,72 @@ app.start = function() {
 
 
 		app.post('/requestMessage', function(req, res) {
-			debugger;
+
 			var msg = "";
 			var typeMsg = req.body.msgType;
-			//var username='anubhav.abap@gmail.com';
-			var username='install.abap@gmail.com';
-			//var hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
-			var hash = 'eef684d01be7535d39d7f409a1b8e888f874e9a05243b4fb3db2426f99aed5ba';
-			//var sender='ONLTRN';
-			var sender = "txtlcl";
+			var generateOTP = function() {
+
+			    // Declare a digits variable
+			    // which stores all digits
+			    var digits = '0123456789';
+			    let OTP = '';
+			    for (let i = 0; i < 6; i++ ) {
+			        OTP += digits[Math.floor(Math.random() * 10)];
+			    }
+			    return OTP;
+			}
 			switch (typeMsg) {
-				case "inquiry":
-					msg = "Dear #FirstName#, Greetings from www.evotrainingsolutions.com, For #COURSE# course, please feel free to call us on 8448443349";
-					msg = msg.replace("#COURSE#", req.body.userName);
-					username='anubhav.abap@gmail.com';
-					hash='faffa687d5142e5af59d8e892b9802651a63fd3185d4fdcc5aad716065320bf7'; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
-					sender = "ONLTRN";
+				case "OTP":
+					//msg = "Dear #FirstName#, Greetings from www.anubhavtrainings.com, we have sent the course details to your email id, please write to us on contact@anubhavtrainings.com";
+					var myOTP = generateOTP();
+					msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone.";
 					break;
-				case "leaveRequest":
-					msg = "Dear #FirstName#, You have requested for #Custom1# days of leaves. your leave balance is #Custom2#.";
-					msg = msg.replace("#Custom1#", req.body.requested);
-					msg = msg.replace("#Custom2#", req.body.balance);
+				case "WARDREG":
+					msg = 'Thanks for registering with EVOS Solutions, Your enrollment is confirmed and fees was received.';
 					break;
-				case "leaveReject":
-						msg = "Dear #FirstName#, Your leave request has been rejected.";
-						break;
-				case "leaveApproved":
-						msg = "Dear #FirstName#, Your leave request has been successfully approved.";
-							break;
 				default:
 					return;
+
 			}
-			msg = msg.replace("#FirstName#", req.body.userName);
 
+			var http = require('https');
+			var urlencode = require('urlencode');
+			msg = urlencode(msg);
+			console.log("SMS Sending --- " + msg);
+			var number = req.body.Number;
+			//var username='anubhav.abap@gmail.com';
+			var username = 'contact@soyuztechnologies.com';
+			var hash = 'ed5385054838bb0d98685409492911dfcc4efade08f2d75e4583ae61fa54c2f2';
 
-				var http = require('http');
-				var urlencode = require('urlencode');
-				msg=urlencode(msg);
-				var number=req.body.Number;
+			// The hash key could be found under Help->All Documentation->Your hash key.
+			// Alternatively you can use your Textlocal password in plain text.
+			//var hash = 'eef684d01be7535d39d7f409a1b8e888f874e9a05243b4fb3db2426f99aed5ba';
+			//var sender='ONLTRN';
+			var sender = "395558";
+			var data = 'username=' + username + '&hash=' + hash + '&sender=' + sender + '&numbers=' + number + '&message=' + msg
+			var options = {
+				host: 'api.textlocal.in',
+				path: '/send?' + data
+			};
+			callback = function(response) {
+				var str = '';
+				response.on('data', function(chunk) {
+					str += chunk;
+				});
 
-				var data='username='+username+'&hash='+hash+'&sender='+sender+'&numbers='+number+'&message='+msg
-				var options = {
-		 				 host: 'api.textlocal.in',
-			  	 	 path: '/send?'+data
-				};
-				callback = function(response) {
-				  var str = '';
-				  response.on('data', function (chunk) {
-				  str += chunk;
-				  });
-
-				  //the whole response has been recieved, so we just print it out here
-				  response.on('end', function () {
+				//the whole response has been recieved, so we just print it out here
+				response.on('end', function() {
+					if(typeMsg === "OTP"){
+						res.send(myOTP);
+					}else{
 						res.send("message sent");
-				  	console.log(str);
-				  });
-				}
-				//console.log('hello js'))
-				http.request(options, callback).end();
+					}
+					console.log(str);
+				});
+			}
+			//console.log('hello js'))
+			//console.log(options.host + options.path);
+			http.request(options, callback).end();
 		});
 
 		app.get('/getAmountPerAccount', function(req, res) {
