@@ -1065,6 +1065,7 @@ app.start = function() {
 					//msg = "Dear #FirstName#, Greetings from www.anubhavtrainings.com, we have sent the course details to your email id, please write to us on contact@anubhavtrainings.com";
 					var myOTP = generateOTP();
 					msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone.";
+
 					break;
 				case "WARDREG":
 					msg = 'Thanks for registering with EVOS Solutions, Your enrollment is confirmed and fees was received.';
@@ -1102,7 +1103,26 @@ app.start = function() {
 				//the whole response has been recieved, so we just print it out here
 				response.on('end', function() {
 					if(typeMsg === "OTP"){
-						res.send(myOTP);
+						var Otp = app.models.Otp;
+						var newRec = {
+							CreatedOn : new Date(),
+							Attempts : 1,
+							OTP : myOTP,
+							Number: req.body.Number
+						};
+						Otp.findOrCreate({
+														where: {
+																Number: req.body.Number
+															}
+														}, newRec)
+													.then(function(inq) {
+														res.send(myOTP);
+														console.log("created successfully");
+													})
+													.catch(function(err) {
+														console.log(err);
+													});
+
 					}else{
 						res.send("message sent");
 					}
@@ -1112,6 +1132,31 @@ app.start = function() {
 			//console.log('hello js'))
 			//console.log(options.host + options.path);
 			http.request(options, callback).end();
+		});
+
+		app.get("/validateOtp",function(req, res) {
+			Otp.findOne({
+						where: {
+							and: [{
+								Number: req.params.Number
+							}, {
+								OTP: req.params.OTP
+							}]
+						}
+					})
+					.then(function(inq) {
+						if(inq){
+								res.send(true);
+						}else{
+								res.send(false);
+						}
+
+						console.log("created successfully");
+					})
+					.catch(function(err) {
+						console.log(err);
+						res.send(false);
+					});
 		});
 
 		app.get('/getAmountPerAccount', function(req, res) {
