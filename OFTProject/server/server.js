@@ -1044,6 +1044,20 @@ app.start = function() {
 
 		});
 
+		app.get("/getWardDataByBatch", function () {
+			var Sub = app.models.Sub;
+			//https://loopback.io/doc/en/lb2/Querying-data.html
+
+			//Step 1: get the batch if which you pass from fiori apps
+
+			//Step 2: Find all subscriptions for that batchs
+			//Sub.find({batchId: sId}).then(function(data){   })
+			//Step 3: make an array of all the students in those subs
+			//Step 4: Fire find on Ward table with all the IDs
+			//Step 5: Student Name, id, blood etc.. --> Inquiry
+
+			//Since all work is sync - use waterfall module as showen getAmountPerAccount
+		});
 
 		app.post('/requestMessage', function(req, res) {
 
