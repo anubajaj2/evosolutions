@@ -1078,11 +1078,11 @@ app.start = function() {
 				case "OTP":
 					//msg = "Dear #FirstName#, Greetings from www.anubhavtrainings.com, we have sent the course details to your email id, please write to us on contact@anubhavtrainings.com";
 					var myOTP = generateOTP();
-					msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone.";
+					msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone. Soyuz Technologies LLP";
 
 					break;
 				case "WARDREG":
-					msg = 'Thanks for registering with EVOS Solutions, Your enrollment is confirmed and fees was received.';
+					msg = 'Thanks for registering with EVOS Solutions, Your enrollment is confirmed and fees was received. Soyuz Technologies LLP';
 					break;
 				default:
 					return;
