@@ -368,7 +368,7 @@ sap.ui.define([
 				path: "/Inquries",
 				template: new sap.m.DisplayListItem({
 					label: "{FatherName}",
-					value: "{Phone}"
+					value: "{Phone} {EmailId}"
 				})
 			});
 
@@ -376,22 +376,31 @@ sap.ui.define([
 		onConfirm: function (oEvent) {
 			var data = this.getSelectedKey(oEvent),
 			that = this;
-			// debugger;
-			if (this.flag === "inquiry") {
-				var oTrainer = "Inquries(\'" + data[2] + "\')";
-				var oData = this.getView().getModel().oData[oTrainer];
-				var oGuid = data[2];
-				// debugger;
-				this.getView().getModel("local").setProperty("/newLead", oData);
-				that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oTrainer}/ToWard`, "GET", {},
-						{}, that)
-					.then(function(oData) {
-						that.getView().getModel("local").setProperty("/newLead/WardDetails", oData.results);
-						that.getView().setBusy(false);
-					}).catch(function(oError) {
-						that.getView().setBusy(false);
-					});
-			}
+			var oInquiry = "Inquries(\'" + data[2] + "\')";
+			var oData = this.getView().getModel().oData[oInquiry];
+			var oGuid = data[2];
+			that.loadInquiry(oData);
+		},
+		loadInquiry: function(oData){
+			this.flag = "inquiry"
+			var that = this;
+			var oInquiry = "Inquries(\'" + oData.id + "\')";
+			that.getView().setBusy(true);
+			that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oInquiry}`, "GET", {},
+					{}, that)
+				.then(function(oData) {
+					that.getView().getModel("local").setProperty("/newLead", oData);
+					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oInquiry}/ToWard`, "GET", {},
+							{}, that)
+						.then(function(oData2) {
+							that.getView().getModel("local").setProperty("/newLead/WardDetails", oData2.results);
+							that.getView().setBusy(false);
+						}).catch(function(oError) {
+							that.getView().setBusy(false);
+						});
+				}).catch(function(oError) {
+					that.getView().setBusy(false);
+				});
 		},
 		onCancel: function(){
 			this.flag = null;
@@ -495,6 +504,7 @@ sap.ui.define([
 				// "Organization": leadData.organization
 				// "WardDetails": leadData.WardDetails
 			};
+			that.getView().setBusy(true);
 			var wardDetails = leadData.WardDetails;
 			if(this.flag==='inquiry'){
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), `/Inquries('${leadData.id}')`, "PUT", {},
@@ -524,7 +534,6 @@ sap.ui.define([
 										that.getView().setBusy(false);
 									});
 							}
-
 						}
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Inquiry Saved successfully");
@@ -533,27 +542,43 @@ sap.ui.define([
 						that.getView().setBusy(false);
 					});
 			}else{
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
-						payload, this)
-					.then(function(oData) {
-						const inquiryId = oData.id;
-						for(var ward of wardDetails){
-							ward.InquiryId = inquiryId;
-							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
-									ward, that)
-								.then(function(oData) {
-									that.getView().setBusy(false);
-									sap.m.MessageToast.show("Ward Saved successfully");
-								}).catch(function(oError) {
-									that.getView().setBusy(false);
-								});
-						}
-						that.getView().setBusy(false);
-						sap.m.MessageToast.show("Inquiry Saved successfully");
-					}).catch(function(oError) {
-						MessageBox.error(oError.responseText);
-						that.getView().setBusy(false);
-					});
+				const promises = [];
+				promises.push(
+					new Promise((resolve, reject)=>{
+					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries", "POST", {},
+							payload, this)
+						.then(function(oData) {
+							const inquiryId = oData.id;
+							for(var ward of wardDetails){
+								ward.InquiryId = inquiryId;
+								promises.push(
+							    new Promise((resolve, reject) => {
+										that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
+												ward, that)
+											.then(function(oData2) {
+												resolve(oData2);
+											}).catch(function(oError) {
+												reject(oError);
+											});
+							    })
+						  	);
+							}
+							resolve(oData);
+							Promise.all(promises)
+							.then(results => {
+								that.getView().setBusy(false);
+								that.loadInquiry(results[0]);
+								sap.m.MessageToast.show("Inquiry Saved successfully");
+							})
+							.catch(error => {
+								sap.m.MessageToast.show(error);
+							});
+						}).catch(function(oError) {
+							MessageBox.error(oError.responseText);
+							that.getView().setBusy(false);
+							reject(oError);
+						});
+				}));
 			}
 
 		},
