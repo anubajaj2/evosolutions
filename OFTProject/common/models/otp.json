@@ -16,7 +16,7 @@
 			"type": "string",
 			"required": true,
 			"default": "null"
-		}
+		},
 		"CreatedOn": {
 			"type": "date",
 			"default": "null"
