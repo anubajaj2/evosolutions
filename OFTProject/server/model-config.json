@@ -123,5 +123,9 @@
  "HolidayCalendar":{
   "dataSource": "mongoatlas",
   "public": true
+ },
+ "Otp":{
+  "dataSource": "mongoatlas",
+  "public": true
  }
 }
