@@ -225,6 +225,11 @@
 								"pattern": "performanceAnalysis",
 								"name": "performanceAnalysis",
 								"target": ["donald", "performanceAnalysis"]
+							},
+							{
+								"pattern": "leadDetails",
+								"name": "leadDetails",
+								"target": ["leadDetails"]
 							}
 
 						]
@@ -463,6 +468,15 @@
 					"clearAggregation": true,
 					"viewName": "performanceAnalysis",
 					"viewId": "idPerformanceAnalysis",
+					"viewLevel": 2,
+					"controlAggregation": "detailPages"
+				},
+				"leadDetails":{
+					"transition": "slide",
+					"controlId":"__xmlview0--idSplitApp",
+					"clearAggregation": true,
+					"viewName": "leadDetails",
+					"viewId": "leadDetails",
 					"viewLevel": 2,
 					"controlAggregation": "detailPages"
 				}

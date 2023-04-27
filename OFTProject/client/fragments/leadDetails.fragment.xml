@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"	 xmlns:f = "sap.ui.layout.form">
+    <Dialog title="Resizable Available Products"
+    id="idLead"
+    resizable="true">
+    <content>
+        <f:SimpleForm layout="ResponsiveGridLayout">
+                <Label text="Mobile Number"/>
+                <HBox >
+                    <Input value="+91" editable="false"   width="3rem"></Input>
+                    <Input type='Number' liveChange="numberValidation"/>
+                </HBox>
+                <Label text="Captcha"/>
+                <Input value="{local>/captchaValue}" id="captchacheck" />
+                <HBox >
+                    <Input editable="false" id="generatecaptcha" value="{local>/generatecaptcha}" width="90%" />
+                    <Button press="onRefresh" icon="sap-icon://refresh"/>
+                </HBox>
+                <Label text="OTP" id="otpLabel" visible="{local>/otpVisible}"/>
+                <Input id="otpInput" visible="{local>/otpVisible}"/>
+                <ObjectStatus active="true" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
+
+        </f:SimpleForm>
+    </content>
+    <beginButton>
+        <Button text="Send OTP" id="resendOTP" press="OtpSend"></Button>
+        
+    </beginButton>
+    <endButton>
+        <Button text="Close" press=""/>
+    </endButton>
+</Dialog>		
+</core:FragmentDefinition>
