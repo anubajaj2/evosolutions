@@ -207,7 +207,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
                         <core:Item text="AB-" key="AB-" />
                     </items>
                     </Select>
-                    <Button text="View" press="onViewPhoto"/>
+                    <Button type="{=${local>Photo} ? 'Emphasized': 'Default'}" text="View" press="onViewPhoto"/>
                   </cells>
                 </ColumnListItem>
               </items>
