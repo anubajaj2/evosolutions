@@ -8,6 +8,7 @@ var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 var express = require('express');
 var fs = require('fs');
+const { log } = require('console');
 var app = express();
 app = module.exports = loopback();
 // parse application/json
@@ -19,9 +20,9 @@ app.use(session({
 	secret: 'anubhavApp'
 }));
 app.use(fileUpload());
-app.start = function() {
+app.start = function () {
 	// start the web server
-	return app.listen(function() {
+	return app.listen(function () {
 		app.emit('started');
 		var baseUrl = app.get('url').replace(/\/$/, '');
 		console.log('Web server listening at: %s', baseUrl);
@@ -33,42 +34,42 @@ app.start = function() {
 		var Server = app.models.Server;
 		var ServerPay = app.models.ServerPay;
 
-		app.get('/ServerDownload', function(req, res) {
+		app.get('/ServerDownload', function (req, res) {
 
 			Server.find({})
-				.then(function(Records, err) {
-						if (Records) {
+				.then(function (Records, err) {
+					if (Records) {
 
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
 
-							sheet.addRow().values = Object.keys(Records[0].__data);
+						sheet.addRow().values = Object.keys(Records[0].__data);
 
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									if (err) {
-										console.log('---------- error downloading file: ', err);
-									}
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
 						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								if (err) {
+									console.log('---------- error downloading file: ', err);
+								}
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
 
-		app.post('/getWorkAggregate', function(req, res) {
+		app.post('/getWorkAggregate', function (req, res) {
 			var responseData = [];
 			var app = require('../server/server');
 			var currentDate = req.body.currentDate;
@@ -103,31 +104,33 @@ app.start = function() {
 			var oPeriodEnddate = aMonths[0].EndDate;
 
 
-  		var date = new Date( );
+			var date = new Date();
 			date.setDate(1);
 
 			Task.find({
-				 where: {
-					 and: [
-						 { CreatedBy : userId },
-						 { CreatedOn: {
- 							gte: date
- 							}  }
-					 ]
-				 }
-			}).then(function(data) {
+				where: {
+					and: [
+						{ CreatedBy: userId },
+						{
+							CreatedOn: {
+								gte: date
+							}
+						}
+					]
+				}
+			}).then(function (data) {
 				debugger;
 				var tempRep = [];
 				for (var i = 0; i < data.length; i++) {
 					var record = data[i];
-					if(tempRep[record.taskType]){
+					if (tempRep[record.taskType]) {
 						tempRep[record.taskType].hourWorked =
-						 parseInt(record.noOfHours) +
-						 tempRep[record.taskType].hourWorked;
-					}else{
+							parseInt(record.noOfHours) +
+							tempRep[record.taskType].hourWorked;
+					} else {
 						tempRep[record.taskType] = {
-							taskType : record.taskType,
-							hourWorked : parseInt(record.noOfHours)
+							taskType: record.taskType,
+							hourWorked: parseInt(record.noOfHours)
 						};
 					}
 				}
@@ -144,7 +147,7 @@ app.start = function() {
 				// 	})
 				//
 				// }
-				for (item in tempRep){
+				for (item in tempRep) {
 					responseData.push(tempRep[item]);
 				}
 				// responseData = [{
@@ -169,100 +172,100 @@ app.start = function() {
 
 		});
 
-		app.get('/ServerDownloadAct', function(req, res) {
+		app.get('/ServerDownloadAct', function (req, res) {
 			var date = new Date();
 			Server.find({
-					where: {
-						and: [{
-							EndDate: {
-								gt: date
-							}
-						}, {
-							UserEndDate: {
-								gt: date
-							}
-						}]
-					}
-				})
-				.then(function(Records, err) {
-						if (Records) {
-
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
-
-							sheet.addRow().values = Object.keys(Records[0].__data);
-
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									if (err) {
-										console.log('---------- error downloading file: ', err);
-									}
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+				where: {
+					and: [{
+						EndDate: {
+							gt: date
 						}
+					}, {
+						UserEndDate: {
+							gt: date
+						}
+					}]
+				}
+			})
+				.then(function (Records, err) {
+					if (Records) {
+
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+
+						sheet.addRow().values = Object.keys(Records[0].__data);
+
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
+						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								if (err) {
+									console.log('---------- error downloading file: ', err);
+								}
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
-		app.get('/ServerDownloadInAct', function(req, res) {
+		app.get('/ServerDownloadInAct', function (req, res) {
 
 			var date = new Date();
 			Server.find({
-					where: {
-						and: [{
-							EndDate: {
-								gt: date
-							}
-						}, {
-							UserEndDate: {
-								lt: date
-							}
-						}]
-					}
-				})
-				.then(function(Records, err) {
-						if (Records) {
-
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
-
-							sheet.addRow().values = Object.keys(Records[0].__data);
-
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									if (err) {
-										console.log('---------- error downloading file: ', err);
-									}
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+				where: {
+					and: [{
+						EndDate: {
+							gt: date
 						}
+					}, {
+						UserEndDate: {
+							lt: date
+						}
+					}]
+				}
+			})
+				.then(function (Records, err) {
+					if (Records) {
+
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+
+						sheet.addRow().values = Object.keys(Records[0].__data);
+
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
+						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								if (err) {
+									console.log('---------- error downloading file: ', err);
+								}
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
-		app.get('/getStudentPerBatch', function(req, res) {
+		app.get('/getStudentPerBatch', function (req, res) {
 			var responseData = [];
 			var app = require('../server/server');
 			var Sub = app.models.Sub;
@@ -270,7 +273,7 @@ app.start = function() {
 			var aCourses = [];
 			// step 1: get all the batches which are marked for analysis analysis=true
 			// Courses.find({where: { analysis=true}}).then(function(data){
-			Courses.find().then(function(data) {
+			Courses.find().then(function (data) {
 				// console.log("Test Course")
 				aCourses = data;
 				// dynamic where
@@ -288,19 +291,19 @@ app.start = function() {
 					where: {
 						or: aOrCond
 					}
-				}).then(function(data) {
+				}).then(function (data) {
 					ObjectId = require('mongodb').ObjectID;
 					var oSubCounter = {};
-					data.forEach(function(obj) {
+					data.forEach(function (obj) {
 						var key = obj.CourseId;
 						oSubCounter[key] = (oSubCounter[key] || 0) + 1
 					})
 
 					var responseData = [];
-					Object.keys(oSubCounter).forEach(function(key) {
+					Object.keys(oSubCounter).forEach(function (key) {
 						var oObjId = ObjectId(key);
 						// console.log(key, oSubCounter[key]);
-						var oRecFil = aCourses.filter(function(oRecord) {
+						var oRecFil = aCourses.filter(function (oRecord) {
 							return oRecord.id.toString() === oObjId.toString();
 						});
 
@@ -319,7 +322,7 @@ app.start = function() {
 
 		});
 
-		app.post('/getLeaveValidator',function(req,res){
+		app.post('/getLeaveValidator', function (req, res) {
 			debugger;
 			var date = req.body.date;
 			var selectedDay = new Date(date).getDate();
@@ -327,200 +330,203 @@ app.start = function() {
 			var selectedYear = new Date(date).getFullYear();
 			var tdate = new Date();
 			this.empId = req.body.EmpId;
-			var oStartDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth(),1);
-			var oEndDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0);
+			var oStartDate = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), 1);
+			var oEndDate = new Date(new Date(date).getFullYear(), new Date(date).getMonth() + 1, 0);
 			var LeaveRequest = app.models.LeaveRequest;
 			var Holidays = app.models.HolidayCalendar;
 			var AppUser = app.models.AppUser;
 			var flag = 0;
-				var oLeaveRecords = [];
-				LeaveRequest.find({where:
-					{	and: [
-					 {DateFrom:{between:[oStartDate,oEndDate]}},
-					 {AppUserId: this.empId}
-				 ]},
-				 order:'DateFrom ASC'
-				 }).then(function(leaveRecords){
+			var oLeaveRecords = [];
+			LeaveRequest.find({
+				where:
+				{
+					and: [
+						{ DateFrom: { between: [oStartDate, oEndDate] } },
+						{ AppUserId: this.empId }
+					]
+				},
+				order: 'DateFrom ASC'
+			}).then(function (leaveRecords) {
 				//	var that3 = that2;
-			//		this.leaveRecords = leaveRecords;
+				//		this.leaveRecords = leaveRecords;
 				var flag = 0;
-				if(leaveRecords.length){
-				for (var i = 0; i < leaveRecords.length; i++) {
-							oLeaveRecords[i] =	leaveRecords[i];
-							 }
-						 }
+				if (leaveRecords.length) {
+					for (var i = 0; i < leaveRecords.length; i++) {
+						oLeaveRecords[i] = leaveRecords[i];
+					}
+				}
 
 				Holidays.find(
-					{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
-					).then(function(holidayRecords){
-				var tDate = new Date();
+					{ where: { Date: { between: [oStartDate, oEndDate] } }, order: 'Date ASC' }
+				).then(function (holidayRecords) {
+					var tDate = new Date();
 					var holidayLeaveCal = [];
-					var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
-				//this loop will interate for 12 time month wise
-			// 				for (var i = 0; i < 12; i++) {
-			// 		//this loop will iterate each month Day wise
-			// 		var fDate = new Date(tDate.getFullYear(),i,1);
-			// 		 			for (var j = 0; j <  new Date(fDate.getFullYear(),fDate.getMonth()+1,0).getDate(); j++) {
-			// 						var monthDate = new Date(fDate.getFullYear(),fDate.getMonth(),j+1);
-			// 						var flag = 0;
-			// 						for (var k = 0; k < holidayRecords.length; k++) {
-			// 									var oDate =  holidayRecords[k].__data.Date;
-			// 						if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
-			// 								flag = 1;
-			// 								holidayLeaveCal.push({
-			// 								Day:holidayRecords[k].__data.Day,
-			// 								Date:holidayRecords[k].__data.Date,
-			// 								Occasion:holidayRecords[k].__data.Occasion,
-			// 								Mark:'PH',
-			// 								Available:'NA',
-			// 								LeaveType:'',
-			// 								LeaveStatus:'',
-			// 								Holiday:''
-			// 							});
-			// 							break;
-			// 						}
-			// 					}
-			// 					if (flag == 0) {
-			// 						holidayLeaveCal.push({
-			// 						Day:new Date(fDate.getFullYear(),fDate.getMonth(),j+1).getDay(),
-			// 						Date: new Date(fDate.getFullYear(),fDate.getMonth(),j+1),
-			// 						Occasion:'',
-			// 						Mark:'',
-			// 						Available:'',
-			// 						LeaveType:'',
-			// 						LeaveStatus:'',
-			// 						Holiday:''
-			// 					});
-			// 		}
-			//
-			// 	}
-			// }
-			for (var j = 0; j <  noOfDaysInMonth; j++) {
-				var monthDate = new Date(new Date(date).getFullYear(),new Date(date).getMonth(),j+1);
-				var flag = 0;
-					if(holidayRecords.length){
-				for (var k = 0; k < holidayRecords.length; k++) {
-							var oDate =  holidayRecords[k].__data.Date;
-				if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
-						flag = 1;
-						holidayLeaveCal.push({
-						Day:holidayRecords[k].__data.Day,
-						Date:holidayRecords[k].__data.Date,
-						Occasion:holidayRecords[k].__data.Occasion,
-						Mark:'PH',
-						Available:'NA',
-						LeaveType:'',
-						LeaveStatus:'',
-						Holiday:''
-					});
-					break;
-				}
-			}
-		}
-			if (flag == 0) {
-				holidayLeaveCal.push({
-				Day:new Date(monthDate.getFullYear(),monthDate.getMonth(),j+1).getDay(),
-				Date: new Date(monthDate.getFullYear(),monthDate.getMonth(),j+1),
-				Occasion:'',
-				Mark:'',
-				Available:'',
-				LeaveType:'',
-				LeaveStatus:'',
-				Holiday:''
-			});
-}
+					var noOfDaysInMonth = new Date(new Date(date).getFullYear(), new Date(date).getMonth() + 1, 0).getDate();
+					//this loop will interate for 12 time month wise
+					// 				for (var i = 0; i < 12; i++) {
+					// 		//this loop will iterate each month Day wise
+					// 		var fDate = new Date(tDate.getFullYear(),i,1);
+					// 		 			for (var j = 0; j <  new Date(fDate.getFullYear(),fDate.getMonth()+1,0).getDate(); j++) {
+					// 						var monthDate = new Date(fDate.getFullYear(),fDate.getMonth(),j+1);
+					// 						var flag = 0;
+					// 						for (var k = 0; k < holidayRecords.length; k++) {
+					// 									var oDate =  holidayRecords[k].__data.Date;
+					// 						if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear() ) ){
+					// 								flag = 1;
+					// 								holidayLeaveCal.push({
+					// 								Day:holidayRecords[k].__data.Day,
+					// 								Date:holidayRecords[k].__data.Date,
+					// 								Occasion:holidayRecords[k].__data.Occasion,
+					// 								Mark:'PH',
+					// 								Available:'NA',
+					// 								LeaveType:'',
+					// 								LeaveStatus:'',
+					// 								Holiday:''
+					// 							});
+					// 							break;
+					// 						}
+					// 					}
+					// 					if (flag == 0) {
+					// 						holidayLeaveCal.push({
+					// 						Day:new Date(fDate.getFullYear(),fDate.getMonth(),j+1).getDay(),
+					// 						Date: new Date(fDate.getFullYear(),fDate.getMonth(),j+1),
+					// 						Occasion:'',
+					// 						Mark:'',
+					// 						Available:'',
+					// 						LeaveType:'',
+					// 						LeaveStatus:'',
+					// 						Holiday:''
+					// 					});
+					// 		}
+					//
+					// 	}
+					// }
+					for (var j = 0; j < noOfDaysInMonth; j++) {
+						var monthDate = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), j + 1);
+						var flag = 0;
+						if (holidayRecords.length) {
+							for (var k = 0; k < holidayRecords.length; k++) {
+								var oDate = holidayRecords[k].__data.Date;
+								if ((new Date(monthDate).getDate() == new Date(oDate).getDate()) && (new Date(monthDate).getMonth() == new Date(oDate).getMonth()) && (new Date(monthDate).getFullYear() == new Date(oDate).getFullYear())) {
+									flag = 1;
+									holidayLeaveCal.push({
+										Day: holidayRecords[k].__data.Day,
+										Date: holidayRecords[k].__data.Date,
+										Occasion: holidayRecords[k].__data.Occasion,
+										Mark: 'PH',
+										Available: 'NA',
+										LeaveType: '',
+										LeaveStatus: '',
+										Holiday: ''
+									});
+									break;
+								}
+							}
+						}
+						if (flag == 0) {
+							holidayLeaveCal.push({
+								Day: new Date(monthDate.getFullYear(), monthDate.getMonth(), j + 1).getDay(),
+								Date: new Date(monthDate.getFullYear(), monthDate.getMonth(), j + 1),
+								Occasion: '',
+								Mark: '',
+								Available: '',
+								LeaveType: '',
+								LeaveStatus: '',
+								Holiday: ''
+							});
+						}
 
-}
+					}
 
 					debugger;
-				//	var holidayCal = [];
+					//	var holidayCal = [];
 					for (var l = 0; l < holidayLeaveCal.length; l++) {
-						var oDate = holidayLeaveCal[l].Date ;
-							var flag = 0;
-							if(oLeaveRecords.length){
-						for (var i = 0; i < oLeaveRecords.length; i++) {
-									var dFrom =  oLeaveRecords[i].__data.DateFrom;
-									var nDays = oLeaveRecords[i].__data.Days;
+						var oDate = holidayLeaveCal[l].Date;
+						var flag = 0;
+						if (oLeaveRecords.length) {
+							for (var i = 0; i < oLeaveRecords.length; i++) {
+								var dFrom = oLeaveRecords[i].__data.DateFrom;
+								var nDays = oLeaveRecords[i].__data.Days;
 
-								if ((new Date(dFrom).getDate() == new Date(oDate).getDate()) && (new Date(dFrom).getMonth() == new Date(oDate).getMonth()) && (new Date(dFrom).getFullYear() == new Date(oDate).getFullYear() ) ){
+								if ((new Date(dFrom).getDate() == new Date(oDate).getDate()) && (new Date(dFrom).getMonth() == new Date(oDate).getMonth()) && (new Date(dFrom).getFullYear() == new Date(oDate).getFullYear())) {
 									if (flag == 0) {
 										for (var j = 0; j < nDays; j++) {
-												flag=1;
-													if (holidayLeaveCal[l].Mark == 'PH') {
-														holidayLeaveCal[l].Mark ='PH';
-														holidayLeaveCal[l].Available = 'NA';
-														holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
-														holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
-														j--;
+											flag = 1;
+											if (holidayLeaveCal[l].Mark == 'PH') {
+												holidayLeaveCal[l].Mark = 'PH';
+												holidayLeaveCal[l].Available = 'NA';
+												holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
+												holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
+												j--;
 
-												}else {
-													holidayLeaveCal[l].Mark ='LEAVE';
-													holidayLeaveCal[l].Available = 'NA';
-													holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
-													holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
-												}
-													l++;
-												}
+											} else {
+												holidayLeaveCal[l].Mark = 'LEAVE';
+												holidayLeaveCal[l].Available = 'NA';
+												holidayLeaveCal[l].LeaveType = oLeaveRecords[i].__data.LeaveType;
+												holidayLeaveCal[l].LeaveStatus = oLeaveRecords[i].__data.Status;
+											}
+											l++;
+										}
 
-									}else {
+									} else {
 										break;
 									}
 
+								}
 							}
-					}
-				}
-				}
-
-				AppUser.find().then(function(empRecords) {
-					for (var i = 0; i < empRecords.length; i++) {
-						if (this.empId === empRecords[i].TechnicalId) {
-							var empRecord = empRecords[i];
-							break;
 						}
 					}
-//this for loop will assign the Holiday assigned for this User
-					for (var i = 0; i < holidayLeaveCal.length; i++) {
-						if (empRecord.__data.Holiday === "Sunday") {
+
+					AppUser.find().then(function (empRecords) {
+						for (var i = 0; i < empRecords.length; i++) {
+							if (this.empId === empRecords[i].TechnicalId) {
+								var empRecord = empRecords[i];
+								break;
+							}
+						}
+						//this for loop will assign the Holiday assigned for this User
+						for (var i = 0; i < holidayLeaveCal.length; i++) {
+							if (empRecord.__data.Holiday === "Sunday") {
 								if (holidayLeaveCal[i].Date.getDay() === 0) {
 									holidayLeaveCal[i].Holiday = 'Holiday';
 								}
-						}else if (empRecord.__data.Holiday  === "Monday") {
-							if (holidayLeaveCal[i].Date.getDay() === 1) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
-							}
-						}else if (empRecord.__data.Holiday  === "Tuesday") {
-							if (holidayLeaveCal[i].Date.getDay() === 2) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
-							}
-						}else if (empRecord.__data.Holiday  === "Wednesday") {
-							if (holidayLeaveCal[i].Date.getDay() === 3) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
-							}
-						}else if (empRecord.__data.Holiday  === "Thursday") {
-							if (holidayLeaveCal[i].Date.getDay() === 4) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
-							}
-						}else if (empRecord.__data.Holiday  === "Friday") {
-							if (holidayLeaveCal[i].Date.getDay() === 5) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
-							}
-						}else if (empRecord.__data.Holiday  === "Saturday") {
-							if (holidayLeaveCal[i].Date.getDay() === 6) {
-								holidayLeaveCal[i].Holiday = 'Holiday';
+							} else if (empRecord.__data.Holiday === "Monday") {
+								if (holidayLeaveCal[i].Date.getDay() === 1) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+							} else if (empRecord.__data.Holiday === "Tuesday") {
+								if (holidayLeaveCal[i].Date.getDay() === 2) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+							} else if (empRecord.__data.Holiday === "Wednesday") {
+								if (holidayLeaveCal[i].Date.getDay() === 3) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+							} else if (empRecord.__data.Holiday === "Thursday") {
+								if (holidayLeaveCal[i].Date.getDay() === 4) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+							} else if (empRecord.__data.Holiday === "Friday") {
+								if (holidayLeaveCal[i].Date.getDay() === 5) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
+							} else if (empRecord.__data.Holiday === "Saturday") {
+								if (holidayLeaveCal[i].Date.getDay() === 6) {
+									holidayLeaveCal[i].Holiday = 'Holiday';
+								}
 							}
 						}
-					}
 						res.send(holidayLeaveCal);
 					});
 
 				});
 
 
-				});
+			});
 
 		});
 
-		app.post('/getTimeTracker', function(req, res) {
+		app.post('/getTimeTracker', function (req, res) {
 			var month = req.body.Month;
 			this.empId = req.body.EmpId;
 			var today = new Date();
@@ -528,10 +534,10 @@ app.start = function() {
 			debugger;
 
 
-			var oArrTime =[];
+			var oArrTime = [];
 
-			if ((new Date(month).getMonth() === new Date(today).getMonth()) && (new Date(month).getFullYear() === new Date(today).getFullYear())  ) {
-				var monthStart = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),1);
+			if ((new Date(month).getMonth() === new Date(today).getMonth()) && (new Date(month).getFullYear() === new Date(today).getFullYear())) {
+				var monthStart = new Date(new Date(month).getFullYear(), new Date(month).getMonth(), 1);
 				var dayEnd = new Date();
 
 				monthStart.setMilliseconds(0);
@@ -555,7 +561,7 @@ app.start = function() {
 				//anubhav is here
 				var that = this;
 
-				AppUser.find().then(function(empRecords) {
+				AppUser.find().then(function (empRecords) {
 					for (var i = 0; i < empRecords.length; i++) {
 						if (that.empId === empRecords[i].TechnicalId) {
 							var empRecord = empRecords[i];
@@ -566,23 +572,29 @@ app.start = function() {
 					that2.empRecord = empRecord;
 					//var joiningDate = empRecord.JoiningDate;
 					var holiday = empRecord.Holiday;
-					LeaveRequest.find({where:
-						{	and: [
-						 {DateFrom:{between:[monthStart,dayEnd]}},
-						 {AppUserId: that2.empId}
-					 ]},
-					 order:'DateFrom ASC'
-					 }).then(function(leaveRecords){
+					LeaveRequest.find({
+						where:
+						{
+							and: [
+								{ DateFrom: { between: [monthStart, dayEnd] } },
+								{ AppUserId: that2.empId }
+							]
+						},
+						order: 'DateFrom ASC'
+					}).then(function (leaveRecords) {
 						var that3 = that2;
 						that3.leaveRecords = leaveRecords;
 						that4 = that3;
-						taskTab.find({where:
-													{and:[
-													{CrDate:{between:[monthStart,dayEnd]}},
-													{CreatedBy:that4.empId}
-													]},
-													order:'CrDate ASC'
-													}).then(function(tasks){
+						taskTab.find({
+							where:
+							{
+								and: [
+									{ CrDate: { between: [monthStart, dayEnd] } },
+									{ CreatedBy: that4.empId }
+								]
+							},
+							order: 'CrDate ASC'
+						}).then(function (tasks) {
 							// /empRecord
 							// leaveRecords
 							// tasks
@@ -592,253 +604,253 @@ app.start = function() {
 
 
 							//This For Loop is to calculate the No of hours for each day in a month
-							var noOfDays = new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
-							if(tasks.length){
+							var noOfDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+							if (tasks.length) {
 
-					 		for (var i = 0; i < noOfDays; i++) {
-							var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
-								var flag = 0;
-								var nHr = 0;
-										for (var j = 0; j < tasks.length; j++) {
+								for (var i = 0; i < noOfDays; i++) {
+									var start = new Date(new Date(month).getFullYear(), new Date(month).getMonth(), i + 1);
+									var flag = 0;
+									var nHr = 0;
+									for (var j = 0; j < tasks.length; j++) {
 										var crdate = tasks[j].__data.CrDate;
 
-										if (start.getDate() ===  crdate.getDate() )  {
-												flag = 1;
-											 var nHr  = 	nHr + parseFloat(tasks[j].__data.noOfHours.valueOf());
-												 }
+										if (start.getDate() === crdate.getDate()) {
+											flag = 1;
+											var nHr = nHr + parseFloat(tasks[j].__data.noOfHours.valueOf());
+										}
 
+									}
+									if (flag === 0) {
+										var h = 0;
+										oArrTime.push({ date: start, hours: h, LeaveType: "" });
+									} else {
+										oArrTime.push({ date: start, hours: nHr, LeaveType: "" });
+									}
+
+
+								}
+								//this for loop is to calculate the Leaves taken by employee in a given month
+								for (var i = 0; i < oArrTime.length; i++) {
+									var date = oArrTime[i].date.getDate();
+									var flag = 0;
+
+									for (var j = 0; j < leaveRecords.length; j++) {
+										var dFrom = leaveRecords[j].__data.DateFrom;
+										var dTo = leaveRecords[j].__data.DateTo;
+										var dDiff = (dTo - dFrom) / (1000 * 3600 * 24) + 1;
+										if (date === leaveRecords[j].__data.DateFrom.getDate()) {
+											if (flag === 0) {
+												for (var k = 0; k < dDiff; k++) {
+													flag = 1;
+													oArrTime[i].hours = 'LEAVE';
+													oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
+													i++;
+												}
+												//	i = leaveRecords[j].__data.Days - 1;
+											} else {
+												break;
 											}
-											if(flag===0){
-												var h = 0;
-												oArrTime.push({date:start,hours:h,LeaveType:""});
-											}else{
-												oArrTime.push({date:start,hours:nHr,LeaveType:""});
-											}
+										}
 
-
-										 }
-					 		//this for loop is to calculate the Leaves taken by employee in a given month
-						 	for (var i = 0; i < oArrTime.length; i++) {
-							 var date = oArrTime[i].date.getDate();
-							 			var flag=0;
-
-							 for (var j = 0; j < leaveRecords.length; j++) {
-								 		var dFrom = 	leaveRecords[j].__data.DateFrom;
-										var dTo = 	leaveRecords[j].__data.DateTo;
-										var dDiff = (dTo - dFrom)/(1000*3600*24)+1;
-											if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
-												if(flag===0){
-													for (var k = 0; k < dDiff; k++) {
-																flag=1;
-																oArrTime[i].hours = 'LEAVE';
-																oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
-																i++;
-															}
-														//	i = leaveRecords[j].__data.Days - 1;
-														}else {
-															break;
-														}
-											}
-
-									 }
-						  }
-						 	//this for loop is to find and assign Holiday for employee for given month
-							for (var i = 0; i < oArrTime.length; i++) {
-								if (empRecord.__data.Holiday === "Sunday") {
+									}
+								}
+								//this for loop is to find and assign Holiday for employee for given month
+								for (var i = 0; i < oArrTime.length; i++) {
+									if (empRecord.__data.Holiday === "Sunday") {
 										if (oArrTime[i].date.getDay() === 0) {
 											oArrTime[i].hours = 'Holiday';
 										}
-								}else if (empRecord.__data.Holiday  === "Monday") {
-									if (oArrTime[i].date.getDay() === 1) {
-										oArrTime[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Tuesday") {
-									if (oArrTime[i].date.getDay() === 2) {
-										oArrTime[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Wednesday") {
-									if (oArrTime[i].date.getDay() === 3) {
-										oArrTime[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Thursday") {
-									if (oArrTime[i].date.getDay() === 4) {
-										oArrTime[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Friday") {
-									if (oArrTime[i].date.getDay() === 5) {
-										oArrTime[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Saturday") {
-									if (oArrTime[i].date.getDay() === 6) {
-										oArrTime[i].hours = 'Holiday';
+									} else if (empRecord.__data.Holiday === "Monday") {
+										if (oArrTime[i].date.getDay() === 1) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Tuesday") {
+										if (oArrTime[i].date.getDay() === 2) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Wednesday") {
+										if (oArrTime[i].date.getDay() === 3) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Thursday") {
+										if (oArrTime[i].date.getDay() === 4) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Friday") {
+										if (oArrTime[i].date.getDay() === 5) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Saturday") {
+										if (oArrTime[i].date.getDay() === 6) {
+											oArrTime[i].hours = 'Holiday';
+										}
 									}
 								}
-							}
-							// console.log(that3.empRecord);
-							// console.log(that3.leaveRecords);
-							//
-							var timeTrackerCalendar = [];
-							var oStartDate = new Date(today.getFullYear(),today.getMonth(),1);
-							var oEndDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+								// console.log(that3.empRecord);
+								// console.log(that3.leaveRecords);
+								//
+								var timeTrackerCalendar = [];
+								var oStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+								var oEndDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 								Holidays.find(
-									{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
-									).then(function(holidayRecords){
+									{ where: { Date: { between: [oStartDate, oEndDate] } }, order: 'Date ASC' }
+								).then(function (holidayRecords) {
 									var tDate = new Date();
-									var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
+									var noOfDaysInMonth = new Date(new Date(date).getFullYear(), new Date(date).getMonth() + 1, 0).getDate();
 
 									for (var i = 0; i < oArrTime.length; i++) {
 										var date = oArrTime[i].date;
-										var 	flag = 0;
+										var flag = 0;
 										for (var j = 0; j < holidayRecords.length; j++) {
 											var hDate = holidayRecords[j].__data.Date;
 											if (date.getDate() == hDate.getDate()) {
 												flag = 1;
 												timeTrackerCalendar.push({
-													Day:holidayRecords[j].__data.Day,
-													Occasion:holidayRecords[j].__data.Occasion,
-													remark:"PH",
-													hours:oArrTime[j].hours,
-													Date:oArrTime[j].date,
-													LeaveType:oArrTime[j].LeaveType
+													Day: holidayRecords[j].__data.Day,
+													Occasion: holidayRecords[j].__data.Occasion,
+													remark: "PH",
+													hours: oArrTime[j].hours,
+													Date: oArrTime[j].date,
+													LeaveType: oArrTime[j].LeaveType
 												});
 											}
 										}
-											if (flag==0) {
-												timeTrackerCalendar.push({
-													Day:"",
-													Occasion:"",
-													remark:"",
-													hours:oArrTime[i].hours,
-													Date:oArrTime[i].date,
-													LeaveType:oArrTime[i].LeaveType
-												});
-											}
+										if (flag == 0) {
+											timeTrackerCalendar.push({
+												Day: "",
+												Occasion: "",
+												remark: "",
+												hours: oArrTime[i].hours,
+												Date: oArrTime[i].date,
+												LeaveType: oArrTime[i].LeaveType
+											});
+										}
 
-										}
-										res.send(timeTrackerCalendar);
+									}
+									res.send(timeTrackerCalendar);
 
 								});
 
 
-						}else {
-							// console.log("There is no data available the selected month ");
-							// res.send(oArrTime);
-							var oArrTime1 = [];
-							var noOfDays = new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
-							var h = 0;
-					 		for (var i = 0; i < noOfDays; i++) {
-							var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
+							} else {
+								// console.log("There is no data available the selected month ");
+								// res.send(oArrTime);
+								var oArrTime1 = [];
+								var noOfDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+								var h = 0;
+								for (var i = 0; i < noOfDays; i++) {
+									var start = new Date(new Date(month).getFullYear(), new Date(month).getMonth(), i + 1);
 
-												oArrTime1.push({date:start,hours:h,LeaveType:""});
+									oArrTime1.push({ date: start, hours: h, LeaveType: "" });
 
-										 }
-					 		//this for loop is to calculate the Leaves taken by employee in a given month
-							if (leaveRecords) {
+								}
+								//this for loop is to calculate the Leaves taken by employee in a given month
+								if (leaveRecords) {
 
-								for (var i = 0; i < oArrTime1.length; i++) {
-							 var date = oArrTime1[i].date.getDate();
-										var flag=0;
-							 for (var j = 0; j < leaveRecords.length; j++) {
-										var dFrom = 	leaveRecords[j].__data.DateFrom;
-										var dTo = 	leaveRecords[j].__data.DateTo;
-										var dDiff = (dTo - dFrom)/(1000*3600*24)+1;
-											if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
-												if(flag===0){
+									for (var i = 0; i < oArrTime1.length; i++) {
+										var date = oArrTime1[i].date.getDate();
+										var flag = 0;
+										for (var j = 0; j < leaveRecords.length; j++) {
+											var dFrom = leaveRecords[j].__data.DateFrom;
+											var dTo = leaveRecords[j].__data.DateTo;
+											var dDiff = (dTo - dFrom) / (1000 * 3600 * 24) + 1;
+											if (date === leaveRecords[j].__data.DateFrom.getDate()) {
+												if (flag === 0) {
 													for (var k = 0; k < dDiff; k++) {
-																flag=1;
-																oArrTime1[i].hours = 'LEAVE';
-																oArrTime1[i].LeaveType = leaveRecords[j].__data.LeaveType;
-																i++;
-															}
-														//	i = leaveRecords[j].__data.Days - 1;
-														}else {
-															break;
-														}
+														flag = 1;
+														oArrTime1[i].hours = 'LEAVE';
+														oArrTime1[i].LeaveType = leaveRecords[j].__data.LeaveType;
+														i++;
+													}
+													//	i = leaveRecords[j].__data.Days - 1;
+												} else {
+													break;
+												}
 											}
 
-									 }
-							}
+										}
+									}
 
-							}
+								}
 
-						 	//this for loop is to find and assign Holiday for employee for given month
-							for (var i = 0; i < oArrTime1.length; i++) {
-								if (empRecord.__data.Holiday === "Sunday") {
+								//this for loop is to find and assign Holiday for employee for given month
+								for (var i = 0; i < oArrTime1.length; i++) {
+									if (empRecord.__data.Holiday === "Sunday") {
 										if (oArrTime1[i].date.getDay() === 0) {
 											oArrTime1[i].hours = 'Holiday';
 										}
-								}else if (empRecord.__data.Holiday  === "Monday") {
-									if (oArrTime1[i].date.getDay() === 1) {
-										oArrTime1[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Tuesday") {
-									if (oArrTime1[i].date.getDay() === 2) {
-										oArrTime1[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Wednesday") {
-									if (oArrTime1[i].date.getDay() === 3) {
-										oArrTime1[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Thursday") {
-									if (oArrTime1[i].date.getDay() === 4) {
-										oArrTime1[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Friday") {
-									if (oArrTime1[i].date.getDay() === 5) {
-										oArrTime1[i].hours = 'Holiday';
-									}
-								}else if (empRecord.__data.Holiday  === "Saturday") {
-									if (oArrTime1[i].date.getDay() === 6) {
-										oArrTime1[i].hours = 'Holiday';
+									} else if (empRecord.__data.Holiday === "Monday") {
+										if (oArrTime1[i].date.getDay() === 1) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Tuesday") {
+										if (oArrTime1[i].date.getDay() === 2) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Wednesday") {
+										if (oArrTime1[i].date.getDay() === 3) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Thursday") {
+										if (oArrTime1[i].date.getDay() === 4) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Friday") {
+										if (oArrTime1[i].date.getDay() === 5) {
+											oArrTime1[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Saturday") {
+										if (oArrTime1[i].date.getDay() === 6) {
+											oArrTime1[i].hours = 'Holiday';
+										}
 									}
 								}
-							}
-							// console.log(that3.empRecord);
-							// console.log(that3.leaveRecords);
-							//
-							var timeTrackerCalendar = [];
-							var oStartDate = new Date(today.getFullYear(),today.getMonth(),1);
-							var oEndDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+								// console.log(that3.empRecord);
+								// console.log(that3.leaveRecords);
+								//
+								var timeTrackerCalendar = [];
+								var oStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+								var oEndDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 								Holidays.find(
-									{where:{Date:{between:[oStartDate,oEndDate]}},order:'Date ASC'}
-									).then(function(holidayRecords){
+									{ where: { Date: { between: [oStartDate, oEndDate] } }, order: 'Date ASC' }
+								).then(function (holidayRecords) {
 									var tDate = new Date();
-									var noOfDaysInMonth = new Date(new Date(date).getFullYear(),new Date(date).getMonth()+1,0).getDate();
+									var noOfDaysInMonth = new Date(new Date(date).getFullYear(), new Date(date).getMonth() + 1, 0).getDate();
 
 									for (var i = 0; i < oArrTime1.length; i++) {
 										var date = oArrTime1[i].date;
-										var 	flag = 0;
+										var flag = 0;
 										for (var j = 0; j < holidayRecords.length; j++) {
 											var hDate = holidayRecords[j].__data.Date;
 											if (date.getDate() == hDate.getDate()) {
 												flag = 1;
 												timeTrackerCalendar.push({
-													Day:holidayRecords[j].__data.Day,
-													Occasion:holidayRecords[j].__data.Occasion,
-													remark:"PH",
-													hours:oArrTime1[j].hours,
-													Date:oArrTime1[j].date,
-													LeaveType:oArrTime1[j].LeaveType
+													Day: holidayRecords[j].__data.Day,
+													Occasion: holidayRecords[j].__data.Occasion,
+													remark: "PH",
+													hours: oArrTime1[j].hours,
+													Date: oArrTime1[j].date,
+													LeaveType: oArrTime1[j].LeaveType
 												});
 											}
 										}
-											if (flag==0) {
-												timeTrackerCalendar.push({
-													Day:"",
-													Occasion:"",
-													remark:"",
-													hours:oArrTime1[i].hours,
-													Date:oArrTime1[i].date,
-													LeaveType:oArrTime1[i].LeaveType
-												});
-											}
+										if (flag == 0) {
+											timeTrackerCalendar.push({
+												Day: "",
+												Occasion: "",
+												remark: "",
+												hours: oArrTime1[i].hours,
+												Date: oArrTime1[i].date,
+												LeaveType: oArrTime1[i].LeaveType
+											});
+										}
 
-										}
-										res.send(timeTrackerCalendar);
+									}
+									res.send(timeTrackerCalendar);
 
 								});
 
-						}
+							}
 
 						});
 
@@ -848,199 +860,205 @@ app.start = function() {
 
 
 
-			}else if (new Date(month) > new Date(today) ) {
+			} else if (new Date(month) > new Date(today)) {
 
 				console.log("There is no data available the selected month ");
 				res.send(oArrTime);
 			}
-			else{
+			else {
 
-			var startDateCurrent = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),1);
-			var noOfDays = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0).getDate();
-			endDateCurrent = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0) ;
+				var startDateCurrent = new Date(new Date(month).getFullYear(), new Date(month).getMonth(), 1);
+				var noOfDays = new Date(new Date(month).getFullYear(), new Date(month).getMonth() + 1, 0).getDate();
+				endDateCurrent = new Date(new Date(month).getFullYear(), new Date(month).getMonth() + 1, 0);
 
-			startDateCurrent.setMilliseconds(0);
-			startDateCurrent.setSeconds(0);
-			startDateCurrent.setMinutes(0);
-			startDateCurrent.setHours(0);
+				startDateCurrent.setMilliseconds(0);
+				startDateCurrent.setSeconds(0);
+				startDateCurrent.setMinutes(0);
+				startDateCurrent.setHours(0);
 
-			endDateCurrent.setMilliseconds(0);
-			endDateCurrent.setSeconds(59);
-			endDateCurrent.setMinutes(59);
-			endDateCurrent.setHours(23);
+				endDateCurrent.setMilliseconds(0);
+				endDateCurrent.setSeconds(59);
+				endDateCurrent.setMinutes(59);
+				endDateCurrent.setHours(23);
 
-			var app = require('../server/server');
-			var AppUser = app.models.AppUser;
-			var LeaveRequest = app.models.LeaveRequest;
-			var taskTab = app.models.task;
-			var Holidays = app.models.HolidayCalendar;
-			//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
-			//AppUser, leaveRequest, task
-			//anubhav is here
-			var that = this;
-			AppUser.find().then(function(empRecords) {
-				for (var i = 0; i < empRecords.length; i++) {
-					if (that.empId === empRecords[i].TechnicalId) {
-						var empRecord = empRecords[i];
-						break;
-					}
-				}
-				var that2 = that;
-				that2.empRecord = empRecord;
-				var joiningDate = empRecord.JoiningDate;
-				var holiday = empRecord.Holiday;
-				LeaveRequest.find({where:
-					{	and: [
-					 {DateFrom:{between:[startDateCurrent,endDateCurrent]}},
-					 {AppUserId: that2.empId}
-				 ]},
-				 order:'DateFrom ASC'
-				 }).then(function(leaveRecords){
-					var that3 = that2;
-					that3.leaveRecords = leaveRecords;
-					that4 = that3;
-					taskTab.find({where:
-												{and:[
-												{CrDate:{between:[startDateCurrent,endDateCurrent]}},
-												{CreatedBy:that4.empId}
-												]},
-												order:'CrDate ASC'
-												}).then(function(tasks){
-						// /empRecord
-						// leaveRecords
-						// tasks
-						//step 2: calculate and prepare a final table with below structure
-						//Date and Hour
-						//01.01.2019  8 , 02.01 6 , 03.01 Holiday, 04.01 LEAVE, 05.01 0, 06.01 7
-
-						if (tasks.length) {
-
-
-						//This For Loop is to calculate the No of hours for each day in a month
-				 		for (var i = 0; i < noOfDays; i++) {
-						var start = new Date(new Date(month).getFullYear(),new Date(month).getMonth(),i+1);
-						var flag = 0;
-							var nHr = 0;
-									for (var j = 0; j < tasks.length; j++) {
-									var crdate = tasks[j].__data.CrDate;
-									if (start.getDate() ===  crdate.getDate() )  {
-										flag = 1;
-										 var nHr  = 	nHr + parseInt(tasks[j].__data.noOfHours.valueOf());
-											 }
-										}
-										if(flag===0){
-											var h = 0;
-											oArrTime.push({date:start,hours:h,LeaveType:""});
-										}else{
-											oArrTime.push({date:start,hours:nHr,LeaveType:""});
-										}
-
-									 }
-
-
-				 		//this for loop is to calculate the Leaves taken by employee in a given month
-					 	for (var i = 0; i < oArrTime.length; i++) {
-						 var date = oArrTime[i].date.getDate();
-						 var flag=0;
-									 for (var j = 0; j < leaveRecords.length; j++) {
-															if (date === leaveRecords[j].__data.DateFrom.getDate() ) {
-																	if(flag===0){
-																					for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
-																								flag=1;
-																								oArrTime[i].hours = 'LEAVE';
-																								oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
-																								i++;
-																							}
-																		}else {
-																			break;
-																		}
-															}
-											 }
-					  }
-
-
-					 	//this for loop is to find and assign Holiday for employee for given month
-						for (var i = 0; i < oArrTime.length; i++) {
-							if (empRecord.__data.Holiday === "Sunday") {
-									if (oArrTime[i].date.getDay() === 0) {
-										oArrTime[i].hours = 'Holiday';
-									}
-							}else if (empRecord.__data.Holiday  === "Monday") {
-								if (oArrTime[i].date.getDay() === 1) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}else if (empRecord.__data.Holiday  === "Tuesday") {
-								if (oArrTime[i].date.getDay() === 2) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}else if (empRecord.__data.Holiday  === "Wednesday") {
-								if (oArrTime[i].date.getDay() === 3) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}else if (empRecord.__data.Holiday  === "Thursday") {
-								if (oArrTime[i].date.getDay() === 4) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}else if (empRecord.__data.Holiday  === "Friday") {
-								if (oArrTime[i].date.getDay() === 5) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}else if (empRecord.__data.Holiday  === "Saturday") {
-								if (oArrTime[i].date.getDay() === 6) {
-									oArrTime[i].hours = 'Holiday';
-								}
-							}
+				var app = require('../server/server');
+				var AppUser = app.models.AppUser;
+				var LeaveRequest = app.models.LeaveRequest;
+				var taskTab = app.models.task;
+				var Holidays = app.models.HolidayCalendar;
+				//Step 1: Read all employee data for given employee - JoiningDate, When is holiday, What leaveRequest
+				//AppUser, leaveRequest, task
+				//anubhav is here
+				var that = this;
+				AppUser.find().then(function (empRecords) {
+					for (var i = 0; i < empRecords.length; i++) {
+						if (that.empId === empRecords[i].TechnicalId) {
+							var empRecord = empRecords[i];
+							break;
 						}
-						// console.log(that3.empRecord);
-						// console.log(that3.leaveRecords);
-						var timeTrackerCalendar = [];
-						Holidays.find(
-								{where:{Date:{between:[startDateCurrent,endDateCurrent]}},order:'Date ASC'}
-								).then(function(holidayRecords){
-								var noOfDaysInMonth = new Date(new Date(month).getFullYear(),new Date(month).getMonth()+1,0).getDate();
-								for (var i = 0; i < oArrTime.length; i++) {
-									var date = oArrTime[i].date;
-									var 	flag = 0;
-									for (var j = 0; j < holidayRecords.length; j++) {
-										var hDate = holidayRecords[j].__data.Date;
-										if (date.getDate() == hDate.getDate()) {
+					}
+					var that2 = that;
+					that2.empRecord = empRecord;
+					var joiningDate = empRecord.JoiningDate;
+					var holiday = empRecord.Holiday;
+					LeaveRequest.find({
+						where:
+						{
+							and: [
+								{ DateFrom: { between: [startDateCurrent, endDateCurrent] } },
+								{ AppUserId: that2.empId }
+							]
+						},
+						order: 'DateFrom ASC'
+					}).then(function (leaveRecords) {
+						var that3 = that2;
+						that3.leaveRecords = leaveRecords;
+						that4 = that3;
+						taskTab.find({
+							where:
+							{
+								and: [
+									{ CrDate: { between: [startDateCurrent, endDateCurrent] } },
+									{ CreatedBy: that4.empId }
+								]
+							},
+							order: 'CrDate ASC'
+						}).then(function (tasks) {
+							// /empRecord
+							// leaveRecords
+							// tasks
+							//step 2: calculate and prepare a final table with below structure
+							//Date and Hour
+							//01.01.2019  8 , 02.01 6 , 03.01 Holiday, 04.01 LEAVE, 05.01 0, 06.01 7
+
+							if (tasks.length) {
+
+
+								//This For Loop is to calculate the No of hours for each day in a month
+								for (var i = 0; i < noOfDays; i++) {
+									var start = new Date(new Date(month).getFullYear(), new Date(month).getMonth(), i + 1);
+									var flag = 0;
+									var nHr = 0;
+									for (var j = 0; j < tasks.length; j++) {
+										var crdate = tasks[j].__data.CrDate;
+										if (start.getDate() === crdate.getDate()) {
 											flag = 1;
-											timeTrackerCalendar.push({
-												Day:holidayRecords[j].__data.Day,
-												Occasion:holidayRecords[j].__data.Occasion,
-												remark:"PH",
-												hours:oArrTime[j].hours,
-												Date:oArrTime[j].date,
-												LeaveType:oArrTime[j].LeaveType
-											});
+											var nHr = nHr + parseInt(tasks[j].__data.noOfHours.valueOf());
 										}
 									}
-										if (flag==0) {
+									if (flag === 0) {
+										var h = 0;
+										oArrTime.push({ date: start, hours: h, LeaveType: "" });
+									} else {
+										oArrTime.push({ date: start, hours: nHr, LeaveType: "" });
+									}
+
+								}
+
+
+								//this for loop is to calculate the Leaves taken by employee in a given month
+								for (var i = 0; i < oArrTime.length; i++) {
+									var date = oArrTime[i].date.getDate();
+									var flag = 0;
+									for (var j = 0; j < leaveRecords.length; j++) {
+										if (date === leaveRecords[j].__data.DateFrom.getDate()) {
+											if (flag === 0) {
+												for (var k = 0; k < leaveRecords[j].__data.Days; k++) {
+													flag = 1;
+													oArrTime[i].hours = 'LEAVE';
+													oArrTime[i].LeaveType = leaveRecords[j].__data.LeaveType;
+													i++;
+												}
+											} else {
+												break;
+											}
+										}
+									}
+								}
+
+
+								//this for loop is to find and assign Holiday for employee for given month
+								for (var i = 0; i < oArrTime.length; i++) {
+									if (empRecord.__data.Holiday === "Sunday") {
+										if (oArrTime[i].date.getDay() === 0) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Monday") {
+										if (oArrTime[i].date.getDay() === 1) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Tuesday") {
+										if (oArrTime[i].date.getDay() === 2) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Wednesday") {
+										if (oArrTime[i].date.getDay() === 3) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Thursday") {
+										if (oArrTime[i].date.getDay() === 4) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Friday") {
+										if (oArrTime[i].date.getDay() === 5) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									} else if (empRecord.__data.Holiday === "Saturday") {
+										if (oArrTime[i].date.getDay() === 6) {
+											oArrTime[i].hours = 'Holiday';
+										}
+									}
+								}
+								// console.log(that3.empRecord);
+								// console.log(that3.leaveRecords);
+								var timeTrackerCalendar = [];
+								Holidays.find(
+									{ where: { Date: { between: [startDateCurrent, endDateCurrent] } }, order: 'Date ASC' }
+								).then(function (holidayRecords) {
+									var noOfDaysInMonth = new Date(new Date(month).getFullYear(), new Date(month).getMonth() + 1, 0).getDate();
+									for (var i = 0; i < oArrTime.length; i++) {
+										var date = oArrTime[i].date;
+										var flag = 0;
+										for (var j = 0; j < holidayRecords.length; j++) {
+											var hDate = holidayRecords[j].__data.Date;
+											if (date.getDate() == hDate.getDate()) {
+												flag = 1;
+												timeTrackerCalendar.push({
+													Day: holidayRecords[j].__data.Day,
+													Occasion: holidayRecords[j].__data.Occasion,
+													remark: "PH",
+													hours: oArrTime[j].hours,
+													Date: oArrTime[j].date,
+													LeaveType: oArrTime[j].LeaveType
+												});
+											}
+										}
+										if (flag == 0) {
 											timeTrackerCalendar.push({
-												Day:"",
-												Occasion:"",
-												remark:"",
-												hours:oArrTime[i].hours,
-												Date:oArrTime[i].date,
-												LeaveType:oArrTime[i].LeaveType
+												Day: "",
+												Occasion: "",
+												remark: "",
+												hours: oArrTime[i].hours,
+												Date: oArrTime[i].date,
+												LeaveType: oArrTime[i].LeaveType
 											});
 										}
 
 									}
 									res.send(timeTrackerCalendar);
-							});
+								});
 
-					}else {
-						console.log("There is no data available the selected month ");
-						res.send(oArrTime);
-					}
+							} else {
+								console.log("There is no data available the selected month ");
+								res.send(oArrTime);
+							}
+
+						});
 
 					});
 
 				});
-
-			});
-		}
+			}
 
 		});
 
@@ -1059,20 +1077,20 @@ app.start = function() {
 			//Since all work is sync - use waterfall module as showen getAmountPerAccount
 		});
 
-		app.post('/requestMessage', function(req, res) {
+		app.post('/requestMessage', function (req, res) {
 
 			var msg = "";
 			var typeMsg = req.body.msgType;
-			var generateOTP = function() {
+			var generateOTP = function () {
 
-			    // Declare a digits variable
-			    // which stores all digits
-			    var digits = '0123456789';
-			    let OTP = '';
-			    for (let i = 0; i < 6; i++ ) {
-			        OTP += digits[Math.floor(Math.random() * 10)];
-			    }
-			    return OTP;
+				// Declare a digits variable
+				// which stores all digits
+				var digits = '0123456789';
+				let OTP = '';
+				for (let i = 0; i < 6; i++) {
+					OTP += digits[Math.floor(Math.random() * 10)];
+				}
+				return OTP;
 			}
 			switch (typeMsg) {
 				case "OTP":
@@ -1108,36 +1126,32 @@ app.start = function() {
 				host: 'api.textlocal.in',
 				path: '/send?' + data
 			};
-			callback = function(response) {
+			callback = function (response) {
 				var str = '';
-				response.on('data', function(chunk) {
+				response.on('data', function (chunk) {
 					str += chunk;
 				});
 
 				//the whole response has been recieved, so we just print it out here
-				response.on('end', function() {
-					if(typeMsg === "OTP"){
+				response.on('end', function () {
+					if (typeMsg === "OTP") {
 						var Otp = app.models.Otp;
 						var newRec = {
-							CreatedOn : new Date(),
-							Attempts : 1,
-							OTP : myOTP,
+							CreatedOn: new Date(),
+							Attempts: 1,
+							OTP: myOTP,
 							Number: req.body.Number
 						};
-						Otp.findOrCreate({
-														where: {
-																Number: req.body.Number
-															}
-														}, newRec)
-													.then(function(inq) {
-														res.send(myOTP);
-														console.log("created successfully");
-													})
-													.catch(function(err) {
-														console.log(err);
-													});
+						Otp.upsert(newRec)
+							.then(function (inq) {
+								res.send("OTP Send Successfully");
+								// console.log("created successfully");
+							})
+							.catch(function (err) {
+								console.log(err);
+							});
 
-					}else{
+					} else {
 						res.send("message sent");
 					}
 					console.log(str);
@@ -1148,32 +1162,36 @@ app.start = function() {
 			http.request(options, callback).end();
 		});
 
-		app.get("/validateOtp",function(req, res) {
+		app.get("/validateOtp", function (req, res) {
+			var Otp = app.models.Otp;
+			var oNumber=req.query.Number;
 			Otp.findOne({
-						where: {
-							and: [{
-								Number: req.params.Number
-							}, {
-								OTP: req.params.OTP
-							}]
-						}
-					})
-					.then(function(inq) {
-						if(inq){
-								res.send(true);
-						}else{
-								res.send(false);
-						}
-
-						console.log("created successfully");
-					})
-					.catch(function(err) {
-						console.log(err);
+				where: {
+					and: [{
+						Number: req.query.Number
+					}, {
+						OTP: req.query.OTP
+					}]
+				}
+			})
+				.then(async function (inq) {
+					if (inq) {
+						// var Otp = app.models.Otp;
+						await Otp.deleteById(oNumber)
+						res.send(true);
+					} else {
 						res.send(false);
-					});
+					}
+
+					console.log("created successfully");
+				})
+				.catch(function (err) {
+					console.log(err);
+					res.send(false);
+				});
 		});
 
-		app.get('/getAmountPerAccount', function(req, res) {
+		app.get('/getAmountPerAccount', function (req, res) {
 
 			// Courses.find().then(function(data) {
 			// 	// console.log("Test Course")
@@ -1194,134 +1212,135 @@ app.start = function() {
 			// 		})
 			//
 			// 	})
-				//--- Calculate total per batch, prepare json and return
-				var responseData = [];
-				var oSubCounter = {};
-				var Subs = app.models.Sub;
-				var Account = app.models.Account;
-				var AccountEntry = app.models.AccountBalance;
+			//--- Calculate total per batch, prepare json and return
+			var responseData = [];
+			var oSubCounter = {};
+			var Subs = app.models.Sub;
+			var Account = app.models.Account;
+			var AccountEntry = app.models.AccountBalance;
 
-				var async = require('async');
-				debugger;
-				async.waterfall([
-					function(callback) {
-						Account.find({
-						  fields:{
-								"accountName": true,
-								"accountNo": true,
-								"ifsc": true,
-								"current": true,
-								"counter": true,
-								"counterall": true,
-								"key": true,
-								"id":true
-							}
-						}).then(function(accountRecords){
-								callback(null, accountRecords);
-						});
-					},
-					function(accountRecords, callback) {
-						// arg1 now equals 'one' and arg2 now equals 'two'
-						var date = new Date("2019-04-01");
-						date.setHours(0,0,0,0);
-						AccountEntry.find({
-							where: {
-								and: [{
-									CreatedOn: {
-										gte: date
-									}
-								}]
-							},
-						  fields:{
-								"AccountNo": true,
-								"Amount": true
-							}
-						})
-						.then(function(accountBalances, err) {
+			var async = require('async');
+			debugger;
+			async.waterfall([
+				function (callback) {
+					Account.find({
+						fields: {
+							"accountName": true,
+							"accountNo": true,
+							"ifsc": true,
+							"current": true,
+							"counter": true,
+							"counterall": true,
+							"key": true,
+							"id": true
+						}
+					}).then(function (accountRecords) {
+						callback(null, accountRecords);
+					});
+				},
+				function (accountRecords, callback) {
+					// arg1 now equals 'one' and arg2 now equals 'two'
+					var date = new Date("2019-04-01");
+					date.setHours(0, 0, 0, 0);
+					AccountEntry.find({
+						where: {
+							and: [{
+								CreatedOn: {
+									gte: date
+								}
+							}]
+						},
+						fields: {
+							"AccountNo": true,
+							"Amount": true
+						}
+					})
+						.then(function (accountBalances, err) {
 							callback(null, accountRecords, accountBalances);
 						});
 
-					},
-					function(accountRecords, accountBalances, callback) {
-						// arg1 now equals 'three'
-						var date = new Date("2019-04-01");
-						date.setHours(0,0,0,0);
-						Subs.find({
-							where: {
-								and: [{
-									PaymentDate: {
-										gte: date
-									}
-								}]
-							},
-							fields:{
-								"AccountName": true,
-								"Amount": true
+				},
+				function (accountRecords, accountBalances, callback) {
+					// arg1 now equals 'three'
+					var date = new Date("2019-04-01");
+					date.setHours(0, 0, 0, 0);
+					Subs.find({
+						where: {
+							and: [{
+								PaymentDate: {
+									gte: date
+								}
+							}]
+						},
+						fields: {
+							"AccountName": true,
+							"Amount": true
 
-							}
-						})
-							.then(function(Records, err) {
+						}
+					})
+						.then(function (Records, err) {
 
 
 							callback(null, accountRecords, accountBalances, Records);
 						});
-					}
-				], function(err, accountRecords, accountBalances, Records) {
-					// result now equals 'done'
-					debugger;
-					try {
-						var responseData = [];
-						for (var i = 0; i < accountRecords.length; i++) {
-							try {
-								var totalAmount = 0, newDeposits = 0;
-								for (var j = 0; j < accountBalances.length; j++) {
+				}
+			], function (err, accountRecords, accountBalances, Records) {
+				// result now equals 'done'
+				debugger;
+				try {
+					var responseData = [];
+					for (var i = 0; i < accountRecords.length; i++) {
+						try {
+							var totalAmount = 0, newDeposits = 0;
+							for (var j = 0; j < accountBalances.length; j++) {
 
-									if(accountBalances[j].AccountNo.toString() === accountRecords[i].accountNo.toString()){
-										totalAmount
+								if (accountBalances[j].AccountNo.toString() === accountRecords[i].accountNo.toString()) {
+									totalAmount
 										= totalAmount +
-											accountBalances[j].Amount;
-									}
-
+										accountBalances[j].Amount;
 								}
-								for (var k = 0; k < Records.length; k++) {
-									if(Records[k].AccountName.toString() === accountRecords[i].accountNo.toString()){
-										totalAmount
-										= totalAmount +
-											Records[k].Amount;
-										newDeposits = Records[k].Amount + newDeposits;
-									}
-
-								}
-
-								responseData.push({ "AccountNo": accountRecords[i].accountNo,
-																		 "AccountName":  accountRecords[i].accountName + " - " + accountRecords[i].ifsc,
-																		 "NewDeposit": newDeposits,
-																		 "Amount": totalAmount,
-																		 "current": accountRecords[i].current,
-																		 "counter":accountRecords[i].counter,
-																		 "counterall":accountRecords[i].counterall,
-																		 "key":accountRecords[i].key,
-																		 "id":accountRecords[i].id
-								});
-								totalAmount, newDeposits = 0;
-							} catch (e) {
-
-							} finally {
 
 							}
+							for (var k = 0; k < Records.length; k++) {
+								if (Records[k].AccountName.toString() === accountRecords[i].accountNo.toString()) {
+									totalAmount
+										= totalAmount +
+										Records[k].Amount;
+									newDeposits = Records[k].Amount + newDeposits;
+								}
+
+							}
+
+							responseData.push({
+								"AccountNo": accountRecords[i].accountNo,
+								"AccountName": accountRecords[i].accountName + " - " + accountRecords[i].ifsc,
+								"NewDeposit": newDeposits,
+								"Amount": totalAmount,
+								"current": accountRecords[i].current,
+								"counter": accountRecords[i].counter,
+								"counterall": accountRecords[i].counterall,
+								"key": accountRecords[i].key,
+								"id": accountRecords[i].id
+							});
+							totalAmount, newDeposits = 0;
+						} catch (e) {
+
+						} finally {
+
 						}
-
-						res.send(responseData);
-					} catch (e) {
-
-					} finally {
-
 					}
-				}
-			);
-		 });
 
-		app.get('/getBatchPerCourse', function(req, res) {
+					res.send(responseData);
+				} catch (e) {
+
+				} finally {
+
+				}
+			}
+			);
+		});
+
+		app.get('/getBatchPerCourse', function (req, res) {
 			var responseData = [];
 			var fs = require('fs');
 			var aCources = JSON.parse(fs.readFileSync('../OFTProject/client/models/mockData/sampledata.json', 'utf8'));
@@ -1330,16 +1349,16 @@ app.start = function() {
 
 			var Courses = app.models.Course;
 
-			Courses.find().then(function(data) {
+			Courses.find().then(function (data) {
 				// console.log("Test Course")
 				aCourses = data;
-				aCources.courses.forEach(function(oRec) {
+				aCources.courses.forEach(function (oRec) {
 					oSubCounter[oRec.courseName] = 0;
 				})
 
-				Object.keys(oSubCounter).forEach(function(key) {
+				Object.keys(oSubCounter).forEach(function (key) {
 
-					var oCount = data.filter(function(oRec) {
+					var oCount = data.filter(function (oRec) {
 						return key === oRec.Name;
 					})
 
@@ -1354,7 +1373,7 @@ app.start = function() {
 			})
 		});
 
-		app.get('/getStudentPerCourse', function(req, res) {
+		app.get('/getStudentPerCourse', function (req, res) {
 			var responseData = [];
 			var fs = require('fs');
 			var aCources = JSON.parse(fs.readFileSync('../OFTProject/client/models/mockData/sampledata.json', 'utf8'));
@@ -1363,14 +1382,14 @@ app.start = function() {
 			var Courses = app.models.Course;
 			var Sub = app.models.Sub;
 
-			Courses.find().then(function(data) {
+			Courses.find().then(function (data) {
 				aCourcesFind = data;
 
-				aCources.courses.forEach(function(oCouRec) {
+				aCources.courses.forEach(function (oCouRec) {
 					var oSubCounter = {};
 					// oSubCounter[oCouRec.courseName] = 0;
 					oSubCounter["Name"] = oCouRec.courseName;
-					var aBatches = data.filter(function(oRec) {
+					var aBatches = data.filter(function (oRec) {
 						return oCouRec.courseName === oRec.Name;
 					})
 					oSubCounter["Batches"] = aBatches;
@@ -1379,12 +1398,12 @@ app.start = function() {
 
 				Sub.find({
 
-				}).then(function(data) {
+				}).then(function (data) {
 
 					for (i = 0; i < aCourseFinal.length; i++) {
-            var aSubBatches = [];
+						var aSubBatches = [];
 						for (j = 0; j < aCourseFinal[i].Batches.length; j++) {
-							aSubBatches = data.filter(function(oRec) {
+							aSubBatches = data.filter(function (oRec) {
 								return aCourseFinal[i].Batches[j].id.toString() === oRec.CourseId.toString();
 							})
 						}
@@ -1399,7 +1418,7 @@ app.start = function() {
 			})
 		});
 
-		app.get('/getCountLastMonths', function(req, res) {
+		app.get('/getCountLastMonths', function (req, res) {
 			var responseData = [];
 			var app = require('../server/server');
 			var Sub = app.models.Sub;
@@ -1432,15 +1451,15 @@ app.start = function() {
 				// where: {
 				// 	or: aOrCond
 				// }
-			}).then(function(data) {
-				Date.prototype.getMonthText = function() {
+			}).then(function (data) {
+				Date.prototype.getMonthText = function () {
 					var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 					return months[this.getMonth()];
 				}
 				// var aStudents = [];
 				for (var j = 0; j < aMonths.length; j++) {
 
-					aStudents = data.filter(function(oRec) {
+					aStudents = data.filter(function (oRec) {
 						return oRec.CreatedOn >= aMonths[j].StartDate && oRec.CreatedOn <= aMonths[j].EndDate
 					})
 
@@ -1456,53 +1475,53 @@ app.start = function() {
 
 		});
 
-		app.get('/ServerDownloadExp', function(req, res) {
+		app.get('/ServerDownloadExp', function (req, res) {
 			var date = new Date();
 			Server.find({
-					where: {
-						and: [{
-							EndDate: {
-								lt: date
-							}
-						}, {
-							UserEndDate: {
-								lt: date
-							}
-						}]
-					}
-				})
-				.then(function(Records, err) {
-						if (Records) {
-
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
-							sheet.addRow().values = Object.keys(Records[0].__data);
-
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									if (err) {
-										console.log('---------- error downloading file: ', err);
-									}
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+				where: {
+					and: [{
+						EndDate: {
+							lt: date
 						}
+					}, {
+						UserEndDate: {
+							lt: date
+						}
+					}]
+				}
+			})
+				.then(function (Records, err) {
+					if (Records) {
+
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+						sheet.addRow().values = Object.keys(Records[0].__data);
+
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
+						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								if (err) {
+									console.log('---------- error downloading file: ', err);
+								}
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
 
-		app.post('/TakeBackup', function(req, res) {
+		app.post('/TakeBackup', function (req, res) {
 
 			var dbUri = "mongodb://anubhav:GbPOHnk2JSfbe44g@oft-shard-00-00-kyg3j.mongodb.net:27017/prod";
 
@@ -1521,69 +1540,69 @@ app.start = function() {
 
 		});
 
-		app.get('/ServerPayDownload', function(req, res) {
+		app.get('/ServerPayDownload', function (req, res) {
 
 			ServerPay.find({})
-				.then(function(Records, err) {
-						if (Records) {
+				.then(function (Records, err) {
+					if (Records) {
 
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
 
-							sheet.addRow().values = Object.keys(Records[0].__data);
+						sheet.addRow().values = Object.keys(Records[0].__data);
 
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									console.log('---------- error downloading file: ', err);
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
 						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								console.log('---------- error downloading file: ', err);
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
 		var Inquiry = app.models.Inquiry;
-		app.get('/InquiryDownload', function(req, res) {
+		app.get('/InquiryDownload', function (req, res) {
 
 			Inquiry.find({})
-				.then(function(Records, err) {
-						if (Records) {
+				.then(function (Records, err) {
+					if (Records) {
 
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
-							sheet.addRow().values = Object.keys(Records[0].__data);
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									console.log('---------- error downloading file: ', err);
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+						sheet.addRow().values = Object.keys(Records[0].__data);
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
 						}
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								console.log('---------- error downloading file: ', err);
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
-		app.get('/SubNotExpired', function(req, res) {
+		app.get('/SubNotExpired', function (req, res) {
 
 			var app = require('../server/server');
 			var Sub = app.models.Sub;
@@ -1592,8 +1611,8 @@ app.start = function() {
 			var async = require('async');
 			debugger;
 			async.waterfall([
-				function(callback) {
-					Students.find().then(function(students) {
+				function (callback) {
+					Students.find().then(function (students) {
 						var allStudents = [];
 						for (var i = 0; i < students.length; i++) {
 							allStudents[students[i].id] = students[i];
@@ -1602,9 +1621,9 @@ app.start = function() {
 					});
 
 				},
-				function(students, callback) {
+				function (students, callback) {
 					// arg1 now equals 'one' and arg2 now equals 'two'
-					Courses.find().then(function(courses) {
+					Courses.find().then(function (courses) {
 						var allCourses = [];
 						for (var i = 0; i < courses.length; i++) {
 							allCourses[courses[i].id] = courses[i];
@@ -1613,23 +1632,23 @@ app.start = function() {
 					});
 
 				},
-				function(students, courses, callback) {
+				function (students, courses, callback) {
 					// arg1 now equals 'three'
 					var today = new Date();
 
 					Sub.find({
 						where: {
 							and: [{
-									MostRecent: true
-								},
-								{
-									EndDate: {
-										gte: today
-									}
+								MostRecent: true
+							},
+							{
+								EndDate: {
+									gte: today
 								}
+							}
 							]
 						}
-					}).then(function(Subs) {
+					}).then(function (Subs) {
 						var allSubs = [];
 						for (var i = 0; i < Subs.length; i++) {
 							var record = Subs[i];
@@ -1652,7 +1671,7 @@ app.start = function() {
 					});
 
 				}
-			], function(err, Records) {
+			], function (err, Records) {
 				// result now equals 'done'
 				try {
 					debugger;
@@ -1668,8 +1687,8 @@ app.start = function() {
 					var tempfile = require('tempfile');
 					var tempFilePath = tempfile('.xlsx');
 					console.log("tempFilePath : ", tempFilePath);
-					workbook.xlsx.writeFile(tempFilePath).then(function() {
-						res.sendFile(tempFilePath, function(err) {
+					workbook.xlsx.writeFile(tempFilePath).then(function () {
+						res.sendFile(tempFilePath, function (err) {
 							if (err) {
 								console.log('---------- error downloading file: ', err);
 							}
@@ -1684,7 +1703,7 @@ app.start = function() {
 			});
 		});
 
-		app.get('/SubDownload', function(req, res) {
+		app.get('/SubDownload', function (req, res) {
 
 			var app = require('../server/server');
 			var Sub = app.models.Sub;
@@ -1693,8 +1712,8 @@ app.start = function() {
 			var async = require('async');
 			debugger;
 			async.waterfall([
-				function(callback) {
-					Students.find().then(function(students) {
+				function (callback) {
+					Students.find().then(function (students) {
 						var allStudents = [];
 						for (var i = 0; i < students.length; i++) {
 							allStudents[students[i].id] = students[i];
@@ -1703,9 +1722,9 @@ app.start = function() {
 					});
 
 				},
-				function(students, callback) {
+				function (students, callback) {
 					// arg1 now equals 'one' and arg2 now equals 'two'
-					Courses.find().then(function(courses) {
+					Courses.find().then(function (courses) {
 						var allCourses = [];
 						for (var i = 0; i < courses.length; i++) {
 							allCourses[courses[i].id] = courses[i];
@@ -1714,13 +1733,13 @@ app.start = function() {
 					});
 
 				},
-				function(students, courses, callback) {
+				function (students, courses, callback) {
 					// arg1 now equals 'three'
 					Sub.find({
 						where: {
 							MostRecent: true
 						}
-					}).then(function(Subs) {
+					}).then(function (Subs) {
 						var allSubs = [];
 						for (var i = 0; i < Subs.length; i++) {
 							var record = Subs[i];
@@ -1742,7 +1761,7 @@ app.start = function() {
 					});
 
 				}
-			], function(err, Records) {
+			], function (err, Records) {
 				// result now equals 'done'
 				try {
 					debugger;
@@ -1758,8 +1777,8 @@ app.start = function() {
 					var tempfile = require('tempfile');
 					var tempFilePath = tempfile('.xlsx');
 					console.log("tempFilePath : ", tempFilePath);
-					workbook.xlsx.writeFile(tempFilePath).then(function() {
-						res.sendFile(tempFilePath, function(err) {
+					workbook.xlsx.writeFile(tempFilePath).then(function () {
+						res.sendFile(tempFilePath, function (err) {
 							if (err) {
 								console.log('---------- error downloading file: ', err);
 							}
@@ -1776,181 +1795,183 @@ app.start = function() {
 
 		var Stud = app.models.Student;
 
-		app.get('/StudentDownload', function(req, res) {
+		app.get('/StudentDownload', function (req, res) {
 
 			Stud.find({})
-				.then(function(Records, err) {
-						if (Records) {
+				.then(function (Records, err) {
+					if (Records) {
 
-							var excel = require('exceljs');
-							var workbook = new excel.Workbook(); //creating workbook
-							var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
-							sheet.addRow().values = Object.keys(Records[0].__data);
-							for (var i = 0; i < Records["length"]; i++) {
-								sheet.addRow().values = Object.values(Records[i].__data);
-							}
-
-							var tempfile = require('tempfile');
-							var tempFilePath = tempfile('.xlsx');
-							console.log("tempFilePath : ", tempFilePath);
-							workbook.xlsx.writeFile(tempFilePath).then(function() {
-								res.sendFile(tempFilePath, function(err) {
-									if (err) {
-										console.log('---------- error downloading file: ', err);
-									}
-								});
-								console.log('file is written @ ' + tempFilePath);
-							});
-
+						var excel = require('exceljs');
+						var workbook = new excel.Workbook(); //creating workbook
+						var sheet = workbook.addWorksheet('MySheet'); //creating worksheet
+						sheet.addRow().values = Object.keys(Records[0].__data);
+						for (var i = 0; i < Records["length"]; i++) {
+							sheet.addRow().values = Object.values(Records[i].__data);
 						}
+
+						var tempfile = require('tempfile');
+						var tempFilePath = tempfile('.xlsx');
+						console.log("tempFilePath : ", tempFilePath);
+						workbook.xlsx.writeFile(tempFilePath).then(function () {
+							res.sendFile(tempFilePath, function (err) {
+								if (err) {
+									console.log('---------- error downloading file: ', err);
+								}
+							});
+							console.log('file is written @ ' + tempFilePath);
+						});
+
 					}
+				}
 
 				);
 		});
 
 		app.post('/fillColl',
-			function(req, res) {
+			function (req, res) {
 				var app = require('../server/server');
 				var Students = app.models.Student;
 				var Courses = app.models.Course;
 				this.students = [];
 				this.courses = [];
-				Students.find().then(function(students) {
+				Students.find().then(function (students) {
 					for (var i = 0; i < students.length; i++) {
 						this.students[students[i].id] = students[i];
 					}
 				});
-				Courses.find().then(function(courses) {
+				Courses.find().then(function (courses) {
 					for (var i = 0; i < courses.length; i++) {
 						this.courses[courses[i].id] = courses[i];
 					}
 				});
 			});
 
-			app.post('/markCheckedAccount',
-					function(req, res) {
+		app.post('/markCheckedAccount',
+			function (req, res) {
+				var app = require('../server/server');
+				var Account = app.models.Account;
+				var boolVal = req.body.State;
+				Account.findOne({
+					where: {
+						accountNo: req.body.AccountNo
+					}
+				}).then(function (item) {
+					if (item) {
 						var app = require('../server/server');
 						var Account = app.models.Account;
-						var boolVal = req.body.State;
-						Account.findOne({where: {
-							accountNo: req.body.AccountNo
-						}}).then(function(item) {
-								if(item){
-									var app = require('../server/server');
-									var Account = app.models.Account;
-									var id = item.id;
-									var updateObj = {
-										current: boolVal
-									};
-									Account.findById(id).then(function(instance) {
-										 instance.updateAttributes(updateObj);
-										 return res.send("done");
-									});
-								}
-							})
-							.catch(function(err) {
-								console.log(err);
-							});
+						var id = item.id;
+						var updateObj = {
+							current: boolVal
+						};
+						Account.findById(id).then(function (instance) {
+							instance.updateAttributes(updateObj);
+							return res.send("done");
+						});
 					}
-				);
-				app.post('/getAllForAccount',
-						function(req, res) {
-							var app = require('../server/server');
-							var Sub = app.models.Sub;
-							var date = new Date();
-							date.setDate( date.getDate() - 7 );
-							Sub.find({
-									where: {
-										and: [{
-											AccountName: req.body.AccountNo
-										}
-										// ,
-										// {
-										// 	PaymentDate: {
-										// 		gt: date
-										// 	}
-										// }
-									]
-									},
-								  fields:{
-										"PaymentDate": true,
-										"Amount": true,
-										"Remarks": true
-									}
-								}
-						).then(function(data) {
-								res.send(data);
-							});
+				})
+					.catch(function (err) {
+						console.log(err);
+					});
+			}
+		);
+		app.post('/getAllForAccount',
+			function (req, res) {
+				var app = require('../server/server');
+				var Sub = app.models.Sub;
+				var date = new Date();
+				date.setDate(date.getDate() - 7);
+				Sub.find({
+					where: {
+						and: [{
+							AccountName: req.body.AccountNo
 						}
-					);
-					app.post('/ResetPassword',
-							function(req, res) {
-								var app = require('../server/server');
-								var Account = app.models.Account;
-								var id = req.body.id;
-								var updateObj = {
-										key: req.body.key
-								};
-								Account.findById(id).then(function(instance) {
-									 instance.updateAttributes(updateObj);
-									 console.log("done");
-									 res.send("done");
-								});
-							}
-						);
-						app.post('/ResetCounter',
-								function(req, res) {
-									var app = require('../server/server');
-									var Account = app.models.Account;
-									var id = req.body.id;
-									var updateObj = {
-										counterall: 0
-									};
-									Account.findById(id).then(function(instance) {
-										 instance.updateAttributes(updateObj);
-										 console.log("done");
-										 res.send("done");
-									});
-								}
-							);
-			app.post('/MoveNextAc',
-					function(req, res) {
+							// ,
+							// {
+							// 	PaymentDate: {
+							// 		gt: date
+							// 	}
+							// }
+						]
+					},
+					fields: {
+						"PaymentDate": true,
+						"Amount": true,
+						"Remarks": true
+					}
+				}
+				).then(function (data) {
+					res.send(data);
+				});
+			}
+		);
+		app.post('/ResetPassword',
+			function (req, res) {
+				var app = require('../server/server');
+				var Account = app.models.Account;
+				var id = req.body.id;
+				var updateObj = {
+					key: req.body.key
+				};
+				Account.findById(id).then(function (instance) {
+					instance.updateAttributes(updateObj);
+					console.log("done");
+					res.send("done");
+				});
+			}
+		);
+		app.post('/ResetCounter',
+			function (req, res) {
+				var app = require('../server/server');
+				var Account = app.models.Account;
+				var id = req.body.id;
+				var updateObj = {
+					counterall: 0
+				};
+				Account.findById(id).then(function (instance) {
+					instance.updateAttributes(updateObj);
+					console.log("done");
+					res.send("done");
+				});
+			}
+		);
+		app.post('/MoveNextAc',
+			function (req, res) {
+				var app = require('../server/server');
+				var Account = app.models.Account;
+				Account.find({
+					where: {
+						current: true
+					}
+				})
+					.then(function (allAc) {
+						allAc = allAc.sort(function (a, b) {
+							return a.counterall > b.counterall;
+						});
+						var item = allAc[0];
 						var app = require('../server/server');
 						var Account = app.models.Account;
-						Account.find({
-							where:{
-								current: true
-							}
-						})
-							.then(function(allAc) {
-								allAc = allAc.sort(function(a, b){
-								  return a.counterall > b.counterall;
-								});
-								var item = allAc[0];
-								var app = require('../server/server');
-								var Account = app.models.Account;
-								var id = item.id;
-								var updateObj = {
-									counter: item.counter + 1,
-									counterall: item.counterall + 1
-								};
-								Account.findById(id).then(function(instance) {
-									 instance.updateAttributes(updateObj);
-									 console.log(instance);
-									 res.send(instance);
-								});
-							})
-							.catch(function(err) {
-								console.log(err);
-							});
-					}
-				);
+						var id = item.id;
+						var updateObj = {
+							counter: item.counter + 1,
+							counterall: item.counterall + 1
+						};
+						Account.findById(id).then(function (instance) {
+							instance.updateAttributes(updateObj);
+							console.log(instance);
+							res.send(instance);
+						});
+					})
+					.catch(function (err) {
+						console.log(err);
+					});
+			}
+		);
 		app.post('/updateInq',
-			function(req, res) {
+			function (req, res) {
 				var app = require('../server/server');
 				var Subs = app.models.Sub;
 				Subs.find()
-					.then(function(subs) {
+					.then(function (subs) {
 						for (var i = 0; i < subs.length; i++) {
 							var item = subs[i];
 							//console.log("found course for student id " + item.StudentId + " course id " + item.CourseId);
@@ -1969,12 +1990,12 @@ app.start = function() {
 							var updateObj = {
 								Status: "Access granted"
 							};
-							Subs.findById(id).then(function(instance) {
+							Subs.findById(id).then(function (instance) {
 								return instance.updateAttributes(updateObj);
 							});
 						}
 					})
-					.catch(function(err) {
+					.catch(function (err) {
 						console.log(err);
 					});
 
@@ -1985,13 +2006,13 @@ app.start = function() {
 		);
 
 		app.post('/sendServerEmail',
-			function(req, res) {
+			function (req, res) {
 				var payload = req.body;
 				var that = this;
 				this.password = req.body.password;
 				this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'server.html', 'utf8');
 				//if partial payment is true update the due amount and due values
-				Date.prototype.toShortFormat = function() {
+				Date.prototype.toShortFormat = function () {
 					var month_names = ["Jan", "Feb", "Mar",
 						"Apr", "May", "Jun",
 						"Jul", "Aug", "Sep",
@@ -2011,7 +2032,7 @@ app.start = function() {
 				var app = require('../server/server');
 				var Student = app.models.Student;
 				this.StudentId = req.body.StudentId;
-				Student.findById(this.StudentId).then(function(singleStu) {
+				Student.findById(this.StudentId).then(function (singleStu) {
 					that.studentEmailId = singleStu.GmailId;
 					that.studentName = singleStu.Name.split(" ")[0];
 					///Replace the link in the contents
@@ -2040,138 +2061,7 @@ app.start = function() {
 						html: that.mailContent
 					};
 
-					transporter.sendMail(mailOptions, function(error, info) {
-						if (error) {
-							console.log(error);
-							if(error.code === "EAUTH"){
-									res.status(500).send('Username and Password not accepted, Please try again.');
-							}else{
-								res.status(500).send('Internal Error while Sending the email, Please try again.');
-							}
-						} else {
-							console.log('Email sent: ' + info.response);
-							res.send("email sent");
-						}
-					});
-				});
-
-			});
-
-			app.post('/sendInquiryEmail',
-				function(req, res) {
-					//https://developers.google.com/oauthplayground/
-					//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
-					//
-
-					var nodemailer = require('nodemailer');
-					var smtpTransport = require('nodemailer-smtp-transport');
-					const xoauth2 = require('xoauth2');
-					const key = require('./samples.json');
-					const fs = require('fs');
-					console.log(req.body);
-
-					var transporter = nodemailer.createTransport(smtpTransport({
-							service: 'gmail',
-							host: 'smtp.gmail.com',
-							auth: {
-								xoauth2: xoauth2.createXOAuth2Generator({
-									user: key.user,
-									clientId: key.clientId,
-									clientSecret: key.clientSecret,
-									refreshToken: key.refreshToken
-								})
-							}
-						}));
-
-
-					var Subject = req.body.Subject;
-					Subject = req.body.CourseName + " training 🟢";
-					//https://myaccount.google.com/lesssecureapps?pli=1
-					if (req.body.FirstName === "" || req.body.FirstName == "null") {
-						req.body.FirstName = "Sir";
-					}
-
-
-					if (req.body.mailType === "" || req.body.FirstName == "null" || req.body.mailType === undefined) {
-						req.body.mailType = "R";
-					}
-					if (req.body.CourseName === "Generic") {
-						req.body.CourseName = "Other";
-					}
-
-					var app = require('../server/server');
-					//var Template = app.models.Template;
-
-					var CourseName = req.body.CourseName;
-					if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
-						CourseName = "Linkedin";
-					}
-
-					//var contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + req.body.CourseName + '.html', 'utf8');
-					var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html','utf-8');
-					//var demoDate = new Date(data.DemoDate);
-					Date.prototype.toShortFormat = function() {
-						var month_names = ["Jan", "Feb", "Mar",
-							"Apr", "May", "Jun",
-							"Jul", "Aug", "Sep",
-							"Oct", "Nov", "Dec"
-						];
-
-						var day = this.getDate();
-						var month_index = this.getMonth();
-						var year = this.getFullYear();
-
-						return "" + day + "-" + month_names[month_index] + "-" + year;
-					}
-						//yet to code
-						// contents = contents.replace('$$BatchDate$$', demoDate.toShortFormat());
-						// contents = contents.replace('$$BatchTime$$', data.ClassTiming);
-						// contents = contents.replace('$$DemoLink$$', data.VideoLink);
-						// contents = contents.replace('%24%24DemoLink%24%24', data.VideoLink);
-						// contents = contents.replace('$$NextClass$$', data.FirstName);
-						// contents = contents.replace('$$CALLink$$', data.Extra1);
-						// contents = contents.replace('%24%24CALLink%24%24', data.Extra1);
-					  // contents = contents.replace('$$Extra1$$', data.Extra2);
-
-					var result = req.body.FirstName.replace(/([A-Z])/g, " $1");
-					req.body.FirstName = result.charAt(0).toUpperCase() + result.slice(1);
-					console.log(contents);
-
-					contents = contents.replace('$$Name$$', req.body.FirstName)
-
-					if (req.body.fees !== "null" && req.body.fees !== "") {
-						if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
-							// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
-							// contents = contents.replace("Please consider the fee for the course as $$fees$$ $$currency$$. (same fee for any option chosen)", "");
-							// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
-							// contents = contents.replace("The course fee is $$fees$$ $$currency$$.", "");
-							//contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\promotion.html", 'utf8');
-							Subject = "Hey " + req.body.FirstName + "!! Boost your skills"
-						} else {
-							contents = contents.replace("$$fees$$", req.body.fees);
-							contents = contents.replace("$$currency$$", req.body.currency);
-						}
-
-					}
-					var ccs = [];
-					// if (req.body.CourseName === "SimpleLogistics") {
-					// 	ccs.push("paramsaddy@gmail.com");
-					// } else if (req.body.CourseName === "SimpleFinance") {
-					// 	ccs.push("info@gaurav-consulting.com");
-					// }
-					var mailOptions = {};
-
-
-					mailOptions = {
-						from: 'contact@evotrainingsolutions.com',
-						to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
-						cc: ccs,
-						subject: 'Re: ' + Subject + " 🟢",
-						html: contents
-					};
-
-
-					transporter.sendMail(mailOptions, function(error, info) {
+					transporter.sendMail(mailOptions, function (error, info) {
 						if (error) {
 							console.log(error);
 							if (error.code === "EAUTH") {
@@ -2184,15 +2074,146 @@ app.start = function() {
 							res.send("email sent");
 						}
 					});
-
 				});
 
-			mailContent: "",
+			});
+
+		app.post('/sendInquiryEmail',
+			function (req, res) {
+				//https://developers.google.com/oauthplayground/
+				//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
+				//
+
+				var nodemailer = require('nodemailer');
+				var smtpTransport = require('nodemailer-smtp-transport');
+				const xoauth2 = require('xoauth2');
+				const key = require('./samples.json');
+				const fs = require('fs');
+				console.log(req.body);
+
+				var transporter = nodemailer.createTransport(smtpTransport({
+					service: 'gmail',
+					host: 'smtp.gmail.com',
+					auth: {
+						xoauth2: xoauth2.createXOAuth2Generator({
+							user: key.user,
+							clientId: key.clientId,
+							clientSecret: key.clientSecret,
+							refreshToken: key.refreshToken
+						})
+					}
+				}));
+
+
+				var Subject = req.body.Subject;
+				Subject = req.body.CourseName + " training 🟢";
+				//https://myaccount.google.com/lesssecureapps?pli=1
+				if (req.body.FirstName === "" || req.body.FirstName == "null") {
+					req.body.FirstName = "Sir";
+				}
+
+
+				if (req.body.mailType === "" || req.body.FirstName == "null" || req.body.mailType === undefined) {
+					req.body.mailType = "R";
+				}
+				if (req.body.CourseName === "Generic") {
+					req.body.CourseName = "Other";
+				}
+
+				var app = require('../server/server');
+				//var Template = app.models.Template;
+
+				var CourseName = req.body.CourseName;
+				if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
+					CourseName = "Linkedin";
+				}
+
+				//var contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + req.body.CourseName + '.html', 'utf8');
+				var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');
+				//var demoDate = new Date(data.DemoDate);
+				Date.prototype.toShortFormat = function () {
+					var month_names = ["Jan", "Feb", "Mar",
+						"Apr", "May", "Jun",
+						"Jul", "Aug", "Sep",
+						"Oct", "Nov", "Dec"
+					];
+
+					var day = this.getDate();
+					var month_index = this.getMonth();
+					var year = this.getFullYear();
+
+					return "" + day + "-" + month_names[month_index] + "-" + year;
+				}
+				//yet to code
+				// contents = contents.replace('$$BatchDate$$', demoDate.toShortFormat());
+				// contents = contents.replace('$$BatchTime$$', data.ClassTiming);
+				// contents = contents.replace('$$DemoLink$$', data.VideoLink);
+				// contents = contents.replace('%24%24DemoLink%24%24', data.VideoLink);
+				// contents = contents.replace('$$NextClass$$', data.FirstName);
+				// contents = contents.replace('$$CALLink$$', data.Extra1);
+				// contents = contents.replace('%24%24CALLink%24%24', data.Extra1);
+				// contents = contents.replace('$$Extra1$$', data.Extra2);
+
+				var result = req.body.FirstName.replace(/([A-Z])/g, " $1");
+				req.body.FirstName = result.charAt(0).toUpperCase() + result.slice(1);
+				console.log(contents);
+
+				contents = contents.replace('$$Name$$', req.body.FirstName)
+
+				if (req.body.fees !== "null" && req.body.fees !== "") {
+					if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
+						// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
+						// contents = contents.replace("Please consider the fee for the course as $$fees$$ $$currency$$. (same fee for any option chosen)", "");
+						// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
+						// contents = contents.replace("The course fee is $$fees$$ $$currency$$.", "");
+						//contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\promotion.html", 'utf8');
+						Subject = "Hey " + req.body.FirstName + "!! Boost your skills"
+					} else {
+						contents = contents.replace("$$fees$$", req.body.fees);
+						contents = contents.replace("$$currency$$", req.body.currency);
+					}
+
+				}
+				var ccs = [];
+				// if (req.body.CourseName === "SimpleLogistics") {
+				// 	ccs.push("paramsaddy@gmail.com");
+				// } else if (req.body.CourseName === "SimpleFinance") {
+				// 	ccs.push("info@gaurav-consulting.com");
+				// }
+				var mailOptions = {};
+
+
+				mailOptions = {
+					from: 'contact@evotrainingsolutions.com',
+					to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
+					cc: ccs,
+					subject: 'Re: ' + Subject + " 🟢",
+					html: contents
+				};
+
+
+				transporter.sendMail(mailOptions, function (error, info) {
+					if (error) {
+						console.log(error);
+						if (error.code === "EAUTH") {
+							res.status(500).send('Username and Password not accepted, Please try again.');
+						} else {
+							res.status(500).send('Internal Error while Sending the email, Please try again.');
+						}
+					} else {
+						console.log('Email sent: ' + info.response);
+						res.send("email sent");
+					}
+				});
+
+			});
+
+		mailContent: "",
 			app.post('/sendSubscriptionEmail',
-				function(req, res) {
+				function (req, res) {
 
 					//if partial payment is true update the due amount and due values
-					Date.prototype.toShortFormat = function() {
+					Date.prototype.toShortFormat = function () {
 						var month_names = ["Jan", "Feb", "Mar",
 							"Apr", "May", "Jun",
 							"Jul", "Aug", "Sep",
@@ -2209,7 +2230,7 @@ app.start = function() {
 					var payload = req.body;
 					var that = this;
 					this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'payment.html', 'utf8');
-					if(payload.includeX.indexOf("Renewal") !== -1){
+					if (payload.includeX.indexOf("Renewal") !== -1) {
 						this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'renewalPayment.html', 'utf8');
 						var x = new Date(payload.EndDate);
 						this.mailContent = this.mailContent.replace("$$DueDate$$", x.toShortFormat());
@@ -2231,13 +2252,13 @@ app.start = function() {
 					this.password = payload.password;
 					this.includeX = payload.includeX;
 					this.giveAccess = payload.giveAccess;
-					Student.findById(this.StudentId).then(function(singleStu) {
+					Student.findById(this.StudentId).then(function (singleStu) {
 						var app = require('../server/server');
 						var Course = app.models.Course;
 						var that2 = that;
 						that.studentEmailId = singleStu.GmailId;
 						that.studentName = singleStu.Name.split(" ")[0];
-						Course.findById(that.CourseId).then(function(courseStr) {
+						Course.findById(that.CourseId).then(function (courseStr) {
 							console.log(that2.studentEmailId + "," + that2.studentName);
 							console.log(courseStr);
 							console.log(that2.mailContent);
@@ -2247,7 +2268,7 @@ app.start = function() {
 								courseStr.Name === "Workflow" ||
 								courseStr.Name === "FPM" ||
 								courseStr.Name === "BRF" ||
-							  courseStr.Name === "Adobe Forms") {
+								courseStr.Name === "Adobe Forms") {
 								that2.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'otherPayment.html', 'utf8');;
 								that2.mailContent = that2.mailContent.replace("$$MLink$$", '<a href="' + courseStr.DriveId + '">' + courseStr.DriveId + '</a>');
 							}
@@ -2261,8 +2282,8 @@ app.start = function() {
 							if (abhi > endDate) {
 								that2.isCalRequire = false;
 								//delete line for calendar invite
-								that2.mailContent = that2.mailContent.replace("<p>Additionally, google <a href=\"http://calendar.google.com\">calendar invite</a> is also sent to your email id.", "").replace("<em>Please note that, We have given you access of latest content (on going batch), So more videos will come as we progress with regular classes.</em>","");
-								that2.mailContent = that2.mailContent.replace("<p>Additionally, google <a href='http://calendar.google.com'>calendar invite</a> is also sent to your email id. <em>Please note that it is an ongoing LIVE batch hence more videos will be added to the blog as and when course progress. You can cover the available videos and by that time you will get new videos</em>.</p>","");
+								that2.mailContent = that2.mailContent.replace("<p>Additionally, google <a href=\"http://calendar.google.com\">calendar invite</a> is also sent to your email id.", "").replace("<em>Please note that, We have given you access of latest content (on going batch), So more videos will come as we progress with regular classes.</em>", "");
+								that2.mailContent = that2.mailContent.replace("<p>Additionally, google <a href='http://calendar.google.com'>calendar invite</a> is also sent to your email id. <em>Please note that it is an ongoing LIVE batch hence more videos will be added to the blog as and when course progress. You can cover the available videos and by that time you will get new videos</em>.</p>", "");
 							} else {
 								that2.isCalRequire = true;
 							}
@@ -2282,8 +2303,8 @@ app.start = function() {
 							var ccs = ["anubhav.abap@gmail.com"];
 							if (that2.includeX === "true" || that2.includeX === "Renewal-true") {
 								ccs.push("install.abap@gmail.com");
-							}else if (that2.includeX === "Renewal") {
-									//change content of the email here - anu
+							} else if (that2.includeX === "Renewal") {
+								//change content of the email here - anu
 							}
 							var mailOptions = {
 								from: 'onlinefioritrainings@gmail.com',
@@ -2293,12 +2314,12 @@ app.start = function() {
 								html: that2.mailContent
 							};
 
-							transporter.sendMail(mailOptions, function(error, info) {
+							transporter.sendMail(mailOptions, function (error, info) {
 								if (error) {
 									console.log(error);
-									if(error.code === "EAUTH"){
-											res.status(500).send('Username and Password not accepted, Please try again.');
-									}else{
+									if (error.code === "EAUTH") {
+										res.status(500).send('Username and Password not accepted, Please try again.');
+									} else {
 										res.status(500).send('Internal Error while Sending the email, Please try again.');
 									}
 								} else {
@@ -2315,7 +2336,7 @@ app.start = function() {
 
 				});
 
-		app.post("/clearToken", function(req,res){
+		app.post("/clearToken", function (req, res) {
 
 			const sampleClient = require('../google/sampleclient');
 			sampleClient.clearToken();
@@ -2323,19 +2344,19 @@ app.start = function() {
 
 		});
 		app.post('/giveAccess',
-			function(req, res) {
+			function (req, res) {
 				var app = require('../server/server');
 				var Student = app.models.Student;
 				this.StudentId = req.body.StudentId;
 				this.CourseId = req.body.CourseId;
 				var that = this;
-				Student.findById(this.StudentId).then(function(singleStu) {
+				Student.findById(this.StudentId).then(function (singleStu) {
 					var app = require('../server/server');
 					var Course = app.models.Course;
 					var that2 = that;
 					that.studentEmailId = singleStu.GmailId;
 					that.studentName = singleStu.Name.split(" ")[0];
-					Course.findById(that.CourseId).then(function(courseStr) {
+					Course.findById(that.CourseId).then(function (courseStr) {
 						console.log(that2.studentEmailId + "," + that2.studentName);
 						console.log(courseStr);
 						console.log(that2.mailContent);
@@ -2397,7 +2418,7 @@ app.start = function() {
 								that2.calendar.events.get({
 									calendarId: that2.CalendarId + 'roup.calendar.google.com',
 									eventId: that2.EventId
-								}, function(err, something) {
+								}, function (err, something) {
 									if (err) {
 										console.log("CALENDAR NOT FOUND");
 										res.send("calendar not found");
@@ -2415,7 +2436,7 @@ app.start = function() {
 											end: something.data.end,
 											start: something.data.start
 										}
-									}, function(err, something) {
+									}, function (err, something) {
 										if (err) {
 											console.error(err);
 										} else {
@@ -2441,20 +2462,20 @@ app.start = function() {
 
 
 		app.post('/updateAllInq',
-			function(req, res) {
+			function (req, res) {
 				var Course = app.models.Course;
 				Course.updateAll({}, {
 					"CalendarId": "null",
 					"DriveId": "null",
 					"EventId": ""
-				}, function() {
+				}, function () {
 					console.log("done");
 				});
 
 			});
 
 		app.post('/gtest',
-			function(req, res) {
+			function (req, res) {
 				const {
 					google
 				} = require('googleapis');
@@ -2491,7 +2512,7 @@ app.start = function() {
 					this.calendar.events.get({
 						calendarId: this.calId,
 						eventId: this.eveId
-					}, function(err, something) {
+					}, function (err, something) {
 						something.data.attendees.push({
 							"email": "deepakoftcom@gmail.com"
 						});
@@ -2504,7 +2525,7 @@ app.start = function() {
 								end: something.data.end,
 								start: something.data.start
 							}
-						}, function(err, something) {
+						}, function (err, something) {
 							if (err) {
 								console.error(err);
 							} else {
@@ -2531,7 +2552,7 @@ app.start = function() {
 				};
 			});
 
-		app.post('/updateBalanceInAccount', function(req, res) {
+		app.post('/updateBalanceInAccount', function (req, res) {
 			var payload = req.body;
 			var that = this;
 			this.accountNo = req.body.AccountNo;
@@ -2539,15 +2560,15 @@ app.start = function() {
 			var app = require('../server/server');
 			var AccountBalance = app.models.AccountBalance;
 			AccountBalance.findOne({
-					where: {
-						and: [{
-							Remarks: "AUTOSERVERBALANCE"
-						}, {
-							AccountNo: this.accountNo
-						}]
-					}
-				})
-				.then(function(record) {
+				where: {
+					and: [{
+						Remarks: "AUTOSERVERBALANCE"
+					}, {
+						AccountNo: this.accountNo
+					}]
+				}
+			})
+				.then(function (record) {
 					debugger;
 					var app = require('../server/server');
 					var AccountBalance = app.models.AccountBalance;
@@ -2557,35 +2578,36 @@ app.start = function() {
 							Amount: parseInt(record.Amount) + parseInt(that.amount),
 							CreatedOn: new Date()
 						};
-						AccountBalance.findById(id).then(function(instance) {
+						AccountBalance.findById(id).then(function (instance) {
 							return instance.updateAttributes(updateObj);
 						});
-					}else{
+					} else {
 						var newRec = {};
 						newRec.CreatedOn = new Date();
 						newRec.AccountNo = that.accountNo;
 						newRec.Remarks = "AUTOSERVERBALANCE";
 						newRec.Amount = that.amount;
 						AccountBalance.findOrCreate({
-								where: {
-									Remarks: "AUTOSERVERBALANCE",
-									AccountNo: this.accountNo
-								}
-							}, newRec)
-							.then(function(inq) {
+							where: {
+								Remarks: "AUTOSERVERBALANCE",
+								AccountNo: this.accountNo
+							}
+						}, newRec)
+							.then(function (inq) {
 								debugger;
 								console.log("created successfully");
 							})
-							.catch(function(err) {
+							.catch(function (err) {
 								console.log(err);
 							});
-					}}
-			);
+					}
+				}
+				);
 
 
 		});
 		app.post('/upload',
-			function(req, res) {
+			function (req, res) {
 
 				if (!req.files.myFileUpload) {
 					res.send('No files were uploaded.');
@@ -2597,7 +2619,7 @@ app.start = function() {
 
 				sampleFile = req.files.myFileUpload;
 
-				sampleFile.mv('./uploads/' + req.files.myFileUpload.name, function(err) {
+				sampleFile.mv('./uploads/' + req.files.myFileUpload.name, function (err) {
 					if (err) {
 						console.log("eror saving");
 					} else {
@@ -2614,7 +2636,7 @@ app.start = function() {
 								input: './uploads/' + req.files.myFileUpload.name,
 								output: null, //since we don't need output.json
 								lowerCaseHeaders: true
-							}, function(err, result) {
+							}, function (err, result) {
 								if (err) {
 									return res.json({
 										error_code: 1,
@@ -2628,7 +2650,7 @@ app.start = function() {
 									data: result
 								});
 
-								var getMyDate = function(strDate) {
+								var getMyDate = function (strDate) {
 									var qdat = new Date();
 									var x = strDate;
 									qdat.setYear(parseInt(x.substr(0, 4)));
@@ -2667,11 +2689,11 @@ app.start = function() {
 										case "Check":
 											var GmailId = singleRec.email;
 											Student.find({
-													where: {
-														GmailId: singleRec.email
-													}
-												})
-												.then(function(stu) {
+												where: {
+													GmailId: singleRec.email
+												}
+											})
+												.then(function (stu) {
 													if (stu.length > 0) {
 														debugger;
 														console.log(stu[0].GmailId + " found");
@@ -2681,11 +2703,11 @@ app.start = function() {
 										case "Server":
 											var GmailId = singleRec.email;
 											Student.findOne({
-													where: {
-														GmailId: singleRec.email
-													}
-												})
-												.then(function(stu) {
+												where: {
+													GmailId: singleRec.email
+												}
+											})
+												.then(function (stu) {
 													if (stu) {
 														var app = require('../server/server');
 														var Student = app.models.Student;
@@ -2708,25 +2730,25 @@ app.start = function() {
 														newRecord.Remarks = "Created by Anubhav";
 														newRecord.Extr1 = this.allResult[stu.GmailId].email
 														Server.findOrCreate({
-																"where": {
-																	"and": [{
-																			"StudentId": newRecord.StudentId
-																		},
-																		{
-																			"User": newRecord.User
-																		}
-																	]
+															"where": {
+																"and": [{
+																	"StudentId": newRecord.StudentId
+																},
+																{
+																	"User": newRecord.User
 																}
-															}, newRecord)
-															.then(function(batch) {
+																]
+															}
+														}, newRecord)
+															.then(function (batch) {
 																console.log("created server successfully");
 															})
-															.catch(function(err) {
+															.catch(function (err) {
 																console.log(err);
 															});
 													}
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											break;
@@ -2738,11 +2760,11 @@ app.start = function() {
 											var GmailId = singleRec.email;
 											var that = this;
 											Student.findOne({
-													where: {
-														GmailId: singleRec.email
-													}
-												})
-												.then(function(stu) {
+												where: {
+													GmailId: singleRec.email
+												}
+											})
+												.then(function (stu) {
 													if (stu) {
 														debugger;
 														var app = require('../server/server');
@@ -2755,7 +2777,7 @@ app.start = function() {
 															OtherEmail1: this.allResult[stu.GmailId].email1,
 															OtherEmail2: this.allResult[stu.GmailId].email2
 														};
-														Student.findById(id).then(function(instance) {
+														Student.findById(id).then(function (instance) {
 															return instance.updateAttributes(updateObj);
 														});
 														//Student.update(stu);
@@ -2766,7 +2788,7 @@ app.start = function() {
 														// console.log("update successfully");
 													}
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											///*****End of code to update batches
@@ -2784,15 +2806,15 @@ app.start = function() {
 											newRec.counter = 0;
 											newRec.current = false;
 											Account.findOrCreate({
-													where: {
-														accountNo: newRec.accountNo
-													}
-												}, newRec)
-												.then(function(inq) {
+												where: {
+													accountNo: newRec.accountNo
+												}
+											}, newRec)
+												.then(function (inq) {
 													debugger;
 													console.log("created successfully");
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											///*****End of code to update batches
@@ -2818,15 +2840,15 @@ app.start = function() {
 											newRec.Fee = singleRec.fee;
 
 											Batch.findOrCreate({
-													where: {
-														BatchNo: newRec.BatchNo
-													}
-												}, newRec)
-												.then(function(inq) {
+												where: {
+													BatchNo: newRec.BatchNo
+												}
+											}, newRec)
+												.then(function (inq) {
 													debugger;
 													console.log("created successfully");
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											///*****End of code to update batches
@@ -2851,19 +2873,19 @@ app.start = function() {
 											newRec.Phone = singleRec.phone;
 											singleRec.Date = getMyDate(singleRec.Date);
 											Inquiry.findOrCreate({
-													where: {
-														and: [{
-															EmailId: newRec.EmailId
-														}, {
-															CourseName: newRec.CourseName
-														}]
-													}
-												}, newRec)
-												.then(function(inq) {
+												where: {
+													and: [{
+														EmailId: newRec.EmailId
+													}, {
+														CourseName: newRec.CourseName
+													}]
+												}
+											}, newRec)
+												.then(function (inq) {
 													debugger;
 													console.log("created successfully");
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											newRec.EmailId = singleRec.emailid.toLowerCase();
@@ -2878,19 +2900,19 @@ app.start = function() {
 											newRec.Phone = singleRec.phone;
 
 											Inquiry.findOrCreate({
-													where: {
-														and: [{
-															EmailId: newRec.EmailId
-														}, {
-															CourseName: newRec.CourseName
-														}]
-													}
-												}, newRec)
-												.then(function(inq) {
+												where: {
+													and: [{
+														EmailId: newRec.EmailId
+													}, {
+														CourseName: newRec.CourseName
+													}]
+												}
+											}, newRec)
+												.then(function (inq) {
 													debugger;
 													console.log("created successfully");
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 
@@ -2916,17 +2938,17 @@ app.start = function() {
 												studentRec.Extra1 = "null";
 												studentRec.Extra2 = "null";
 												Student.findOrCreate({
-														where: {
-															and: [{
-																GmailId: newRec.EmailId
-															}]
-														}
-													}, studentRec)
-													.then(function(inq) {
+													where: {
+														and: [{
+															GmailId: newRec.EmailId
+														}]
+													}
+												}, studentRec)
+													.then(function (inq) {
 														debugger;
 														console.log("Student also created successfully");
 													})
-													.catch(function(err) {
+													.catch(function (err) {
 														console.log(err);
 													});
 											}
@@ -2945,11 +2967,11 @@ app.start = function() {
 											}
 
 											Batchs.findOne({
-													"where": {
-														"BatchNo": singleRec.courseid
-													}
-												})
-												.then(function(batch) {
+												"where": {
+													"BatchNo": singleRec.courseid
+												}
+											})
+												.then(function (batch) {
 													var batchid = batch.id;
 													var newRec = {};
 													newRec.StartDate = batch.StartDate;
@@ -3007,17 +3029,17 @@ app.start = function() {
 													studentRec.Extra2 = "null";
 													var finalSub = newRec;
 													Student.findOrCreate({
-															where: {
-																and: [{
-																	GmailId: studentEmail
-																}]
-															}
-														}, studentRec)
-														.then(function(inq) {
+														where: {
+															and: [{
+																GmailId: studentEmail
+															}]
+														}
+													}, studentRec)
+														.then(function (inq) {
 															debugger;
 															console.log("Student also created successfully");
 														})
-														.catch(function(err) {
+														.catch(function (err) {
 															console.log(err);
 														});
 													// Student.findOrCreate({where: {and: [{GmailId: studentEmail}]}},studentRec)
@@ -3034,7 +3056,7 @@ app.start = function() {
 
 
 												})
-												.catch(function(err) {
+												.catch(function (err) {
 													console.log(err);
 												});
 											break;
@@ -3067,13 +3089,13 @@ app.start = function() {
 												continue;
 											}
 											Student.findOrCreate({
-													where: {
-														and: [{
-															GmailId: gmailId
-														}]
-													}
-												}, studentRec)
-												.then(function(student) {
+												where: {
+													and: [{
+														GmailId: gmailId
+													}]
+												}
+											}, studentRec)
+												.then(function (student) {
 													if (student[0].GmailId) {
 														var students = student[0].id;
 														var studentsemail = student[0].GmailId.toLowerCase();
@@ -3082,11 +3104,11 @@ app.start = function() {
 													var singleRec1 = singleRec;
 													var Sub = Subs;
 													Batchs.findOne({
-															"where": {
-																"BatchNo": singleRec1.courseid
-															}
-														})
-														.then(function(batch) {
+														"where": {
+															"BatchNo": singleRec1.courseid
+														}
+													})
+														.then(function (batch) {
 															var batchid = batch.id;
 															var newRec = {};
 															newRec.StartDate = batch.StartDate;
@@ -3130,28 +3152,28 @@ app.start = function() {
 															newRec.CourseId = batchid;
 															debugger;
 															Sub.findOrCreate({
-																	"where": {
-																		"and": [{
-																				"CourseId": batchid
-																			},
-																			{
-																				"StudentId": studentsx
-																			}
-																		]
+																"where": {
+																	"and": [{
+																		"CourseId": batchid
+																	},
+																	{
+																		"StudentId": studentsx
 																	}
-																}, newRec)
-																.then(function(batch) {
+																	]
+																}
+															}, newRec)
+																.then(function (batch) {
 																	console.log("created subscription successfully");
 																})
-																.catch(function(err) {
+																.catch(function (err) {
 																	console.log(err);
 																});
 
 														})
-														.catch(function(err) {
+														.catch(function (err) {
 															console.log(err);
 														});
-												}).catch(function(err) {
+												}).catch(function (err) {
 													console.log(err);
 												});
 											break;
@@ -3181,7 +3203,7 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
+boot(app, __dirname, function (err) {
 	if (err) throw err;
 
 	// start the server if `$ node server.js`

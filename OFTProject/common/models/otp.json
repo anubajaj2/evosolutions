@@ -2,7 +2,7 @@
 	"name": "Otp",
 	"plural": "Otps",
 	"base": "PersistedModel",
-	"idInjection": true,
+	"idInjection": false,
 	"options": {
 		"validateUpsert": true
 	},
@@ -10,7 +10,8 @@
 		"Number": {
 			"type": "string",
 			"default": "null",
-			"required": true
+			"required": true,
+			"id":true
 		},
 		"OTP": {
 			"type": "string",
