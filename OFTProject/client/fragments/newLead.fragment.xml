@@ -35,8 +35,10 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         valueHelpRequest="onSelectInq"
         liveChange="onInq"
         submit="onEnter"></Input>
+        <Label text="Email"  />
+				<Input required="true" type="Email" value="{local>/newLead/EmailId}" />
     		<Label text="Date" />
-				<DatePicker visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
+				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />
 		        <Select id="idCategory"
 		          selectedKey="{local>/newLead/Category}" width="500px"
@@ -56,14 +58,12 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 		          <core:Item key="{id}" text="{CourseName}"/>
 		        </MultiComboBox> -->
 
-    			<Label text="Quoted Fee" />
-				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
-
 				<Label text="Father Name" />
-				<Input value="{local>/newLead/FatherName}"/>
+				<Input required="true" value="{local>/newLead/FatherName}"/>
         <Label text="Mother Name"/>
         <Input value="{local>/newLead/MotherName}"/>
-
+        <Label text="Quoted Fee" />
+				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
 				<Label text="Address" />
         		<TextArea value="{local>/newLead/Address}"></TextArea>
 
@@ -71,8 +71,6 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
         			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
         		</ComboBox>
-        <Label text="Email"  />
-				<Input required="false" type="number" value="{local>/newLead/EmailId}" />
 				<Label text="Emergency Contact Name" />
 				<Input value="{local>/newLead/EmergencyContactName}"></Input>
         <Label text="Emergency Contact No" />

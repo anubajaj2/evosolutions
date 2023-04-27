@@ -47,13 +47,14 @@ sap.ui.define([
 			}else{
 				that.oViewAndUploadPhoto.then(function(oDialog){
 					oDialog.getContent()[0].getItems()[0].getItems()[0].setSrc(photo);
-					oDialog.getContent()[0].getItems()[1].getItems()[0].setValue();
+					oDialog.getContent()[0].getItems()[1].getItems()[0].clear();
 			    oDialog.open();
 			  });
 			}
 		},
 		onUploadPhotoClose: function(){
 			this.oViewAndUploadPhoto.then(function(oDialog){
+				oDialog.getContent()[0].getItems()[1].getItems()[0].clear();
 				oDialog.close();
 			});
 		},
@@ -341,7 +342,8 @@ sap.ui.define([
 				MobileNo: null,
 				CourseName: [],
 				Address: null,
-				BloodGroup: null
+				BloodGroup: null,
+				Photo: null
 			});
 			this.getView().getModel("local").setProperty("/newLead/WardDetails", wardDetails);
 		},
@@ -379,12 +381,12 @@ sap.ui.define([
 			var oInquiry = "Inquries(\'" + data[2] + "\')";
 			var oData = this.getView().getModel().oData[oInquiry];
 			var oGuid = data[2];
-			that.loadInquiry(oData);
+			that.loadInquiry(oData.id);
 		},
-		loadInquiry: function(oData){
+		loadInquiry: function(id){
 			this.flag = "inquiry"
 			var that = this;
-			var oInquiry = "Inquries(\'" + oData.id + "\')";
+			var oInquiry = "Inquries(\'" + id + "\')";
 			that.getView().setBusy(true);
 			that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oInquiry}`, "GET", {},
 					{}, that)
@@ -476,11 +478,13 @@ sap.ui.define([
 				sap.m.MessageToast.show("Enter a valid Date");
 				return "";
 			}
+			if(!leadData.Phone){
+				sap.m.MessageToast.show("Please Enter Mobile No.");
+				return "";
+			}
 			//get the Course set here and save the records
 			var payload = {
 				"EmailId": leadData.EmailId.toLowerCase(),
-				// "CourseName": leadData.CourseName,
-				// "Category": leadData.Category,
 				"RollNo": leadData.RollNo,
 				"FatherName": leadData.FatherName,
 				"MotherName": leadData.MotherName,
@@ -495,14 +499,8 @@ sap.ui.define([
 				"HearAbout": leadData.HearAbout,
 				"SoftDelete": false,
 				"CreatedOn": new Date(),
-		    "CreatedBy": "",
 		    "ChangedOn": new Date(),
-		    "ChangedBy": "",
-				// "fees": leadData.Fees,
-				// "currency": "INR",
-				// "CustType": leadData.custType,
-				// "Organization": leadData.organization
-				// "WardDetails": leadData.WardDetails
+		    "ChangedBy": ""
 			};
 			that.getView().setBusy(true);
 			var wardDetails = leadData.WardDetails;
@@ -511,32 +509,38 @@ sap.ui.define([
 						payload, this)
 					.then(function(oData) {
 						const inquiryId = leadData.id;
-						for(var ward of wardDetails){
-							if(ward.id){
-								that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/Wards('${ward.id}')`, "PUT", {},
-										ward, that)
-									.then(function(oData) {
-										that.getView().setBusy(false);
-										sap.m.MessageToast.show("Ward Saved successfully");
-									}).catch(function(oError) {
-										MessageBox.error(oError.responseText);
-										that.getView().setBusy(false);
-									});
-							}else{
-								ward.InquiryId = inquiryId;
-								that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
-										ward, that)
-									.then(function(oData) {
-										that.getView().setBusy(false);
-										sap.m.MessageToast.show("Ward Saved successfully");
-									}).catch(function(oError) {
-										MessageBox.error(oError.responseText);
-										that.getView().setBusy(false);
-									});
-							}
+						if(wardDetails.length>0){
+							that.saveWard(wardDetails, 0, inquiryId);
+						}else{
+							sap.m.MessageToast.show("Inquiry Saved successfully");
+							that.loadInquiry(inquiryId)
 						}
-						that.getView().setBusy(false);
-						sap.m.MessageToast.show("Inquiry Saved successfully");
+						// for(var ward of wardDetails){
+						// 	if(ward.id){
+						// 		that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/Wards('${ward.id}')`, "PUT", {},
+						// 				ward, that)
+						// 			.then(function(oData) {
+						// 				that.getView().setBusy(false);
+						// 				sap.m.MessageToast.show("Ward Saved successfully");
+						// 			}).catch(function(oError) {
+						// 				MessageBox.error(oError.responseText);
+						// 				that.getView().setBusy(false);
+						// 			});
+						// 	}else{
+						// 		ward.InquiryId = inquiryId;
+						// 		that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
+						// 				ward, that)
+						// 			.then(function(oData) {
+						// 				that.getView().setBusy(false);
+						// 				sap.m.MessageToast.show("Ward Saved successfully");
+						// 			}).catch(function(oError) {
+						// 				MessageBox.error(oError.responseText);
+						// 				that.getView().setBusy(false);
+						// 			});
+						// 	}
+						// }
+						// that.getView().setBusy(false);
+						// sap.m.MessageToast.show("Inquiry Saved successfully");
 					}).catch(function(oError) {
 						MessageBox.error(oError.responseText);
 						that.getView().setBusy(false);
@@ -549,30 +553,36 @@ sap.ui.define([
 							payload, this)
 						.then(function(oData) {
 							const inquiryId = oData.id;
-							for(var ward of wardDetails){
-								ward.InquiryId = inquiryId;
-								promises.push(
-							    new Promise((resolve, reject) => {
-										that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
-												ward, that)
-											.then(function(oData2) {
-												resolve(oData2);
-											}).catch(function(oError) {
-												reject(oError);
-											});
-							    })
-						  	);
-							}
-							resolve(oData);
-							Promise.all(promises)
-							.then(results => {
-								that.getView().setBusy(false);
-								that.loadInquiry(results[0]);
+							if(wardDetails.length>0){
+								that.saveWard(wardDetails, 0, inquiryId);
+							}else{
 								sap.m.MessageToast.show("Inquiry Saved successfully");
-							})
-							.catch(error => {
-								sap.m.MessageToast.show(error);
-							});
+								that.loadInquiry(inquiryId)
+							}
+							// for(var ward of wardDetails){
+							// 	ward.InquiryId = inquiryId;
+							// 	promises.push(
+							//     new Promise((resolve, reject) => {
+							// 			that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Wards", "POST", {},
+							// 					ward, that)
+							// 				.then(function(oData2) {
+							// 					resolve(oData2);
+							// 				}).catch(function(oError) {
+							// 					reject(oError);
+							// 				});
+							//     })
+						  // 	);
+							// }
+							// resolve(oData);
+							// Promise.all(promises)
+							// .then(results => {
+							// 	that.getView().setBusy(false);
+							// 	that.loadInquiry(results[0]);
+							// 	sap.m.MessageToast.show("Inquiry Saved successfully");
+							// })
+							// .catch(error => {
+							// 	sap.m.MessageToast.show(error);
+							// });
 						}).catch(function(oError) {
 							MessageBox.error(oError.responseText);
 							that.getView().setBusy(false);
@@ -581,6 +591,44 @@ sap.ui.define([
 				}));
 			}
 
+		},
+		saveWard: function(wards, index, inquiryId){
+			var that = this;
+			// wards[index].InquiryId = inquiryId;
+			// const match = typeof(wards[index].DOB)==='string' ? (wards[index].DOB).match(/\d+/) : null;
+			// wards[index].DOB = match ? new Date(match) : wards[index].DOB;
+			const payload = {
+				InquiryId: inquiryId,
+				RollNo: wards[index].RollNo,
+				Name: wards[index].Name,
+				Gender: wards[index].Gender,
+				DOB: wards[index].DOB,
+				Standard: wards[index].Standard,
+				SchoolName: wards[index].SchoolName,
+				Weakness: wards[index].Weakness,
+				MobileNo: wards[index].MobileNo,
+				CourseName: wards[index].CourseName,
+				Address: wards[index].Address,
+				BloodGroup: wards[index].BloodGroup,
+				Photo: wards[index].Photo
+			};
+			that.ODataHelper.callOData(that.getOwnerComponent().getModel(), wards[index].id ? `/Wards('${wards[index].id}')`: "/Wards", wards[index].id ? "PUT" : "POST", {},
+					payload, that)
+				.then(function(oData2) {
+					if(++index < wards.length){
+						that.saveWard(wards, index, inquiryId);
+					}else{
+						sap.m.MessageToast.show("Inquiry Saved successfully");
+						that.loadInquiry(inquiryId);
+					}
+				}).catch(function(oError) {
+					if(++index < wards.length){
+						that.saveWard(wards, index, inquiryId);
+					}else{
+						sap.m.MessageToast.show("Inquiry Saved successfully");
+						that.loadInquiry(inquiryId);
+					}
+				});
 		},
 		onApprove: function() {
 
