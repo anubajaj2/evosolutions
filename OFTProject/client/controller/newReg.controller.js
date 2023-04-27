@@ -719,7 +719,8 @@ sap.ui.define([
 			if (isAdmin === 'Admin') {
 				var totalAmount = 0;
 				for (var i = 0; i < itemList.length; i++) {
-					totalAmount = totalAmount + parseInt(itemList[i].getCells()[6].getText());
+					debugger;
+					totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
 				}
 				oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems + "  Amount:" + totalAmount);
 
