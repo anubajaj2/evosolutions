@@ -472,13 +472,11 @@
 					"controlAggregation": "detailPages"
 				},
 				"leadDetails":{
-					"transition": "slide",
-					"controlId":"__xmlview0--idSplitApp",
 					"clearAggregation": true,
 					"viewName": "leadDetails",
 					"viewId": "leadDetails",
-					"viewLevel": 2,
-					"controlAggregation": "detailPages"
+					"controlId": "idMainApp",
+					"controlAggregation": "pages"
 				}
 
 			}
