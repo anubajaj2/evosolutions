@@ -33,7 +33,6 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         <Label text="Mobile No" />
 				<Input required="true" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
         valueHelpRequest="onSelectInq"
-        liveChange="onInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
 				<Input required="true" type="Email" value="{local>/newLead/EmailId}" />

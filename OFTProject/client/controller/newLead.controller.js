@@ -361,26 +361,53 @@ sap.ui.define([
 			this.getView().getModel("local").setProperty("/newLead/WardDetails", courses);
 			oEvent.getSource().getParent().getParent().removeSelections();
 		},
+		onEnter: function(oEvent){
+			var vPhone = oEvent.getParameters().value;
+			if(vPhone&&vPhone.toString().length!==10){
+				MessageToast.show("Please Enter a Valid Mobile Number");
+				return;
+			}
+			var that = this;
+			var Filter1 = new sap.ui.model.Filter("Phone", "EQ", vPhone);
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries?$select=id", "GET", {
+				filters: [Filter1],
+				urlParameters:{"$select" : "id,Phone"}
+			}, {}, this)
+				.then(function (oData) {
+					if(oData.results.length>0){
+						that.loadInquiry(oData.results[0].id);
+					}else{
+						MessageBox.show("No Matching Record Found!");
+					}
+					// debugger;
+				}).catch(function(oError){
+						// debugger;
+						MessageToast.show(oError.responseText);
+				});
+		},
 		onSelectInq: function (oEvent) {
 			this.getCustomerPopup();
 			this.flag = "inquiry";
 			// var title = this.getView().getModel("i18n").getProperty("Trainer");
-			// this.searchPopup.setTitle(title);
+			this.searchPopup.setTitle("Inquiries");
 			this.searchPopup.bindAggregation("items", {
 				path: "/Inquries",
-				template: new sap.m.DisplayListItem({
-					label: "{FatherName}",
-					value: "{Phone} {EmailId}"
+				template: new sap.m.ObjectListItem({
+					title: "{FatherName}",
+					intro: "{EmailId}",
+					number: "{Phone}",
+					numberUnit: "{=${MotherName}? 'Mother: '+${MotherName} : ${MotherName}}"
 				})
 			});
 
 		},
 		onConfirm: function (oEvent) {
-			var data = this.getSelectedKey(oEvent),
-			that = this;
-			var oInquiry = "Inquries(\'" + data[2] + "\')";
+			// var data = this.getSelectedKey(oEvent),
+			var sPath = oEvent.getParameter("selectedItem").getBindingContextPath();
+			var id = this.getView().getModel().getProperty(sPath).id;
+			var that = this;
+			var oInquiry = "Inquries(\'" + id + "\')";
 			var oData = this.getView().getModel().oData[oInquiry];
-			var oGuid = data[2];
 			that.loadInquiry(oData.id);
 		},
 		loadInquiry: function(id){
@@ -403,6 +430,36 @@ sap.ui.define([
 				}).catch(function(oError) {
 					that.getView().setBusy(false);
 				});
+		},
+		onSearch: function (oEvent) {
+			// if (this.sId.indexOf("customerId") !== -1) {
+				var queryString = this.getQuery(oEvent);
+
+				if (queryString) {
+					var oFilter1 = new sap.ui.model.Filter("FatherName", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter2 = new sap.ui.model.Filter("MotherName", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter3 = new sap.ui.model.Filter("Phone", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter4 = new sap.ui.model.Filter("EmailId", sap.ui.model.FilterOperator.Contains, queryString);
+
+					var oFilter = new sap.ui.model.Filter({
+						filters: [oFilter1, oFilter2, oFilter3, oFilter4],
+						and: false
+					});
+					var aFilter = [oFilter];
+					this.searchPopup.getBinding("items").filter(aFilter);
+				} else {
+					// this.searchPopup.bindAggregation("items", {
+					// 	path: "/Wards",
+					// 	template: new sap.m.ObjectListItem({
+					// 		title: "{Name}",
+					// 		intro: "{SchoolName}",
+					// 		number: "{RollNo}"
+					// 	})
+					//
+					// });
+					this.searchPopup.getBinding("items").filter([]);
+				}
+			// }
 		},
 		onCancel: function(){
 			this.flag = null;

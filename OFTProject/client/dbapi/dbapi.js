@@ -40,6 +40,7 @@ sap.ui.define([
 							async: true,
 							filters: oParameters.filters,
 							sorters: oParameters.sorters,
+							urlParameters: oParameters.urlParameters,
 							success: function(oData, oResponse) {
 								resolve(oData);
 							},
