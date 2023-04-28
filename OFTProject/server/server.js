@@ -1062,19 +1062,100 @@ app.start = function () {
 
 		});
 
-		app.get("/getWardDataByBatch", function () {
-			var Sub = app.models.Sub;
+		app.get("/getWardDataByBatch", function (req, res) {
+
 			//https://loopback.io/doc/en/lb2/Querying-data.html
 
 			//Step 1: get the batch if which you pass from fiori apps
 
-			//Step 2: Find all subscriptions for that batchs
+			//Step 2: Find all subscriptions for that batchs	
 			//Sub.find({batchId: sId}).then(function(data){   })
 			//Step 3: make an array of all the students in those subs
 			//Step 4: Fire find on Ward table with all the IDs
 			//Step 5: Student Name, id, blood etc.. --> Inquiry
 
 			//Since all work is sync - use waterfall module as showen getAmountPerAccount
+			var sId = 0;
+			var Subs = app.models.Sub;
+			var Courses = app.models.Course;
+
+			var Wards = app.models.Ward;
+			var Inquiry = app.models.Inquiry;
+
+			var async = require('async');
+			async.waterfall([
+				function (callback) {
+					Courses.find({
+						where: {
+							and: [{
+								id: "64421c5aefef23ce03bca3eb"  //Will be replaces by sId on the time of call
+							}]
+						}
+					}).then(function (subsDetails) {
+						callback(null, subsDetails);
+					});
+				},
+				function (subsDetails, callback) {
+					var sCourseId = subsDetails[0].__data.id.toString()
+					Subs.find({
+						where: {
+							and: [{
+								CourseId: sCourseId
+							}]
+						}
+					})
+						.then(function (studentsDetail, err) {
+							callback(null, subsDetails, studentsDetail);
+							console.log(studentsDetail);
+						});
+				},
+				function (subsDetails, studentsDetail, callback) {
+					var array = [];
+					for (let index = 0; index < studentsDetail.length; index++) {
+						const element = studentsDetail[index];
+						var sStudentSubId = studentsDetail[index].__data.StudentId.toString();
+						array.push(sStudentSubId);
+					}
+
+					Wards.find({
+						where: {
+							and: [{
+								id: {
+									inq: array
+								}
+
+							}]
+						}
+					})
+						.then(function (Records, err) {
+							callback(null, subsDetails, studentsDetail, Records);
+						});
+				},
+				function (subsDetails, studentsDetail, Records, callback) {
+					var oArray = [];
+					for (let index = 0; index < Records.length; index++) {
+						const element = Records[index];
+						var sStudentId = Records[index].__data.InquiryId.toString();
+						oArray.push(sStudentId);
+					}
+
+					Inquiry.find({
+						where: {
+							and: [{
+								id: {
+									inq: oArray
+								}
+							}]
+						}
+					})
+						.then(function (aStudentsData, err) {
+							callback(null, subsDetails, studentsDetail, Records, aStudentsData);
+							res.send(aStudentsData);
+							console.log(aStudentsData);
+						});
+				}
+			],
+			);
 		});
 
 		app.post('/requestMessage', function (req, res) {
@@ -1164,7 +1245,7 @@ app.start = function () {
 
 		app.get("/validateOtp", function (req, res) {
 			var Otp = app.models.Otp;
-			var oNumber=req.query.Number;
+			var oNumber = req.query.Number;
 			Otp.findOne({
 				where: {
 					and: [{
