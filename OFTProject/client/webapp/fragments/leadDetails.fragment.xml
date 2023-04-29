@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"	 xmlns:f = "sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml">
+    <Dialog title="Login "
+    id="idLead"
+    resizable="true">
+    <content>
+        <f:SimpleForm layout="ResponsiveGridLayout">
+            <VBox >
+                <Label text="Mobile Number"/>
+        
+                <HBox  class="sapUiMediumMarginBottom">
+                    <Input value="+91" editable="false"   width="3rem"></Input>
+                    <Input type='Number' liveChange="numberValidation" value="{local>/mobileNumber}"   editable="{local>/MobileNumber}"/>
+                </HBox>
+                <!-- for the testing purpose -->
+                
+                <html:div id="recaptchaGoogle" width="3rem" class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></html:div>
+                <Label text="OTP" id="otpLabel" visible="{local>/otpVisible}"/>
+                <Input id="otpInput" value="{local>/otpValue}" visible="{local>/otpVisible}"/>
+                <ObjectStatus title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
+                </VBox>
+        </f:SimpleForm>
+    </content>
+    <Button text="Send OTP" id="captchatCheck" press="validateCaptcha" visible="{local>/sendOtp}"></Button>
+    <endButton>
+        <Button text="Submit" press="onSubmit" visible="{local>/verifySubmit}"/>
+    </endButton>
+</Dialog>		
+</core:FragmentDefinition>
