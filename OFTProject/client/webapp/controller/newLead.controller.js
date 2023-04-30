@@ -306,6 +306,12 @@ sap.ui.define([
 				}
 			}
 		},
+		onMobileNumber: function(oEvent){
+			if(oEvent.getParameter('value').length>10){
+				oEvent.getSource().setValue(oEvent.getParameter('value').substring(0, 10));
+				MessageToast.show("The number should not exceed 10 digits");
+			}
+		},
 		onFullScreen: function(oEvent) {
 			var oSource = oEvent.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
 			var oMode = oSource.getMode();
@@ -559,8 +565,12 @@ sap.ui.define([
 		    "ChangedOn": new Date(),
 		    "ChangedBy": ""
 			};
-			that.getView().setBusy(true);
 			var wardDetails = leadData.WardDetails;
+			if(wardDetails.filter(function(item){ return !item.Name}).length>0){
+				MessageBox.error("Ward Name Can't be Empty!");
+				return;
+			}
+			that.getView().setBusy(true);
 			if(this.flag==='inquiry'){
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), `/Inquries('${leadData.id}')`, "PUT", {},
 						payload, this)

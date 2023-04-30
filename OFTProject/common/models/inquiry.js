@@ -7,7 +7,11 @@ module.exports = function(Inquiry) {
     //validations
     Inquiry.validatesPresenceOf('FatherName', {message: 'FatherName Cannot be blank'});
     Inquiry.validatesLengthOf('Phone', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
-
+    // Inquiry.validatesLengthOf('EmergencyContactNo', {is: 10, message: {is: 'The Contact No. Must be exactly 10 digits'}});
+    Inquiry.validatesFormatOf('EmailId', {
+    with: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+    message: 'Please enter a valid email address'
+    });
     Inquiry.observe('before save', function validateDuplicates(ctx, next) {
       const instance = ctx.instance || ctx.currentInstance;
       if (instance) {

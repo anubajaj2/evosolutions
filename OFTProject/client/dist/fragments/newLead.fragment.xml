@@ -31,7 +31,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 			</f:toolbar>
 			<f:content>
         <Label text="Mobile No" />
-				<Input required="true" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
+				<Input required="true" liveChange="onMobileNumber" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
         valueHelpRequest="onSelectInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
@@ -73,7 +73,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 				<Label text="Emergency Contact Name" />
 				<Input value="{local>/newLead/EmergencyContactName}"></Input>
         <Label text="Emergency Contact No" />
-				<Input type="Number" value="{local>/newLead/EmergencyContactNo}"></Input>
+				<Input type="Number" value="{local>/newLead/EmergencyContactNo}" liveChange="onMobileNumber"></Input>
         <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
@@ -185,7 +185,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
                     <Input type="Number" value="{local>Standard}"/>
                     <Input value="{local>SchoolName}"/>
                     <Input value="{local>Weakness}"/>
-                    <Input type="Number" value="{local>MobileNo}"/>
+                    <Input type="Number" value="{local>MobileNo}" liveChange="onMobileNumber"/>
                     <MultiComboBox id="idCourse1"
                           selectedKeys="{local>CourseName}" width="500px"
                           items="{
