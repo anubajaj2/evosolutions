@@ -44,6 +44,12 @@ sap.ui.define([
 				success: function (oData, response) {
 					oModelJsonCC.setData(oData);
 					debugger;
+			//var oModelJsonCC = new sap.ui.model.json.JSONModel();
+			var oCourseModel = this.getOwnerComponent().getModel();
+			// debugger;
+			oCourseModel.read('/Courses', {
+				success: function (oData, response) {
+					oModelJsonCC.setData(oData);
 				},
 				error: function (response) { }
 			});
@@ -52,6 +58,7 @@ sap.ui.define([
 
 
 		},
+
 
 		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
@@ -319,6 +326,7 @@ sap.ui.define([
 			// this.getView().setModel(oModel);
 		},
 		onSelect: function (oEvent) {
+			debugger;
 			this.sId = oEvent.getSource().getId();
 			debugger;
 			var sTitle = "",
@@ -373,12 +381,12 @@ sap.ui.define([
 					// })
 
 					template: new sap.m.ObjectListItem({
-						title: "{Name}",
+						title: "{BatchNo}",
 						intro: "{BatchNo}",
-						number: {
-							path: "status",
-							formatter: this.formatter.formatStatusValue
-						}
+						// number: {
+						// 	path: "status",
+						// 	formatter: this.formatter.formatStatusValue
+						// }
 					})
 
 
