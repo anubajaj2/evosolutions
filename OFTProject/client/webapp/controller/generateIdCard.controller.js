@@ -26,7 +26,18 @@ sap.ui.define([
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
+			//var oModelJsonCC = new sap.ui.model.json.JSONModel();
+			var oCourseModel = this.getOwnerComponent().getModel();
+			// debugger;
+			oCourseModel.read('/Courses', {
+				success: function (oData, response) {
+					oModelJsonCC.setData(oData);
+				},
+				error: function (response) { }
+			});
+
 		},
+
 
 		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
@@ -95,6 +106,7 @@ sap.ui.define([
 			this.getView().setModel(oModel);
 		},
 		onSelect: function (oEvent) {
+			debugger;
 			this.sId = oEvent.getSource().getId();
 
 			var sTitle = "",
@@ -130,6 +142,7 @@ sap.ui.define([
 					})
 				});
 			} else if (this.sId.indexOf("courseId") !== -1) {
+				debugger;
 				var oBatchFilter = new sap.ui.model.Filter("hidden", FilterOperator.EQ, false);
 				this.getCustomerPopup();
 				var title = this.getView().getModel("i18n").getProperty("batch");
@@ -148,12 +161,12 @@ sap.ui.define([
 					// })
 
 					template: new sap.m.ObjectListItem({
-						title: "{Name}",
+						title: "{BatchNo}",
 						intro: "{BatchNo}",
-						number: {
-							path: "status",
-							formatter: this.formatter.formatStatusValue
-						}
+						// number: {
+						// 	path: "status",
+						// 	formatter: this.formatter.formatStatusValue
+						// }
 					})
 
 
