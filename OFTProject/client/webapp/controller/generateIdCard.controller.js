@@ -20,16 +20,240 @@ sap.ui.define([
 		onInit: function () {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			Controller.prototype.onInit.apply(this);
-			this.oRouter.attachRoutePatternMatched(this.herculis, this);
+
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 			}
+
+
+			var oStuModel = this.getOwnerComponent().getModel();
+			var oModelJsonCC = new sap.ui.model.json.JSONModel();
+			// var oStuModel = this.getOwnerComponent().getModel();
+			oStuModel.read('/Wards', {
+				success: function (oData, response) {
+					oModelJsonCC.setData(oData);
+				},
+				error: function (response) { }
+			});
+
+			//var oModelJsonCC = new sap.ui.model.json.JSONModel();
+			var oCourseModel = this.getOwnerComponent().getModel();
+			oCourseModel.read('/Courses', {
+				success: function (oData, response) {
+					oModelJsonCC.setData(oData);
+					debugger;
+				},
+				error: function (response) { }
+			});
+
+			this.oRouter.attachRoutePatternMatched(this.herculis, this);
+
+
 		},
 
 		onBack: function () {
 			sap.ui.getCore().byId("idApp").to("idView1");
+		},
+		onConfirm: function (oEvent) {
+			debugger;
+			if (this.sId.indexOf("accountDetails") !== -1) {
+
+				var bankName = oEvent.getParameter("selectedItem").getValue();
+				this.getView().getModel("local").setProperty("/newRegistration/AccountName", bankName);
+			} else if (this.sId.indexOf("customerId") !== -1) {
+
+				// var data = this.getSelectedKey(oEvent);
+				var data = this.getObjListSelectedkey(oEvent);
+				// this.getView().byId("idCustomer").setText(data[0]);
+				this.getView().byId("customerId").setValue(data[0]);
+				this.customerId = data[3];
+
+			} else if (this.sId.indexOf("courseId") !== -1) {
+
+				// var data = this.getSelectedKey(oEvent);
+				// this.getView().byId("courseId").setValue(data[0]);
+				// this.getView().byId("idCourseName").setText(data[1]);
+				// this.courseId = data[2];
+
+				var data = this.getObjListSelectedkey(oEvent);
+				// this.getView().byId("idCourseName").setText(data[0]);
+				this.getView().byId("courseId").setValue(data[1]);
+				this.courseId = data[3];
+
+				var oItem = oEvent.getParameter("selectedItem");
+				var oContext = oItem.getBindingContext();
+				if (oContext.getObject().Fee) {
+					this.getView().byId("idAmount").setValue(oContext.getObject().Fee);
+					CourseFee = oContext.getObject().Fee;
+				} else {
+					CourseFee = 0;
+				}
+
+				var x = new Date(oContext.getObject().DemoStartDate);
+				x.setMonth(x.getMonth() + 1);
+				if (x > new Date()) {
+					this.getView().byId("idPayDueDate").setDateValue(x);
+				}
+
+
+			} else if (this.sId.indexOf("idEmailCust") !== -1) {
+
+				// var data = this.getSelectedKey(oEvent);
+				// sap.ui.getCore().byId("idEmailCust").setValue(data[1]);
+
+				var oItem = oEvent.getParameter("selectedItem");
+				var oContext = oItem.getBindingContext();
+				// console.log(oContext.getObject());
+				// var inquiryData = 'Inquries(\'' + data[2] + '\')';
+				// var oModel = this.getView().getModel().oData[inquiryData];
+				// if (oModel) {
+				// sap.ui.getCore().byId("idEmailCust").setValue(oModel.EmailId);
+				// sap.ui.getCore().byId("idName").setValue(oModel.FirstName + ' ' + oModel.LastName);
+				// sap.ui.getCore().byId("idCountry").setValue(oModel.Country);
+				// sap.ui.getCore().byId("idPhone").setValue(oModel.Phone);
+				sap.ui.getCore().byId("idSkills").clearSelection();
+				sap.ui.getCore().byId("idPhone").setValue(0);
+				sap.ui.getCore().byId("idCountry").setSelectedKey("IN");
+				sap.ui.getCore().byId("idOtherEmail1").setValue(null);
+				sap.ui.getCore().byId("idOtherEmail2").setValue(null);
+				sap.ui.getCore().byId("idStar").setSelected(false);
+				sap.ui.getCore().byId("idName").setValue(null);
+				sap.ui.getCore().byId("idDefaulter").setSelected(false);
+				sap.ui.getCore().byId("idHighServerUsage").setSelected(false);
+
+				if (oContext) {
+					var that = this;
+					// that.getView().setBusy(true);
+
+					var payload = {};
+
+					var Filter1 = new sap.ui.model.Filter("GmailId", "EQ", oContext.getObject().EmailId);
+					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
+						filters: [Filter1]
+					}, payload, this)
+						.then(function (oData) {
+							if (oData.results.length != 0) {
+								sap.ui.getCore().byId("idEmailCust").setValue(oData.results[0].GmailId);
+								sap.ui.getCore().byId("idName").setValue(oData.results[0].Name);
+
+								if (oData.results[0].ContactNo) {
+									sap.ui.getCore().byId("idPhone").setValue(oData.results[0].ContactNo);
+								} else {
+									sap.ui.getCore().byId("idPhone").setValue(0);
+								}
+
+								if (oData.results[0].Country) {
+									sap.ui.getCore().byId("idCountry").setSelectedKey(oData.results[0].Country);
+								} else {
+									sap.ui.getCore().byId("idCountry").setSelectedKey("IN");
+								}
+								if (oData.results[0].OtherEmail1) {
+									sap.ui.getCore().byId("idOtherEmail1").setValue(oData.results[0].OtherEmail1);
+								}
+								if (oData.results[0].OtherEmail2) {
+									sap.ui.getCore().byId("idOtherEmail2").setValue(oData.results[0].OtherEmail2);
+								}
+
+								if (oData.results[0].Defaulter) {
+									sap.ui.getCore().byId("idDefaulter").setSelected(oData.results[0].Defaulter);
+								}
+								if (oData.results[0].HighServerUsage) {
+									sap.ui.getCore().byId("idHighServerUsage").setSelected(oData.results[0].HighServerUsage);
+								}
+								if (oData.results[0].Star) {
+									sap.ui.getCore().byId("idStar").setSelected(oData.results[0].Star);
+								}
+
+								sap.ui.getCore().byId("createNew").setText("Update");
+								that.UpdateCustomer = true;
+								that.customerGUID = oData.results[0].id;
+								//that.CreateCustomer = false;
+
+							} else {
+
+								var vLastName;
+								var vFirstName;
+
+								sap.ui.getCore().byId("idEmailCust").setValue(oContext.getObject().EmailId);
+
+								if (oContext.getObject().FirstName) {
+									if (oContext.getObject().LastName) {
+										vLastName = oContext.getObject().LastName;
+									} else {
+										vLastName = " ";
+									}
+									sap.ui.getCore().byId("idName").setValue(oContext.getObject().FirstName + ' ' + vLastName);
+								} else {
+									vFirstName = "";
+									if (oContext.getObject().LastName) {
+										vLastName = oContext.getObject().LastName;
+									} else {
+										vLastName = "";
+									}
+									sap.ui.getCore().byId("idName").setValue(vFirstName + ' ' + vLastName);
+								}
+
+								if (oContext.getObject().Phone) {
+									sap.ui.getCore().byId("idPhone").setValue(oContext.getObject().Phone);
+								} else {
+									sap.ui.getCore().byId("idPhone").setValue(0);
+								}
+
+								if (oContext.getObject().Country) {
+									sap.ui.getCore().byId("idCountry").setSelectedKey(oContext.getObject().Country);
+								} else {
+									sap.ui.getCore().byId("idCountry").setSelectedKey("IN");
+								}
+								sap.ui.getCore().byId("createNew").setText("Create");
+								that.UpdateCustomer = false;
+								//that.CreateCustomer = true;
+							}
+						}).catch(function (oError) {
+
+							var vLastName;
+							var vFirstName;
+
+							sap.ui.getCore().byId("idEmailCust").setValue(oContext.getObject().EmailId);
+
+							if (oContext.getObject().FirstName) {
+								if (oContext.getObject().LastName) {
+									vLastName = oContext.getObject().LastName;
+								} else {
+									vLastName = " ";
+								}
+								sap.ui.getCore().byId("idName").setValue(oContext.getObject().FirstName + ' ' + vLastName);
+							} else {
+								vFirstName = "";
+								if (oContext.getObject().LastName) {
+									vLastName = oContext.getObject().LastName;
+								} else {
+									vLastName = "";
+								}
+								sap.ui.getCore().byId("idName").setValue(vFirstName + ' ' + vLastName);
+							}
+
+							if (oContext.getObject().Phone) {
+								sap.ui.getCore().byId("idPhone").setValue(oContext.getObject().Phone);
+							} else {
+								sap.ui.getCore().byId("idPhone").setValue(0);
+							}
+
+							if (oContext.getObject().Country) {
+								sap.ui.getCore().byId("idCountry").setSelectedKey(oContext.getObject().Country);
+							} else {
+								sap.ui.getCore().byId("idCountry").setSelectedKey("IN");
+							}
+							sap.ui.getCore().byId("createNew").setText("Create");
+							that.UpdateCustomer = false;
+							//that.CreateCustomer = true;
+						});
+
+				}
+
+			}
+			//this.searchPopup.close();
 		},
 
 		herculis: function (oEvent) {
@@ -92,11 +316,11 @@ sap.ui.define([
 				]
 			};
 			var oModel = new JSONModel(oJSONModel);
-			this.getView().setModel(oModel);
+			// this.getView().setModel(oModel);
 		},
 		onSelect: function (oEvent) {
 			this.sId = oEvent.getSource().getId();
-
+			debugger;
 			var sTitle = "",
 				sPath = "";
 			if (this.sId.indexOf("customerId") !== -1) {
@@ -130,6 +354,7 @@ sap.ui.define([
 					})
 				});
 			} else if (this.sId.indexOf("courseId") !== -1) {
+				debugger;
 				var oBatchFilter = new sap.ui.model.Filter("hidden", FilterOperator.EQ, false);
 				this.getCustomerPopup();
 				var title = this.getView().getModel("i18n").getProperty("batch");
@@ -155,6 +380,7 @@ sap.ui.define([
 							formatter: this.formatter.formatStatusValue
 						}
 					})
+
 
 
 				});
@@ -358,8 +584,8 @@ sap.ui.define([
 				'</style>' +
 				'' +
 				'<body>' +
-				'    <div class="page">' ;
-				var HTMlContent = ' <div class="id-card">' +
+				'    <div class="page">';
+			var HTMlContent = ' <div class="id-card">' +
 				'            <div class="lo2">' +
 				'                <img src="$$LOGO$$" class="logo2">' +
 				'            </div>' +
@@ -403,8 +629,8 @@ sap.ui.define([
 				'            </div>' +
 				'            <!-- </div> -->' +
 				'        </div>' +
-				'' ;
-				var HTMlFooter='    </div>' +
+				'';
+			var HTMlFooter = '    </div>' +
 				'</body>' +
 				'' +
 				'</html>';
@@ -420,7 +646,7 @@ sap.ui.define([
 					oNewHTRml = oNewHTRml.replace("$$Name$$", oGetData.Name);
 					oNewHTRml = oNewHTRml.replace("$$Contact$$", oGetData.ContactNo);
 
-					idCardHTML+=oNewHTRml
+					idCardHTML += oNewHTRml
 				}
 				var wnd = window.open("http://localhost:3000", "", "");
 				debugger;
@@ -435,7 +661,7 @@ sap.ui.define([
 				debugger;
 				this.getView().getModel("local").setProperty("/htmlcontent", HTMlContent);
 				this.getView().getModel("local").updateBindings();
-			}else{
+			} else {
 				MessageToast.show("You have to Selecyt Atleast One Student to generate Id Card")
 			}
 
@@ -467,7 +693,83 @@ sap.ui.define([
 
 				// oIdCards.open();
 			});
-		}
+		},
+		onSearch: function (oEvent) {
+			debugger;
+			// var oFilter1 = new sap.ui.model.Filter("text", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
+			// var oFilter2 = new sap.ui.model.Filter("key", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
+			// var oFilter = new sap.ui.model.Filter({
+			// 	filters: [oFilter1, oFilter2],
+			// 	and: false
+			// });
+			// this.searchPopup.filter(oFilter);
+			//this.sId = oEvent.getSource().getId();
+			if (this.sId.indexOf("customerId") !== -1) {
+				var queryString = this.getQuery(oEvent);
+
+				if (queryString) {
+					var oFilter1 = new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter2 = new sap.ui.model.Filter("GmailId", sap.ui.model.FilterOperator.Contains, queryString);
+
+					var oFilter = new sap.ui.model.Filter({
+						filters: [oFilter1, oFilter2],
+						and: false
+					});
+					var aFilter = [oFilter];
+					this.searchPopup.getBinding("items").filter(aFilter);
+				} else {
+					this.searchPopup.bindAggregation("items", {
+						path: "/Wards",
+						template: new sap.m.ObjectListItem({
+							title: "{Name}",
+							intro: "{SchoolName}",
+							number: "{RollNo}"
+						})
+						// template: new sap.m.StandardListItem({
+						// 	title: "{Name}",
+						// 	description: "{GmailId}",
+						// 	info: "{id}"
+						// })
+
+					});
+					this.searchPopup.getBinding("items").filter([]);
+				}
+
+			} else if (this.sId.indexOf("courseId") !== -1) {
+				var queryString = this.getQuery(oEvent);
+
+				if (queryString) {
+					var oFilter1 = new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, queryString);
+					var oFilter2 = new sap.ui.model.Filter("BatchNo", sap.ui.model.FilterOperator.Contains, queryString);
+
+					var oFilter = new sap.ui.model.Filter({
+						filters: [oFilter1, oFilter2],
+						and: false
+					});
+					var aFilter = [oFilter];
+					this.searchPopup.getBinding("items").filter(aFilter);
+				} else {
+					this.searchPopup.bindAggregation("items", {
+						path: "/Courses",
+						template: new sap.m.DisplayListItem({
+							label: "{Name}",
+							value: "{BatchNo}"
+						})
+						// template: new sap.m.StandardListItem({
+						// 	title: "{Name}",
+						// 	description: "{BatchNo}",
+						// 	info: "{id}"
+
+						// })
+
+					});
+					this.searchPopup.getBinding("items").filter([]);
+				}
+
+			}
+
+		},
+
 	});
 
 });

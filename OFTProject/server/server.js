@@ -1085,10 +1085,11 @@ app.start = function () {
 			var async = require('async');
 			async.waterfall([
 				function (callback) {
+					
 					Courses.find({
 						where: {
 							and: [{
-								id: "64421c5aefef23ce03bca3eb"  //Will be replaces by sId on the time of call
+								id: "644d14ffeb02656df8ba3405"  //Will be replaces by sId on the time of call
 							}]
 						}
 					}).then(function (subsDetails) {
@@ -1155,8 +1156,25 @@ app.start = function () {
 						});
 				}
 			],
+			function (err, subsDetails, studentsDetail, Records, aStudentsData, ) {
+				// result now equals 'done'
+				debugger;
+				try {
+					var idCardData = [];
+					for (var i = 0; i < subsDetails.length; i++) {
+						
+					}
+
+					res.send(idCardData);
+				} catch (e) {
+
+				} finally {
+
+				}
+			}
 			);
 		});
+
 
 		app.post('/requestMessage', function (req, res) {
 
@@ -1301,7 +1319,6 @@ app.start = function () {
 			var AccountEntry = app.models.AccountBalance;
 
 			var async = require('async');
-			debugger;
 			async.waterfall([
 				function (callback) {
 					Account.find({
@@ -1420,6 +1437,116 @@ app.start = function () {
 			}
 			);
 		});
+		app.get("/getDetailsAfterOTP", function (req, res) {
+
+			var sId = 0;
+			var Subs = app.models.Sub;
+			var Courses = app.models.Course;
+			var Wards = app.models.Ward;
+			var Inquiry = app.models.Inquiry;
+
+			var OTP = app.models.Otp;
+
+			var async = require('async');
+			async.waterfall([
+				function (callback) {
+					OTP.find({
+						where: {
+							and: [{
+								Number: "9560466944"  //Will be replaces by Number on the time of call
+							}]
+						}
+					}).then(function (UserDetail) {
+						callback(null, UserDetail);
+					});
+				},
+				function (UserDetail, callback) {
+					var sPhoneNumber = "9560466944";  // 
+					Inquiry.find({
+						where: {
+							and: [{
+								Phone: sPhoneNumber
+							}]
+						}
+					})
+						.then(function (CustomerDetail, err) {
+							// callback(null, UserDetail, CustomerDetail);
+							console.log(CustomerDetail);
+							res.send(CustomerDetail);
+
+						});
+				}
+			],
+			);
+		});
+		app.post('/sendOtpViaEmail',
+			function (req, res) {
+
+				var nodemailer = require('nodemailer');
+				var smtpTransport = require('nodemailer-smtp-transport');
+				const xoauth2 = require('xoauth2');
+				const key = require('./samples.json');
+				const fs = require('fs');
+				console.log(req.body);
+				this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'otp.html', 'utf8');
+
+				var transporter = nodemailer.createTransport(smtpTransport({
+					service: 'gmail',
+					host: 'smtp.gmail.com',
+					auth: {
+						xoauth2: xoauth2.createXOAuth2Generator({
+							user: key.user,
+							clientId: key.clientId,
+							clientSecret: key.clientSecret,
+							refreshToken: key.refreshToken
+						})
+					}
+				}));
+
+				// email Subject ====  yet to Code
+
+				var ccs = [];
+				var emailContent = {};
+
+				emailContent = {
+					from: 'contact@evotrainingsolutions.com',
+					to: "nishannainsukha@soyuztechnologies.com", //req.body.EmailId    FirstName  CourseName
+					cc: ccs,
+					subject: "OTP to login",
+					html: this.mailContent
+				};
+
+				transporter.sendMail(emailContent, function (error, info) {
+					debugger;
+					if (error) {
+						console.log(error);
+						if (error.code === "EAUTH") {
+							res.status(500).send('Username and Password not accepted, Please try again.');
+						} else {
+							res.status(500).send('Internal Error while Sending the email, Please try again.');
+						}
+					} else {
+						console.log('Email sent: ' + info.response);
+						res.send("email sent");
+						var Otp = app.models.Otp;
+						var newRec = {
+							CreatedOn: new Date(),
+							Attempts: 1,
+							OTP: "123425",
+							Number: "nishannainsukha@soyuztechnologies.com"
+						};
+						Otp.upsert(newRec)
+							.then(function (inq) {
+								res.send("OTP Send Successfully");
+								// console.log("created successfully");
+							})
+							.catch(function (err) {
+								console.log(err);
+							});
+					}
+				});
+
+			});
 
 		app.get('/getBatchPerCourse', function (req, res) {
 			var responseData = [];
