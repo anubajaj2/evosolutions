@@ -353,7 +353,7 @@ sap.ui.define([
 					debugger;
 				}
 			});
-		}.
+		},
 		onPressAddWard: function(){
 			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");
 			wardDetails.push({
