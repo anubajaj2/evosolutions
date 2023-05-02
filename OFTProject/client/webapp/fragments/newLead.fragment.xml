@@ -35,7 +35,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         valueHelpRequest="onSelectInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
-				<Input required="true" type="Email" value="{local>/newLead/EmailId}" />
+				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" />
     		<Label text="Date" />
 				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />
@@ -104,10 +104,11 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 		</f:SimpleForm>
     </VBox>
     <VBox>
-        <Table id="idWardDetails" editable="true" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+        <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
             <headerToolbar>
               <OverflowToolbar>
                 <ToolbarSpacer/>
+                <OverflowToolbarButton id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
                 <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
                 <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
                   press="onPressDeleteRow"/>

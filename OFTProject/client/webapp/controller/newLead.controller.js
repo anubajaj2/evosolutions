@@ -335,6 +335,25 @@ sap.ui.define([
 				this.getView().byId("quotedFee").setVisible(true);
 			}
 		},
+		onPressSendEmail: function(oEvent){
+			var	selectedPaths = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var selectedItems = [];
+			var oModel = this.getView().getModel('local');
+			selectedPaths.forEach((item, i) => {
+				selectedItems.push(oModel.getProperty(item));
+			});
+
+			$.ajax({
+				type: 'GET', // added,
+				url: "/sendInquiryEmail",
+				success: function(data) {
+					debugger;
+				},
+				error: function(xhr, status, error) {
+					debugger;
+				}
+			});
+		}.
 		onPressAddWard: function(){
 			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");
 			wardDetails.push({
@@ -383,7 +402,11 @@ sap.ui.define([
 					if(oData.results.length>0){
 						that.loadInquiry(oData.results[0].id);
 					}else{
-						MessageBox.show("No Matching Record Found!");
+						MessageBox.show("No Matching Record Found!", {
+							onClose: function(){
+								that.getView().byId("idParentEmail").focus();
+							}
+						});
 					}
 					// debugger;
 				}).catch(function(oError){
