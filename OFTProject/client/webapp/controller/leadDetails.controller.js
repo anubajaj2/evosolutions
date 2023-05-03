@@ -200,6 +200,7 @@ onSubmit: function () {
             var otpvalue = oModel.getProperty("/otpValue");
 
             if (otpvalue !== undefined) {
+                var that = this;
                 $.ajax({
                     type: 'GET',
                     url: 'validateOtp',
@@ -215,18 +216,75 @@ onSubmit: function () {
                             that.onRefresh();
                             oModel.setProperty('/captcha', "");
                         } else {
-                            MessageToast.show('Verification Successful');
-                            // this below code is working for close the dialog and navigate to the view
-                            that.oDialog.then(function(oDialog){
-                                oDialog.close();
-                            })
+                            // MessageToast.show('Verification Successful');
+                            // // this below code is working for close the dialog and navigate to the view
+                          
 
-                            // that.getView().getModel('local').setProperty("/PageVisibility",true);
-                              that.getRouter().navTo("leadDetail", {}, true);
+                            // // that.getView().getModel('local').setProperty("/PageVisibility",true);
+                            //   that.getRouter().navTo("leadDetail", {}, true);
+                                // debugger;
+                                that.getView().getModel("local").setProperty("/Authorization", data.id);
+                                that.getView().getModel().setHeaders({
+                                    "Authorization": data.id
+                                });
+                                that.secureToken = data.id;
+                                that.getView().getModel("local").setProperty("/CurrentUser", data.userId);
+                                that.getView().getModel().setUseBatch(false);
+                                var that2 = that;
+            
+                                //Check the role and set it after that navigate to App
+                                //that.oRouter.navTo("newlead");
+            
+                                var aFilter = [new sap.ui.model.Filter("TechnicalId",
+                                    sap.ui.model.FilterOperator.EQ, data.userId)];
+                                var oParameters = {
+                                    filters: aFilter
+                                };
+                                var found = false;
+                                var AppUsers = [];
+                                that.ODataHelper.callOData(that.getOwnerComponent().getModel(),
+                                    "/AppUsers", "GET", {}, {}, that)
+                                    .then(function (oData) {
+                                        var newExcluseUser = [];
+                                        if (oData.results.length != 0) {
+                                            for (var i = 0; i < oData.results.length; i++) {
+                                                AppUsers[oData.results[i].TechnicalId] = oData.results[i];
+                                                if (oData.results[i].TechnicalId === data.userId) {
+                                                    that2.getView().getModel("local").setProperty("/Role", oData.results[i].Role);
+                                                    that2.getView().getModel("local").setProperty("/UserName", oData.results[i].UserName);
+                                                    that2.getView().getModel("local").setProperty("/JoiningDate", oData.results[i].JoiningDate);
+                                                    that2.getView().getModel("local").setProperty("/LeaveQuota", oData.results[i].LeaveQuota);
+                                                    that2.getView().getModel("local").setProperty("/MobileNo", oData.results[i].MobileNo);
+                                                    found = true;
+                                                } else {
+                                                    that2.getView().getModel("local").setProperty("/Authorization", "");
+                                                    newExcluseUser.push(oData.results[i]);
+                                                }
+                                            }
+                                            if (found === true) {
+                                                that2.getView().getModel("local").setProperty("/AppUsers", AppUsers);
+                                                that2.getView().getModel("local").setProperty("/AppUsersCopy", newExcluseUser);
+                                                that2.oDialog.then(function(oDialog){
+                                                    oDialog.close();
+                                                })
+                                                that2.getRouter().navTo("leadDetail");
+                                            } else {
+                                                sap.m.MessageBox.error("The user is not authorized, Contact Anubhav");
+                                            }
+                                        }
+                                        // that2.getRouter().navTo("leadDetail", {}, true);
+                                    }).catch(function (oError) {
+                                        debugger;
+                                        MessageToast.show("Error While Login");
+                                    });
+            
                         }
+                        
+
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
+                        debugger;
                         MessageToast.show('Error in Verification');
                     }
                 });
