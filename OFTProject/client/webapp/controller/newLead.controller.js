@@ -337,22 +337,26 @@ sap.ui.define([
 		},
 		onPressSendEmail: function(oEvent){
 			var	selectedPaths = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var parent = this.getView().getModel("local").getProperty("/newLead");
 			var selectedItems = [];
 			var oModel = this.getView().getModel('local');
 			selectedPaths.forEach((item, i) => {
 				selectedItems.push(oModel.getProperty(item));
 			});
-
-			$.ajax({
-				type: 'GET', // added,
-				url: "/sendInquiryEmail",
-				success: function(data) {
-					debugger;
-				},
-				error: function(xhr, status, error) {
-					debugger;
-				}
-			});
+			for(item in selectedItems){
+				payload.FatherName = parent.FatherName;
+				payload.Email = parent.EmailId;
+				payload.WardName =item.Name;
+				payload.CourseName = item.CourseName;
+				$.post('/sendInquiryEmail', payload)
+					.done(function(data, status) {
+						sap.m.MessageToast.show("Email sent successfully");
+					})
+					.fail(function(xhr, status, error) {
+						that.passwords = "";
+						sap.m.MessageBox.error(xhr.responseText);
+					});
+			}
 		},
 		onPressAddWard: function(){
 			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");

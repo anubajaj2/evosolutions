@@ -36,19 +36,22 @@
     "youTube":{
       "type": "string"
     },
+    "EmailTemplate": {
+      "type": "string"
+    },
     "CreatedOn": {
       "type": "date"
     },
     "CreatedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ChangedOn": {
       "type": "date"
     },
     "ChangedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     }
   },
   "validations": [],

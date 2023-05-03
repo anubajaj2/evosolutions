@@ -9,17 +9,17 @@
   "properties": {
     "BatchNo": {
       "type": "string",
-      "default": "null",
+      "default": null,
       "required": true
     },
     "CourseId": {
       "type": "string",
-      "default": "null",
+      "default": null,
       "required": true
     },
     "TrainerId": {
       "type": "string",
-      "default": "null",
+      "default": null,
       "required": true
     },
     "DemoStartDate": {
@@ -40,11 +40,11 @@
     },
     "StartTime": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "EndTime": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "Fee": {
       "type": "number",
@@ -68,14 +68,14 @@
     },
     "CreatedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     },
     "ChangedOn": {
       "type": "date"
     },
     "ChangedBy": {
       "type": "string",
-      "default": "null"
+      "default": null
     }
   },
   "validations": [],

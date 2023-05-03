@@ -95,8 +95,9 @@ sap.ui.define([
 							 "Category":leadData.Category,
 							 "CourseText":leadData.CourseText,
 							 "youTube":leadData.youTube,
+							 "EmailTemplate":leadData.EmailTemplate,
 	 							"ChangedBy": "",
-	 							"ChangedOn": new Date(),
+	 							"ChangedOn": new Date()
 						};
 						var sPath1 = "/CoursesMst";
 						sPath1 = sPath1 + "(" + "\'" +that.courseGUID + "\'" + ")";
@@ -122,6 +123,7 @@ sap.ui.define([
 						 "Category":leadData.Category,
 						 "CourseText":leadData.CourseText,
 						 "youTube":leadData.youTube,
+						 "EmailTemplate":leadData.EmailTemplate,
 							"CreatedOn": new Date(),
 							"CreatedBy": "",
 						// "SoftDelete": false
