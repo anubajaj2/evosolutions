@@ -107,45 +107,85 @@ sap.ui.define([
             }
         },
        
+        validateCaptcha: function() {
+            var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
+            var sEmail = this.getView().getModel('local').getProperty("/Email");
+            var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
+            var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
+          
+            // if (!sMobileNumber && !sEmail) {
+            //   MessageToast.show("Please enter your mobile number or email address.");
+            //   return;
+            // }
+            
+            if (sEmail && !sEmail.match(oRegex)) {
+              MessageToast.show("Please enter a valid email address.");
+              return;
+            }
+          
+            if (!InpCaptchaCode || InpCaptchaCode !== this._captchaCode) {
+              MessageToast.show("Please enter a valid captcha code.");
+              return;
+            }
+            var that = this;
+            var oModel = this.getView().getModel('local');
+          debugger;
+            // Send AJAX request to backend
+            $.ajax({
+              type: 'POST',
+              url: 'sendOtpViaEmail',
+              data: {
+                eMail: sEmail
+              },
+              success: function (data) {
+                debugger;
+                oModel.setProperty('/otpVisible', true);
+                oModel.setProperty('/sendOtp', false);
+                oModel.setProperty('/MobileNumber', false);
+                that.OtpSend();
+                MessageToast.show('OTP Successfully Sent To Your Mail.');
+              },
+              error: function (xhr, status, error) {
+                console.error(error);
+                MessageToast.show('Error sending OTP via email');
+              }
+            });
+          },
+          
 
             //   validation of the popup filed and send the otp to the user 
-            validateCaptcha: function() {
-                var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
-                var sEmail = this.getView().getModel('local').getProperty("/Email");
-                var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
-                var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
+            // validateCaptcha: function() {
+            //     var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
+            //     var sEmail = this.getView().getModel('local').getProperty("/Email");
+            //     var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
+            //     var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
 
-                // if (sMobileNumber == undefined || sEmail == undefined) {
-                //     MessageToast.show("Please Check the Input Fields");
-                //     return;
-                // };
-                if (sEmail == undefined) {
-                    MessageToast.show("Please Check the Input Fields");
-                    return;
-                };
-                if (InpCaptchaCode !== this._captchaCode ) {
-                    MessageToast.show("Your Captha is Not Valid");
-                    return;
-                };
+            //     // if (sMobileNumber == undefined || sEmail == undefined) {
+            //     //     MessageToast.show("Please Check the Input Fields");
+            //     //     return;
+            //     // };
+            //     if (sEmail == undefined) {
+            //         MessageToast.show("Please Check the Input Fields");
+            //         return;
+            //     };
+            //     if (InpCaptchaCode !== this._captchaCode ) {
+            //         MessageToast.show("Your Captha is Not Valid");
+            //         return;
+            //     };
 
-                if (!sEmail.match(oRegex)) {
-                    // MessageToast.show("Email address is valid.");
-                    MessageToast.show("Please enter a valid email address.");
-                    return;
-                }
+            //     if (!sEmail.match(oRegex)) {
+            //         // MessageToast.show("Email address is valid.");
+            //         MessageToast.show("Please enter a valid email address.");
+            //         return;
+            //     }
+            //     this.getView().getModel('local').setProperty("/otpVisible", true);
+            //     this.getView().getModel('local').setProperty("/sendOtp", false);
+            //     this.getView().getModel('local').setProperty("/MobileNumber", false);
+            //     // this.getView().getModel('local').setProperty("/sendOtp",false);
+            //     this.OtpSend();
 
-                
-
-
-
-                this.getView().getModel('local').setProperty("/otpVisible", true);
-                this.getView().getModel('local').setProperty("/sendOtp", false);
-                this.getView().getModel('local').setProperty("/MobileNumber", false);
-                // this.getView().getModel('local').setProperty("/sendOtp",false);
-                this.OtpSend();
-
-                return true;
-            },
+            //     return true;
+            // },
 
             onSubmit: function() {
                 // oDialog.close();

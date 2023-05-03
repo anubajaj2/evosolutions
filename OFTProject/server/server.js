@@ -1504,7 +1504,7 @@ app.start = function () {
 		});
 		app.post('/sendOtpViaEmail',
 			function (req, res) {
-
+				debugger;
 				var nodemailer = require('nodemailer');
 				var smtpTransport = require('nodemailer-smtp-transport');
 				const xoauth2 = require('xoauth2');
@@ -1545,11 +1545,12 @@ app.start = function () {
 				var ccs = [];
 				var emailContent = {};
 				var Email = req.body.eMail
+				var Subject  =  "Verify Your OTP For Evosolutions Registration" ;
 				emailContent = {
 					from: 'contact@evotrainingsolutions.com',
 					to: Email, //req.body.EmailId    FirstName  CourseName
 					cc: ccs,
-					subject: OTP,
+					subject: Subject,
 					html: this.mailContent
 				};
 				
