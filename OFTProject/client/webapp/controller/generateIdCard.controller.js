@@ -269,9 +269,7 @@ sap.ui.define([
 				'        padding: 20px;' +
 				'        height: 70mm;' +
 				'        width: 126mm;' +
-				'        margin: 5mm;' +
 				'        padding: 5mm;' +
-				'        background-color: aliceblue;' +
 				'      background-blend-mode: overlay;' +
 				'      background-position: center;' +
 				'      background-repeat: no-repeat; */' +
@@ -301,7 +299,7 @@ sap.ui.define([
 				'    }' +
 				'' +
 				'    .school-title {' +
-				'        font-size: 40px;' +
+				'        font-size: 32px;' +
 				'        font-weight: bold;' +
 				'        margin: 0;' +
 				'    }' +
@@ -329,13 +327,17 @@ sap.ui.define([
 				'' +
 				'    .student-details {' +
 				'        font-size: 13px;' +
+				'        display: flex;' +
+				'        margin-bottom: 2rem;' +
+				'        flex-direction: column;' +
 				'    }' +
 				'' +
 				'    .principal-sign {' +
 				'        display: flex;' +
 				'        flex-direction: column;' +
 				'        justify-content: flex-end;' +
-				'        margin-left: 20px;' +
+				'        margin-left: 70px;' +
+				'        margin-bottom: 20px;' +
 				'    }' +
 				'' +
 				'    .principal-sign img {' +
@@ -392,19 +394,19 @@ sap.ui.define([
 				'' +
 				'    .contact-school ul {' +
 				'        display: flex;' +
-				'        /* flex-direction: column; */' +
+				'        flex-direction: column;' +
 				'        justify-content: space-evenly;' +
 				'        align-items: center;' +
 				'        list-style: none;' +
 				'        font-size: small;' +
-				'        gap: 20px;' +
+				'        gap: 2px;' +
 				'        margin-top: 2px;' +
 				'    }' +
 				'' +
 				'    ' +
 				'    .left{' +
 				'        display: flex;' +
-				'        margin:auto ;' +
+				'        margin-left: 2rem ;' +
 				'    }' +
 				'' +
 				'    p {' +
@@ -421,20 +423,18 @@ sap.ui.define([
 				'    <div class="page">';
 			var HTMlContent = ' <div class="id-card">' +
 				'            <div class="lo2">' +
-				'                <img src="$$LOGO$$" class="logo2">' +
 				'            </div>' +
 				'            <div class="header">' +
 				'                <img src="$$LOGO$$" class="logo">' +
 				'                <div class="school-details">' +
-				'                    <h2 class="school-title">C.K.G Hight School</h2>' +
+				'                    <h2 class="school-title">EVOS Training Solutions</h2>' +
 				'                    <div class="school-address">' +
-				'                        <span class="name">CBSE Affilated</span>' +
-				'                        <span>Ramlial Maidan sikar,Rajasthan</span>' +
+				'                        <span class="name">EPS 074A, Emerald Plaza, Sector 65, Gurgaon</span>' +
 				'                        <span class="contact-school">' +
 				'                            <!-- phone number and email in list -->' +
 				'                            <ul>' +
-				'                                <li>Phone:$$SchoolContact$$</li>' +
-				'                                <li>Email:the@gmail.com</li>' +
+				'                                <li>Phone:0124-4943255, +918800156440</li>' +
+				'                                <li>Email:contact@evotrainingsolutions.com</li>' +
 				'                            </ul>' +
 				'' +
 				'                        </span>' +
@@ -444,20 +444,16 @@ sap.ui.define([
 				'            <div class="br"></div>' +
 				'            <div class="body">' +
 				'                <div class="right">' +
-				'                    <img src="people.jfif" class="photo">' +
+				'                    <img src="$$Photo$$" class="photo">' +
 				'                </div>' +
 				'                <div class="left">' +
 				'                    <div class="student-details">' +
+				'                        <p>Roll No: $$RollNo$$</p>' +
 				'                        <p>Name: $$Name$$</p>' +
-				'                        <p>Class: IV</p>' +
-				'                        <p>Roll No: 42</p>' +
-				'                        <p>DOB: 13/85/2001</p>' +
-				'                        <p>Address: Sultan pura,jhagatia,district bharuch</p>' +
-				'                        <p>phone no: $$Contact$$</p>' +
-				'                    </div>' +
-				'                    <div class="principal-sign">' +
-				'                        <img src="principal-sign.png">' +
-				'                        <span>Principal</span>' +
+				'                        <p>Age: $$Age$$</p>' +
+				'                        <p>Address: $$Address$$</p>' +
+				'                        <p>Phone: $$Phone$$</p>' +
+				'                        <p>Blood Group:$$BloodGroup$$</p>' +
 				'                    </div>' +
 				'                </div>' +
 				'            </div>' +
@@ -475,10 +471,15 @@ sap.ui.define([
 				var idCardHTML = ``;
 				for (var i = 0; i < selectedStudents.length; i++) {
 					var oNewHTRml = HTMlContent;
-					debugger;
 					var oGetData = oEvent.getSource().getParent().getParent().getParent().getParent().getContent()[3].getSelectedItems()[i].getBindingContext("local").getObject();
+					debugger;
+					oNewHTRml = oNewHTRml.replace("$$RollNo$$", oGetData.RollNo);
 					oNewHTRml = oNewHTRml.replace("$$Name$$", oGetData.Name);
-					oNewHTRml = oNewHTRml.replace("$$Contact$$", oGetData.ContactNo);
+					oNewHTRml = oNewHTRml.replace("$$Age$$", oGetData.Age);
+					oNewHTRml = oNewHTRml.replace("$$Address$$", oGetData.Address);
+					oNewHTRml = oNewHTRml.replace("$$Phone$$", oGetData.Phone);
+					oNewHTRml = oNewHTRml.replace("$$BloodGroup$$", oGetData.BloodGroup);
+					oNewHTRml = oNewHTRml.replace("$$Photo$$", oGetData.Photo);
 
 					idCardHTML += oNewHTRml
 				}

@@ -1299,9 +1299,23 @@ app.start = function () {
 			})
 				.then(async function (inq) {
 					if (inq) {
+						const key = require('./samples.json');
+						var loginPayload = {
+							"email": key.appLoginEmail,
+							"password": key.appLoginPassword
+						};
 						// var Otp = app.models.Otp;
-						await Otp.deleteById(oNumber)
-						res.send(true);
+						
+						await Otp.deleteById(oNumber);
+						debugger;
+						
+						var User = app.models.User;
+						var d = await User.login(loginPayload);
+						// var d = await $.post(app.get('url')+'api/Users/login', loginPayload).done(
+
+						// )
+						res.send(d);
+						
 					} else {
 						res.send(false);
 					}
