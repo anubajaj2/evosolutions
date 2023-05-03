@@ -11,16 +11,13 @@
                         <Title width="100%" textAlign="Center" text="OR" visible="{local>/numberVisible}" class="sapUiTinyMargin"  ></Title>
                         <Label visible="{local>/numberVisible}" text="Mobile Number"/>
                         <HBox visible="{local>/numberVisible}" class="sapUiMediumMarginBottom">
-                            <Input value="+91" editable="false"   width="3rem"></Input>
-                            <Input type='Number' liveChange="numberValidation" value="{local>/mobileNumber}" editable="{local>/MobileNumber}"/>
-                                <Button text="Send OTP" press="onNumberOTPPress" visible="{local>/numberVisible}"/>
-                </HBox>
+                            <Input value="+91" editable="false"   width="3rem" visible="{local>/numberVisible}"></Input>
+                            <Input type='Number'  value="{local>/mobileNumber}" editable="{local>/MobileNumber}"/>
+                             <Button text="Send OTP" press="onNumberOTPPress" visible="{local>/numberVisible}"/>
+                        </HBox>
                 <Label text="Captcha"></Label>
                 <HBox>
-                    <!-- <Image id="captchaImage" src=""/> -->
                     <VBox id="idLead"></VBox>
-                    <!-- <Input editable="false" class="capthchaClass"  value="{local>/generatedCaptcha}"></Input> -->
-                    <!-- <Input class="generate" editable="false" id="generatecaptcha" value="{local>/generatedCaptcha}"/> -->
                     <Button press="onRefresh" icon="sap-icon://refresh"/>
                     <!-- <i:Icon src="sap-icon://refresh"></i:Icon> -->
                 </HBox>
@@ -29,11 +26,11 @@
 
                 <Label text="OTP" id="otpLabel" visible="{local>/otpVisible}"/>
                 <Input liveChange="{local>/otpValue}" id="otpInput" value="{local>/otpValue}" visible="{local>/otpVisible}"/>
-                <ObjectStatus title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
+                <ObjectStatus press="validateCaptcha" title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
                 </VBox>
         </f:SimpleForm>
     </content>
-    <Button text="Send OTP To Email" id="captchatCheck" press="validateCaptcha" visible="{local>/sendOtp}"></Button>
+    <Button text="Send OTP To Email" id="captchatCheck" press="validateCaptcha" visible="{local>/sendOtp}" enabled="{local>/sendOtpDisabled}"></Button>
     <MessageStrip
                 visible="{local>/numberVisible}"
 				text="If OTP Still not recieved, You can use your phone Number to get OTP"

@@ -12,7 +12,7 @@ sap.ui.define([
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.attachRouteMatched(this._onRouteMatched, this);
             this.emailCount = 0;
-            
+
         },
 
         _onRouteMatched: function (oEvent) {
@@ -28,7 +28,7 @@ sap.ui.define([
                 this.onOpenDialog();
 
             }
-            
+
         },
 
         onOpenDialog: function () {
@@ -56,315 +56,281 @@ sap.ui.define([
                     oDialog.open();
                     // var sCaptcha = that.captchaGeneratorMethod();
                     // that.getView().getModel('local').setProperty("/generatedCaptcha", sCaptcha);
-
-// +================================================ At here the canvas creating is not working so working on it =================================================================
                     that.onCaptchaGenerate();
                 });
             }
         },
-        onCaptchaGenerate:function(){
+        onCaptchaGenerate: function () {
             var that = this;
             var captchaCode = "";
-                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    for (var i = 0; i < 6; i++) {
-                        captchaCode += possible.charAt(Math.floor(Math.random() * possible.length));
-                    }
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (var i = 0; i < 6; i++) {
+                captchaCode += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
 
-                    // Create a canvas element and draw the captcha code on it
-                    var canvas = document.createElement("canvas");
-                    canvas.width = 100;
-                    canvas.height = 30;
-                    var ctx = canvas.getContext("2d");
-                    // Draw the captcha code on the canvas
-                    ctx.fillText(captchaCode, 20, 20);
-                    debugger;
-                    // var captchaImage = this.getView().byId("captchaImage");
-                    // captchaImage.setSrc(canvas.toDataURL());
-                    // Set the data URL of the canvas as the source of the captcha image
-                    var captchaImage = new Image({
-                        src: canvas.toDataURL(),
-                        width: "150%",
-                        height: "150%",
-                    });
-                    var captchaDialog = that.getView().byId("idLead");
-                    captchaDialog.addItem(captchaImage);
-                    // Store the captcha code in a property of the controller for later verification
-                    this._captchaCode = captchaCode;
-// ================================================================= ========================================================
+            // Create a canvas element and draw the captcha code on it
+            var canvas = document.createElement("canvas");
+            canvas.width = 100;
+            canvas.height = 30;
+            var ctx = canvas.getContext("2d");
+            // Draw the captcha code on the canvas
+            ctx.fillText(captchaCode, 20, 20);
+            debugger;
+            // var captchaImage = this.getView().byId("captchaImage");
+            // captchaImage.setSrc(canvas.toDataURL());
+            // Set the data URL of the canvas as the source of the captcha image
+            var captchaImage = new Image({
+                src: canvas.toDataURL(),
+                width: "150%",
+                height: "150%",
+            });
+            var captchaDialog = that.getView().byId("idLead");
+            captchaDialog.addItem(captchaImage);
+            // Store the captcha code in a property of the controller for later verification
+            this._captchaCode = captchaCode;
         },
 
-        // mobile number validation 
+
+// ==================================== mobile number validation  =========================
+
         numberValidation: function (sMobileNumber) {
-            // var input = oEvent.getSource();
-            // var value = input.getValue();
             var value = sMobileNumber;
 
             if (value.length !== 10 || isNaN(value)) {
-                // input.setValueState("Error");
-                // input.setValueStateText("Please enter a valid 10 digit mobile number");
+                MessageToast.show("Invalid Mobile Number")
                 return false;
             } else {
-                // input.setValueState("None");
-                // input.setValueStateText("");
                 return true;
             }
         },
-       
-        validateCaptcha: function() {
-            
+
+ // ================== Function validate the input field for the email and as well as send OTP  ===================== 
+
+        validateCaptcha: function () {
+
             var sEmail = this.getView().getModel('local').getProperty("/Email");
             this.sEmail = this.getView().getModel('local').getProperty("/Email");
             var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
             var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
-          
-            // if (!sMobileNumber && !sEmail) {
-            //   MessageToast.show("Please enter your mobile number or email address.");
-            //   return;
-            // }
-            
+
+            if (!sEmail) {
+                MessageToast.show("Please enter a valid email address.");
+                return;
+            };
+
             if (sEmail && !sEmail.match(oRegex)) {
-              MessageToast.show("Please enter a valid email address.");
-              return;
-            }
-          
+                MessageToast.show("Please enter a valid email address.");
+                return;
+            };
+
             if (!InpCaptchaCode || InpCaptchaCode !== this._captchaCode) {
-              MessageToast.show("Please enter a valid captcha code.");
-              return;
-            }
+                MessageToast.show("Please enter a valid captcha code.");
+                return;
+            };
+
             var that = this;
             var oModel = this.getView().getModel('local');
-          debugger;
+            // debugger;
             // Send AJAX request to backend
-            this.sendOTP();
-            this.OtpSend();
-          },
-          sendOTP:function(){
             var that = this;
+            var oModel = this.getView().getModel('local');
             $.ajax({
                 type: 'POST',
                 url: 'sendOtpViaEmail',
                 data: {
-                  eMail: this.sEmail
+                    eMail: sEmail
                 },
                 success: function (data) {
-                  debugger;
-                  that.getView().getModel('local').setProperty('/otpVisible', true);
-                  that.getView().getModel('local').setProperty('/sendOtp', false);
-                  // oModel.setProperty('/MobileNumber', false);
-                  
-                  MessageToast.show('OTP Successfully Sent');
+                    // debugger;
+                    if(data=="email sent"){
+                        oModel.setProperty('/sendOtpDisabled', false);
+                    }
+                    oModel.setProperty('/otpVisible', true);
+                    oModel.setProperty('/sendOtp', false);
+                    MessageToast.show('OTP Successfully Sent To Your Mail.');
                 },
                 error: function (xhr, status, error) {
-                  console.error(error);
-                  MessageToast.show('Error sending OTP via email');
+                    console.error(error);
+                    MessageToast.show('Error sending OTP via email');
                 }
-              });
-          },
-          onNumberOTPPress:function(){
+            });
+            this.OtpSend();
+
+        },
+
+ // =========================== Function validate the input field for the Mobile Number As Well as send =========================
+
+        onNumberOTPPress: function () {
             var that = this;
             var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
-            if(sMobileNumber){
+            if (sMobileNumber) {
                 var sValidated = this.numberValidation(sMobileNumber);
-                if(sValidated){
+                if (sValidated) {
                     this.getView().getModel('local').setProperty('/MobileNumber', false);
                     $.ajax({
                         type: 'POST',
                         url: 'requestMessage',
                         data: {
-                          Number: sMobileNumber,
-                          msgType: "OTP"
+                            Number: sMobileNumber,
+                            msgType: "OTP"
                         },
                         success: function (data) {
-                          debugger;
-                          that.getView().getModel('local').setProperty('/otpVisible', true);
-                        //   that.getView().getModel('local').setProperty('/sendOtp', false);
-                          MessageToast.show('OTP Successfully Sent');
-                          this.sEmail = sMobileNumber ;
+                            debugger;
+                            that.getView().getModel('local').setProperty('/otpVisible', true);
+                            //   that.getView().getModel('local').setProperty('/sendOtp', false);
+                            MessageToast.show('OTP Successfully Sent');
+                            this.sEmail = sMobileNumber;
 
                         },
                         error: function (xhr, status, error) {
-                          console.error(error);
-                          MessageToast.show('Error sending OTP via email');
+                            console.error(error);
+                            MessageToast.show('Error sending OTP via email');
                         }
-                      });
+                    });
                 }
             }
-          },
+        },
 
+// ============================== OnSubmit Validaing the otp which comes from the backend ==================
 
-          
+onSubmit: function () {
+            var that =this;
+            this.emailCount += 1;
+            var oModel = this.getView().getModel('local');
+            var otpvalue = oModel.getProperty("/otpValue");
 
-            //   validation of the popup filed and send the otp to the user 
-            // validateCaptcha: function() {
-            //     var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
-            //     var sEmail = this.getView().getModel('local').getProperty("/Email");
-            //     var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
-            //     var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
-
-            //     // if (sMobileNumber == undefined || sEmail == undefined) {
-            //     //     MessageToast.show("Please Check the Input Fields");
-            //     //     return;
-            //     // };
-            //     if (sEmail == undefined) {
-            //         MessageToast.show("Please Check the Input Fields");
-            //         return;
-            //     };
-            //     if (InpCaptchaCode !== this._captchaCode ) {
-            //         MessageToast.show("Your Captha is Not Valid");
-            //         return;
-            //     };
-
-            //     if (!sEmail.match(oRegex)) {
-            //         // MessageToast.show("Email address is valid.");
-            //         MessageToast.show("Please enter a valid email address.");
-            //         return;
-            //     }
-            //     this.getView().getModel('local').setProperty("/otpVisible", true);
-            //     this.getView().getModel('local').setProperty("/sendOtp", false);
-            //     this.getView().getModel('local').setProperty("/MobileNumber", false);
-            //     // this.getView().getModel('local').setProperty("/sendOtp",false);
-            //     this.OtpSend();
-
-            //     return true;
-            // },
-
-            onSubmit: function() {
-                // oDialog.close();
-                this.emailCount += 1;
-                var otpvalue = this.getView().getModel('local').getProperty("/otpValue");
-                if(otpvalue !== undefined){
-                    // this.oDialog.then(function (oDialog) {
-                    //     oDialog.close();
-                    // })
-                    // this.getView().getModel('local').setProperty("/PageVisibility", true);
-
-                    // ######## OTP Validate #######
-                    $.ajax({
-                        type: 'GET',
-                        url: 'validateOtp',
-                        data:{
-                            email: this.sEmail,
-                            OTP: otpvalue
-                        },
-                        success: function (data) {
-                          debugger;
-                          if(data===false){
+            if (otpvalue !== undefined) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'validateOtp',
+                    data: {
+                        email: this.sEmail,
+                        OTP: otpvalue
+                    },
+                    success: function (data) {
+                        debugger;
+                        if (data === false) {
                             MessageToast.show('Error in Verification');
-                          }else{
+                            oModel.setProperty('/otpValue', "");
+                            that.onRefresh();
+                            oModel.setProperty('/captcha', "");
+                        } else {
                             MessageToast.show('Verification Successful');
-                          } 
-                          
-                        //   this.getRouter().navTo("leadDetail", {}, true);
-                         
-                        },
-                        error: function (xhr, status, error) {
-                          console.error(error);
-                          MessageToast.show('Error in Verification');
+                            // this below code is working for close the dialog and navigate to the view
+                            that.oDialog.then(function(oDialog){
+                                oDialog.close();
+                            })
+
+                            // that.getView().getModel('local').setProperty("/PageVisibility",true);
+                              that.getRouter().navTo("leadDetail", {}, true);
                         }
-                      });
-
-                }
-                else{
-                    MessageToast.show("Please Enter Your  OTP",)
-                }   
-                debugger;
-                
-                this.numberVisible();
-                // this.getView().getModel('local').setProperty("/MobileNumber",false);
-                // this.getView().getModel('local').getProperty("/Email");
-            },
-            numberVisible:function(){
-                debugger;
-                if(this.emailCount>=2){
-                    this.getView().getModel('local').setProperty("/numberVisible",true);
-                }else{
-                    this.getView().getModel('local').setProperty("/numberVisible",false);
-                }
-            },
-
-            OtpSend: function() {
-                // this.onValidate();
-                this.getView().getModel('local').setProperty("/otpVisible", true);
-                var that = this;
-                var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
-                var x = setInterval(function () {
-                    var now = new Date().getTime();
-                    var distance = countDownDate - now;
-                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    var timerText = "Resend OTP in " + seconds + "s";
-
-                    // Display the timer
-                    that.getView().getModel('local').setProperty("/timerText", timerText);
-
-                    that.getView().getModel('local').setProperty("/verifySubmit", true)
-                    // If the timer has expired
-                    if (distance < 0) {
-                        clearInterval(x);
-                        that.getView().getModel('local').setProperty("/timerText", "Resend");
-                        that.getView().getModel('local').setProperty("/onResendOTP", true);
-                        that.getView().getModel('local').setProperty("/ResendMsg", "If OTP not Received ");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                        MessageToast.show('Error in Verification');
                     }
-                }, 1000);
+                });
+            }
+            else {
+                MessageToast.show("Please Enter Your  OTP",)
+            }
+            debugger;
 
-            },
+            this.numberVisible();
+            // this.getView().getModel('local').setProperty("/MobileNumber",false);
+            // this.getView().getModel('local').getProperty("/Email");
+        },
 
-            // generating  the captcha images 
-            captchaGeneratorMethod: function() {
-                var captchaCode = '';
-                var length = 3; // Change the length of the captcha code as needed
+// ===================== This function will enalbe the mobile number filed after 2 attempts =====================
+        numberVisible: function () {
+            debugger;
+            if (this.emailCount >= 2) {
+                this.getView().getModel('local').setProperty("/numberVisible", true);
+            } else {
+                this.getView().getModel('local').setProperty("/numberVisible", false);
+            }
+        },
 
-                for (var i = 0; i < length; i++) {
-                    var rand = Math.random();
-                    // Add a random lowercase or uppercase letter
-                    captchaCode += String.fromCharCode(rand < 0.5 ? 97 + Math.floor(rand * 26) : 65 + Math.floor(rand * 26));
-                    // Add a random digit
-                    captchaCode += rand < 0.5 ? Math.floor(rand * 10) : String.fromCharCode(48 + Math.floor(rand * 10));
+// ============ this fucntion will shows the resend info and timer below to the otp input filed ================ 
+
+        OtpSend: function () {
+            // this.onValidate();
+            this.getView().getModel('local').setProperty("/otpVisible", true);
+            var that = this;
+            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                var timerText = "Resend OTP in " + seconds + "s";
+
+                // Display the timer
+                that.getView().getModel('local').setProperty("/timerText", timerText);
+
+                that.getView().getModel('local').setProperty("/verifySubmit", true)
+                // If the timer has expired
+                if (distance < 0) {
+                    clearInterval(x);
+                    that.getView().getModel('local').setProperty("/timerText", "Resend");
+                    that.getView().getModel('local').setProperty("/onResendOTP", true);
+                    that.getView().getModel('local').setProperty("/ResendMsg", "If OTP not Received ");
                 }
+            }, 1000);
 
-                return captchaCode;
-            },
+        },
 
-            // refresh the captcha code
-            onRefresh: function(oEvent) {
-                var captchaDialog = this.getView().byId("idLead");
-                captchaDialog.removeAllItems();
-                debugger;
-                this.onCaptchaGenerate();
-            },
+// =============== this funciton will refresh the generated capthcha =============================
 
-
-            // // for validation of the captcha
-            // onValidate: function() {
-            //     // var Input1 = this.byId("generatecaptcha").getValue();
-            //     var Input1=   this.getView().getModel("local").getProperty("/captchaValue");
-            //     var Input2 = this.getView().getModel("local").getProperty("/generatecaptcha");
-            //     // var Input2 = this.byId("captchacheck").getValue();
-            //     if (Input2 === "") {
-            //         MessageToast.show("Please Enter a valid captcha");
-            //         // alert("Please enter the captcha");
-            //     } 
-            //     else if (Input1 === Input2) {
-            //         MessageToast.show("Captcha Validation Success");
-
-            //     var captchaCorrect = this.customMethod();
-            //     this.getView().getModel("local").getProperty("/generatecaptcha",captchaCorrect)
-
-            //     this.getView().getModel("local").setProperty("/captchaValue","")
-            //     } 
-            //     else {
-            //         MessageToast.show("Captcha Validation Failure");
-
-            //     var captchaWrong = this.customMethod();
-            //     this.getView().getModel("local").getProperty("/generatecaptcha",captchaWrong)
-
-            //     this.getView().getModel("local").setProperty("/captchaValue","")
-            //     }
-            // },
-
-
-
-        });
-
+        // refresh the captcha code
+        onRefresh: function (oEvent) {
+            var captchaDialog = this.getView().byId("idLead");
+            captchaDialog.removeAllItems();
+            debugger;
+            this.onCaptchaGenerate();
+        },
+        
+    });
+    
 });
+// // generating  the captcha images 
+// captchaGeneratorMethod: function () {
+//     var captchaCode = '';
+//     var length = 3; // Change the length of the captcha code as needed
 
+//     for (var i = 0; i < length; i++) {
+//         var rand = Math.random();
+//         // Add a random lowercase or uppercase letter
+//         captchaCode += String.fromCharCode(rand < 0.5 ? 97 + Math.floor(rand * 26) : 65 + Math.floor(rand * 26));
+//         // Add a random digit
+//         captchaCode += rand < 0.5 ? Math.floor(rand * 10) : String.fromCharCode(48 + Math.floor(rand * 10));
+//     }
+
+//     return captchaCode;
+// },
+
+
+
+  
+        //   sendOTP:function(){
+        //     var that = this;
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: 'sendOtpViaEmail',
+        //         data: {
+        //           eMail: this.sEmail
+        //         },
+        //         success: function (data) {
+        //           debugger;
+        //           that.getView().getModel('local').setProperty('/otpVisible', true);
+        //           that.getView().getModel('local').setProperty('/sendOtp', false);
+        //           // oModel.setProperty('/MobileNumber', false);
+
+        //           MessageToast.show('OTP Successfully Sent');
+        //         },
+        //         error: function (xhr, status, error) {
+        //           console.error(error);
+        //           MessageToast.show('Error sending OTP via email');
+        //         }
+        //       });
+        //   },
