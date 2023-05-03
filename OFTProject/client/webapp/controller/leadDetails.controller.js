@@ -94,22 +94,26 @@ sap.ui.define([
         },
 
         // mobile number validation 
-        numberValidation: function (oEvent) {
-            var input = oEvent.getSource();
-            var value = input.getValue();
+        numberValidation: function (sMobileNumber) {
+            // var input = oEvent.getSource();
+            // var value = input.getValue();
+            var value = sMobileNumber;
 
             if (value.length !== 10 || isNaN(value)) {
-                input.setValueState("Error");
-                input.setValueStateText("Please enter a valid 10 digit mobile number");
+                // input.setValueState("Error");
+                // input.setValueStateText("Please enter a valid 10 digit mobile number");
+                return false;
             } else {
-                input.setValueState("None");
-                input.setValueStateText("");
+                // input.setValueState("None");
+                // input.setValueStateText("");
+                return true;
             }
         },
        
         validateCaptcha: function() {
-            var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
+            
             var sEmail = this.getView().getModel('local').getProperty("/Email");
+            this.sEmail = this.getView().getModel('local').getProperty("/Email");
             var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
             var oRegex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
           
@@ -131,26 +135,63 @@ sap.ui.define([
             var oModel = this.getView().getModel('local');
           debugger;
             // Send AJAX request to backend
-            $.ajax({
-              type: 'POST',
-              url: 'sendOtpViaEmail',
-              data: {
-                eMail: sEmail
-              },
-              success: function (data) {
-                debugger;
-                oModel.setProperty('/otpVisible', true);
-                oModel.setProperty('/sendOtp', false);
-                oModel.setProperty('/MobileNumber', false);
-                that.OtpSend();
-                MessageToast.show('OTP Successfully Sent To Your Mail.');
-              },
-              error: function (xhr, status, error) {
-                console.error(error);
-                MessageToast.show('Error sending OTP via email');
-              }
-            });
+            this.sendOTP();
+            this.OtpSend();
           },
+          sendOTP:function(){
+            var that = this;
+            $.ajax({
+                type: 'POST',
+                url: 'sendOtpViaEmail',
+                data: {
+                  eMail: this.sEmail
+                },
+                success: function (data) {
+                  debugger;
+                  that.getView().getModel('local').setProperty('/otpVisible', true);
+                  that.getView().getModel('local').setProperty('/sendOtp', false);
+                  // oModel.setProperty('/MobileNumber', false);
+                  
+                  MessageToast.show('OTP Successfully Sent');
+                },
+                error: function (xhr, status, error) {
+                  console.error(error);
+                  MessageToast.show('Error sending OTP via email');
+                }
+              });
+          },
+          onNumberOTPPress:function(){
+            var that = this;
+            var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
+            if(sMobileNumber){
+                var sValidated = this.numberValidation(sMobileNumber);
+                if(sValidated){
+                    this.getView().getModel('local').setProperty('/MobileNumber', false);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'requestMessage',
+                        data: {
+                          Number: sMobileNumber,
+                          msgType: "OTP"
+                        },
+                        success: function (data) {
+                          debugger;
+                          that.getView().getModel('local').setProperty('/otpVisible', true);
+                        //   that.getView().getModel('local').setProperty('/sendOtp', false);
+                          MessageToast.show('OTP Successfully Sent');
+                          this.sEmail = sMobileNumber ;
+
+                        },
+                        error: function (xhr, status, error) {
+                          console.error(error);
+                          MessageToast.show('Error sending OTP via email');
+                        }
+                      });
+                }
+            }
+          },
+
+
           
 
             //   validation of the popup filed and send the otp to the user 
@@ -189,14 +230,38 @@ sap.ui.define([
 
             onSubmit: function() {
                 // oDialog.close();
+                this.emailCount += 1;
                 var otpvalue = this.getView().getModel('local').getProperty("/otpValue");
                 if(otpvalue !== undefined){
                     // this.oDialog.then(function (oDialog) {
                     //     oDialog.close();
                     // })
                     // this.getView().getModel('local').setProperty("/PageVisibility", true);
-                    this.emailCount += 1;
-                    this.getRouter().navTo("leadDetail", {}, true);
+
+                    // ######## OTP Validate #######
+                    $.ajax({
+                        type: 'GET',
+                        url: 'validateOtp',
+                        data:{
+                            email: this.sEmail,
+                            OTP: otpvalue
+                        },
+                        success: function (data) {
+                          debugger;
+                          if(data===false){
+                            MessageToast.show('Error in Verification');
+                          }else{
+                            MessageToast.show('Verification Successful');
+                          } 
+                          
+                        //   this.getRouter().navTo("leadDetail", {}, true);
+                         
+                        },
+                        error: function (xhr, status, error) {
+                          console.error(error);
+                          MessageToast.show('Error in Verification');
+                        }
+                      });
 
                 }
                 else{

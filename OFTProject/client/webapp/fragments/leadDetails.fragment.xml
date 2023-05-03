@@ -13,6 +13,7 @@
                         <HBox visible="{local>/numberVisible}" class="sapUiMediumMarginBottom">
                             <Input value="+91" editable="false"   width="3rem"></Input>
                             <Input type='Number' liveChange="numberValidation" value="{local>/mobileNumber}" editable="{local>/MobileNumber}"/>
+                                <Button text="Send OTP" press="onNumberOTPPress" visible="{local>/numberVisible}"/>
                 </HBox>
                 <Label text="Captcha"></Label>
                 <HBox>

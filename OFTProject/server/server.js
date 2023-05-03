@@ -1174,7 +1174,7 @@ app.start = function () {
 							if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
 								age--;
 							}
-							
+
 							idCardData.push({
 								"Roll No.": Records[i].__data.RollNo,
 								"Name": Records[i].__data.Name,
@@ -1184,7 +1184,7 @@ app.start = function () {
 								"Blood Group": Records[i].__data.BloodGroup,
 								"Photo": Records[i].__data.Photo
 							});
-							
+
 						}
 
 						debugger;
@@ -1286,11 +1286,12 @@ app.start = function () {
 
 		app.get("/validateOtp", function (req, res) {
 			var Otp = app.models.Otp;
-			var oNumber = req.query.Number;
+			var oNumber = req.query.email;
+			// var OTP = req.query.OTP;
 			Otp.findOne({
 				where: {
 					and: [{
-						Number: req.query.Number
+						Number: req.query.email
 					}, {
 						OTP: req.query.OTP
 					}]
@@ -1525,7 +1526,7 @@ app.start = function () {
 				}
 				var OTP = generateOTP();
 
-				this.mailContent.replace("$$OTP$$", OTP);
+				this.mailContent = this.mailContent.replace("$$OTP$$", OTP);
 
 				var transporter = nodemailer.createTransport(smtpTransport({
 					service: 'gmail',
@@ -1545,7 +1546,7 @@ app.start = function () {
 				var ccs = [];
 				var emailContent = {};
 				var Email = req.body.eMail
-				var Subject  =  "Verify Your OTP For Evosolutions Registration" ;
+				var Subject = "Verify Your OTP For Evosolutions Registration";
 				emailContent = {
 					from: 'contact@evotrainingsolutions.com',
 					to: Email, //req.body.EmailId    FirstName  CourseName
