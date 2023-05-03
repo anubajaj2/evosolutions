@@ -335,6 +335,29 @@ sap.ui.define([
 				this.getView().byId("quotedFee").setVisible(true);
 			}
 		},
+		onPressSendEmail: function(oEvent){
+			var	selectedPaths = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var parent = this.getView().getModel("local").getProperty("/newLead");
+			var selectedItems = [];
+			var oModel = this.getView().getModel('local');
+			selectedPaths.forEach((item, i) => {
+				selectedItems.push(oModel.getProperty(item));
+			});
+			for(item in selectedItems){
+				payload.FatherName = parent.FatherName;
+				payload.Email = parent.EmailId;
+				payload.WardName =item.Name;
+				payload.CourseName = item.CourseName;
+				$.post('/sendInquiryEmail', payload)
+					.done(function(data, status) {
+						sap.m.MessageToast.show("Email sent successfully");
+					})
+					.fail(function(xhr, status, error) {
+						that.passwords = "";
+						sap.m.MessageBox.error(xhr.responseText);
+					});
+			}
+		},
 		onPressAddWard: function(){
 			var wardDetails = this.getView().getModel("local").getProperty("/newLead/WardDetails");
 			wardDetails.push({
@@ -383,7 +406,11 @@ sap.ui.define([
 					if(oData.results.length>0){
 						that.loadInquiry(oData.results[0].id);
 					}else{
-						MessageBox.show("No Matching Record Found!");
+						MessageBox.show("No Matching Record Found!", {
+							onClose: function(){
+								that.getView().byId("idParentEmail").focus();
+							}
+						});
 					}
 					// debugger;
 				}).catch(function(oError){

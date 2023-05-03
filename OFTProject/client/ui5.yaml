@@ -1,4 +1,4 @@
-specVersion: '3.0'
+specVersion: '2.4'
 metadata:
   name: client
 type: application

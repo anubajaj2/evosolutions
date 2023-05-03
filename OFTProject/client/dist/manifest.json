@@ -230,6 +230,11 @@
 								"pattern": "leadDetails",
 								"name": "leadDetails",
 								"target": ["leadDetails"]
+							},
+							{
+								"pattern": "leadDetail",
+								"name": "leadDetail",
+								"target": ["leadDetail"]
 							}
 
 						]
@@ -477,7 +482,15 @@
 					"viewId": "leadDetails",
 					"controlId": "idMainApp",
 					"controlAggregation": "pages"
+				},
+				"leadDetail":{
+					"clearAggregation": true,
+					"viewName": "newLead",
+					"viewId": "leadDetail",
+					"controlId": "idMainApp",
+					"controlAggregation": "pages"
 				}
+
 
 			}
 		}

@@ -1,28 +1,45 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"	 xmlns:f = "sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml">
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:i="sap.ui.core"	 xmlns:f = "sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml">
     <Dialog title="Login "
-    id="idLead"
-    resizable="true">
+  
+    resizable="true" id="captchaDialog">
     <content>
         <f:SimpleForm layout="ResponsiveGridLayout">
             <VBox >
-                <Label text="Mobile Number"/>
-        
-                <HBox  class="sapUiMediumMarginBottom">
-                    <Input value="+91" editable="false"   width="3rem"></Input>
-                    <Input type='Number' liveChange="numberValidation" value="{local>/mobileNumber}"   editable="{local>/MobileNumber}"/>
+                <Label text="Email" />
+                <Input id="emailInput" type='Email' value="{local>/Email}" submit="onEmailLiveChange" editable="{local>/email}"/>
+                    <!-- <HBox width="100%" alignContent="Center"> -->
+                        <Title width="100%" textAlign="Center" text="OR" visible="{local>/numberVisible}" class="sapUiTinyMargin"  ></Title>
+                        <Label visible="{local>/numberVisible}" text="Mobile Number"/>
+                        <HBox visible="{local>/numberVisible}" class="sapUiMediumMarginBottom">
+                            <Input value="+91" editable="false"   width="3rem" visible="{local>/numberVisible}"></Input>
+                            <Input type='Number'  value="{local>/mobileNumber}" editable="{local>/MobileNumber}"/>
+                             <Button text="Send OTP" press="onNumberOTPPress" visible="{local>/numberVisible}"/>
+                        </HBox>
+                <Label text="Captcha"></Label>
+                <HBox>
+                    <VBox id="idLead"></VBox>
+                    <Button press="onRefresh" icon="sap-icon://refresh"/>
+                    <!-- <i:Icon src="sap-icon://refresh"></i:Icon> -->
                 </HBox>
-                <!-- for the testing purpose -->
-                
-                <html:div id="recaptchaGoogle" width="3rem" class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></html:div>
+                <Input id="captchacheck" value="{local>/captcha}" />
+                    
+
                 <Label text="OTP" id="otpLabel" visible="{local>/otpVisible}"/>
-                <Input id="otpInput" value="{local>/otpValue}" visible="{local>/otpVisible}"/>
-                <ObjectStatus title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
+                <Input liveChange="{local>/otpValue}" id="otpInput" value="{local>/otpValue}" visible="{local>/otpVisible}"/>
+                <ObjectStatus press="validateCaptcha" title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
                 </VBox>
         </f:SimpleForm>
     </content>
-    <Button text="Send OTP" id="captchatCheck" press="validateCaptcha" visible="{local>/sendOtp}"></Button>
+    <Button text="Send OTP To Email" id="captchatCheck" press="validateCaptcha" visible="{local>/sendOtp}" enabled="{local>/sendOtpDisabled}"></Button>
+    <MessageStrip
+                visible="{local>/numberVisible}"
+				text="If OTP Still not recieved, You can use your phone Number to get OTP"
+				showIcon="true"
+				showCloseButton="true"
+				class="sapUiMediumMarginBottom">
+			</MessageStrip>
     <endButton>
-        <Button text="Submit" press="onSubmit" visible="{local>/verifySubmit}"/>
+        <Button text="Submit" press="onSubmit" enabled="{local>/submitEnable}" visible="{local>/verifySubmit}"/>
     </endButton>
 </Dialog>		
 </core:FragmentDefinition>

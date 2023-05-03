@@ -26,7 +26,7 @@
                     <Toolbar>
                         <ToolbarSpacer/>
                         <Button text="Generate Id Cards" icon="sap-icon://create-form" type="Emphasized" press="onGenerateIdCards" id="idGenerate"></Button>
-                        <Button text="Print Id Cards" icon="sap-icon://print" type="Emphasized" press="onPrintIdCardsScreen" id="idPrint"></Button>
+                        <!-- <Button text="Print Id Cards" icon="sap-icon://print" type="Emphasized" press="onPrintIdCardsScreen" id="idPrint"></Button> -->
                         <!-- <Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear"></Button> -->
                         <!-- <Button text="New Customer" icon="sap-icon://add-employee" type="Accept" press="onCustomer" id="idCust"></Button> -->
                         <!-- <Button text="Save" type="Accept" press="onSaveSubs" id="idApr"></Button> -->

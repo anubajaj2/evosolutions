@@ -1,6 +1,6 @@
 sap.ui.define([
 	"oft/fiori/controller/BaseController"
-], function(Controller) {
+], function (Controller) {
 	"use strict";
 
 	return Controller.extend("oft.fiori.controller.MainApp", {
@@ -13,11 +13,11 @@ sap.ui.define([
 		//	onInit: function() {
 		//
 		//	},
-		idleLogout: function() {
+		idleLogout: function () {
 			var t;
 			var that = this;
-			window.onbeforeunload = function() {
-			 that.logOutApp("X");
+			window.onbeforeunload = function () {
+				that.logOutApp("X");
 			}
 
 			window.onload = resetTimer;
@@ -29,35 +29,35 @@ sap.ui.define([
 			window.addEventListener('scroll', resetTimer, true); // improved; see comments
 
 			function yourFunction() {
-					// your function for too long inactivity goes here
-					// e.g. window.location.href = 'logout.php';
-					sap.m.MessageBox.alert("Page expired, please login again!");
-					window.top.location.href = "/";
+				// your function for too long inactivity goes here
+				// e.g. window.location.href = 'logout.php';
+				sap.m.MessageBox.alert("Page expired, please login again!");
+				window.top.location.href = "/";
 			}
 
 			function resetTimer() {
-					clearTimeout(t);
-					t = setTimeout(yourFunction, 3600000);  // time is in milliseconds
+				clearTimeout(t);
+				t = setTimeout(yourFunction, 3600000);  // time is in milliseconds
 			}
 		},
-		onLogout: function(){
+		onLogout: function () {
 			this.logOutApp();
 		},
-		onInit: function() {
+		onInit: function () {
 			//var oModel = Models.createFruitModel();
 			//sap.ui.getCore().setModel(oModel);
 			this.idleLogout();
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 		},
-		onSubmit: function(){
+		onSubmit: function () {
 			this.Login();
 		},
 
-    onLivePassword: function(oEvent){
-      console.log("Test")
+		onLivePassword: function (oEvent) {
+			console.log("Test")
 		},
 
-		Login: function(){
+		Login: function () {
 
 			var loginPayload = {
 				"email": this.getView().byId("userid").getValue(),
@@ -65,68 +65,68 @@ sap.ui.define([
 			};
 			var that = this;
 
-			if(!loginPayload.email || !loginPayload.password){
+			if (!loginPayload.email || !loginPayload.password) {
 				sap.m.MessageBox.error("User/password cannot be empty");
 				return; //--- Added - Swaroop
 			}
 
 			$.post('/api/Users/login', loginPayload)
-		    .done(function(data, status){
-						// debugger;
-							that.getView().getModel("local").setProperty("/Authorization", data.id);
-							that.getView().getModel().setHeaders({
-								"Authorization": data.id
-							});
-							that.secureToken = data.id;
-							that.getView().getModel("local").setProperty("/CurrentUser", data.userId);
-							that.getView().getModel().setUseBatch(false);
-							var that2 = that;
+				.done(function (data, status) {
+					// debugger;
+					that.getView().getModel("local").setProperty("/Authorization", data.id);
+					that.getView().getModel().setHeaders({
+						"Authorization": data.id
+					});
+					that.secureToken = data.id;
+					that.getView().getModel("local").setProperty("/CurrentUser", data.userId);
+					that.getView().getModel().setUseBatch(false);
+					var that2 = that;
 
-							//Check the role and set it after that navigate to App
-							//that.oRouter.navTo("newlead");
+					//Check the role and set it after that navigate to App
+					//that.oRouter.navTo("newlead");
 
-							var aFilter = [ new sap.ui.model.Filter("TechnicalId",
-							sap.ui.model.FilterOperator.EQ, data.userId) ];
-							var oParameters = {
-								filters: aFilter
-							};
-							var found = false;
-							var AppUsers = [];
-							that.ODataHelper.callOData(that.getOwnerComponent().getModel(),
-							 "/AppUsers", "GET", {}, {}, that)
-								.then(function(oData) {
-									var newExcluseUser = [];
-									if (oData.results.length != 0) {
-										for (var i = 0; i < oData.results.length; i++) {
-											AppUsers[oData.results[i].TechnicalId] = oData.results[i];
-											if( oData.results[i].TechnicalId === data.userId ){
-												that2.getView().getModel("local").setProperty("/Role", oData.results[i].Role);
-												that2.getView().getModel("local").setProperty("/UserName", oData.results[i].UserName);
-												that2.getView().getModel("local").setProperty("/JoiningDate", oData.results[i].JoiningDate);
-												that2.getView().getModel("local").setProperty("/LeaveQuota", oData.results[i].LeaveQuota);
-												that2.getView().getModel("local").setProperty("/MobileNo", oData.results[i].MobileNo);
-												found = true;
-											}else{
-												that2.getView().getModel("local").setProperty("/Authorization", "");
-												newExcluseUser.push(oData.results[i]);
-											}
-										}
-										if(found === true){
-											that2.getView().getModel("local").setProperty("/AppUsers", AppUsers);
-											that2.getView().getModel("local").setProperty("/AppUsersCopy", newExcluseUser);
-											that2.oRouter.navTo("newlead");
-										}else{
-											sap.m.MessageBox.error("The user is not authorized, Contact Anubhav");
-										}
+					var aFilter = [new sap.ui.model.Filter("TechnicalId",
+						sap.ui.model.FilterOperator.EQ, data.userId)];
+					var oParameters = {
+						filters: aFilter
+					};
+					var found = false;
+					var AppUsers = [];
+					that.ODataHelper.callOData(that.getOwnerComponent().getModel(),
+						"/AppUsers", "GET", {}, {}, that)
+						.then(function (oData) {
+							var newExcluseUser = [];
+							if (oData.results.length != 0) {
+								for (var i = 0; i < oData.results.length; i++) {
+									AppUsers[oData.results[i].TechnicalId] = oData.results[i];
+									if (oData.results[i].TechnicalId === data.userId) {
+										that2.getView().getModel("local").setProperty("/Role", oData.results[i].Role);
+										that2.getView().getModel("local").setProperty("/UserName", oData.results[i].UserName);
+										that2.getView().getModel("local").setProperty("/JoiningDate", oData.results[i].JoiningDate);
+										that2.getView().getModel("local").setProperty("/LeaveQuota", oData.results[i].LeaveQuota);
+										that2.getView().getModel("local").setProperty("/MobileNo", oData.results[i].MobileNo);
+										found = true;
+									} else {
+										that2.getView().getModel("local").setProperty("/Authorization", "");
+										newExcluseUser.push(oData.results[i]);
 									}
-								}).catch(function(oError) {
+								}
+								if (found === true) {
+									that2.getView().getModel("local").setProperty("/AppUsers", AppUsers);
+									that2.getView().getModel("local").setProperty("/AppUsersCopy", newExcluseUser);
+									that2.oRouter.navTo("newlead");
+								} else {
+									sap.m.MessageBox.error("The user is not authorized, Contact Anubhav");
+								}
+							}
+						}).catch(function (oError) {
 
-								});
+						});
 
 				})
-		    .fail(function(xhr, status, error) {
-							sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
-		    });
+				.fail(function (xhr, status, error) {
+					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+				});
 
 		}
 

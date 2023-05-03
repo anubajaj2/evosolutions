@@ -1174,14 +1174,16 @@ app.start = function () {
 							if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
 								age--;
 							}
-
+							var oParent=aStudentsData.filter(function(ele){
+								return ele.id.toString()==Records[i].InquiryId.toString();
+							})
 							idCardData.push({
-								"Roll No.": Records[i].__data.RollNo,
+								"RollNo": Records[i].__data.RollNo,
 								"Name": Records[i].__data.Name,
 								"Age": age,
-								"Address": Records[i].__data.Address,
-								"Phone": aStudentsData[0].__data.Phone,
-								"Blood Group": Records[i].__data.BloodGroup,
+								"Address": oParent[0].Address,
+								"Phone": oParent[0].Phone,
+								"BloodGroup": Records[i].__data.BloodGroup,
 								"Photo": Records[i].__data.Photo
 							});
 

@@ -886,6 +886,7 @@ sap.ui.define([
 		},
 		// searchPopup: null,
 		onSelect: function (oEvent) {
+			debugger;
 			this.sId = oEvent.getSource().getId();
 
 			var sTitle = "",
