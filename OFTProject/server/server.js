@@ -1068,7 +1068,7 @@ app.start = function () {
 
 			//Step 1: get the batch if which you pass from fiori apps
 
-			//Step 2: Find all subscriptions for that batchs	
+			//Step 2: Find all subscriptions for that batchs
 			//Sub.find({batchId: sId}).then(function(data){   })
 			//Step 3: make an array of all the students in those subs
 			//Step 4: Fire find on Ward table with all the IDs
@@ -1307,17 +1307,17 @@ app.start = function () {
 							"password": key.appLoginPassword
 						};
 						// var Otp = app.models.Otp;
-						
+
 						await Otp.deleteById(oNumber);
 						debugger;
-						
+
 						var User = app.models.User;
 						var d = await User.login(loginPayload);
 						// var d = await $.post(app.get('url')+'api/Users/login', loginPayload).done(
 
 						// )
 						res.send(d);
-						
+
 					} else {
 						res.send(false);
 					}
@@ -1501,7 +1501,7 @@ app.start = function () {
 					});
 				},
 				function (UserDetail, callback) {
-					var sPhoneNumber = "9560466944";  // 
+					var sPhoneNumber = "9560466944";  //
 					Inquiry.find({
 						where: {
 							and: [{
@@ -1570,7 +1570,7 @@ app.start = function () {
 					subject: Subject,
 					html: this.mailContent
 				};
-				
+
 				transporter.sendMail(emailContent, function (error, info) {
 					debugger;
 					if (error) {
@@ -2341,135 +2341,79 @@ app.start = function () {
 
 			});
 
-		app.post('/sendInquiryEmail',
-			function (req, res) {
-				//https://developers.google.com/oauthplayground/
-				//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
-				//
-
-				var nodemailer = require('nodemailer');
-				var smtpTransport = require('nodemailer-smtp-transport');
-				const xoauth2 = require('xoauth2');
-				const key = require('./samples.json');
-				const fs = require('fs');
-				console.log(req.body);
-
-				var transporter = nodemailer.createTransport(smtpTransport({
-					service: 'gmail',
-					host: 'smtp.gmail.com',
-					auth: {
-						xoauth2: xoauth2.createXOAuth2Generator({
-							user: key.user,
-							clientId: key.clientId,
-							clientSecret: key.clientSecret,
-							refreshToken: key.refreshToken
-						})
-					}
-				}));
-
-
-				var Subject = req.body.Subject;
-				Subject = req.body.CourseName + " training 🟢";
-				//https://myaccount.google.com/lesssecureapps?pli=1
-				if (req.body.FirstName === "" || req.body.FirstName == "null") {
-					req.body.FirstName = "Sir";
-				}
-
-
-				if (req.body.mailType === "" || req.body.FirstName == "null" || req.body.mailType === undefined) {
-					req.body.mailType = "R";
-				}
-				if (req.body.CourseName === "Generic") {
-					req.body.CourseName = "Other";
-				}
-
-				var app = require('../server/server');
-				//var Template = app.models.Template;
-
-				var CourseName = req.body.CourseName;
-				if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
-					CourseName = "Linkedin";
-				}
-
-				//var contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + req.body.CourseName + '.html', 'utf8');
-				var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');
-				//var demoDate = new Date(data.DemoDate);
-				Date.prototype.toShortFormat = function () {
-					var month_names = ["Jan", "Feb", "Mar",
-						"Apr", "May", "Jun",
-						"Jul", "Aug", "Sep",
-						"Oct", "Nov", "Dec"
-					];
-
-					var day = this.getDate();
-					var month_index = this.getMonth();
-					var year = this.getFullYear();
-
-					return "" + day + "-" + month_names[month_index] + "-" + year;
-				}
-				//yet to code
-				// contents = contents.replace('$$BatchDate$$', demoDate.toShortFormat());
-				// contents = contents.replace('$$BatchTime$$', data.ClassTiming);
-				// contents = contents.replace('$$DemoLink$$', data.VideoLink);
-				// contents = contents.replace('%24%24DemoLink%24%24', data.VideoLink);
-				// contents = contents.replace('$$NextClass$$', data.FirstName);
-				// contents = contents.replace('$$CALLink$$', data.Extra1);
-				// contents = contents.replace('%24%24CALLink%24%24', data.Extra1);
-				// contents = contents.replace('$$Extra1$$', data.Extra2);
-
-				var result = req.body.FirstName.replace(/([A-Z])/g, " $1");
-				req.body.FirstName = result.charAt(0).toUpperCase() + result.slice(1);
-				console.log(contents);
-
-				contents = contents.replace('$$Name$$', req.body.FirstName)
-
-				if (req.body.fees !== "null" && req.body.fees !== "") {
-					if (req.body.source === "L" || req.body.source === "F" || req.body.source === "N") {
-						// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
-						// contents = contents.replace("Please consider the fee for the course as $$fees$$ $$currency$$. (same fee for any option chosen)", "");
-						// contents = contents.replace("The course fee is $$fees$$ $$currency$$ (same for any option as mentioned below)", "");
-						// contents = contents.replace("The course fee is $$fees$$ $$currency$$.", "");
-						//contents = fs.readFileSync(process.cwd() + "\\server\\sampledata\\promotion.html", 'utf8');
-						Subject = "Hey " + req.body.FirstName + "!! Boost your skills"
-					} else {
-						contents = contents.replace("$$fees$$", req.body.fees);
-						contents = contents.replace("$$currency$$", req.body.currency);
-					}
-
-				}
-				var ccs = [];
-				// if (req.body.CourseName === "SimpleLogistics") {
-				// 	ccs.push("paramsaddy@gmail.com");
-				// } else if (req.body.CourseName === "SimpleFinance") {
-				// 	ccs.push("info@gaurav-consulting.com");
-				// }
-				var mailOptions = {};
-
-
-				mailOptions = {
-					from: 'contact@evotrainingsolutions.com',
-					to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
-					cc: ccs,
-					subject: 'Re: ' + Subject + " 🟢",
-					html: contents
-				};
-
-
-				transporter.sendMail(mailOptions, function (error, info) {
-					if (error) {
-						console.log(error);
-						if (error.code === "EAUTH") {
-							res.status(500).send('Username and Password not accepted, Please try again.');
-						} else {
-							res.status(500).send('Internal Error while Sending the email, Please try again.');
+			app.post('/sendInquiryEmail',
+				function (req, res) {
+					//https://developers.google.com/oauthplayground/
+					//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
+					//
+					var nodemailer = require('nodemailer');
+					var smtpTransport = require('nodemailer-smtp-transport');
+					const xoauth2 = require('xoauth2');
+					const key = require('./samples.json');
+					const fs = require('fs');
+					// console.log(req.body);
+					var transporter = nodemailer.createTransport(smtpTransport({
+						service: 'gmail',
+						host: 'smtp.gmail.com',
+						auth: {
+							xoauth2: xoauth2.createXOAuth2Generator({
+								user: key.user,
+								clientId: key.clientId,
+								clientSecret: key.clientSecret,
+								refreshToken: key.refreshToken
+							})
 						}
-					} else {
-						console.log('Email sent: ' + info.response);
-						res.send("email sent");
-					}
-				});
+					}));
+					// var app = require('../server/server');
+					// var CourseMst = app.models.CourseMst;
 
-			});
+					// var Subject = req.body.Subject;
+					Subject =  `${req.body.CourseName} for ${req.body.WardName} 🟢`;
+					var contents = req.body.EmailTemplate.replace('$$FatherName$$',req.body.FatherName)
+					.replace('$$WardName$$', req.body.WardName).replace('$$CourseName$$', req.body.CourseName)
+					.replace('$$CourseFee$$', req.body.CourseFee);
+
+					// var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');
+					//var demoDate = new Date(data.DemoDate);
+					Date.prototype.toShortFormat = function () {
+						var month_names = ["Jan", "Feb", "Mar",
+							"Apr", "May", "Jun",
+							"Jul", "Aug", "Sep",
+							"Oct", "Nov", "Dec"
+						];
+
+						var day = this.getDate();
+						var month_index = this.getMonth();
+						var year = this.getFullYear();
+
+						return "" + day + "-" + month_names[month_index] + "-" + year;
+					}
+
+					var ccs = [];
+					var mailOptions = {};
+					mailOptions = {
+						from: 'contact@evotrainingsolutions.com',
+						to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
+						cc: ccs,
+						subject: Subject,
+						html: contents
+					};
+
+					transporter.sendMail(mailOptions, function (error, info) {
+						if (error) {
+							console.log(error);
+							if (error.code === "EAUTH") {
+								res.status(500).send('Username and Password not accepted, Please try again.');
+							} else {
+								res.status(500).send('Internal Error while Sending the email, Please try again.');
+							}
+						} else {
+							console.log('Email sent: ' + info.response);
+							res.send("email sent");
+						}
+					});
+
+				});
 
 		mailContent: "",
 			app.post('/sendSubscriptionEmail',

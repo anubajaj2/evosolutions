@@ -275,37 +275,37 @@ sap.ui.define([
 			var newDate = new Date();
 			newDate.setHours(0, 0, 0, 0);
 			var oSorter = new sap.ui.model.Sorter("CreatedOn", true);
-			var oList = this.getView().byId("idRecent");
-			oList.bindAggregation("items", {
-				path: '/Inquries',
-				template: new sap.m.DisplayListItem({
-					type: "Navigation",
-					label: "{EmailId} - {CourseName} - {EmailId2}",
-					value: "{fees} / {CreatedOn} - {CreatedBy}"
-				}),
-				filters: [new Filter("CreatedOn", "GE", newDate)],
-				sorter: oSorter
-			});
-			oList.attachUpdateFinished(this.counter);
+			// var oList = this.getView().byId("idRecent");
+			// oList.bindAggregation("items", {
+			// 	path: '/Inquries',
+			// 	template: new sap.m.DisplayListItem({
+			// 		type: "Navigation",
+			// 		label: "{EmailId} - {CourseName} - {EmailId2}",
+			// 		value: "{fees} / {CreatedOn} - {CreatedBy}"
+			// 	}),
+			// 	filters: [new Filter("CreatedOn", "GE", newDate)],
+			// 	sorter: oSorter
+			// });
+			// oList.attachUpdateFinished(this.counter);
 
 		},
-		counter: function(oEvent) {
-			var oList = oEvent.getSource();
-			var counts = oList.getItems().length;
-			oList.getHeaderToolbar().getContent()[0].setText("Today : " + counts);
-			var items = oList.mAggregations.items;
-			var value2;
-			var value1;
-			var id;
-			for (var i = 0; i < items.length; i++) {
-				value1 = items[i].mProperties.value.split("-")[0];
-				id = items[i].mProperties.value.split("-")[1];
-				if (this.getModel("local").getProperty("/AppUsers")[id]) {
-					value2 = this.getModel("local").getProperty("/AppUsers")[id].UserName;
-					oList.getItems()[i].setValue(value1 + " - " + value2);
-				}
-			}
-		},
+		// counter: function(oEvent) {
+		// 	var oList = oEvent.getSource();
+		// 	var counts = oList.getItems().length;
+		// 	oList.getHeaderToolbar().getContent()[0].setText("Today : " + counts);
+		// 	var items = oList.mAggregations.items;
+		// 	var value2;
+		// 	var value1;
+		// 	var id;
+		// 	for (var i = 0; i < items.length; i++) {
+		// 		value1 = items[i].mProperties.value.split("-")[0];
+		// 		id = items[i].mProperties.value.split("-")[1];
+		// 		if (this.getModel("local").getProperty("/AppUsers")[id]) {
+		// 			value2 = this.getModel("local").getProperty("/AppUsers")[id].UserName;
+		// 			oList.getItems()[i].setValue(value1 + " - " + value2);
+		// 		}
+		// 	}
+		// },
 		onMobileNumber: function(oEvent){
 			if(oEvent.getParameter('value').length>10){
 				oEvent.getSource().setValue(oEvent.getParameter('value').substring(0, 10));
@@ -336,26 +336,34 @@ sap.ui.define([
 			}
 		},
 		onPressSendEmail: function(oEvent){
-			var	selectedPaths = oEvent.getSource().getParent().getParent().getSelectedContextPaths();
+			var that = this;
+			var oTable = oEvent.getSource().getParent().getParent();
+			var	selectedPaths = oTable.getSelectedContextPaths();
 			var parent = this.getView().getModel("local").getProperty("/newLead");
 			var selectedItems = [];
 			var oModel = this.getView().getModel('local');
 			selectedPaths.forEach((item, i) => {
 				selectedItems.push(oModel.getProperty(item));
 			});
-			for(item in selectedItems){
+			for(var item of selectedItems){
+				var payload = {};
 				payload.FatherName = parent.FatherName;
-				payload.Email = parent.EmailId;
+				payload.EmailId = parent.EmailId;
 				payload.WardName =item.Name;
-				payload.CourseName = item.CourseName;
-				$.post('/sendInquiryEmail', payload)
-					.done(function(data, status) {
-						sap.m.MessageToast.show("Email sent successfully");
-					})
-					.fail(function(xhr, status, error) {
-						that.passwords = "";
-						sap.m.MessageBox.error(xhr.responseText);
-					});
+				for(var courseId of item.CourseName){
+					var course = this.getView().getModel().getProperty(`/CoursesMst('${courseId}')`);
+					payload.CourseName = course.CourseName;
+					payload.CourseFee = course.CourseFee;
+					payload.EmailTemplate= course.EmailTemplate;
+					$.post('/sendInquiryEmail', payload)
+						.done(function(data, status) {
+							sap.m.MessageToast.show("Email sent successfully");
+							oTable.removeSelections();
+						})
+						.fail(function(xhr, status, error) {
+							sap.m.MessageBox.error(xhr.responseText);
+						});
+				}
 			}
 		},
 		onPressAddWard: function(){

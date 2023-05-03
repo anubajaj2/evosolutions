@@ -189,6 +189,7 @@ sap.ui.define([
 							that.getView().byId("idDesc").setValue(oData.results[0].CourseText);
 							that.getView().byId("idSite").setValue(oData.results[0].WebLink);
 							that.getView().byId("idYouTube").setValue(oData.results[0].youTube);
+							that.getView().byId("idEmailTemplate").setValue(oData.results[0].EmailTemplate);
 						}
 						else
 						{
