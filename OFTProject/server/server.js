@@ -1075,7 +1075,7 @@ app.start = function () {
 			//Step 5: Student Name, id, blood etc.. --> Inquiry
 
 			//Since all work is sync - use waterfall module as showen getAmountPerAccount
-			var sId = 0;
+			var sId = req.query.sId;
 			var Subs = app.models.Sub;
 			var Courses = app.models.Course;
 
@@ -1085,11 +1085,11 @@ app.start = function () {
 			var async = require('async');
 			async.waterfall([
 				function (callback) {
-					
+
 					Courses.find({
 						where: {
 							and: [{
-								id: "644d14ffeb02656df8ba3405"  //Will be replaces by sId on the time of call
+								id: sId  //Will be replaces by sId on the time of call
 							}]
 						}
 					}).then(function (subsDetails) {
@@ -1156,22 +1156,45 @@ app.start = function () {
 						});
 				}
 			],
-			function (err, subsDetails, studentsDetail, Records, aStudentsData, ) {
-				// result now equals 'done'
-				debugger;
-				try {
-					var idCardData = [];
-					for (var i = 0; i < subsDetails.length; i++) {
-						
+				function (err, subsDetails, studentsDetail, Records, aStudentsData,) {
+					// result now equals 'done'
+					try {
+						var idCardData = [];
+						for (var i = 0; i < studentsDetail.length; i++) {
+							var element = studentsDetail[i];
+							var detail = Records[i];
+							var parentDetail = aStudentsData[i];
+							const dob = Records[i].__data.DOB;
+							// Get today's date
+							const today = new Date();
+							// Calculate the person's age
+							let age = today.getFullYear() - dob.getFullYear();
+							// Check if the person's birthday has already happened this year
+							const monthDiff = today.getMonth() - dob.getMonth();
+							if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+								age--;
+							}
+							
+							idCardData.push({
+								"Roll No.": Records[i].__data.RollNo,
+								"Name": Records[i].__data.Name,
+								"Age": age,
+								"Address": Records[i].__data.Address,
+								"Phone": aStudentsData[0].__data.Phone,
+								"Blood Group": Records[i].__data.BloodGroup,
+								"Photo": Records[i].__data.Photo
+							});
+							
+						}
+
+						debugger;
+						res.send(idCardData);
+					} catch (e) {
+
+					} finally {
+
 					}
-
-					res.send(idCardData);
-				} catch (e) {
-
-				} finally {
-
 				}
-			}
 			);
 		});
 
@@ -1489,6 +1512,20 @@ app.start = function () {
 				const fs = require('fs');
 				console.log(req.body);
 				this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'otp.html', 'utf8');
+				var generateOTP = function () {
+
+					// Declare a digits variable
+					// which stores all digits
+					var digits = '0123456789';
+					let OTP = '';
+					for (let i = 0; i < 6; i++) {
+						OTP += digits[Math.floor(Math.random() * 10)];
+					}
+					return OTP;
+				}
+				var OTP = generateOTP();
+
+				this.mailContent.replace("$$OTP$$", OTP);
 
 				var transporter = nodemailer.createTransport(smtpTransport({
 					service: 'gmail',
@@ -1507,15 +1544,15 @@ app.start = function () {
 
 				var ccs = [];
 				var emailContent = {};
-
+				var Email = req.body.eMail
 				emailContent = {
 					from: 'contact@evotrainingsolutions.com',
-					to: "nishannainsukha@soyuztechnologies.com", //req.body.EmailId    FirstName  CourseName
+					to: Email, //req.body.EmailId    FirstName  CourseName
 					cc: ccs,
-					subject: "OTP to login",
+					subject: OTP,
 					html: this.mailContent
 				};
-
+				
 				transporter.sendMail(emailContent, function (error, info) {
 					debugger;
 					if (error) {
@@ -1532,8 +1569,8 @@ app.start = function () {
 						var newRec = {
 							CreatedOn: new Date(),
 							Attempts: 1,
-							OTP: "123425",
-							Number: "nishannainsukha@soyuztechnologies.com"
+							OTP: OTP,
+							Number: Email
 						};
 						Otp.upsert(newRec)
 							.then(function (inq) {

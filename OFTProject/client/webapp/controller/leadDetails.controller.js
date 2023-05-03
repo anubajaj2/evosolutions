@@ -156,13 +156,15 @@ sap.ui.define([
                     // })
                     // this.getView().getModel('local').setProperty("/PageVisibility", true);
                     this.emailCount += 1;
+                    this.getRouter().navTo("leadDetail", {}, true);
+
                 }
                 else{
                     MessageToast.show("Please Enter Your  OTP",)
                 }   
                 debugger;
                 
-                this.numberVisible()
+                this.numberVisible();
                 // this.getView().getModel('local').setProperty("/MobileNumber",false);
                 // this.getView().getModel('local').getProperty("/Email");
             },
