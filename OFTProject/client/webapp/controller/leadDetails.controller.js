@@ -104,6 +104,12 @@ sap.ui.define([
             }
         },
 
+        // onEmailLiveChange : function (oEvent){
+        //     var oInput = this.getView().byId("emailInput"); // Get the input control with ID "emailInput"
+        //     oInput.attachChange(this.onRefresh, this); // Attach event handler function to the "change" event
+            
+        // },
+
  // ================== Function validate the input field for the email and as well as send OTP  ===================== 
 
         validateCaptcha: function () {
@@ -116,7 +122,10 @@ sap.ui.define([
             if (!sEmail) {
                 MessageToast.show("Please enter a valid email address.");
                 return;
-            };
+            }
+            else{
+                this.getView().getModel('local').setProperty('/email', false);
+            }
 
             if (sEmail && !sEmail.match(oRegex)) {
                 MessageToast.show("Please enter a valid email address.");
@@ -177,7 +186,7 @@ sap.ui.define([
                         success: function (data) {
                             debugger;
                             that.getView().getModel('local').setProperty('/otpVisible', true);
-                            //   that.getView().getModel('local').setProperty('/sendOtp', false);
+                            //   that.getView().getModel('local').setProperty('/email', false);
                             MessageToast.show('OTP Successfully Sent');
                             this.sEmail = sMobileNumber;
 
@@ -254,6 +263,7 @@ onSubmit: function () {
 // ============ this fucntion will shows the resend info and timer below to the otp input filed ================ 
 
         OtpSend: function () {
+            this.emailCount += 1;
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;

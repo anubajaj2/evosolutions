@@ -6,7 +6,7 @@
         <f:SimpleForm layout="ResponsiveGridLayout">
             <VBox >
                 <Label text="Email" />
-                <Input type='Email' liveChange="emailValidation" value="{local>/Email}" editable="{local>/email}"/>
+                <Input id="emailInput" type='Email' value="{local>/Email}" submit="onEmailLiveChange" editable="{local>/email}"/>
                     <!-- <HBox width="100%" alignContent="Center"> -->
                         <Title width="100%" textAlign="Center" text="OR" visible="{local>/numberVisible}" class="sapUiTinyMargin"  ></Title>
                         <Label visible="{local>/numberVisible}" text="Mobile Number"/>
