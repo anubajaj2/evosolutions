@@ -29,7 +29,16 @@ sap.ui.define([
 					 // your function for too long inactivity goes here
 					 // e.g. window.location.href = 'logout.php';
 					 sap.m.MessageBox.alert("Page expired, please login again!");
-					 window.top.location.href = "/";
+					//  if()
+				debugger;
+
+					if(window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetail" || window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetails"){
+						window.top.location.href = "/#/leadDetails";
+					}
+					else{
+						window.top.location.href = "/";
+					}
+					 
 			 }
 
 			 function resetTimer() {

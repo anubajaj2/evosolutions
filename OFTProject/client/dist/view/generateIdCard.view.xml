@@ -16,7 +16,7 @@
                     <Label text="Batch"/>
                     <Input id="courseId" required="true" value="{local>/newRegistration/CourseId}" showValueHelp="true" valueHelpRequest="onSelect" valueHelpOnly="true"/>
                     <Label text="Students" />
-                    <MultiComboBox id="idSelectedStudents" items="{
+                    <MultiComboBox id="idSelectedStudents" showSelectAll="true" items="{
 				        path: 'local>/idCardData'
             		}">
                         <items>

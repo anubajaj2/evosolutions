@@ -266,9 +266,9 @@ sap.ui.define([
 			oList.getBinding("items").refresh();
 		},
 		herculis: function(oEvent) {
-			if(oEvent.getParameter("name") !== "newlead"){
-				return;
-			}
+			// if(oEvent.getParameter("name") !== "newlead"){
+			// 	return;
+			// }
 			//Restore the state of UI by fruitId
 			this.getView().getModel("local").setProperty("/newLead/Date", new Date());//this.formatter.getFormattedDate(0)
 			this.getView().getModel("local").setProperty("/newLead/country", "IN");
