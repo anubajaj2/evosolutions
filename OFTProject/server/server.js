@@ -1174,8 +1174,8 @@ app.start = function () {
 							if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
 								age--;
 							}
-							var oParent=aStudentsData.filter(function(ele){
-								return ele.id.toString()==Records[i].InquiryId.toString();
+							var oParent = aStudentsData.filter(function (ele) {
+								return ele.id.toString() == Records[i].InquiryId.toString();
 							})
 							idCardData.push({
 								"RollNo": Records[i].__data.RollNo,
@@ -1301,13 +1301,44 @@ app.start = function () {
 			})
 				.then(async function (inq) {
 					if (inq) {
-						const key = require('./samples.json');
-						var loginPayload = {
-							"email": key.appLoginEmail,
-							"password": key.appLoginPassword
-						};
-						// var Otp = app.models.Otp;
+						// const key = require('./samples.json');
+						var Param = app.models.Param;
+						var array = ["appLoginEmail", "appLoginPassword"];
 
+						var oParams = await Param.find({
+							where: {
+								and: [{
+									Code: {
+										inq: array
+									}
+
+								}]
+							}
+						}).then();
+						var loginPayload = {
+							"email": '',
+							"password": ''
+						};
+						// 	function (Data, err) {
+						for (let index = 0; index < oParams.length; index++) {
+							const element = oParams[index].__data;
+							if (element.Code === "appLoginEmail") {
+								loginPayload.email = element.Value;
+							}
+							if (element.Code === "appLoginPassword") {
+								loginPayload.password = element.Value;
+							}
+						}
+						// });
+
+						debugger;
+						// var loginPayload = {
+						// 	"email": this.loginEmail,
+						// 	"password": this.loginPassword
+						// };
+
+						// var Otp = app.models.Otp;
+						debugger;
 						await Otp.deleteById(oNumber);
 						debugger;
 
@@ -1520,12 +1551,49 @@ app.start = function () {
 			);
 		});
 		app.post('/sendOtpViaEmail',
-			function (req, res) {
+			async function (req, res) {
 				debugger;
 				var nodemailer = require('nodemailer');
 				var smtpTransport = require('nodemailer-smtp-transport');
 				const xoauth2 = require('xoauth2');
-				const key = require('./samples.json');
+				// const key = require('./samples.json');
+				var array = ["user", "clientId", "clientSecret", "refreshToken"];
+				var Param = app.models.Param;
+				var key = {};
+				var sParam = await Param.find({
+					where: {
+						and: [{
+							Code: {
+								inq: array
+							}
+
+						}]
+					}
+				}).then();
+				for (let index = 0; index < sParam.length; index++) {
+					const element = sParam[index].__data;
+					if (element.Code === "user") {
+						key.user = element.Value;
+					}
+					if (element.Code === "clientId") {
+						key.clientId = element.Value;
+					}
+					if (element.Code === "clientSecret") {
+						key.clientSecret = element.Value;
+					}
+					if (element.Code === "refreshToken") {
+						key.refreshToken = element.Value;
+					}
+				}
+
+				/*
+				data from param table
+				var key={}
+				key.user=-elee
+				key.user=-elee
+				key.user=-elee
+				key.user=-elee
+				*/
 				const fs = require('fs');
 				console.log(req.body);
 				this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'otp.html', 'utf8');
@@ -2341,79 +2409,107 @@ app.start = function () {
 
 			});
 
-			app.post('/sendInquiryEmail',
-				function (req, res) {
-					//https://developers.google.com/oauthplayground/
-					//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
-					//
-					var nodemailer = require('nodemailer');
-					var smtpTransport = require('nodemailer-smtp-transport');
-					const xoauth2 = require('xoauth2');
-					const key = require('./samples.json');
-					const fs = require('fs');
-					// console.log(req.body);
-					var transporter = nodemailer.createTransport(smtpTransport({
-						service: 'gmail',
-						host: 'smtp.gmail.com',
-						auth: {
-							xoauth2: xoauth2.createXOAuth2Generator({
-								user: key.user,
-								clientId: key.clientId,
-								clientSecret: key.clientSecret,
-								refreshToken: key.refreshToken
-							})
-						}
-					}));
-					// var app = require('../server/server');
-					// var CourseMst = app.models.CourseMst;
+		app.post('/sendInquiryEmail',
+			async function (req, res) {
+				//https://developers.google.com/oauthplayground/
+				//https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken
+				//
+				var nodemailer = require('nodemailer');
+				var smtpTransport = require('nodemailer-smtp-transport');
+				const xoauth2 = require('xoauth2');
+				// const key = require('./samples.json');
+				var array = ["user", "clientId", "clientSecret", "refreshToken"];
+				var Param = app.models.Param;
+				var key = {};
+				var sParam = await Param.find({
+					where: {
+						and: [{
+							Code: {
+								inq: array
+							}
 
-					// var Subject = req.body.Subject;
-					Subject =  `${req.body.CourseName} for ${req.body.WardName} 🟢`;
-					var contents = req.body.EmailTemplate.replace('$$FatherName$$',req.body.FatherName)
+						}]
+					}
+				}).then();
+				for (let index = 0; index < sParam.length; index++) {
+					const element = sParam[index].__data;
+					if (element.Code === "user") {
+						key.user = element.Value;
+					}
+					if (element.Code === "clientId") {
+						key.clientId = element.Value;
+					}
+					if (element.Code === "clientSecret") {
+						key.clientSecret = element.Value;
+					}
+					if (element.Code === "refreshToken") {
+						key.refreshToken = element.Value;
+					}
+				}
+				const fs = require('fs');
+				// console.log(req.body);
+				var transporter = nodemailer.createTransport(smtpTransport({
+					service: 'gmail',
+					host: 'smtp.gmail.com',
+					auth: {
+						xoauth2: xoauth2.createXOAuth2Generator({
+							user: key.user,
+							clientId: key.clientId,
+							clientSecret: key.clientSecret,
+							refreshToken: key.refreshToken
+						})
+					}
+				}));
+				// var app = require('../server/server');
+				// var CourseMst = app.models.CourseMst;
+
+				// var Subject = req.body.Subject;
+				Subject = `${req.body.CourseName} for ${req.body.WardName} 🟢`;
+				var contents = req.body.EmailTemplate.replace('$$FatherName$$', req.body.FatherName)
 					.replace('$$WardName$$', req.body.WardName).replace('$$CourseName$$', req.body.CourseName)
 					.replace('$$CourseFee$$', req.body.CourseFee);
 
-					// var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');
-					//var demoDate = new Date(data.DemoDate);
-					Date.prototype.toShortFormat = function () {
-						var month_names = ["Jan", "Feb", "Mar",
-							"Apr", "May", "Jun",
-							"Jul", "Aug", "Sep",
-							"Oct", "Nov", "Dec"
-						];
+				// var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');
+				//var demoDate = new Date(data.DemoDate);
+				Date.prototype.toShortFormat = function () {
+					var month_names = ["Jan", "Feb", "Mar",
+						"Apr", "May", "Jun",
+						"Jul", "Aug", "Sep",
+						"Oct", "Nov", "Dec"
+					];
 
-						var day = this.getDate();
-						var month_index = this.getMonth();
-						var year = this.getFullYear();
+					var day = this.getDate();
+					var month_index = this.getMonth();
+					var year = this.getFullYear();
 
-						return "" + day + "-" + month_names[month_index] + "-" + year;
-					}
+					return "" + day + "-" + month_names[month_index] + "-" + year;
+				}
 
-					var ccs = [];
-					var mailOptions = {};
-					mailOptions = {
-						from: 'contact@evotrainingsolutions.com',
-						to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
-						cc: ccs,
-						subject: Subject,
-						html: contents
-					};
+				var ccs = [];
+				var mailOptions = {};
+				mailOptions = {
+					from: 'contact@evotrainingsolutions.com',
+					to: req.body.EmailId, //req.body.EmailId    FirstName  CourseName
+					cc: ccs,
+					subject: Subject,
+					html: contents
+				};
 
-					transporter.sendMail(mailOptions, function (error, info) {
-						if (error) {
-							console.log(error);
-							if (error.code === "EAUTH") {
-								res.status(500).send('Username and Password not accepted, Please try again.');
-							} else {
-								res.status(500).send('Internal Error while Sending the email, Please try again.');
-							}
+				transporter.sendMail(mailOptions, function (error, info) {
+					if (error) {
+						console.log(error);
+						if (error.code === "EAUTH") {
+							res.status(500).send('Username and Password not accepted, Please try again.');
 						} else {
-							console.log('Email sent: ' + info.response);
-							res.send("email sent");
+							res.status(500).send('Internal Error while Sending the email, Please try again.');
 						}
-					});
-
+					} else {
+						console.log('Email sent: ' + info.response);
+						res.send("email sent");
+					}
 				});
+
+			});
 
 		mailContent: "",
 			app.post('/sendSubscriptionEmail',
