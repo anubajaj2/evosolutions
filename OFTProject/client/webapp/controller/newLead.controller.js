@@ -349,18 +349,21 @@ sap.ui.define([
 				var payload = {};
 				payload.FatherName = parent.FatherName;
 				payload.EmailId = parent.EmailId;
-				payload.WardName =item.Name;
+				payload.WardName = `${item.Gender==="F" ? "Miss" : "Master"} ${item.Name}`;
 				for(var courseId of item.CourseName){
 					var course = this.getView().getModel().getProperty(`/CoursesMst('${courseId}')`);
 					payload.CourseName = course.CourseName;
 					payload.CourseFee = course.CourseFee;
 					payload.EmailTemplate= course.EmailTemplate;
+					that.getView().setBusy(true);
 					$.post('/sendInquiryEmail', payload)
 						.done(function(data, status) {
 							sap.m.MessageToast.show("Email sent successfully");
 							oTable.removeSelections();
+							that.getView().setBusy(false);
 						})
 						.fail(function(xhr, status, error) {
+							that.getView().setBusy(false);
 							sap.m.MessageBox.error(xhr.responseText);
 						});
 				}
