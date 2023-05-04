@@ -127,5 +127,9 @@
  "Otp":{
   "dataSource": "mongoatlas",
   "public": true
+ },
+ "Param":{
+  "dataSource": "mongoatlas",
+  "public": true
  }
 }
