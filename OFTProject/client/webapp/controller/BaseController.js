@@ -326,12 +326,18 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 		redirectLoginPage: function(logOut, Reload) {
+
 			if (logOut == "X" && Reload != "X") {
 				MessageBox.alert("Logout Successful");
 			} else if (Reload != "X") {
 				MessageBox.alert("Page expired, please login again");
 			}
-			window.top.location.href = "/";
+			if(window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetail" || window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetails"){
+				window.top.location.href = "/#/leadDetails";
+			}
+			else{
+				window.top.location.href = "/";
+			}
 		},
 		/**
 		 * Event handler for navigating back.
