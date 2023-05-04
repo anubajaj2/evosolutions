@@ -1180,6 +1180,7 @@ app.start = function () {
 							idCardData.push({
 								"RollNo": Records[i].__data.RollNo,
 								"Name": Records[i].__data.Name,
+								"Gender": Records[i].__data.Gender,
 								"Age": age,
 								"Address": oParent[0].Address,
 								"Phone": oParent[0].Phone,
