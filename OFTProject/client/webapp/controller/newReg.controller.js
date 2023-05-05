@@ -774,19 +774,10 @@ sap.ui.define([
 				if (value1) {
 					itemList[i].getCells()[4].setText(value1);
 				}
-				var that = this
-				var oUrl = "/Wards('" + vStudent + "')";
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
-					.then(function (oData) {
-						debugger;
-						var sNewStudentId = oData.Name + oData.RollNo;
-						// itemList[i].getCells()[4].setText(sNewStudentId);
-						// that.getView().getModel('local').setProperty('/sNewStudentName', sNewStudentId);
-					}).catch(function (oError) {
-						debugger;
-					});
 			}
-
+			// vModel.updateBindings();
+			// oModel.updateBindings();
+			// this.onRefresh();
 
 		},
 		passwords: "",
@@ -819,72 +810,152 @@ sap.ui.define([
 			}
 
 		},
-		onApprove: function (oEvent) {
+		onApprove :async function(oEvent) { 
+			debugger;
+			var that = this;
+			var rowData = oEvent.getSource().getParent().getBindingContext().getObject();
+			var oText = oEvent.getSource();
+			console.log(rowData);
+			var Amount= rowData.Amount;
+			var PaymentMode= rowData.PaymentMode;
+			var PaymentDate= rowData.PaymentDate;
+			var CreatedOn= rowData.CreatedOn;
+			var StudentId= rowData.StudentId;
+			var CourseId = rowData.CourseId;
+			var StudMail;
+			var CourseName;
+			var FatherName
+			var EmailAddress
 
-			this.oEvent_approve = oEvent;
-			if (oEvent.getSource().getText() == "Approve") {
-				var sPath = oEvent.getSource().getBindingContext().sPath;
-				var that = this;
-				var payload3 = {
-					"Status": "Approved"
-				};
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+			var oUrl = "/Wards('" + StudentId + "')/ToInquiry";
+			// var oUrl = "/Wards('" + StudentId + "')";
+				await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
 					.then(function (oData) {
-
-
+						debugger;
+					  FatherName = oData.FatherName
+					  EmailAddress = oData.EmailId;
 					}).catch(function (oError) {
-						that.getView().setBusy(false);
-						var oPopover = that.getErrorMessage(oError);
-
+						debugger;
 					});
-			} else if (oEvent.getSource().getText() == "Send Mail") {
-				var sPath = oEvent.getSource().getBindingContext().sPath;
-				var that = this;
-				var payload3 = {
-					"Status": "Access Granted"
-				};
-				var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
-				if (!that.passwords) {
-					that.passwords = prompt("Please enter your password", "");
+
+			// gettting student Name at here.
+			var StudentName = 'Wards(\'' + StudentId + '\')';
+			var vModel = this.getView().getModel().oData[StudentName];
+				if (vModel) {
+					 StudMail = vModel.Name;
 				}
-				loginPayload.password = that.passwords;
-				loginPayload.includeX = that.getView().byId("includeX").getSelected();
-				$.post('/sendSubscriptionEmail', loginPayload)
-					.done(function (data, status) {
-						sap.m.MessageToast.show("Email sent successfully");
-					})
 
-					.fail(function (xhr, status, error) {
-						sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
-					});
-
-
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
-					.then(function (oData) {
-
-						// var that2 = that;
-						// that.passwords= null;
-						// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
-						// 	if(!that.passwords){
-						// 		that.passwords = prompt("Please enter your password", "");
-						// 	}
-						// 	loginPayload.password = that.passwords;
-						// $.post('/sendSubscriptionEmail', loginPayload)
-						// 		.done(function(data, status){
-						// 			sap.m.MessageToast.show("looks like done");
-						// 		})
-						// 		.fail(function(xhr, status, error) {
-						// 					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
-						// 		});
-
-					}).catch(function (oError) {
-						that.getView().setBusy(false);
-						var oPopover = that.getErrorMessage(oError);
-
-					});
+			
+			// getting the course name at here
+			var oCourseId = 'Courses(\'' + CourseId + '\')';
+			var oModel = this.getView().getModel().oData[oCourseId];
+			if (oModel) {
+				CourseName = oModel.BatchNo; //got the course anme from screen
 			}
+
+			var CreatedDate =  new Date(CreatedOn);
+			var formattedProgramDate = CreatedDate.toLocaleString();
+
+			var PaymentDate = new Date(PaymentDate);
+			var formattedPaymentDate = PaymentDate.toLocaleString();
+			// console.log(FormattedDate);
+			$.ajax({
+				url: 'sendPaymentVerificationEmail',
+				type: 'POST',
+				data: {
+					Parent_Name: FatherName,
+					Camper_Name: StudMail,
+					Camp_Program_Name: CourseName,
+					Program_Dates: formattedProgramDate,
+					Payment_Amount: Amount,
+					Payment_Date: formattedPaymentDate,
+					Payment_Method: PaymentMode,
+					Email: EmailAddress
+					// Email: 'deves@soyuztechnologies.com'
+				},
+				success: function(res) {
+					if(res =="Email sent successfully"){
+						MessageToast.show("Email sent Successfully");
+						if (oText.getText()== "Send Mail") {
+							oText.setText("Access granted");
+						}
+					}
+				},
+				error: function(error) {
+					console.log(error);
+					// Handle error response here
+				}
+			});
+			
 		},
-		// searchPopup: null,
+		// onApprove: function (oEvent) {
+
+		// 	this.oEvent_approve = oEvent;
+		// 	if (oEvent.getSource().getText() == "Approve") {
+		// 		var sPath = oEvent.getSource().getBindingContext().sPath;
+		// 		var that = this;
+		// 		var payload3 = {
+		// 			"Status": "Approved"
+		// 		};
+		// 		// this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+		// 		// 	.then(function (oData) {
+
+
+		// 		// 	}).catch(function (oError) {
+		// 		// 		that.getView().setBusy(false);
+		// 		// 		var oPopover = that.getErrorMessage(oError);
+
+		// 		// 	});
+		// 	} else if (oEvent.getSource().getText() == "Send Mail") {
+		// 		var sPath = oEvent.getSource().getBindingContext().sPath;
+		// 		var that = this;
+		// 		var payload3 = {
+		// 			"Status": "Access Granted"
+		// 		};
+
+
+		// 		// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
+		// 		// if (!that.passwords) {
+		// 		// 	that.passwords = prompt("Please enter your password", "");
+		// 		// }
+		// 		// loginPayload.password = that.passwords;
+		// 		// loginPayload.includeX = that.getView().byId("includeX").getSelected();
+		// 		// $.post('/sendSubscriptionEmail', loginPayload)
+		// 		// 	.done(function (data, status) {
+		// 		// 		sap.m.MessageToast.show("Email sent successfully");
+		// 		// 	})
+
+		// 		// 	.fail(function (xhr, status, error) {
+		// 		// 		sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+		// 		// 	});
+
+
+		// 		// this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+		// 		// 	.then(function (oData) {
+
+		// 		// 		// var that2 = that;
+		// 		// 		// that.passwords= null;
+		// 		// 		// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
+		// 		// 		// 	if(!that.passwords){
+		// 		// 		// 		that.passwords = prompt("Please enter your password", "");
+		// 		// 		// 	}
+		// 		// 		// 	loginPayload.password = that.passwords;
+		// 		// 		// $.post('/sendSubscriptionEmail', loginPayload)
+		// 		// 		// 		.done(function(data, status){
+		// 		// 		// 			sap.m.MessageToast.show("looks like done");
+		// 		// 		// 		})
+		// 		// 		// 		.fail(function(xhr, status, error) {
+		// 		// 		// 					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+		// 		// 		// 		});
+
+		// 		// 	}).catch(function (oError) {
+		// 		// 		that.getView().setBusy(false);
+		// 		// 		var oPopover = that.getErrorMessage(oError);
+
+		// 		// 	});
+		// 	}
+		// },
+		searchPopup: null,
 		onSelect: function (oEvent) {
 			debugger;
 			this.sId = oEvent.getSource().getId();
