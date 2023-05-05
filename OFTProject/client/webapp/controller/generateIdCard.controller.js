@@ -245,10 +245,17 @@ sap.ui.define([
 					})
 				});
 			}
-		},
+		},  
 		onGenerateIdCards: function (oEvent) {
 
 			debugger;
+			var currentdate = new Date();
+			var CuurentDatetime =  currentdate.getDate() + "/"
+			+ (currentdate.getMonth()+1)  + "/" 
+			+ currentdate.getFullYear() + " "  
+			+ currentdate.getHours() + ":"  
+			+ currentdate.getMinutes() + ":" 
+			+ currentdate.getSeconds();
 			var selectedStudents = oEvent.getSource().getParent().getParent().getParent().getParent().getContent()[3].getProperty("selectedKeys");
 			// selectedStudents.push("Dheeraj Sharma");
 
@@ -414,12 +421,19 @@ sap.ui.define([
 				'        margin: 3px;' +
 				'    }' +
 				'' +
+				'    h4 {' +
+				'       margin: auto;' +
+				'       margin-left: 13rem;' +
+				'       font-size: 7px;' +
+				'    }' +
+				'' +
 				'    span {' +
 				'        font-weight: bolder;' +
 				'    }' +
 				'</style>' +
 				'' +
 				'<body>' +
+
 				'    <div class="page">';
 			var HTMlContent = ' <div class="id-card">' +
 				'            <div class="lo2">' +
@@ -454,6 +468,7 @@ sap.ui.define([
 				'                        <p>Address: $$Address$$</p>' +
 				'                        <p>Phone: $$Phone$$</p>' +
 				'                        <p>Blood Group:$$BloodGroup$$</p>' +
+				'                        <h4>$$curentTimeStamp$$</h4>' +
 				'                    </div>' +
 				'                </div>' +
 				'            </div>' +
@@ -481,6 +496,7 @@ sap.ui.define([
 					oNewHTRml = oNewHTRml.replace("$$Address$$", oGetData.Address);
 					oNewHTRml = oNewHTRml.replace("$$Phone$$", oGetData.Phone);
 					oNewHTRml = oNewHTRml.replace("$$BloodGroup$$", oGetData.BloodGroup);
+					oNewHTRml = oNewHTRml.replace("$$curentTimeStamp$$", CuurentDatetime);
 					
 					debugger;
 				
