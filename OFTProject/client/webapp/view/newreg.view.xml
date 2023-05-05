@@ -115,11 +115,11 @@
 					<ToolbarSpacer></ToolbarSpacer>
 
 					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://delete" press="onDelete"/>
-					<CheckBox visible="{= ${local>/Role} === 'Admin'}" id="includeX" text="cc"/>
+					<!-- <CheckBox visible="{= ${local>/Role} === 'Admin'}" id="includeX" text="cc"/> -->
 					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://action"
 						id="sendEmail" tooltip="Send Email" press="onSendEmail"/>
-					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://accept" id="giveAccess" tooltip="Provide access" press="onGiveAccess"/>
-					<Button icon="sap-icon://refresh" press="onRefresh"/>
+					<!-- <Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://accept" id="giveAccess" tooltip="Provide access" press="onGiveAccess"/> -->
+					<!-- <Button icon="sap-icon://refresh" press="onRefresh"/> -->
 				</Toolbar>
 					</headerToolbar>
 					<columns>

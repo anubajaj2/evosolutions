@@ -1551,6 +1551,92 @@ app.start = function () {
 			],
 			);
 		});
+		app.post('/sendPaymentVerificationEmail', async function (req, res) {
+			debugger;
+			var nodemailer = require('nodemailer');
+			var smtpTransport = require('nodemailer-smtp-transport');
+			var xoauth2 = require('xoauth2');
+			var Param = app.models.Param;
+			var array = ['user', 'clientId', 'clientSecret', 'refreshToken'];
+			var key = {};
+			
+			const sParam = await Param.find({
+			  where: {
+				and: [{
+				  Code: {
+					inq: array
+				  }
+				}]
+			  }
+			});
+		  
+			for (let index = 0; index < sParam.length; index++) {
+			  const element = sParam[index].__data;
+			  if (element.Code === 'user') {
+				key.user = element.Value;
+			  }
+			  if (element.Code === 'clientId') {
+				key.clientId = element.Value;
+			  }
+			  if (element.Code === 'clientSecret') {
+				key.clientSecret = element.Value;
+			  }
+			  if (element.Code === 'refreshToken') {
+				key.refreshToken = element.Value;
+			  }
+			}
+		  
+			const fs = require('fs');
+			this.htmlTemplate = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'SubscriptionEmailTemplate.html', 'utf8');
+			const { Parent_Name, Camper_Name, Camp_Program_Name, Program_Dates, Payment_Amount, Payment_Date, Payment_Method, Email } = req.body;
+			
+			this.htmlTemplate = this.htmlTemplate
+			  .replace('$$Parent_Name$$', Parent_Name)
+			  .replace(/\$\$Camper_Name\$\$/g, Camper_Name)
+			  .replace('$$Camp_Program_Name$$', Camp_Program_Name)
+			  .replace('$$Program_Dates$$', Program_Dates)
+			  .replace('$$Payment_Amount$$', Payment_Amount)
+			  .replace('$$Payment_Date$$', Payment_Date)
+			  .replace('$$Payment_Method$$', Payment_Method);
+		  
+			const transporter = nodemailer.createTransport(smtpTransport({
+			  service: 'gmail',
+			  host: 'smtp.gmail.com',
+			  auth: {
+				xoauth2: xoauth2.createXOAuth2Generator({
+				  user: key.user,
+				  clientId: key.clientId,
+				  clientSecret: key.clientSecret,
+				  refreshToken: key.refreshToken
+				})
+			  }
+			}));
+		  
+			// var ccs = [];
+			var emailContent = {};
+			var Subject = "Payment Verification";
+			emailContent = {
+			  from: 'contact@evotrainingsolutions.com',
+			  to: Email,
+			  subject:Subject,
+			  html: this.htmlTemplate
+			};
+		  
+			transporter.sendMail(emailContent, function (error, info) {
+			  if (error) {
+				console.log(error);
+				if (error.code === 'EAUTH') {
+				  res.status(500).send('Username and Password not accepted, Please try again.');
+				} else {
+				  res.status(500).send('Internal Error while Sending the email, Please try again.');
+				}
+			  } else {
+				console.log('Email sent: ' + info.response);
+				res.send('Email sent successfully');
+			  }
+			});
+		  });
+					
 		app.post('/sendOtpViaEmail',
 			async function (req, res) {
 				debugger;
