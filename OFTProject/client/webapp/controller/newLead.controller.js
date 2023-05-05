@@ -266,15 +266,28 @@ sap.ui.define([
 			oList.getBinding("items").refresh();
 		},
 		herculis: function(oEvent) {
-
+			this.getView().getModel("local").setProperty("/newLeadVis", {
+				"EmailId": true,
+				"FatherName": true,
+				"MotherName": true,
+				"Date": true,
+				"City": true,
+				"Address": true,
+				"Phone": true,
+				"EmergencyContactName": true,
+				"SoftDelete": true,
+				"Remarks": true,
+				"HearAbout": true
+			});
 			
 			if(oEvent.getParameter("name") === "leadDetail"){
-
+				this.isLeadDetail=true;
 				// this.getView().byId('idParentEmail').fireSubmit;
 				this.getView().getModel('local').setProperty("/toolbarVisibility",false);
 			
 				// if(oEvent.getSource().getValue()){
-					this.getView().byId('idParentEmail').fireSubmit();
+				this.getView().getModel("local").setProperty("/newLead/EmailId",this.getView().getModel('local').getProperty("/Email"))
+				this.getView().byId('idParentEmail').fireSubmit();
 			}
 			//Restore the state of UI by fruitId
 			debugger;
@@ -425,6 +438,7 @@ sap.ui.define([
 				.then(function (oData) {
 					if(oData.results.length>0){
 						that.loadInquiry(oData.results[0].id);
+						
 					}else{
 						MessageBox.show("No Matching Record Found!", {
 							onClose: function(){
@@ -459,11 +473,14 @@ sap.ui.define([
 					if (oData.results.length > 0) {
 						that.loadInquiry(oData.results[0].id);
 					} else {
-						MessageBox.show("No Matching Record Found!", {
-							onClose: function() {
-								that.getView().byId("idParentEmail").focus();
-							}
-						});
+						// MessageBox.show("No Matching Record Found!", {
+						// 	onClose: function() {
+						// 		that.getView().byId("idParentEmail").focus();
+						// 	}
+						// });
+						that.onClearForm();
+						that.getView().getModel("local").setProperty("/newLead/EmailId",vEmail);
+
 					}
 					// debugger;
 				}).catch(function(oError) {
@@ -498,6 +515,7 @@ sap.ui.define([
 			that.loadInquiry(oData.id);
 		},
 		loadInquiry: function(id){
+			debugger;
 			this.flag = "inquiry"
 			var that = this;
 			var oInquiry = "Inquries(\'" + id + "\')";
@@ -506,6 +524,13 @@ sap.ui.define([
 					{}, that)
 				.then(function(oData) {
 					that.getView().getModel("local").setProperty("/newLead", oData);
+					if(that.isLeadDetail){
+							var newLeadVis={};
+							for (const key in oData) {
+								newLeadVis[key]=oData[key]?false:true;
+							}
+							that.getView().getModel("local").setProperty("/newLeadVis", newLeadVis);
+					}
 					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oInquiry}/ToWard`, "GET", {},
 							{}, that)
 						.then(function(oData2) {

@@ -31,11 +31,11 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 			</f:toolbar>
 			<f:content>
         <Label text="Mobile No" />
-				<Input required="true" liveChange="onMobileNumber" type="Number" value="{local>/newLead/Phone}" showValueHelp="true"
+				<Input required="true" liveChange="onMobileNumber" type="Number" value="{local>/newLead/Phone}"  editable="{local>/newLeadVis/Phone}" showValueHelp="true"
         valueHelpRequest="onSelectInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
-				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" />
+				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" editable="{local>/newLeadVis/EmailId}" submit="onEnterEmail" />
     		<Label text="Date" />
 				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />
