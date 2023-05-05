@@ -20,8 +20,8 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 			columnsM="1"
 			singleContainerFullSize="false"
 			ariaLabelledBy="New Inquiry" >
-			<f:toolbar>
-				<Toolbar id="TB1">
+			<f:toolbar >
+				<Toolbar visible="{local>/toolbarVisibility}" id="TB1">
 					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
 					<ToolbarSpacer />
           <Label text="Parent Mode:"/>
