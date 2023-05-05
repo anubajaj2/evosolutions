@@ -24,7 +24,9 @@ sap.ui.define([
                 this.getView().getModel('local').setProperty("/otpVisible", false);
                 this.getView().getModel('local').setProperty("/PageVisibility", false);
                 this.getView().getModel('local').setProperty("/verifySubmit", false);
+                
                 this.onOpenDialog();
+                this.getView().getModel("local").updateBindings();
             }
             
 
