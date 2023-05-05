@@ -58,22 +58,22 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 		        </MultiComboBox> -->
 
 				<Label text="Father Name" />
-				<Input required="true" value="{local>/newLead/FatherName}"/>
+				<Input required="true" editable="{local>/newLeadVis/FatherName}"  value="{local>/newLead/FatherName}"/>
         <Label text="Mother Name"/>
-        <Input value="{local>/newLead/MotherName}"/>
+        <Input editable="{local>/newLeadVis/MotherName}" value="{local>/newLead/MotherName}"/>
         <Label text="Quoted Fee" />
 				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
 				<Label text="Address" />
-        		<TextArea value="{local>/newLead/Address}"></TextArea>
+        		<TextArea editable="{local>/newLeadVis/Address}" value="{local>/newLead/Address}"></TextArea>
 
         		<Label text="City" />
-        		<ComboBox id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
+        		<ComboBox editable="{local>/newLeadVis/City}" id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
         			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
         		</ComboBox>
 				<Label text="Emergency Contact Name" />
-				<Input value="{local>/newLead/EmergencyContactName}"></Input>
+				<Input editable="{local>/newLeadVis/EmergencyContactName}" value="{local>/newLead/EmergencyContactName}"></Input>
         <Label text="Emergency Contact No" />
-				<Input type="Number" value="{local>/newLead/EmergencyContactNo}" liveChange="onMobileNumber"></Input>
+				<Input type="Number" editable="{local>/newLeadVis/EmergencyContactNo}" value="{local>/newLead/EmergencyContactNo}" liveChange="onMobileNumber"></Input>
         <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
@@ -85,11 +85,11 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         <Label text="College/Company name" />
         <Input value="{local>/newLead/organization}"/> -->
 				<Label text="Remarks" />
-				<TextArea value="{local>/newLead/Remarks}">
+				<TextArea editable="{local>/newLeadVis/Remarks}" value="{local>/newLead/Remarks}">
 				</TextArea>
 
         <Label text="How did you hear about us" />
-        <Select id="idHearAbout" selectedKey="{local>/newLead/HearAbout}">
+        <Select editable="{local>/newLeadVis/HearAbout}" id="idHearAbout" selectedKey="{local>/newLead/HearAbout}">
           <core:Item key="JustDial" text="JustDial"></core:Item>
           <core:Item key="PaperAdd" text="PaperAdd"></core:Item>
           <core:Item key="Banner" text="Banner"></core:Item>

@@ -668,8 +668,8 @@ sap.ui.define([
 				"HearAbout": leadData.HearAbout,
 				"SoftDelete": false,
 				"CreatedOn": new Date(),
-		    "ChangedOn": new Date(),
-		    "ChangedBy": ""
+				"ChangedOn": new Date(),
+				"ChangedBy": ""
 			};
 			var wardDetails = leadData.WardDetails;
 			if(wardDetails.filter(function(item){ return !item.Name}).length>0){
