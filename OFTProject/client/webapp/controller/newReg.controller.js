@@ -774,20 +774,9 @@ sap.ui.define([
 				if (value1) {
 					itemList[i].getCells()[4].setText(value1);
 				}
-				var that = this
-				var oUrl = "/Wards('" + vStudent + "')";
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
-					.then(function (oData) {
-						debugger;
-						var sNewStudentId = oData.Name + oData.RollNo;
-						// itemList[i].getCells()[4].setText(sNewStudentId);
-						// that.getView().getModel('local').setProperty('/sNewStudentName', sNewStudentId);
-					}).catch(function (oError) {
-						debugger;
-					});
 			}
-			vModel.updateBindings();
-			oModel.updateBindings();
+			// vModel.updateBindings();
+			// oModel.updateBindings();
 			// this.onRefresh();
 
 		},
