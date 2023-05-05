@@ -266,10 +266,31 @@ sap.ui.define([
 			oList.getBinding("items").refresh();
 		},
 		herculis: function(oEvent) {
-			// if(oEvent.getParameter("name") !== "newlead"){
-			// 	return;
-			// }
+			this.getView().getModel("local").setProperty("/newLeadVis", {
+				"EmailId": true,
+				"FatherName": true,
+				"MotherName": true,
+				"Date": true,
+				"City": true,
+				"Address": true,
+				"Phone": true,
+				"EmergencyContactName": true,
+				"SoftDelete": true,
+				"Remarks": true,
+				"HearAbout": true
+			});
+			
+			if(oEvent.getParameter("name") === "leadDetail"){
+				this.isLeadDetail=true;
+				// this.getView().byId('idParentEmail').fireSubmit;
+				this.getView().getModel('local').setProperty("/toolbarVisibility",false);
+			
+				// if(oEvent.getSource().getValue()){
+				this.getView().getModel("local").setProperty("/newLead/EmailId",this.getView().getModel('local').getProperty("/Email"))
+				this.getView().byId('idParentEmail').fireSubmit();
+			}
 			//Restore the state of UI by fruitId
+			debugger;
 			this.getView().getModel("local").setProperty("/newLead/Date", new Date());//this.formatter.getFormattedDate(0)
 			this.getView().getModel("local").setProperty("/newLead/country", "IN");
 			var newDate = new Date();
@@ -402,6 +423,7 @@ sap.ui.define([
 			oEvent.getSource().getParent().getParent().removeSelections();
 		},
 		onEnter: function(oEvent){
+			debugger;
 			var vPhone = oEvent.getParameters().value;
 			if(vPhone&&vPhone.toString().length!==10){
 				MessageToast.show("Please Enter a Valid Mobile Number");
@@ -416,6 +438,7 @@ sap.ui.define([
 				.then(function (oData) {
 					if(oData.results.length>0){
 						that.loadInquiry(oData.results[0].id);
+						
 					}else{
 						MessageBox.show("No Matching Record Found!", {
 							onClose: function(){
@@ -429,7 +452,44 @@ sap.ui.define([
 						MessageToast.show(oError.responseText);
 				});
 		},
+		onEnterEmail: function(oEvent) {
+			debugger;
+			var vEmail = oEvent.getSource().getValue();
+			if(!vEmail){
+				vEmail = oEvent.getParameter("value");
+			}
+			// if(vEmail && !validateEmail(vEmail)){
+			//     MessageToast.show("Please Enter a Valid Email Address");
+			//     return;
+			// }
+			
+			var that = this;
+			var Filter1 = new sap.ui.model.Filter("EmailId", "EQ", vEmail);
+			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Inquries?$select=id", "GET", {
+				filters: [Filter1],
+				urlParameters: { "$select": "id,EmailId" }
+			}, {}, this)
+				.then(function(oData) {
+					if (oData.results.length > 0) {
+						that.loadInquiry(oData.results[0].id);
+					} else {
+						// MessageBox.show("No Matching Record Found!", {
+						// 	onClose: function() {
+						// 		that.getView().byId("idParentEmail").focus();
+						// 	}
+						// });
+						that.onClearForm();
+						that.getView().getModel("local").setProperty("/newLead/EmailId",vEmail);
+
+					}
+					// debugger;
+				}).catch(function(oError) {
+					// debugger;
+					MessageToast.show(oError.responseText);
+				});
+		},
 		onSelectInq: function (oEvent) {
+			debugger;
 			this.getCustomerPopup();
 			this.flag = "inquiry";
 			// var title = this.getView().getModel("i18n").getProperty("Trainer");
@@ -455,6 +515,7 @@ sap.ui.define([
 			that.loadInquiry(oData.id);
 		},
 		loadInquiry: function(id){
+			debugger;
 			this.flag = "inquiry"
 			var that = this;
 			var oInquiry = "Inquries(\'" + id + "\')";
@@ -463,6 +524,13 @@ sap.ui.define([
 					{}, that)
 				.then(function(oData) {
 					that.getView().getModel("local").setProperty("/newLead", oData);
+					if(that.isLeadDetail){
+							var newLeadVis={};
+							for (const key in oData) {
+								newLeadVis[key]=oData[key]?false:true;
+							}
+							that.getView().getModel("local").setProperty("/newLeadVis", newLeadVis);
+					}
 					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), `/${oInquiry}/ToWard`, "GET", {},
 							{}, that)
 						.then(function(oData2) {

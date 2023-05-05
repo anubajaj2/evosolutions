@@ -24,9 +24,7 @@ sap.ui.define([
                 this.getView().getModel('local').setProperty("/otpVisible", false);
                 this.getView().getModel('local').setProperty("/PageVisibility", false);
                 this.getView().getModel('local').setProperty("/verifySubmit", false);
-                
                 this.onOpenDialog();
-                this.getView().getModel("local").updateBindings();
             }
             
 
@@ -270,7 +268,7 @@ sap.ui.define([
                         },
                         success: function (data) {
                             debugger;
-                            that.getView().getModel('local').setProperty('/otpVisible', false);
+                            that.getView().getModel('local').setProperty('/otpVisible', true);
                             
                             //   that.getView().getModel('local').setProperty('/email', false);
                             MessageToast.show('OTP Successfully Sent');
