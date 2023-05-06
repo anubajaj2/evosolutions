@@ -53,8 +53,8 @@
 						<Label text="Reg. Date"/>
 						<DatePicker id="idRegDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/StartDate}" valueFormat="dd.MM.yyyy"
 							change="onStartChange"></DatePicker>
-						<Label text="Blog End Date"/>
-						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker>
+						<!-- <Label text="Blog End Date"/>
+						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker> -->
 						<Label text="Payment Mode"/>
 						<Select id="paymentMode" required="true" selectedKey="{local>/newRegistration/PaymentMode}">
 							<core:Item key="IMPS" text="Internet Banking"></core:Item>
@@ -62,6 +62,7 @@
 							<core:Item key="UPI" text="UPI"></core:Item>
 							<core:Item key="GPay" text="Google Pay"></core:Item>
 							<core:Item key="Gateway" text="Gateway"></core:Item>
+							<core:Item key="Other" text="Other"></core:Item>
 						</Select>
 						<!-- <Label text="Account Details"/>
 						<Input id="accountDetails" required="false" value="{local>/newRegistration/AccountName}" showValueHelp="true" valueHelpOnly="true"
@@ -115,11 +116,11 @@
 					<ToolbarSpacer></ToolbarSpacer>
 
 					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://delete" press="onDelete"/>
-					<CheckBox visible="{= ${local>/Role} === 'Admin'}" id="includeX" text="cc"/>
+					<!-- <CheckBox visible="{= ${local>/Role} === 'Admin'}" id="includeX" text="cc"/> -->
 					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://action"
 						id="sendEmail" tooltip="Send Email" press="onSendEmail"/>
-					<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://accept" id="giveAccess" tooltip="Provide access" press="onGiveAccess"/>
-					<Button icon="sap-icon://refresh" press="onRefresh"/>
+					<!-- <Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://accept" id="giveAccess" tooltip="Provide access" press="onGiveAccess"/> -->
+					<!-- <Button icon="sap-icon://refresh" press="onRefresh"/> -->
 				</Toolbar>
 					</headerToolbar>
 					<columns>

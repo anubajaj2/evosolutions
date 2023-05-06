@@ -53,8 +53,8 @@
 						<Label text="Reg. Date"/>
 						<DatePicker id="idRegDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/StartDate}" valueFormat="dd.MM.yyyy"
 							change="onStartChange"></DatePicker>
-						<Label text="Blog End Date"/>
-						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker>
+						<!-- <Label text="Blog End Date"/>
+						<DatePicker id="idRegEndDate" displayFormat="dd.MM.yyyy" value="{local>/newRegistration/EndDate}" valueFormat="dd.MM.yyyy"></DatePicker> -->
 						<Label text="Payment Mode"/>
 						<Select id="paymentMode" required="true" selectedKey="{local>/newRegistration/PaymentMode}">
 							<core:Item key="IMPS" text="Internet Banking"></core:Item>
