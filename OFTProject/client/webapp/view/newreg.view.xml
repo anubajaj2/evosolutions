@@ -62,6 +62,7 @@
 							<core:Item key="UPI" text="UPI"></core:Item>
 							<core:Item key="GPay" text="Google Pay"></core:Item>
 							<core:Item key="Gateway" text="Gateway"></core:Item>
+							<core:Item key="Other" text="Other"></core:Item>
 						</Select>
 						<!-- <Label text="Account Details"/>
 						<Input id="accountDetails" required="false" value="{local>/newRegistration/AccountName}" showValueHelp="true" valueHelpOnly="true"

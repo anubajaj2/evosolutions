@@ -1559,7 +1559,7 @@ app.start = function () {
 			var Param = app.models.Param;
 			var array = ['user', 'clientId', 'clientSecret', 'refreshToken'];
 			var key = {};
-			
+
 			const sParam = await Param.find({
 			  where: {
 				and: [{
@@ -1569,7 +1569,7 @@ app.start = function () {
 				}]
 			  }
 			});
-		  
+
 			for (let index = 0; index < sParam.length; index++) {
 			  const element = sParam[index].__data;
 			  if (element.Code === 'user') {
@@ -1585,20 +1585,20 @@ app.start = function () {
 				key.refreshToken = element.Value;
 			  }
 			}
-		  
+
 			const fs = require('fs');
 			this.htmlTemplate = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'SubscriptionEmailTemplate.html', 'utf8');
 			const { Parent_Name, Camper_Name, Camp_Program_Name, Program_Dates, Payment_Amount, Payment_Date, Payment_Method, Email } = req.body;
-			
+
 			this.htmlTemplate = this.htmlTemplate
 			  .replace('$$Parent_Name$$', Parent_Name)
 			  .replace(/\$\$Camper_Name\$\$/g, Camper_Name)
-			  .replace('$$Camp_Program_Name$$', Camp_Program_Name)
-			  .replace('$$Program_Dates$$', Program_Dates)
+			  .replace('$$Camp_Program_Name$$', 'Summer Camp 2023')
+			  .replace('$$Program_Dates$$', '20th May - 20th June 2023')
 			  .replace('$$Payment_Amount$$', Payment_Amount)
 			  .replace('$$Payment_Date$$', Payment_Date)
 			  .replace('$$Payment_Method$$', Payment_Method);
-		  
+
 			const transporter = nodemailer.createTransport(smtpTransport({
 			  service: 'gmail',
 			  host: 'smtp.gmail.com',
@@ -1611,7 +1611,7 @@ app.start = function () {
 				})
 			  }
 			}));
-		  
+
 			// var ccs = [];
 			var emailContent = {};
 			var Subject = "Payment Verification";
@@ -1621,7 +1621,7 @@ app.start = function () {
 			  subject:Subject,
 			  html: this.htmlTemplate
 			};
-		  
+
 			transporter.sendMail(emailContent, function (error, info) {
 			  if (error) {
 				console.log(error);
@@ -1636,7 +1636,7 @@ app.start = function () {
 			  }
 			});
 		  });
-					
+
 		app.post('/sendOtpViaEmail',
 			async function (req, res) {
 				debugger;
