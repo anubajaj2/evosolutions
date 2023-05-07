@@ -1221,8 +1221,8 @@ app.start = function () {
 				case "OTP":
 					//msg = "Dear #FirstName#, Greetings from www.anubhavtrainings.com, we have sent the course details to your email id, please write to us on contact@anubhavtrainings.com";
 					var myOTP = generateOTP();
-					msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone. Soyuz Technologies LLP";
-
+					//msg = myOTP + " is the OTP for your login, Please do not share OTP with anyone. Soyuz Technologies LLP";
+					msg = myOTP + " is your OTP for login, please do not share OTP with anyone. Soyuz Technologies LLP ";
 					break;
 				case "WARDREG":
 					msg = 'Thanks for registering with EVOS Solutions, Your enrollment is confirmed and fees was received. Soyuz Technologies LLP';
@@ -1246,6 +1246,10 @@ app.start = function () {
 			//var hash = 'eef684d01be7535d39d7f409a1b8e888f874e9a05243b4fb3db2426f99aed5ba';
 			//var sender='ONLTRN';
 			var sender = "395558";
+			if(typeMsg === ""){
+				 sender = "SOYUZT";
+
+			}
 			var data = 'username=' + username + '&hash=' + hash + '&sender=' + sender + '&numbers=' + number + '&message=' + msg
 			var options = {
 				host: 'api.textlocal.in',
