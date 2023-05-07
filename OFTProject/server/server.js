@@ -1683,7 +1683,7 @@ app.start = function () {
 				*/
 				const fs = require('fs');
 				console.log(req.body);
-				this.mailContent = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'otp.html', 'utf8');
+				this.mailContent = fs.readFileSync(process.cwd() + "/server/sampledata/" + 'otp.html', 'utf8');
 				var generateOTP = function () {
 
 					// Declare a digits variable
