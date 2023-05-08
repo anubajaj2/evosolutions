@@ -32,7 +32,7 @@
 		},
 		"EndDate": {
 			"type": "date",
-			"required": true
+			"required": false
 		},
 		"PaymentMode": {
 			"type": "string",

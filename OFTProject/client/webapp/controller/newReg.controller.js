@@ -485,7 +485,7 @@ sap.ui.define([
 				"PaymentDate": this.getView().byId("idPayDate").getDateValue(), // leadData.PaymentDate,
 				"Mode": leadData.Mode,
 				"StartDate": this.getView().byId("idRegDate").getDateValue(), //leadData.StartDate,
-				"EndDate": this.getView().byId("idRegEndDate").getDateValue(), //leadData.EndDate,
+				// "EndDate": this.getView().byId("idRegEndDate").getDateValue(), //leadData.EndDate,
 				"PaymentMode": leadData.PaymentMode,
 				"BankName": leadData.BankName,
 				"AccountName": leadData.AccountName,
@@ -537,8 +537,8 @@ sap.ui.define([
 			var from = dateString.split(".");
 			var dateObject = new Date(from[2], from[1] - 1, from[0]);
 
-			var endDate = this.formatter.getIncrementDate(dateObject, 8);
-			this.getView().getModel("local").setProperty("/newRegistration/EndDate", endDate);
+			// var endDate = this.formatter.getIncrementDate(dateObject, 8);
+			// this.getView().getModel("local").setProperty("/newRegistration/EndDate", endDate);
 			//	console.log(endDate);
 		},
 		onPayDateChange: function (oEvent) {
@@ -635,7 +635,7 @@ sap.ui.define([
 
 			this.getView().getModel("local").setProperty("/newRegistration/StartDate", this.formatter.getFormattedDate(0));
 			this.getView().getModel("local").setProperty("/newRegistration/PaymentDate", this.formatter.getFormattedDate(0));
-			this.getView().getModel("local").setProperty("/newRegistration/EndDate", this.formatter.getFormattedDate(8));
+			// this.getView().getModel("local").setProperty("/newRegistration/EndDate", this.formatter.getFormattedDate(8));
 			this.getView().getModel("local").setProperty("/newRegistration/PaymentDueDate", this.formatter.getFormattedDate(1));
 			///TODO: Fill the Customer Set and Course Set from REST API
 
@@ -1008,11 +1008,11 @@ sap.ui.define([
 				this.searchPopup.bindAggregation("items", {
 					path: "/Courses",
 					filters: [oBatchFilter],
-					sorter: {
-						path: 'EndDate',
-						descending: false,
-						group: false
-					},
+					// sorter: {
+					// 	path: 'EndDate',
+					// 	descending: false,
+					// 	group: false
+					// },
 					// template: new sap.m.DisplayListItem({
 					// 	label: "{Name}",
 					// 	value: "{BatchNo}"
@@ -1033,7 +1033,7 @@ sap.ui.define([
 				var aSorters = [];
 				var sPath1 = "EndDate";
 				var bDescending = true;
-				aSorters.push(new sap.ui.model.Sorter(sPath1, bDescending));
+				// aSorters.push(new sap.ui.model.Sorter(sPath1, bDescending));
 				oBinding.sort(aSorters);
 			} else if (this.sId.indexOf("accountDetails") !== -1) {
 				var oAccFilter = new sap.ui.model.Filter("deleted", FilterOperator.EQ, false);
@@ -1835,7 +1835,7 @@ sap.ui.define([
 		onClearScreen: function (oEvent) {
 			this.getView().getModel("local").setProperty("/newRegistration/StartDate", this.formatter.getFormattedDate(0));
 			this.getView().getModel("local").setProperty("/newRegistration/PaymentDate", this.formatter.getFormattedDate(0));
-			this.getView().getModel("local").setProperty("/newRegistration/EndDate", this.formatter.getFormattedDate(8));
+			// this.getView().getModel("local").setProperty("/newRegistration/EndDate", this.formatter.getFormattedDate(8));
 			this.getView().getModel("local").setProperty("/newRegistration/PaymentDueDate", this.formatter.getFormattedDate(1));
 			this.getView().getModel("local").setProperty("/newRegistration/StudentId", null);
 			this.getView().getModel("local").setProperty("/newRegistration/CourseId", null);
