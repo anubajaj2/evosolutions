@@ -45,7 +45,7 @@
   },
   "files": {
     "loopback#static": {
-      "params": "$!../client/webapp"
+      "params": "$!../client/dist"
     }
   },
   "final": {
