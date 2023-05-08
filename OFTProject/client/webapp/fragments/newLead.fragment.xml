@@ -106,11 +106,11 @@ xmlns:html="http://www.w3.org/1999/xhtml">
     <VBox>
         <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
             <headerToolbar>
-              <OverflowToolbar visible="{local>/bottomToolbar}">
+              <OverflowToolbar >
                 <ToolbarSpacer/>
-                <OverflowToolbarButton id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
+                <OverflowToolbarButton visible="{local>/bottomToolbar}"  id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
                 <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
-                <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
+                <OverflowToolbarButton visible="{local>/bottomToolbar}" id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
                   press="onPressDeleteRow"/>
                 </OverflowToolbar>
               </headerToolbar>
