@@ -35,7 +35,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         valueHelpRequest="onSelectInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
-				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" submit="onEnterEmail" />
+				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" editable="{local>/newLeadVis/EmailId}" submit="onEnterEmail" />
     		<Label text="Date" />
 				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />

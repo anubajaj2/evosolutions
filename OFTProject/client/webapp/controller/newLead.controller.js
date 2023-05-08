@@ -275,13 +275,13 @@ sap.ui.define([
 			this.getView().getModel('local').setProperty("/valueHelpVisibility",true);
 			var oValidEmail = this.getView().getModel("local").getProperty("/newLead/EmailId");
 			this.getView().getModel("local").setProperty("/newLeadVis", {
-				"EmailId": oValidEmail ? false: true,
+				"EmailId": true,
 				"FatherName": true,
 				"MotherName": true,
 				"Date": true,
 				"City": true,
 				"Address": true,
-				"Phone": this.getView().getModel("local").getProperty("/newLead/Phone")? false:true,
+				"Phone": true,
 				"EmergencyContactName": true,
 				"SoftDelete": true,
 				"Remarks": true,

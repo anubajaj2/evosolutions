@@ -27,7 +27,9 @@ sap.ui.define([
 
                 this.getView().getModel('local').setProperty("/Email", "");
                 this.getView().getModel('local').setProperty("/captcha", "");
+                this.getView().getModel('local').setProperty("/otpValue", "");
                 this.getView().getModel('local').setProperty("/sendOtpDisabled", true);
+                
                 this.onOpenDialog();
                 this.getView().getModel('local').updateBindings();                
                 // this.getView().getModel('local').refresh()
@@ -64,6 +66,7 @@ sap.ui.define([
                 that.getView().getModel('local').setProperty("/PageVisibility", false);
                 that.getView().getModel('local').setProperty("/verifySubmit", false);
                 oDialog.open();
+                that.onRefresh();
                 
                 // this.getView().getModel('local').setProperty("/Email", "");
                 // this.getView().getModel('local').setProperty("/captcha", "");
