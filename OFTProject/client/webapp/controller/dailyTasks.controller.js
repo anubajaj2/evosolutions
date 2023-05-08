@@ -23,7 +23,7 @@ sap.ui.define([
 				this.getView().byId("idUser").setText(loginUser);
 			}
 			// ---------------Sreedhara------------------------PIE chart
-			debugger;
+			
 			var that = this;
 			var oDt = that.getView().byId("idCoDate1");
 
@@ -39,7 +39,7 @@ sap.ui.define([
 				oPieChartModel.setData({
 					PieData: data
 				});
-				debugger;
+				
 				for (var i = 0; i < data.length; i++){
 
 					if ( data[i].taskType === 'GB' ) {
@@ -95,7 +95,7 @@ sap.ui.define([
 					}
 					}
 				that.getView().setModel(oPieChartModel, "PieChartModel");
-         debugger;
+         
 
    		})
 			.fail(function(xhr, status, error) {
@@ -108,7 +108,7 @@ sap.ui.define([
 
 			// var oJSONModel = this.chartDataModel();
 			// this.getView().setModel(oJSONModel, "chart");
-			// debugger;
+			// 
 		},
 
 		// chartDataModel : function() {
@@ -143,7 +143,7 @@ sap.ui.define([
 		// 		};
 		// 		for(var i = 0; i < oData.results.length; i++){
 		// 			oRes = oData.results[i];
-		// 			debugger;
+		// 			
 		//
 		// 			// aChartData.tasks1[i].taskType = oRes.taskType;
 		// 			// aChartData.tasks1[i].noOfHours = oRes.noOfHours;
@@ -161,7 +161,7 @@ sap.ui.define([
 
 		// ---------------Sreedhara------------------------
 		// setTaskModel:function(oTt){
-		// 	debugger;
+		// 	
 		// 	var aData = {
 		// 		tasks : [
 		// 			{
@@ -282,7 +282,7 @@ sap.ui.define([
 
 				// ---------------Sreedhara---PIE chart update after save the taskin the view-----------
 				var currentUser = this.getModel("local").getProperty("/CurrentUser");
-				var that = this;debugger;
+				var that = this;
 				var oDt = that.getView().byId("idCoDate1");
 				$.post('/getWorkAggregate', {currentDate: oDt.getDateValue(), userId: currentUser})
 				.done(function(data, status) {

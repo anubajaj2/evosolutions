@@ -12,7 +12,7 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.taskOverview", {
 		aFilters:[],
 		onInit: function() {
-			debugger;
+			
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			if (currentUser) {
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
@@ -44,7 +44,7 @@ sap.ui.define([
 
 		},
 		reloadTasks: function(){
-			debugger;
+			
 			var role=this.getModel("local").getProperty("/Role");
 			this.getView().byId("idCoTable").bindItems({
 				path: "/tasks",
@@ -88,7 +88,7 @@ sap.ui.define([
 
 		},
 		onUpdateFinished:function(oEvent){
-			debugger;
+			
 			var oTable= oEvent.getSource();
 			var oTableItem = oTable.getItems();
 			var noItems=oTableItem.length;
@@ -108,7 +108,7 @@ sap.ui.define([
 			var rows =this.getView().byId("idCoTable").getBinding("items").getLength();
 			var oBinding =this.getView().byId("idCoTable").getBinding("items");
 			var total = 0;
-			debugger;
+			
 			for (var i = 0; i < rows; i++) {
 				total = total + parseFloat(oBinding.getContexts()[i].oModel.getProperty(oBinding.getContexts()[i].sPath).noOfHours);
 
@@ -118,7 +118,7 @@ sap.ui.define([
 		},
 		formatter: Formatter,
 		onSelect:function(oEvent){
-			debugger;
+			
 			var techId=oEvent.getSource().getSelectedKey();
 			var dDateStart=this.getView().byId("idCoDate1").getDateValue();
 			var dDateEnd = new Date(dDateStart + 1);
@@ -152,7 +152,7 @@ sap.ui.define([
 		},
 		onDateChange: function(oEvent) {
 			// this.reloadTasks();
-			debugger;
+			
 			var role=this.getModel("local").getProperty("/Role");
 			// var oVal=this.getView().byId("idUser").getValue();
 			var oVal=this.getView().byId("idUser").getSelectedKey();

@@ -166,7 +166,7 @@ sap.ui.define([
 		},
 
 		_onWorkListMatched: function(oEvent) {
-			// debugger;\
+			// \
 			if(oEvent.getParameter("name") !== "analytical"){
 				return;
 			}
@@ -294,20 +294,20 @@ sap.ui.define([
 		},
 
 		_loadModelData: function() {
-			debugger;
+			
 			// var oModel3 = this.getView().getModel();
 			// var url3 = "/Students";
 			// this._oJSONModel2 = new JSONModel();
 			// var that = this;
 			// oModel3.read(url3, {
 			// 	success: function(oData) {
-			// 		debugger;
+			// 		
 			// 		that._oJSONModel = that._oVizFrame.getModel();
 			// 		// that._oJSONModel2.setData(oData);
 			//
 			// 	}.bind(that),
 			// 	error: function() {
-			// 		debugger;
+			// 		
 			// 		//	this._oVizFrame.setBusy(false);
 			// 	}
 			// });
@@ -319,7 +319,7 @@ sap.ui.define([
 			// this._oVizFrame3.setBusy(true);
 			oModel.read(url, {
 				success: function(oData) {
-					debugger;
+					
 					this._oVizFrame.setBusy(false);
 					// this._oVizFrame3.setBusy(false);
 					this._oJSONModel = this._oVizFrame.getModel();
@@ -327,7 +327,7 @@ sap.ui.define([
 					this._oVizFrame.setModel(this._oJSONModel);
 				}.bind(this),
 				error: function() {
-					debugger;
+					
 					this._oVizFrame.setBusy(false);
 					// this._oVizFrame3.setBusy(false);
 				}

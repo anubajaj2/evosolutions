@@ -89,7 +89,7 @@ sap.ui.define([
 				this.customerId = data[2];
 
 			} else if (this.sId.indexOf("idEmailCust1") !== -1) {
-				debugger;
+				
 				// var data = this.getSelectedKey(oEvent);
 				// .getView().byId("idEmailCust").setValue(data[1]);
 
@@ -104,7 +104,7 @@ sap.ui.define([
 
 					var Filter1 = new sap.ui.model.Filter("GmailId", "EQ", oContext.getObject().EmailId);
 
-					debugger;
+					
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
 							filters: [Filter1]
 						}, payload, this)
@@ -134,7 +134,7 @@ sap.ui.define([
 								//if (oData.results[0].Defaulter) {
 									that.getView().byId("idDefaulter1").setSelected(oData.results[0].Defaulter);
 								//}
-								//debugger;
+								//
 								//if (oData.results[0].HighServerUsage) {
 									that.getView().byId("idHighServerUsage1").setSelected(oData.results[0].HighServerUsage);
 								//}
@@ -232,7 +232,7 @@ sap.ui.define([
 			//this.searchPopup.close();
 		},
 		suggestionItemSelected: function(oEvent) {
-			debugger;
+			
 			var oItem = oEvent.getParameter("selectedItem");
 			var oContext = oItem.getBindingContext();
 			//var oModel = this.getView().getModel().oData[oContext.sPath];
@@ -253,7 +253,7 @@ sap.ui.define([
 					and: false
 				});
 
-				debugger;
+				
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
 						filters: [oFilter]
 					}, payload, this)
@@ -283,7 +283,7 @@ sap.ui.define([
 							// if (oData.results[0].Defaulter) {
 								that.getView().byId("idDefaulter1").setSelected(oData.results[0].Defaulter);
 							// }
-							//debugger;
+							//
 							// if (oData.results[0].HighServerUsage) {
 								that.getView().byId("idHighServerUsage1").setSelected(oData.results[0].HighServerUsage);
 							// }
@@ -379,7 +379,7 @@ sap.ui.define([
 
 		},
 		onSearch: function(oEvent) {
-			debugger;
+			
 			if (this.sId.indexOf("customerId") !== -1) {
 				var queryString = this.getQuery(oEvent);
 
@@ -423,7 +423,7 @@ sap.ui.define([
 			var that = this;
 			that.getView().setBusy(true);
 			var leadData = this.getView().getModel("local").getProperty("/newCustomer");
-			debugger;
+			
 			var oFileUploader = this.getView().byId("idFileUploader1");
 			var domRef = oFileUploader.getFocusDomRef();
 			var file = domRef.files[0];
@@ -487,11 +487,11 @@ sap.ui.define([
 					"CreatedOn": new Date(),
 					"CreatedBy": "DemoUser"
 				};
-				debugger;
+				
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "POST", {},
 						payload, this)
 					.then(function(oData) {
-						debugger;
+						
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Customer Saved successfully");
 						that.destroyMessagePopover();
@@ -500,7 +500,7 @@ sap.ui.define([
 						//that.oSuppPopup.close();
 
 					}).catch(function(oError) {
-						debugger;
+						
 						that.getView().setBusy(false);
 						//sap.m.MessageToast.show(oError.responseText);
 						var oPopover = that.getErrorMessage(oError);
@@ -512,7 +512,7 @@ sap.ui.define([
 				// "Star": leadData.Star,
 				// "Defaulter": leadData.Defaulter,
 				// "HighServerUsage": leadData.HighServerUsage,
-				debugger;
+				
 				var vStar = " ";
 				if (leadData.Star == true) {
 					vStar = "true";
@@ -552,14 +552,14 @@ sap.ui.define([
 					"ChangedOn": new Date(),
 					"ChangedBy": "DemoUser"
 				};
-				debugger;
+				
 				var sPath1 = "/Students";
 				sPath1 = sPath1 + "(" + "\'" + that.customerGUID + "\'" + ")";
 
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath1, "PUT", {},
 						payload, this)
 					.then(function(oData) {
-						debugger;
+						
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Customer updated successfully");
 						that.destroyMessagePopover();
@@ -568,7 +568,7 @@ sap.ui.define([
 						//that.oSuppPopup.close();
 
 					}).catch(function(oError) {
-						debugger;
+						
 						that.getView().setBusy(false);
 						//sap.m.MessageToast.show(oError.responseText);
 						var oPopover = that.getErrorMessage(oError);
@@ -579,7 +579,7 @@ sap.ui.define([
 		},
 
 		onLiveSearch: function(oEvent) {
-			debugger;
+			
 			var queryString = oEvent.getParameter("query");
 			if (!queryString) {
 				queryString = oEvent.getParameter("value");
@@ -636,7 +636,7 @@ sap.ui.define([
 
 		},
 		onClearScreen: function(oEvent) {
-			debugger;
+			
 			this.getView().getModel("local").setProperty("/newCustomer/GmailId", null);
 			this.getView().getModel("local").setProperty("/newCustomer/Name", null);
 			this.getView().getModel("local").setProperty("/newCustomer/Country", 'IN');
@@ -674,7 +674,7 @@ sap.ui.define([
 
 		handleSkillFinish: function(oEvent) {
 			var selectedItems = oEvent.getParameter("selectedItems");
-			debugger;
+			
 			var SkillSet = ' ';
 			for (var i = 0; i < selectedItems.length; i++) {
 				SkillSet += selectedItems[i].getText();
@@ -689,7 +689,7 @@ sap.ui.define([
 			this.getView().byId("idName1").setEnabled(true);
 		},
 		onEmailExist: function(oEvent) {
-			//debugger;
+			//
 			var oLocal = oEvent;
 			var that = this;
 			// that.getView().setBusy(true);
@@ -701,7 +701,7 @@ sap.ui.define([
 				//oModel, sUrl, sMethod, oParameters, oPayload
 				var Filter1 = new sap.ui.model.Filter("GmailId", "EQ", leadData.GmailId);
 
-				debugger;
+				
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
 						filters: [Filter1]
 					}, payload, this)
@@ -720,7 +720,7 @@ sap.ui.define([
 						}
 					}).catch(function(oError) {
 						//	that.getView().setBusy(false);
-						debugger;
+						
 						sap.m.MessageToast.show("New Customer");
 						that.getView().byId("createNew1").setText("Create");
 						that.UpdateCustomer = false;
@@ -748,7 +748,7 @@ sap.ui.define([
 
 		},
 		onEnter: function(oEvent) {
-			debugger;
+			
 
 			// var oItem = oEvent.getParameter("selectedItem");
 			// var oContext = oItem.getBindingContext();
@@ -774,7 +774,7 @@ sap.ui.define([
 					and: false
 				});
 
-				debugger;
+				
 				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {
 						// filters: [Filter1]
 						filters: [oFilter]
@@ -902,7 +902,7 @@ sap.ui.define([
 
 							var Filter1 = new sap.ui.model.Filter("EmailId", "EQ", that.vEmail);
 
-							debugger;
+							
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Inquries", "GET", {
 									filters: [Filter1]
 								}, payload, that)
@@ -970,7 +970,7 @@ sap.ui.define([
 					//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
 					// that.totalCount = that.totalCount - items.length;
 					// for (var i = 0; i < items["length"]; i++) {
-					debugger;
+					
 					var sPath = "/Students('" + that.customerGUID + "')";
 					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
 						.then(function(oData) {

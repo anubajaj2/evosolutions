@@ -14,7 +14,7 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.performanceAnalysis", {
    aFilters:[],
   onInit: function() {
-		debugger;
+		
 		var currentUser = this.getModel("local").getProperty("/CurrentUser");
 		var role=this.getModel("local").getProperty("/Role");
 			// if (currentUser) {
@@ -44,7 +44,7 @@ herculis: function(oEvent) {
 
 	},
 	reloadTasks: function(){
-	debugger;
+	
 	//var nInteractiveDates = this.getView().byId("idTimeTrackerCalendar")._$interactiveDates.length;
 	var role=this.getModel("local").getProperty("/Role");
 	var userId = this.getModel("local").getProperty("/CurrentUser");
@@ -145,7 +145,7 @@ herculis: function(oEvent) {
 				}else {
 					sap.m.MessageToast.show("You Don't hava Data recorded for this Month");
 				}
-			debugger;
+			
 			//document.getElementById("__component0---idTimeTracker--idTimeTrackerCalendar").getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idTimeTrackerCalendar-")[1];
 
 		}).fail(function(xhr,status,error){
@@ -157,7 +157,7 @@ herculis: function(oEvent) {
 
 	},
 	onSelect:function(oEvent){
-		debugger;
+		
 		var techId=oEvent.getSource().getSelectedKey();
 		this.currentUser = techId;
 		setTimeout(this.loadCurrentUserData.bind(this), 1000);
@@ -165,7 +165,7 @@ herculis: function(oEvent) {
 	//	this.reloadTasks();
 	},
 	loadCurrentUserData:function(){
-		debugger;
+		
 		var userId = this.getModel("local").getProperty("/CurrentUser");
 		var currentMonth = new Date(this.getView().byId("idTimeTrackerCalendar").getCurrentDate());
 		var payload = {
@@ -255,7 +255,7 @@ herculis: function(oEvent) {
 	},
 
 	onChangeCurrentDate:function(oEvent){
-		debugger;
+		
 		var role=this.getModel("local").getProperty("/Role");
 		var oVal=this.getView().byId("idUser").getValue();
 
@@ -269,7 +269,7 @@ else{
 }
 },
 afterCalChange: function() {
-		debugger;
+		
 
 		var userId = this.getModel("local").getProperty("/CurrentUser");
 		var currentMonth = new Date(this.getView().byId("idTimeTrackerCalendar").getCurrentDate());

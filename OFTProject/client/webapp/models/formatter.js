@@ -93,7 +93,7 @@ sap.ui.define([], function() {
             return array.sort(lol(property));
         },
         getIncrementDate: function(dateObj, monthInc) {
-            debugger;
+            
             //	var dd = dateObj.getDate();
             dateObj.setMonth(dateObj.getMonth() + monthInc);
             var dd = dateObj.getDate();
@@ -118,7 +118,7 @@ sap.ui.define([], function() {
             var mm1 = ddToday.getMonth();
             var yyyy1 = ddToday.getFullYear();
 
-            debugger;
+            
             if (yyyy > yyyy1) {
                 return true;
             } else {
@@ -164,7 +164,7 @@ sap.ui.define([], function() {
             }
         },
         formatLRdate: function(dateF, dateT) {
-            debugger;
+            
             if (dateF === dateT) {
                 return dateF;
             }
@@ -185,7 +185,7 @@ sap.ui.define([], function() {
             }
         },
         formatAvailable: function(leaves) {
-            debugger;
+            
             if (leaves >= 18) {
                 return sap.ui.core.ValueState.Error;
             } else {
@@ -194,7 +194,7 @@ sap.ui.define([], function() {
 
         },
         formatStatusValue: function(sValue) {
-            debugger;
+            
             switch (sValue) {
                 case "L":
                     return "Live";

@@ -61,12 +61,12 @@ onBeforeRendering: function(){
 		},
 		herculis: function(oEvent) {
 
-			debugger;
+			
 			this.reloadTasks();
 
 		},
 		reloadTasks: function(){
-		debugger;
+		
 		//var nInteractiveDates = this.getView().byId("idCreateLeaveCalendar")._$interactiveDates.length;
 		var role=this.getModel("local").getProperty("/Role");
 		var userId = this.getModel("local").getProperty("/CurrentUser");
@@ -138,11 +138,11 @@ onBeforeRendering: function(){
 					}else {
 						sap.m.MessageToast.show("You Don't hava Data recorded for this Month");
 					}
-				debugger;
+				
 				//document.getElementById("__component0---idcreateLeave--idCreateLeaveCalendar").getElementsByClassName("sapMeCalendarMonthDay")[7].id.split("--")[2].split("idCreateLeaveCalendar-")[1];
 	},
 	onChangeCurrentDate:function(oEvent){
-		debugger;
+		
 		setTimeout(this.afterCalChange.bind(this), 1000);
 },
 afterCalChange: function() {
@@ -225,7 +225,7 @@ afterCalChange: function() {
 
 },
 	onChangeRange:function(oEvent){
-		debugger;
+		
 	//	this.callLeaveValidator();
 	var currentUser = this.getModel("local").getProperty("/CurrentUser");
 	var oDate = new Date(oEvent.getParameters().fromDate);
@@ -427,7 +427,7 @@ afterCalChange: function() {
 		this.getView().byId("idSave").setEnabled(false);
 	},
 		onhandleChange: function (oEvent) {
-			debugger;
+			
 			this.callLeaveValidator();
 			var oLeaveRequest={};
 			var sfrom = {};
@@ -450,7 +450,7 @@ afterCalChange: function() {
 				//this.getView().byId("idDate").setBusy(false);
 		},
 		callLeaveValidator:function(){
-			debugger;
+			
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
 			var oDate = new Date();
 			var payload = {
@@ -463,7 +463,7 @@ afterCalChange: function() {
 			});
 		},
 		successCallBack: function(data,status){
-					debugger;
+					
 				if (data.length) {
 					 for (var i = 0; i <data.length; i++) {
 						 data[i].Date = new Date(data[i].Date);
@@ -594,7 +594,7 @@ afterCalChange: function() {
 					},
 
 		onDPhandleChange:function(oEvent){
-			debugger;
+			
 			this.callLeaveValidator();
 			var oDP = oEvent.getSource();
 			var sValue = oEvent.getParameter("value");
@@ -612,7 +612,7 @@ afterCalChange: function() {
 
 		},
 		onSave:function(oEvent){
-			debugger;
+			
 		//	this.callLeaveValidator();
 			var oLocal = oEvent;
 			var that = this;
@@ -661,7 +661,7 @@ afterCalChange: function() {
 						that.getView().setBusy(false);
 						sap.m.MessageToast.show("Leave Request send for Approval");
 
-						debugger;
+						
 						var userName = that3.getModel("local").getProperty("/UserName");
 						var MobileNo = that3.getModel("local").getProperty("/MobileNo");
 						var loginPayload = {};

@@ -79,7 +79,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			var serverData = this.getView().getModel("local").getProperty("/newTrainer");
 			var today = new Date();
 			// var payDate = this.getView().byId("payDate").getDateValue();
-			// debugger;
+			// 
 			var that = this;
 			var trainerModel = this.getView().getModel("local").getProperty("/TrainerModel");
 			this.getView().setBusy(true);
@@ -187,7 +187,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 
 		},
 		herculis: function (oEvent) {
-			// debugger;
+			// 
 			if(oEvent.getParameter("name") !== "newTrainer"){
 			return;
 			}
@@ -392,7 +392,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 			var data = this.getSelectedKey(oEvent);
 
 			if (this.flag === "trainerName") {
-				// debugger;
+				// 
 				var oTrainer = "Trainers(\'" + data[2] + "\')";
 				var oData = this.getView().getModel().oData[oTrainer];
 				oGuid = data[2];
@@ -525,7 +525,7 @@ sap.ui.define(["oft/fiori/controller/BaseController",
 					//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
 					// that.totalCount = that.totalCount - items.length;
 					// for (var i = 0; i < items["length"]; i++) {
-					debugger;
+					
 					var sPath = "/Trainers('" + oGuid + "')";
 					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
 						.then(function(oData) {

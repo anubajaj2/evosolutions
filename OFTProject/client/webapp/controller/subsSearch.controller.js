@@ -80,7 +80,7 @@ sap.ui.define([
 				for (var i = 0; i < items["length"]; i++) {
 
 					var loginPayload = items[i].getModel().getProperty(items[i].getPath());
-					debugger;
+					
 					$.post('/giveAccess', loginPayload)
 						.done(function(data, status) {
 							sap.m.MessageToast.show("Access has been provided");
@@ -106,7 +106,7 @@ sap.ui.define([
 					});
 			},
 			onClearDue: function(oEvent){
-				debugger;
+				
 				var that = this;
 				var items = that.getView().byId('manageSubsTable').getSelectedContexts();
 				for (var i = 0; i < items["length"]; i++) {
@@ -136,7 +136,7 @@ sap.ui.define([
 				for (var i = 0; i < items["length"]; i++) {
 
 					var loginPayload = items[i].getModel().getProperty(items[i].getPath());
-					debugger;
+					
 					var that = this;
 					var payload3 = {
 						"Status": "Access Granted"
@@ -234,7 +234,7 @@ sap.ui.define([
 			},
 
 			onAscending: function() {
-				// debugger;
+				// 
 				var oTable = this.getView().byId("manageSubsTable");
 				var oItems = oTable.getBinding("items");
 				var oBindingPath = this.getView().getModel().getProperty("/bindingValue");
@@ -264,12 +264,12 @@ sap.ui.define([
 			},
 
 			// onupdateStarted: function(oEvent) {
-			// 	debugger;
+			// 	
 			// 	var oTable = this.getView().byId("manageSubsTable");
 			// 	var oBinding = oTable.getBinding("items");
 			// },
 			onUpdateFinished: function(oEvent) {
-				// debugger;
+				// 
 				var sTitle = "Payment Records";
 				var oTable = this.getView().byId("manageSubsTable");
 				var itemList = oTable.getItems();
@@ -284,7 +284,7 @@ sap.ui.define([
 					}
 					var vStudent = itemList[i].getCells()[0].getText();
 					var oStudentId = 'Students(\'' + vStudent + '\')';
-					debugger;
+					
 					var vModel = this.allStudnets[vStudent];
 					if (vModel) {
 						var StudMail = vModel.GmailId;
@@ -332,7 +332,7 @@ sap.ui.define([
 
 			onStuSearch: function(oEvent) {
 
-				debugger;
+				
 				this.dateString1 = this.getView().byId("idBatchEndate");
 				if (this.dateString1._lastValue != false) {
 					var from = this.dateString1._lastValue.split(".");
@@ -368,7 +368,7 @@ sap.ui.define([
 							}, payload, this)
 							.then(function(oData) {
 								var that2 = that;
-								debugger;
+								
 								that.aFilter2 = [new sap.ui.model.Filter("StudentId", "EQ", "'" + oData.results[0].id + "'")];
 
 								if (that.dateString1._lastValue != false) {
@@ -400,7 +400,7 @@ sap.ui.define([
 											// var that2 = that;
 											if (oData.results.length > 0) {
 												var oFilter;
-												debugger;
+												
 												for (var i = 0; i < oData.results.length; i++) {
 													oFilter = new sap.ui.model.Filter("CourseId", "EQ", "'" + oData.results[i].id + "'");
 													that2.aFilter2.push(oFilter);
@@ -412,7 +412,7 @@ sap.ui.define([
 												that.getView().byId("manageSubsTable").getBinding("items").filter(that2.aFilter2);
 											}
 										}).catch(function(oError) {
-											debugger;
+											
 										});
 								} else {
 									// if (that.dateString1._lastValue != false) {
@@ -422,7 +422,7 @@ sap.ui.define([
 								}
 
 							}).catch(function(oError) {
-								debugger;
+								
 							});
 
 					} else {
@@ -435,7 +435,7 @@ sap.ui.define([
 
 			onCourseSearch: function(oEvent) {
 
-				debugger;
+				
 				this.dateString = this.getView().byId("idBatchEndate");
 				if (this.dateString._lastValue != false) {
 					var from = this.dateString._lastValue.split(".");
@@ -480,7 +480,7 @@ sap.ui.define([
 
 
 								var oFilter;
-								debugger;
+								
 								for (var i = 0; i < oData.results.length; i++) {
 									oFilter = new sap.ui.model.Filter("CourseId", "EQ", "'" + oData.results[i].id + "'");
 									that.aFilter1.push(oFilter);
@@ -505,14 +505,14 @@ sap.ui.define([
 										}, payload, that)
 										.then(function(oData) {
 											// var that2 = that;
-											debugger;
+											
 											var stuFilter = new sap.ui.model.Filter("StudentId", "EQ", "'" + oData.results[0].id + "'");
 
 											that2.aFilter1.push(stuFilter);
 
 											that2.getView().byId("manageSubsTable").getBinding("items").filter(that2.aFilter1);
 										}).catch(function(oError) {
-											debugger;
+											
 										});
 								} else {
 
@@ -521,7 +521,7 @@ sap.ui.define([
 
 
 							} else {
-								debugger;
+								
 								var that2 = that;
 								var Filter2 = new sap.ui.model.Filter("BatchNo", "EQ", qString2);
 								that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Courses", "GET", {
@@ -536,12 +536,12 @@ sap.ui.define([
 											that2.getView().byId("manageSubsTable").getBinding("items").filter(aFilter);
 										}
 									}).catch(function(oError) {
-										debugger;
+										
 									});
 							}
 
 						}).catch(function(oError) {
-							debugger;
+							
 						});
 
 				} else {
@@ -568,7 +568,7 @@ sap.ui.define([
 			},
 
 			onTabSearch: function(oEvent) {
-				debugger;
+				
 				var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 				// var queryString = oEvent.getParameters().newValue;// -For onLiveSearch
@@ -598,7 +598,7 @@ sap.ui.define([
 								}, payload, this)
 								.then(function(oData) {
 									// var that2 = that;
-									debugger;
+									
 									var aFilter = [new sap.ui.model.Filter("StudentId", "EQ", "'" + oData.results[0].id + "'")];
 
 									that.getView().byId("manageSubsTable").getBinding("items").filter(aFilter);
@@ -618,7 +618,7 @@ sap.ui.define([
 									//   filters: aFilter
 									//   });
 								}).catch(function(oError) {
-									debugger;
+									
 								});
 
 						} else {
@@ -638,14 +638,14 @@ sap.ui.define([
 									if (oData.results.length > 0) {
 										var aFilter = [];
 										var oFilter;
-										debugger;
+										
 										for (var i = 0; i < oData.results.length; i++) {
 											oFilter = new sap.ui.model.Filter("CourseId", "EQ", "'" + oData.results[i].id + "'");
 											aFilter.push(oFilter);
 										}
 										that.getView().byId("manageSubsTable").getBinding("items").filter(aFilter);
 									} else {
-										debugger;
+										
 										var that2 = that;
 										var Filter2 = new sap.ui.model.Filter("BatchNo", "EQ", qString2);
 										that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Courses", "GET", {
@@ -657,18 +657,18 @@ sap.ui.define([
 													that2.getView().byId("manageSubsTable").getBinding("items").filter(aFilter);
 												}
 											}).catch(function(oError) {
-												debugger;
+												
 											});
 									}
 
 								}).catch(function(oError) {
-									debugger;
+									
 								});
 						}
 
 					}
 				} else {
-					debugger;
+					
 					this.getView().byId("manageSubsTable").getBinding("items").filter([]);
 				}
 
@@ -683,7 +683,7 @@ sap.ui.define([
 			this.getView().byId("manageSubsTable").getBinding("items").filter(aFilter);
 		},
 			onConfirmSetting: function(oEvent) {
-				debugger;
+				
 				var oView = this.getView();
 				var oTable = oView.byId("manageSubsTable");
 				var mParams = oEvent.getParameters();
@@ -726,7 +726,7 @@ sap.ui.define([
 			},
 
 			onSwitchToggle: function(oEvent) {
-				debugger;
+				
 				var oSwitch = oEvent.getSource().getState();
 
 				var queryString = this.getQuery(oEvent);
@@ -790,7 +790,7 @@ sap.ui.define([
 			},
 
 			onStudentIdChange: function(oEvent) {
-				// debugger;
+				// 
 				var sPath = oEvent.getSource().oPropagatedProperties.oBindingContexts.undefined.sPath;
 				sPath = sPath.split("/")[1];
 				var oStudentId = this.getView().getModel().oData[sPath].StudentId;
@@ -805,7 +805,7 @@ sap.ui.define([
 				}
 			},
 			// onCourseIdChange: function(oEvent) {
-			// 	debugger;
+			// 	
 			// 	var sPath = oEvent.getSource().oPropagatedProperties.oBindingContexts.undefined.sPath;
 			// 	sPath = sPath.split("/")[1];
 			// 	var oCourseId = this.getView().getModel().oData[sPath].CourseId;
@@ -833,7 +833,7 @@ sap.ui.define([
 			},
 
 			onSearchFilter: function(oEvent) {
-				// debugger;
+				// 
 				// var sMessage = "onSearch trigered";
 				// MessageToast.show(sMessage);
 				var oFilter = oEvent.getSource().getFilterItems();
@@ -852,7 +852,7 @@ sap.ui.define([
 			},
 
 			onLiveSearch: function(oEvent) {
-				debugger;
+				
 				var queryString = oEvent.getParameter("query");
 				if (!queryString) {
 					queryString = oEvent.getParameter("value");
@@ -911,7 +911,7 @@ sap.ui.define([
 			},
 
 			onSearch: function(oEvent) {
-				debugger;
+				
 				if (this.sId.indexOf("idbatchId") !== -1) {
 					var queryString = this.getQuery(oEvent);
 					if (queryString) {
@@ -938,7 +938,7 @@ sap.ui.define([
 
 			},
 			onSearchSmart: function(oEvent) {
-				// debugger;
+				// 
 				var aData = this.getView().byId("smartFilterBar").getFilterData();
 				var aFilters = this.getView().byId("smartFilterBar").getFilters();
 				this.getView().byId("manageSubsTable").getBinding("items").filter(aFilters);
@@ -967,7 +967,7 @@ sap.ui.define([
 			},
 
 			// onBeforeExport: function(oEvt) {
-			// 	debugger;
+			// 	
 			// 	var mExcelSettings = oEvt.getParameter("exportSettings");
 			// 	// GW export
 			// 	if (mExcelSettings.url) {
@@ -994,7 +994,7 @@ sap.ui.define([
 
 			onDataReceive: function(oEvent) {
 				//console.log(oEvent.getParameters());
-				debugger;
+				
 			},
 
 			oSuppPopup: null,
@@ -1103,13 +1103,13 @@ sap.ui.define([
 
 			oExtendPopup: null,
 			onExtendSubs: function(oEvent) {
-				debugger;
+				
 				if (!this.oExtendPopup) {
 					this.oExtendPopup = new sap.ui.xmlfragment("oft.fiori.fragments.subSearchExtend", this);
 					sap.ui.getCore().getMessageManager().registerObject(this.oExtendPopup, true);
 					this.getView().addDependent(this.oExtendPopup);
 				}
-				debugger;
+				
 				var CourseDetail = this.courseName.split(":");
 
 				sap.ui.getCore().byId("idbatchId").setValue(CourseDetail[0]);
@@ -1145,7 +1145,7 @@ sap.ui.define([
 
 
 			onPayDateChange: function(oEvent) {
-				debugger;
+				
 				var dateString = oEvent.getSource().getValue();
 				var from = dateString.split(".");
 				// var from = dateString.split("/");
@@ -1222,10 +1222,10 @@ sap.ui.define([
 					// var that = this;
 					var sPath = "/Subs";
 					sPath = sPath + "(" + "\'" + leadData.subGuid + "\'" + ")";
-					debugger;
+					
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "GET", null, null, that)
 						.then(function(oData) {
-							debugger;
+							
 							var payload1 = {
 								"StudentId": oData.StudentId,
 								"CourseId": oData.CourseId,
@@ -1262,7 +1262,7 @@ sap.ui.define([
 							that.ODataHelper.callOData(that.getOwnerComponent().getModel(), "/Subs", "POST", {},
 									payload1, that2)
 								.then(function(oData) {
-									debugger;
+									
 									course_id = oData.CourseId;
 									student_id = oData.StudentId;
 									part_pay = oData.PartialPayment;
@@ -1273,7 +1273,7 @@ sap.ui.define([
 									that2.ODataHelper.callOData(that2.getOwnerComponent().getModel(), "/Subs", "GET",
 										//{filters:Filter1}, null).then(function(oData1) {
 										null, null, that3).then(function(oData1) {
-										debugger;
+										
 										console.log(oData1.results);
 										var len = oData1.results.length;
 										for (var i = 0; i < len; i++) {
@@ -1298,19 +1298,19 @@ sap.ui.define([
 
 												that3.ODataHelper.callOData(that3.getOwnerComponent().getModel(), sPath1, "PUT", {}, payload3, that3)
 													.then(function(oData) {
-														debugger;
+														
 
 													}).catch(function(oError) {
 														that3.getView().setBusy(false);
 														var oPopover = that3.getErrorMessage(oError);
-														debugger;
+														
 													});
 											}
 										}
 									}).catch(function(oError) {
 										that2.getView().setBusy(false);
 										var oPopover = that2.getErrorMessage(oError);
-										debugger;
+										
 									});
 									that2.getView().setBusy(false);
 									sap.m.MessageToast.show("Subscription Updated");
@@ -1321,14 +1321,14 @@ sap.ui.define([
 								}).catch(function(oError) {
 									that2.getView().setBusy(false);
 									var oPopover = that2.getErrorMessage(oError);
-									debugger;
+									
 								});
 
 
 							that.oSuppPopup.close();
 
 						}).catch(function(oError) {
-							debugger;
+							
 							that.getView().setBusy(false);
 							var oPopover = that.getErrorMessage(oError);
 							that.oSuppPopup.close();
@@ -1336,16 +1336,16 @@ sap.ui.define([
 
 
 				} else if (portClicked == true) {
-					debugger;
+					
 					portClicked = false;
 					this.getView().setBusy(true);
 					var myCourseId = this.gModel.CourseId;
 					var sPath = "/Subs";
 					sPath = sPath + "(" + "\'" + leadData.subGuid + "\'" + ")";
-					debugger;
+					
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "GET", null, null, this)
 						.then(function(oData) {
-							debugger;
+							
 							course_id = oData.CourseId;
 							student_id = oData.StudentId;
 							// part_pay = oData.PartialPayment;
@@ -1366,7 +1366,7 @@ sap.ui.define([
 
 										that2.ODataHelper.callOData(that2.getOwnerComponent().getModel(), vCourse_old, "GET", null,
 											null, that2).then(function(oData2) {
-											debugger;
+											
 											//
 											var that4 = that3;
 											var vBatch_Old = oData2.BatchNo;
@@ -1375,7 +1375,7 @@ sap.ui.define([
 
 											that3.ODataHelper.callOData(that3.getOwnerComponent().getModel(), vCourse_new, "GET", null,
 												null, that3).then(function(oData3) {
-												debugger;
+												
 
 												var vBatch_new = oData3.BatchNo;
 
@@ -1396,13 +1396,13 @@ sap.ui.define([
 													}).catch(function(oError) {
 														that5.getView().setBusy(false);
 														var oPopover = that5.getErrorMessage(oError);
-														debugger;
+														
 													});
 
 											}).catch(function(oError) {
 												that4.getView().setBusy(false);
 												var oPopover = that4.getErrorMessage(oError);
-												debugger;
+												
 											});
 
 
@@ -1410,7 +1410,7 @@ sap.ui.define([
 										}).catch(function(oError) {
 											that3.getView().setBusy(false);
 											var oPopover = that3.getErrorMessage(oError);
-											debugger;
+											
 										});
 
 
@@ -1430,21 +1430,21 @@ sap.ui.define([
 										// 	}).catch(function(oError) {
 										// 		that3.getView().setBusy(false);
 										// 		var oPopover = that3.getErrorMessage(oError);
-										// 		debugger;
+										// 		
 										// 	});
 									}
 								}
 							}).catch(function(oError) {
 								that2.getView().setBusy(false);
 								var oPopover = that2.getErrorMessage(oError);
-								debugger;
+								
 							});
 							that.getView().setBusy(false);
 							// sap.m.MessageToast.show("Subscription Updated");
 							//that.oSuppPopup.close();
 
 						}).catch(function(oError) {
-							debugger;
+							
 							that.getView().setBusy(false);
 							var oPopover = that.getErrorMessage(oError);
 							// that.oSuppPopup.close();
@@ -1455,7 +1455,7 @@ sap.ui.define([
 
 			onExtendSave: function(oEvent) {
 				var that = this;
-				debugger;
+				
 				var leadData = this.getView().getModel("local").getProperty("/newRegExtension");
 
 				if (sap.ui.getCore().byId("idPayDate_upd1").getDateValue()) {
@@ -1576,7 +1576,7 @@ sap.ui.define([
 						var that2 = that;
 						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath1, "PUT", {}, payload2, that2)
 							.then(function(oData) {
-								debugger;
+								
 								//  console.log("Data changed");
 								that2.getView().setBusy(false);
 								that2.oExtendPopup.close();
@@ -1585,24 +1585,24 @@ sap.ui.define([
 								sap.ui.getCore().byId("imageUploader2").setValue(null);
 								sap.m.MessageToast.show("Subscription Extended");
 							}).catch(function(oError) {
-								debugger;
+								
 								that2.getView().setBusy(false);
 								var oPopover = that.getErrorMessage(oError);
 							});
 					}).catch(function(oError) {
-						debugger;
+						
 						that.getView().setBusy(false);
 						var oPopover = that.getErrorMessage(oError);
 
 					});
 			},
 			BatchPopupClose: function(oEvent){
-				debugger;
+				
 				//set the id here
 			},
 			onSelect: function(oEvent) {
 				this.sId = oEvent.getSource().getId();
-				debugger;
+				
 				var sTitle = "",
 					sPath = "";
 
@@ -1659,7 +1659,7 @@ sap.ui.define([
 
 		},
 		onConfirm: function(oEvent) {
-			debugger;
+			
 			if (this.sId.indexOf("accountDetails") !== -1) {
 
 				var bankName = oEvent.getParameter("selectedItem").getValue();
@@ -1670,7 +1670,7 @@ sap.ui.define([
 				}
 
 			} else if (this.sId.indexOf("idbatchId") !== -1) {
-				// debugger;
+				// 
 				var data = this.getSelectedKey(oEvent);
 
 				var CourseDetail = this.courseName.split(":");
@@ -1709,9 +1709,9 @@ sap.ui.define([
 				var data = this.getSelectedKey(oEvent);
 				this.SearchCourseGuid = data[2];
 				this.getView().byId("idCourseSearch").setValue(data[0] + ': ' + data[1]);
-				debugger;
+				
 			} else if (this.sId.indexOf("idStuSearch") !== -1) {
-				debugger;
+				
 				var data = this.getSelectedKey(oEvent);
 				this.SearchStuGuid = data[2];
 				this.getView().byId("idStuSearch").setValue(data[0]);
@@ -1720,7 +1720,7 @@ sap.ui.define([
 		onSearchManageSubs: function(oEvent) {
 					// this.SearchStuGuid;
 					// this.SearchCourseGuid;
-					debugger;
+					
 					var aFilter = [];
 
 					if (this.SearchStuGuid) {

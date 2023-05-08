@@ -63,7 +63,7 @@ sap.ui.define([
 						//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
 						// that.totalCount = that.totalCount - items.length;
 						// for (var i = 0; i < items["length"]; i++) {
-						debugger;
+						
 						var sPath = "/Courses('" + oGuid + "')";
 						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
 							.then(function(oData) {
@@ -93,7 +93,7 @@ sap.ui.define([
 			// 	sap.m.MessageToast.show("Enter a valid Date");
 			// 	return "";
 			// }
-			debugger;
+			
 			var payload = {
 				"BatchNo": batchData.batchName,
 			//	"Name": batchData.batchName,
@@ -190,7 +190,7 @@ sap.ui.define([
 
 		},
 		onChange: function() {
-			debugger;
+			
 			alert("HELLOOO");
 		},
 		// setBatchId: function(oValue){
@@ -232,7 +232,7 @@ sap.ui.define([
 
 		updateBatchName: function() {
 			var batchData = this.getModel("local").getProperty("/newBatch");
-			debugger;
+			
 			var startDate = this.expandStartDate(batchData.startDate);
 
 			//9/25/2019 Anubhav confirmed that we dont need time as part of Batch Id
@@ -264,7 +264,7 @@ sap.ui.define([
 			}
 
 			if (this.flag === "batchid") {
-				debugger;
+				
 
 				var data = this.getSelectedKey(oEvent);
 				//Sample value for data["11:50", "SAPUI4X_SEP_2019_1150_SakshiPradhan", "5d8c58de26aac54ffcce73c0"]
@@ -288,7 +288,7 @@ sap.ui.define([
 				CourseName.setValue(courseName);
 				CourseName.setEnabled(false);
 
-				debugger;
+				
 					var trainerId = oModel.TrainerId;
 			     var oTrainerId = 'Trainers(\'' + trainerId + '\')';
 					 var TrainerName = this.getView().byId("idTrainer");
