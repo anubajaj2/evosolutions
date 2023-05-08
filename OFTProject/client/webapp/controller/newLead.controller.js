@@ -48,6 +48,12 @@ sap.ui.define([
 				that.oViewAndUploadPhoto.then(function(oDialog){
 					oDialog.getContent()[0].getItems()[0].getItems()[0].setSrc(photo);
 					oDialog.getContent()[0].getItems()[1].getItems()[0].clear();
+					if(that.isLeadDetail && photo){
+						oDialog.getContent()[0].getItems()[1].getItems()[0].setEnabled(false);
+					}
+					else{
+						oDialog.getContent()[0].getItems()[1].getItems()[0].setEnabled(true);
+					}
 			    oDialog.open();
 			  });
 			}
@@ -266,28 +272,54 @@ sap.ui.define([
 			oList.getBinding("items").refresh();
 		},
 		herculis: function(oEvent) {
+			this.getView().getModel('local').setProperty("/valueHelpVisibility",true);
+			var oValidEmail = this.getView().getModel("local").getProperty("/newLead/EmailId");
 			this.getView().getModel("local").setProperty("/newLeadVis", {
-				"EmailId": true,
+				"EmailId": oValidEmail ? false: true,
 				"FatherName": true,
 				"MotherName": true,
 				"Date": true,
 				"City": true,
 				"Address": true,
-				"Phone": true,
+				"Phone": this.getView().getModel("local").getProperty("/newLead/Phone")? false:true,
 				"EmergencyContactName": true,
 				"SoftDelete": true,
 				"Remarks": true,
-				"HearAbout": true
+				"HearAbout": true,
 			});
-			
+			this.getView().getModel("local").setProperty("/newWardVis",{
+				"Address": true,
+				"BloodGroup": true,
+				"CourseName": true,
+				"DOB": true,
+				"Gender": true,
+				"InquiryId": true,
+				"MobileNo": true,
+				"Name": true,
+				"Photo": true,
+				"RollNo": true,
+				"SchoolName": true,
+				"Standard": true,
+				"ToCourse": true,
+				"ToInquiry": true,
+				"Weakness": true
+			});
+
 			if(oEvent.getParameter("name") === "leadDetail"){
+				debugger;
+				this.getView().getModel('local').setProperty("/clearVisibility",false);
+				this.getView().getModel('local').setProperty("/bottomToolbar",false);
+				this.getView().getModel('local').setProperty("/valueHelpVisibility",false);
 				this.isLeadDetail=true;
+				this.isWardDetail=true;
+				this.getView().getModel('local').setProperty("/isLeadDetail",true);
 				// this.getView().byId('idParentEmail').fireSubmit;
 				this.getView().getModel('local').setProperty("/toolbarVisibility",false);
 			
 				// if(oEvent.getSource().getValue()){
 				this.getView().getModel("local").setProperty("/newLead/EmailId",this.getView().getModel('local').getProperty("/Email"))
 				this.getView().byId('idParentEmail').fireSubmit();
+				this.getView().getModel('local').setProperty("/newLead/bottomToolbar",false);
 			}
 			//Restore the state of UI by fruitId
 			debugger;
@@ -535,6 +567,17 @@ sap.ui.define([
 							{}, that)
 						.then(function(oData2) {
 							that.getView().getModel("local").setProperty("/newLead/WardDetails", oData2.results);
+							var array = oData2.results;
+							for (let index = 0; index < array.length; index++) {
+								const element = array[index];
+								// if(that.isWardDetail){
+									for(const key in element){
+										newWardVis[key]=element[key]?false:true;
+									}
+									that.getView().getModel("local").setProperty("/newWardVis",newWardVis);
+								// }
+							}
+							
 							that.getView().setBusy(false);
 						}).catch(function(oError) {
 							that.getView().setBusy(false);
