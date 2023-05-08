@@ -31,11 +31,11 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 			</f:toolbar>
 			<f:content>
         <Label text="Mobile No" />
-				<Input required="true" liveChange="onMobileNumber" type="Number" value="{local>/newLead/Phone}"  editable="{local>/newLeadVis/Phone}" showValueHelp="true"
+				<Input required="true" liveChange="onMobileNumber" type="Number"  value="{local>/newLead/Phone}"  editable="{local>/newLeadVis/Phone}" showValueHelp="{local>/valueHelpVisibility}"
         valueHelpRequest="onSelectInq"
         submit="onEnter"></Input>
         <Label text="Email"  />
-				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" editable="{local>/newLeadVis/EmailId}" submit="onEnterEmail" />
+				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" submit="onEnterEmail" />
     		<Label text="Date" />
 				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
 		        <!-- <Label text="Category" />
@@ -106,18 +106,18 @@ xmlns:html="http://www.w3.org/1999/xhtml">
     <VBox>
         <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
             <headerToolbar>
-              <OverflowToolbar>
+              <OverflowToolbar >
                 <ToolbarSpacer/>
-                <OverflowToolbarButton id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
+                <OverflowToolbarButton visible="{local>/bottomToolbar}"  id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
                 <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
-                <OverflowToolbarButton id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
+                <OverflowToolbarButton visible="{local>/bottomToolbar}" id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
                   press="onPressDeleteRow"/>
                 </OverflowToolbar>
               </headerToolbar>
               <columns>
                 <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
                   <header>
-                    <Text text="Roll No"/>
+                    <Text  text="Roll No"/>
                   </header>
                 </Column>
                 <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
@@ -175,19 +175,20 @@ xmlns:html="http://www.w3.org/1999/xhtml">
                 <ColumnListItem vAlign="Middle">
                   <cells>
                     <Input enabled="false" type="Number" value="{local>RollNo}"/>
-                    <Input value="{local>Name}"/>
-                    <Select selectedKey="{local>Gender}" forceSelection="false">
+                    <Input editable="{=${local>/isLeadDetail}?${local>Name}?false:true:true}" value="{local>Name}"/>
+                    <Select enabled="{=${local>/isLeadDetail}?${local>Gender}?false:true:true}" selectedKey="{local>Gender}" forceSelection="false">
                       <items>
                         <core:Item text="Male" key="M" />
                         <core:Item text="Female" key="F" />
                     </items>
                     </Select>
-                    <DatePicker displayFormat="dd.MM.yyyy" dateValue="{local>DOB}"/>
-                    <Input type="Number" value="{local>Standard}"/>
-                    <Input value="{local>SchoolName}"/>
-                    <Input value="{local>Weakness}"/>
-                    <Input type="Number" value="{local>MobileNo}" liveChange="onMobileNumber"/>
+                    <DatePicker editable="{=${local>/isLeadDetail}?${local>DOB}?false:true:true}" displayFormat="dd.MM.yyyy" dateValue="{local>DOB}"/>
+                    <Input editable="{=${local>/isLeadDetail}?${local>Standard}?false:true:true}" type="Number" value="{local>Standard}"/>
+                    <Input editable="{=${local>/isLeadDetail}?${local>SchoolName}?false:true:true}" value="{local>SchoolName}"/>
+                    <Input editable="{=${local>/isLeadDetail}?${local>Weakness}?false:true:true}" value="{local>Weakness}"/>
+                    <Input editable="{=${local>/isLeadDetail}?${local>MobileNo}?false:true:true}" type="Number" value="{local>MobileNo}" liveChange="onMobileNumber"/>
                     <MultiComboBox id="idCourse1"
+                    enabled="{=${local>/isLeadDetail}?{local>CourseName}?false:true:true}"
                           selectedKeys="{local>CourseName}" width="500px"
                           items="{
                             path: '/CoursesMst',
@@ -195,7 +196,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
                           }">
                           <core:Item key="{id}" text="{CourseName}"/>
                         </MultiComboBox>
-                    <Select selectedKey="{local>BloodGroup}" forceSelection="false">
+                    <Select enabled="{=${local>/isLeadDetail}?${local>BloodGroup}?false:true:true}" selectedKey="{local>BloodGroup}" forceSelection="false">
                       <items>
                         <core:Item text="O+" key="O+" />
                         <core:Item text="O-" key="O-" />
@@ -207,7 +208,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
                         <core:Item text="AB-" key="AB-" />
                     </items>
                     </Select>
-                    <Button type="{=${local>Photo} ? 'Emphasized': 'Default'}" text="View" press="onViewPhoto"/>
+                    <Button  type="{=${local>Photo} ? 'Emphasized': 'Default'}" text="View" press="onViewPhoto"/>
                   </cells>
                 </ColumnListItem>
               </items>
