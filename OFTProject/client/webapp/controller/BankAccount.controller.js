@@ -109,7 +109,7 @@ sap.ui.define([
 				});
 		},
 		MSetKey: function(oEvent) {
-			debugger;
+			
 			var sId = oEvent.getSource().getParent().getModel("viewModel").getProperty(oEvent.getSource().getParent().getBindingContextPath()).id;
 
 			var newKey = prompt("Please enter your password", "");

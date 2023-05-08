@@ -24,7 +24,7 @@ sap.ui.define([
 				var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 				this.getView().byId("idUser").setText(loginUser);
 				var date = new Date();
-				debugger;
+				
 				var dateFilter = new Date(date.getFullYear(), 0, 1);
 				this.getModel("local").setProperty("/newLeaveRequest/Datefilter",dateFilter);
 				this.getModel("local").setProperty("/LeaveStatic/DateFrom", this.getModel("local").getProperty("/JoiningDate"));
@@ -122,7 +122,7 @@ onBeforeRendering: function(){
 						that.ODataHelper.callOData(that.getOwnerComponent().getModel(), delitem, "DELETE", {}, {}, that)
 							.then(function(oData) {
 								that.getView().setBusy(false);
-								debugger;
+								
 								var oSplit = that.indexdel.split('/');
 								var oIndex = oSplit[oSplit.length - 1];
 //								var oIndex = parseInt(that.indexdel.substring(that.indexdel.lastIndexOf('/') +1));

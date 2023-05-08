@@ -9,7 +9,7 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.holidayCalendar", {
 
   onInit: function() {
-		debugger;
+		
 	var oDt = this.getView().byId("idHoliday");
 	 oDt.setDateValue(new Date());
 	 var oRouter = this.getOwnerComponent().getRouter();
@@ -22,7 +22,7 @@ sap.ui.define([
 },
 
 herculis:function(){
-	debugger;
+	
 	this.getView().byId("idHoliday").setDateValue(new Date());
 	var todayDay = this.getView().byId("idHoliday").getDateValue(new Date()).getDay();
 
@@ -70,7 +70,7 @@ herculis:function(){
 
 },
 reloadTasks: function(oEvent) {
-		debugger;
+		
 
 		var role=this.getModel("local").getProperty("/Role");
 		this.getView().byId("idHolidayTable").bindItems({
@@ -90,7 +90,7 @@ reloadTasks: function(oEvent) {
 },
 
 onUpdateFinished:function(oEvent){
-	debugger;
+	
 	var oTable= oEvent.getSource();
 	var oTableItem = oTable.getItems();
 	var noItems=oTableItem.length;
@@ -106,7 +106,7 @@ onUpdateFinished:function(oEvent){
 },
 
 onDateChange: function(oEvent) {
-	debugger;
+	
 	var role=this.getModel("local").getProperty("/Role");
 
 	var dDateStart = oEvent.getSource().getProperty('dateValue').getDay();
@@ -141,7 +141,7 @@ onDateChange: function(oEvent) {
 
 
  onDelete: function(oEvent) {
-	 	debugger;
+	 	
 	var that = this;
 	var oPath = oEvent.getSource().getBindingContext().getPath();
  sap.m.MessageBox.confirm("Do you want to delete the selected records?", function(conf) {
@@ -160,7 +160,7 @@ onDateChange: function(oEvent) {
  },
 
 	onSave: function(oEvent) {
-			debugger;
+			
 
   	var that = this;
 		var myData = this.getView().getModel("local").getProperty("/holidayCalendar");

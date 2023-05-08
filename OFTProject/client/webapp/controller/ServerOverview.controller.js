@@ -234,7 +234,7 @@ sap.ui.define([
 		 * @memberOf oft.fiori.view.View2
 		 */
 		// onAfterRendering: function() {
-		// 	debugger;
+		// 	
 
 		// }
 

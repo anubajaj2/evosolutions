@@ -9,7 +9,7 @@ sap.ui.define([
 	return Controller.extend("oft.fiori.controller.leaveApproval", {
 
 		onInit: function() {
-				debugger;
+				
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.attachRoutePatternMatched(this.herculis, this);
 			var currentUser = this.getModel("local").getProperty("/CurrentUser");
@@ -49,7 +49,7 @@ onBeforeRendering: function(){
 				});
 		},
 		onApprove: function(oEvent){
-			debugger;
+			
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			var record =  oEvent.getSource().getModel().getProperty(sPath);
 			var that = this;
@@ -71,7 +71,7 @@ onBeforeRendering: function(){
 					  new sap.ui.model.Filter("AppUserId", sap.ui.model.FilterOperator.EQ, "'" + oKey + "'"),
 						 new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, 'Approved')
 					]);
-					debugger;
+					
 					}
 					else {
 
@@ -85,7 +85,7 @@ onBeforeRendering: function(){
 
 		},
 		onDelete: function(oEvent){
-			debugger;
+			
 			var that = this;
 			var outSider = oEvent;
 				var oKey=that.getView().byId("idEmployee").getSelectedKey();
@@ -121,7 +121,7 @@ onBeforeRendering: function(){
 
 		},
 		onReject: function(oEvent){
-			debugger;
+			
 			var sPath = oEvent.getSource().getBindingContext().sPath;
 			var record =  oEvent.getSource().getModel().getProperty(sPath);
 			var that = this;
@@ -163,7 +163,7 @@ onBeforeRendering: function(){
 			}
 		},
 		herculis: function(oEvent) {
-				debugger;
+				
 				if(oEvent.getParameter("name") !== "leaveApproval"){
 					return;
 				}
@@ -175,7 +175,7 @@ onBeforeRendering: function(){
 
 			},
 			onRefresh:function(){
-				debugger;
+				
 				var that=this;
 				var oKey=that.getView().byId("idEmployee").getSelectedKey();
 				that.reloadLeaves();
@@ -196,7 +196,7 @@ onBeforeRendering: function(){
 
 			},
 			onSelect: function(oEvent){
-				debugger;
+				
            var techId=oEvent.getSource().getSelectedKey();
 
 					 this.reloadLeaves();
@@ -211,7 +211,7 @@ onBeforeRendering: function(){
 
 			},
 	  reloadLeaves: function(){
-			debugger;
+			
 			this.getView().byId("pendingLeaveTable").bindItems({
 				path: "/LeaveRequests",
 				template: new sap.m.ColumnListItem({
@@ -253,7 +253,7 @@ onBeforeRendering: function(){
 
 		},
 		onUpdateFinished:function(oEvent){
-			debugger;
+			
 		var oTable = this.getView().byId("pendingLeaveTable");
      if(oTable.getBinding("items").isLengthFinal()) {
 				 var ocnt = oTable.getItems().length;

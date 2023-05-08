@@ -208,7 +208,7 @@ sap.ui.define([
 		},
 		popupSave: function() {
 			var that = this;
-			debugger;
+			
 			var payload3 = {
 				"EmailId2": this.getView().getDependents()[0].getContent()[0].getContent()[1].getValue(),
 				"Remarks": this.getView().getDependents()[0].getContent()[0].getContent()[3].getValue()
@@ -306,7 +306,7 @@ sap.ui.define([
 			});
 
 			if(oEvent.getParameter("name") === "leadDetail"){
-				debugger;
+				
 				this.getView().getModel('local').setProperty("/clearVisibility",false);
 				this.getView().getModel('local').setProperty("/bottomToolbar",false);
 				this.getView().getModel('local').setProperty("/valueHelpVisibility",false);
@@ -322,7 +322,7 @@ sap.ui.define([
 				this.getView().getModel('local').setProperty("/newLead/bottomToolbar",false);
 			}
 			//Restore the state of UI by fruitId
-			debugger;
+			
 			this.getView().getModel("local").setProperty("/newLead/Date", new Date());//this.formatter.getFormattedDate(0)
 			this.getView().getModel("local").setProperty("/newLead/country", "IN");
 			var newDate = new Date();
@@ -379,7 +379,7 @@ sap.ui.define([
 			}
 		},
 		onParentMode: function(oEvent){
-			// debugger;
+			// 
 			if(oEvent.getParameter('state')){
 				this.getView().byId("inqDate").setVisible(false);
 				this.getView().byId("quotedFee").setVisible(false);
@@ -455,7 +455,7 @@ sap.ui.define([
 			oEvent.getSource().getParent().getParent().removeSelections();
 		},
 		onEnter: function(oEvent){
-			debugger;
+			
 			var vPhone = oEvent.getParameters().value;
 			if(vPhone&&vPhone.toString().length!==10){
 				MessageToast.show("Please Enter a Valid Mobile Number");
@@ -478,14 +478,14 @@ sap.ui.define([
 							}
 						});
 					}
-					// debugger;
+					// 
 				}).catch(function(oError){
-						// debugger;
+						// 
 						MessageToast.show(oError.responseText);
 				});
 		},
 		onEnterEmail: function(oEvent) {
-			debugger;
+			
 			var vEmail = oEvent.getSource().getValue();
 			if(!vEmail){
 				vEmail = oEvent.getParameter("value");
@@ -514,14 +514,14 @@ sap.ui.define([
 						that.getView().getModel("local").setProperty("/newLead/EmailId",vEmail);
 
 					}
-					// debugger;
+					// 
 				}).catch(function(oError) {
-					// debugger;
+					// 
 					MessageToast.show(oError.responseText);
 				});
 		},
 		onSelectInq: function (oEvent) {
-			debugger;
+			
 			this.getCustomerPopup();
 			this.flag = "inquiry";
 			// var title = this.getView().getModel("i18n").getProperty("Trainer");
@@ -547,7 +547,7 @@ sap.ui.define([
 			that.loadInquiry(oData.id);
 		},
 		loadInquiry: function(id){
-			debugger;
+			
 			this.flag = "inquiry"
 			var that = this;
 			var oInquiry = "Inquries(\'" + id + "\')";
@@ -882,7 +882,7 @@ sap.ui.define([
 		// 	this.getView().getModel("local").setProperty("/newLead/courseSet", selectedItems.getKey());
 		// },
 		onUpdateFinished:function(oEvent){
-			// debugger;
+			// 
 			var olist = oEvent.getSource();
 			var oItemList = olist.getItems();
 			var noOfItems = oItemList.length;
@@ -893,7 +893,7 @@ sap.ui.define([
 			var courseId = 'CoursesMst(\'' + course.trim() + '\')';
 			var courseDtl = this.getView().getModel().oData[courseId];
 			var inqBy = oItemList[i].mProperties.value.split("-")[1].trim();
-			debugger;
+			
 			if (courseDtl) {
 			  var oLblName = oItemList[i].mProperties.label.replace(course.trim(), courseDtl.CourseName);
 				if(this.getView().getModel("local").getProperty("/AppUsers")[inqBy]){

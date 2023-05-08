@@ -152,7 +152,7 @@ sap.ui.define([
 			for (var i = 0; i < items["length"]; i++) {
 
 				var loginPayload = items[i].getModel().getProperty(items[i].getPath());
-				debugger;
+				
 				// this.ODataHelper.callOData(this.getOwnerComponent().getModel(),
 				// 		"/Students('" + loginPayload.StudentId + "')",
 				// 		"GET", {}, {}, this)
@@ -198,7 +198,7 @@ sap.ui.define([
 			for (var i = 0; i < items["length"]; i++) {
 
 				var loginPayload = items[i].getModel().getProperty(items[i].getPath());
-				debugger;
+				
 				// this.ODataHelper.callOData(this.getOwnerComponent().getModel(),
 				// 		"/Students('" + loginPayload.StudentId + "')",
 				// 		"GET", {}, {}, this)
@@ -247,7 +247,7 @@ sap.ui.define([
 			this.oSuppPopup = null;
 		},
 		onItemPress: function (oEvent) {
-			debugger;
+			
 			if (!this.oSuppPopup) {
 				this.oSuppPopup = new sap.ui.xmlfragment("oft.fiori.fragments.subSearch", this);
 				sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
@@ -476,7 +476,7 @@ sap.ui.define([
 			} else {
 				vStatus = "Pending";
 			}
-			debugger;
+			
 			that.getView().setBusy(false);
 
 			var payload = {
@@ -706,7 +706,7 @@ sap.ui.define([
 			this.oSuppPopup.open();
 		},
 		onUpdateFinished: function(oEvent) {
-			debugger;
+			
 			var oTable = this.getView().byId("idSubsRecent");
 			var itemList = oTable.getItems();
 			var noOfItems = itemList.length;
@@ -716,7 +716,7 @@ sap.ui.define([
 		  
 			var totalAmount = 0;
 			for (var i = 0; i < itemList.length; i++) {
-			  debugger;
+			  
 			  totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
 			}
 			oTable.getHeaderToolbar().getContent()[0].setText("Today: " + noOfItems + "  Amount: " + totalAmount);
@@ -736,7 +736,7 @@ sap.ui.define([
 				var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
 				itemList[i].getCells()[0].setText(StudMail);
 			  }
-			  debugger;
+			  
 			  var vButtonTxt = itemList[i].getCells()[2].getItems()[0].getText();
 			  if (vButtonTxt === "Approved") {
 				itemList[i].getCells()[2].getItems()[0].setText("Send Mail");
@@ -766,7 +766,7 @@ sap.ui.define([
 		  
 
 		// onUpdateFinished: function (oEvent) {
-		// 	debugger;
+		// 	
 		// 	var oTable = this.getView().byId("idSubsRecent");
 		// 	var itemList = oTable.getItems();
 		// 	var noOfItems = itemList.length;
@@ -778,7 +778,7 @@ sap.ui.define([
 		// 	if (isAdmin === 'Admin') {
 		// 		var totalAmount = 0;
 		// 		for (var i = 0; i < itemList.length; i++) {
-		// 			debugger;
+		// 			
 		// 			totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
 		// 		}
 		// 		oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems + "  Amount:" + totalAmount);
@@ -787,7 +787,7 @@ sap.ui.define([
 		// 		oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems);
 
 		// 	}
-		// 	debugger;
+		// 	
 		// 	for (var i = 0; i < noOfItems; i++) {
 		// 		var vCourse = itemList[i].getCells()[1].getText();
 		// 		var oCourseId = 'Courses(\'' + vCourse + '\')';
@@ -796,7 +796,7 @@ sap.ui.define([
 		// 			var CourseName = oModel.BatchNo; //got the course anme from screen
 		// 			itemList[i].getCells()[1].setText(CourseName);
 		// 		}
-		// 		debugger;
+		// 		
 		// 		var vStudent = itemList[i].getCells()[0].getText();
 		// 		var oStudentId = 'Wards(\'' + vStudent + '\')';
 		// 		var vModel = this.getView().getModel().oData[oStudentId];
@@ -870,7 +870,7 @@ sap.ui.define([
 
 		},
 		onApprove :async function(oEvent) { 
-			debugger;
+			
 			var sSource = oEvent;
 			var that = this;
 			var rowData = oEvent.getSource().getParent().getBindingContext().getObject();
@@ -893,12 +893,12 @@ sap.ui.define([
 			// var oUrl = "/Wards('" + StudentId + "')";
 				await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
 					.then(function (oData) {
-						debugger;
+						
 					  FatherName = oData.FatherName
 					  EmailAddress = oData.EmailId;
 					  Phone = oData.Phone;
 					}).catch(function (oError) {
-						debugger;
+						
 					});
 
 			// gettting student Name at here.
@@ -966,7 +966,7 @@ sap.ui.define([
 					msgType: "WARDREG"
 				},
 				success: function (data) {
-					debugger;
+					
 					console.log("success: " + data);
 					MessageToast.show('OTP Successfully Sent');
 				},
@@ -978,7 +978,7 @@ sap.ui.define([
 			
 		},
 		statusChange:function(oEvent){
-			debugger;
+			
 			if (oEvent.getText() == "Approve") {
 				var sPath = oEvent.getBindingContext().sPath;
 				var that = this;
@@ -1099,7 +1099,7 @@ sap.ui.define([
 		// },
 		searchPopup: null,
 		onSelect: function (oEvent) {
-			debugger;
+			
 			this.sId = oEvent.getSource().getId();
 
 			var sTitle = "",
@@ -1203,7 +1203,7 @@ sap.ui.define([
 			}
 		},
 		onConfirm: function (oEvent) {
-			debugger;
+			
 			if (this.sId.indexOf("accountDetails") !== -1) {
 
 				var bankName = oEvent.getParameter("selectedItem").getValue();
@@ -1617,7 +1617,7 @@ sap.ui.define([
 			}
 		},
 		onSearch: function (oEvent) {
-			debugger;
+			
 			// var oFilter1 = new sap.ui.model.Filter("text", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
 			// var oFilter2 = new sap.ui.model.Filter("key", sap.ui.model.filter.FilterOperator.Contains, oEvent.getSource().getValue());
 			// var oFilter = new sap.ui.model.Filter({
@@ -2222,19 +2222,19 @@ sap.ui.define([
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), oUrl, "GET", null, null, this)
 				.then(function (oData) {
 					that.getView().getModel("local").setProperty("/parentDetails", oData);
-					debugger;
+					
 				}).catch(function (oError) {
-					debugger;
+					
 					// MessageBox.show(oError);
 				});
 			// $.ajax({
 			// 	type: 'GET', // added,
 			// 	url: oUrl,
 			// 	success: function(data) {
-			// 		debugger;
+			// 		
 			// 	},
 			// 	error: function(xhr, status, error) {
-			// 		debugger;
+			// 		
 			// 	}
 			// });
 			var oButton = oEvent.getSource(),

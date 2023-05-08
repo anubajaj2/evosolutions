@@ -127,7 +127,7 @@ sap.ui.define([
 
 		},
 		onConfirm: function(oEvent) {
-			//debugger;
+			//
 			// if (anubhav === "OK") {
 			// 	MessageToast.show("Your fruit has been approved successfully");
 			// 	this.getView().byId("idApr").setVisible(false);

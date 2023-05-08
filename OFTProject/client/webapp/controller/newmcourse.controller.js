@@ -131,7 +131,7 @@ sap.ui.define([
 					this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "POST", {},
 							payload, this)
 							.then(function(oData) {
-							// debugger;
+							// 
 							that.getView().setBusy(false);
 							//that.subsciptionSaved = "true";
 							that.onClearScreen();
@@ -141,7 +141,7 @@ sap.ui.define([
 
 							that.getView().setBusy(false);
 							//that.subsciptionSaved = "false";
-							// debugger;
+							// 
 							var oPopover = that.getErrorMessage(oError);
 						});
 					break;
@@ -166,7 +166,7 @@ sap.ui.define([
 			}
 		},
 		onConfirm:function(oEvent) {
-			// debugger;
+			// 
 			if (this.sId.indexOf("idCourse") !== -1){
 				var oItem = oEvent.getParameter("selectedItem");
 				var oContext = oItem.getBindingContext();
@@ -288,7 +288,7 @@ sap.ui.define([
 					//var items = that.getView().byId('manageSubsTable').getSelectedContexts();
 					// that.totalCount = that.totalCount - items.length;
 					// for (var i = 0; i < items["length"]; i++) {
-					debugger;
+					
 					var sPath = "/CoursesMst('" + that.courseGUID + "')";
 					that.ODataHelper.callOData(that.getOwnerComponent().getModel(), sPath, "DELETE", {}, {}, that)
 						.then(function(oData) {
@@ -305,7 +305,7 @@ sap.ui.define([
 			}, "Confirmation");
 		},
 		onClearScreen: function(oEvent) {
-			// debugger;
+			// 
 			this.getView().getModel("local").setProperty("/newmcourse", {
 				"Category":"",
 				"CourseName":"",

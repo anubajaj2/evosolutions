@@ -87,7 +87,7 @@ sap.ui.define([
 
 		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
 		// 	.then(function(oData){
-		// 		debugger;
+		// 		
 		// 		for(var i =0 ;i < oData.results.length; i++){
 		// 			that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
 		// 		}
@@ -266,7 +266,7 @@ sap.ui.define([
 		},
 
 		getObjListSelectedkey: function(oEvent) {
-			debugger;
+			
 			var title = oEvent.getParameter("selectedItem").getTitle();
 			var intro = oEvent.getParameter("selectedItem").getIntro();
 			var number = oEvent.getParameter("selectedItem").getNumber();

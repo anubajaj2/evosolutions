@@ -22,7 +22,7 @@ sap.ui.define([
 			var loginUser = this.getModel("local").oData.AppUsers[currentUser].UserName;
 			loginUser = "Hey " + loginUser;
 			this.getView().byId("idUser").setText(loginUser);
-			debugger;
+			
 
 
 			that.getView().setBusy(true);
@@ -245,7 +245,7 @@ sap.ui.define([
 		onPressOpenAddSecureDialog: function(createMode) {
 			//this.editSecureField(false);
 			if (!this._oDialogSecure) {
-				debugger;
+				
 				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "oft.fiori.fragments.SecureDialog", this);
 				// this._oDialogSecure.setModel(new JSONModel({}), "secureFormModel");
 				// this._oDialogSecure.getModel("secureFormModel").setProperty("/CreateMode", true);
