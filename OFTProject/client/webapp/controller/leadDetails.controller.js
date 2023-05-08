@@ -11,8 +11,7 @@ sap.ui.define([
         onInit: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.attachRouteMatched(this._onRouteMatched, this);
-            this.emailCount = 0;
-
+            this.emailCount = 0
         },
 
         _onRouteMatched: function (oEvent) {
@@ -24,11 +23,15 @@ sap.ui.define([
                 this.getView().getModel('local').setProperty("/otpVisible", false);
                 this.getView().getModel('local').setProperty("/PageVisibility", false);
                 this.getView().getModel('local').setProperty("/verifySubmit", false);
+
+
+                this.getView().getModel('local').setProperty("/Email", "");
+                this.getView().getModel('local').setProperty("/captcha", "");
+                this.getView().getModel('local').setProperty("/sendOtpDisabled", true);
                 this.onOpenDialog();
+                this.getView().getModel('local').updateBindings();                
+                // this.getView().getModel('local').refresh()
             }
-            
-
-
         },
 
         onOpenDialog: function () {
@@ -61,9 +64,10 @@ sap.ui.define([
                 that.getView().getModel('local').setProperty("/PageVisibility", false);
                 that.getView().getModel('local').setProperty("/verifySubmit", false);
                 oDialog.open();
-                // var sCaptcha = that.captchaGeneratorMethod();
-                // that.getView().getModel('local').setProperty("/generatedCaptcha", sCaptcha);
                 
+                // this.getView().getModel('local').setProperty("/Email", "");
+                // this.getView().getModel('local').setProperty("/captcha", "");
+                this.getView().getModel('local').refresh();
             });
         },
         onCaptchaGenerate: function () {
@@ -200,7 +204,7 @@ sap.ui.define([
                 return;
             }
             else{
-                this.getView().getModel('local').setProperty('/email', false);
+                this.getView().getModel('local').setProperty('/EmailEditable', false);
             }
 
             if (sEmail && !sEmail.match(oRegex)) {
@@ -449,7 +453,7 @@ onSubmit: function () {
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;
-            var countDownDate = new Date().getTime() + 10000; // 60 seconds from now
+            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
             var x = setInterval(function () {
                 var now = new Date().getTime();
                 var distance = countDownDate - now;

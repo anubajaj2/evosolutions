@@ -161,7 +161,7 @@
 							<Text text="{CourseId}"></Text>
 							<HBox>
 								<Button text="{Status}" press="onApprove"></Button>
-								<Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://loan" press="onBank"></Button>
+								<!-- <Button visible="{= ${local>/Role} === 'Admin'}" icon="sap-icon://loan" press="onBank"></Button> -->
 							</HBox>
 							<Text text="{ path: 'CreatedOn', type:'sap.ui.model.type.Date', formatOptions:{ pattern:'dd.MM.YYYY' } }" > </Text>
 							<Text text="{CreatedBy}"> </Text>

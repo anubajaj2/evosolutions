@@ -39,53 +39,100 @@ sap.ui.define([
 			"courseMst":[],
 			"Trainers":[],
 			"AppUsers":[],
-			"Tasks":[]
+			"Tasks":[],
+			"Wards":[]
 		},
 		/**
-		 * Convenience method for accessing the router in every controller of the application.
+		 * Convenience method for accessing t	he router in every controller of the application.
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-		onInit: function() {
-			var that = this;
-			//Use TechnicalId as Key
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
-				.then(function(oData) {
-					for(var i =0 ;i < oData.results.length; i++){
-						that.allMasterData.AppUsers[oData.results[i].TechnicalId] = oData.results[i];
-					}
-				}).catch(function(oError) {
-					var oPopover = that.getErrorMessage(oError);
-				});
-				debugger;
-				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
-				.then(function(oData){
-					for(var i =0 ;i < oData.results.length; i++){
-						that.allMasterData.Tasks[oData.results[i].id] = oData.results[i];
-					}
-				}).catch(function(oError) {
-					var oPopover = that.getErrorMessage(oError);
-				});
+		// onInit: function() {
+		// 	var that = this;
+		// 	//Use TechnicalId as Key
+		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
+		// 		.then(function(oData) {
+		// 			for(var i =0 ;i < oData.results.length; i++){
+		// 				that.allMasterData.AppUsers[oData.results[i].TechnicalId] = oData.results[i];
+		// 			}
+		// 		}).catch(function(oError) {
+		// 			var oPopover = that.getErrorMessage(oError);
+		// 		});
+		// 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
+		// 		.then(function(oData){
+		// 			for(var i =0 ;i < oData.results.length; i++){
+		// 				that.allMasterData.Tasks[oData.results[i].id] = oData.results[i];
+		// 			}
+		// 		}).catch(function(oError) {
+		// 			var oPopover = that.getErrorMessage(oError);
+		// 		});
+				
+		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
+		// 	.then(function(oData){
+		// 		for(var i =0 ;i < oData.results.length; i++){
+		// 			that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
+		// 		}
+		// 	}).catch(function(oError) {
+		// 		var oPopover = that.getErrorMessage(oError);
+		// 	});
 
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
-			.then(function(oData){
-				for(var i =0 ;i < oData.results.length; i++){
+		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Wards", "GET", {}, {}, this)
+		// 		.then(function(oData){
+		// 			for(var i =0 ;i < oData.results.length; i++){
+		// 				that.allMasterData.Wards[oData.results[i].id] = oData.results[i];
+		// 			}
+		// 		}).catch(function(oError) {
+		// 			var oPopover = that.getErrorMessage(oError);
+		// 		});
+
+		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
+		// 	.then(function(oData){
+		// 		debugger;
+		// 		for(var i =0 ;i < oData.results.length; i++){
+		// 			that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
+		// 		}
+		// 	}).catch(function(oError) {
+		// 		var oPopover = that.getErrorMessage(oError);
+		// 	});
+		// },
+		onInit: async function() {
+			try {
+			  var that = this;
+			  var oData;
+			  // Use TechnicalId as Key
+			  oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
+				.then();
+				for (var i = 0; i < oData.results.length; i++) {
+					that.allMasterData.AppUsers[oData.results[i].TechnicalId] = oData.results[i];
+				  }
+				  oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
+				.then();
+				for (var i = 0; i < oData.results.length; i++) {
+					that.allMasterData.Tasks[oData.results[i].id] = oData.results[i];
+				  }
+		  
+			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
+				.then();
+				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
-				}
-			}).catch(function(oError) {
-				var oPopover = that.getErrorMessage(oError);
-			});
-
-			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
-			.then(function(oData){
-				debugger;
-				for(var i =0 ;i < oData.results.length; i++){
+				  }
+		  
+			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Wards", "GET", {}, {}, this)
+				.then();
+				for (var i = 0; i < oData.results.length; i++) {
+					that.allMasterData.Wards[oData.results[i].id] = oData.results[i];
+				  }
+		  
+			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
+				.then();
+				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
-				}
-			}).catch(function(oError) {
-				var oPopover = that.getErrorMessage(oError);
-			});
-		},
+				  }
+			} catch (oError) {
+			  var oPopover = that.getErrorMessage(oError);
+			}
+		  },
+		  
 		allStudnets: [],
 		loadAllStudents: function(){
 			var that = this;

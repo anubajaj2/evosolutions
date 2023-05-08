@@ -705,8 +705,7 @@ sap.ui.define([
 
 			this.oSuppPopup.open();
 		},
-
-		onUpdateFinished: function (oEvent) {
+		onUpdateFinished: function(oEvent) {
 			debugger;
 			var oTable = this.getView().byId("idSubsRecent");
 			var itemList = oTable.getItems();
@@ -714,72 +713,132 @@ sap.ui.define([
 			var value1;
 			var id;
 			var cell;
-
-			var isAdmin = this.getView().getModel("local").getProperty("/Role");
-			if (isAdmin === 'Admin') {
-				var totalAmount = 0;
-				for (var i = 0; i < itemList.length; i++) {
-					debugger;
-					totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
-				}
-				oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems + "  Amount:" + totalAmount);
-
-			} else {
-				oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems);
-
+		  
+			var totalAmount = 0;
+			for (var i = 0; i < itemList.length; i++) {
+			  debugger;
+			  totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
 			}
-			debugger;
+			oTable.getHeaderToolbar().getContent()[0].setText("Today: " + noOfItems + "  Amount: " + totalAmount);
+		  
 			for (var i = 0; i < noOfItems; i++) {
-				var vCourse = itemList[i].getCells()[1].getText();
-				var oCourseId = 'Courses(\'' + vCourse + '\')';
-				var oModel = this.getView().getModel().oData[oCourseId];
-				if (oModel) {
-					var CourseName = oModel.BatchNo; //got the course anme from screen
-					itemList[i].getCells()[1].setText(CourseName);
-				}
-				debugger;
-				var vStudent = itemList[i].getCells()[0].getText();
-				var oStudentId = 'Wards(\'' + vStudent + '\')';
-				var vModel = this.getView().getModel().oData[oStudentId];
-				if (vModel) {
-					var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
-					itemList[i].getCells()[0].setText(StudMail);
-				}
-				//var vButtonTxt = itemList[i].getCells()[2].getText();
-				var vButtonTxt = itemList[i].getCells()[2].getItems()[0].getText();
-				if (vButtonTxt == "Approved") {
-					itemList[i].getCells()[2].getItems()[0].setText("Send Mail");
-					itemList[i].getCells()[2].getItems()[0].setEnabled(true);
-					itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Unstyled);
-				} else if (vButtonTxt == "Pending") {
-					if (this.UserRole == "Admin") {
-						itemList[i].getCells()[2].getItems()[0].setText("Approve");
-						itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Reject);
-
-					} else {
-						itemList[i].getCells()[2].getItems()[0].setEnabled(false);
-						itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Reject);
-					}
-				} else if ((vButtonTxt == "Access Granted") ||
-					(vButtonTxt == "Access granted") ||
-					(vButtonTxt == "access Granted") || (vButtonTxt == "access granted")) {
-					itemList[i].getCells()[2].getItems()[0].setEnabled(false);
-					itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Accept);
-				}
-				cell = itemList[i].getCells().length - 2;
-				id = itemList[i].getCells()[4].getText();
-				if (this.getModel("local").getProperty("/AppUsers")[id]) {
-					value1 = this.getModel("local").getProperty("/AppUsers")[id].UserName;
-				}
-				if (value1) {
-					itemList[i].getCells()[4].setText(value1);
-				}
+			  var vCourse = itemList[i].getCells()[1].getText();
+			  var oCourseId = 'Courses(\'' + vCourse + '\')';
+			  var oModel = this.getView().getModel().oData[oCourseId];
+			  if (oModel) {
+				var CourseName = oModel.BatchNo;
+				itemList[i].getCells()[1].setText(CourseName);
+			  }
+			  var vStudent = itemList[i].getCells()[0].getText();
+			  var oStudentId = 'Wards(\'' + vStudent + '\')';
+			  var vModel = this.getView().getModel().oData[oStudentId];
+			  if (vModel) {
+				var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
+				itemList[i].getCells()[0].setText(StudMail);
+			  }
+			  debugger;
+			  var vButtonTxt = itemList[i].getCells()[2].getItems()[0].getText();
+			  if (vButtonTxt === "Approved") {
+				itemList[i].getCells()[2].getItems()[0].setText("Send Mail");
+				itemList[i].getCells()[2].getItems()[0].setEnabled(true);
+				itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Unstyled);
+			  } else if (vButtonTxt === "Pending") {
+				itemList[i].getCells()[2].getItems()[0].setText("Approve");
+				itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Reject);
+			  } else if (vButtonTxt.toLowerCase() === "access granted") {
+				itemList[i].getCells()[2].getItems()[0].setEnabled(false);
+				itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Accept);
+			  }
+			  
+			  cell = itemList[i].getCells().length - 2;
+			  id = itemList[i].getCells()[4].getText();
+			  if (this.getModel("local").getProperty("/AppUsers")[id]) {
+				value1 = this.getModel("local").getProperty("/AppUsers")[id].UserName;
+			  }
+			  if (value1) {
+				itemList[i].getCells()[4].setText(value1);
+			  }
 			}
 			// vModel.updateBindings();
 			// oModel.updateBindings();
 			// this.onRefresh();
+		  },
+		  
 
-		},
+		// onUpdateFinished: function (oEvent) {
+		// 	debugger;
+		// 	var oTable = this.getView().byId("idSubsRecent");
+		// 	var itemList = oTable.getItems();
+		// 	var noOfItems = itemList.length;
+		// 	var value1;
+		// 	var id;
+		// 	var cell;
+
+		// 	var isAdmin = this.getView().getModel("local").getProperty("/Role");
+		// 	if (isAdmin === 'Admin') {
+		// 		var totalAmount = 0;
+		// 		for (var i = 0; i < itemList.length; i++) {
+		// 			debugger;
+		// 			totalAmount = totalAmount + parseInt(itemList[i].getCells()[5].getText());
+		// 		}
+		// 		oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems + "  Amount:" + totalAmount);
+
+		// 	} else {
+		// 		oTable.getHeaderToolbar().getContent()[0].setText("Today : " + noOfItems);
+
+		// 	}
+		// 	debugger;
+		// 	for (var i = 0; i < noOfItems; i++) {
+		// 		var vCourse = itemList[i].getCells()[1].getText();
+		// 		var oCourseId = 'Courses(\'' + vCourse + '\')';
+		// 		var oModel = this.getView().getModel().oData[oCourseId];
+		// 		if (oModel) {
+		// 			var CourseName = oModel.BatchNo; //got the course anme from screen
+		// 			itemList[i].getCells()[1].setText(CourseName);
+		// 		}
+		// 		debugger;
+		// 		var vStudent = itemList[i].getCells()[0].getText();
+		// 		var oStudentId = 'Wards(\'' + vStudent + '\')';
+		// 		var vModel = this.getView().getModel().oData[oStudentId];
+		// 		if (vModel) {
+		// 			var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
+		// 			itemList[i].getCells()[0].setText(StudMail);
+		// 		}
+		// 		//var vButtonTxt = itemList[i].getCells()[2].getText();
+		// 		var vButtonTxt = itemList[i].getCells()[2].getItems()[0].getText();
+		// 		if (vButtonTxt == "Approved") {
+		// 			itemList[i].getCells()[2].getItems()[0].setText("Send Mail");
+		// 			itemList[i].getCells()[2].getItems()[0].setEnabled(true);
+		// 			itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Unstyled);
+		// 		} else if (vButtonTxt == "Pending") {
+		// 			if (this.UserRole == "Admin") {
+		// 				itemList[i].getCells()[2].getItems()[0].setText("Approve");
+		// 				itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Reject);
+
+		// 			} else {
+		// 				itemList[i].getCells()[2].getItems()[0].setEnabled(false);
+		// 				itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Reject);
+		// 			}
+		// 		} else if ((vButtonTxt == "Access Granted") ||
+		// 			(vButtonTxt == "Access granted") ||
+		// 			(vButtonTxt == "access Granted") || (vButtonTxt == "access granted")) {
+		// 			itemList[i].getCells()[2].getItems()[0].setEnabled(false);
+		// 			itemList[i].getCells()[2].getItems()[0].setType(sap.m.ButtonType.Accept);
+		// 		}
+		// 		cell = itemList[i].getCells().length - 2;
+		// 		id = itemList[i].getCells()[4].getText();
+		// 		if (this.getModel("local").getProperty("/AppUsers")[id]) {
+		// 			value1 = this.getModel("local").getProperty("/AppUsers")[id].UserName;
+		// 		}
+		// 		if (value1) {
+		// 			itemList[i].getCells()[4].setText(value1);
+		// 		}
+		// 	}
+		// 	// vModel.updateBindings();
+		// 	// oModel.updateBindings();
+		// 	// this.onRefresh();
+
+		// },
 		passwords: "",
 
 		onBank: function (oEvent) {
@@ -812,6 +871,7 @@ sap.ui.define([
 		},
 		onApprove :async function(oEvent) { 
 			debugger;
+			var sSource = oEvent;
 			var that = this;
 			var rowData = oEvent.getSource().getParent().getBindingContext().getObject();
 			var oText = oEvent.getSource();
@@ -824,8 +884,10 @@ sap.ui.define([
 			var CourseId = rowData.CourseId;
 			var StudMail;
 			var CourseName;
-			var FatherName
-			var EmailAddress
+			var FatherName;
+			var Phone;
+			var EmailAddress;
+			this.oEvent_approve = oEvent;
 
 			var oUrl = "/Wards('" + StudentId + "')/ToInquiry";
 			// var oUrl = "/Wards('" + StudentId + "')";
@@ -834,6 +896,7 @@ sap.ui.define([
 						debugger;
 					  FatherName = oData.FatherName
 					  EmailAddress = oData.EmailId;
+					  Phone = oData.Phone;
 					}).catch(function (oError) {
 						debugger;
 					});
@@ -854,11 +917,14 @@ sap.ui.define([
 			}
 
 			var CreatedDate =  new Date(CreatedOn);
-			var formattedProgramDate = CreatedDate.toLocaleString();
+			var formattedProgramDate = CreatedDate.toLocaleDateString();
+			// console.log(FormattedProgramDate)
 
 			var PaymentDate = new Date(PaymentDate);
-			var formattedPaymentDate = PaymentDate.toLocaleString();
+			var formattedPaymentDate = PaymentDate.toLocaleDateString();
 			// console.log(FormattedDate);
+
+			// ajax call for the payment verification on email address
 			$.ajax({
 				url: 'sendPaymentVerificationEmail',
 				type: 'POST',
@@ -871,13 +937,14 @@ sap.ui.define([
 					Payment_Date: formattedPaymentDate,
 					Payment_Method: PaymentMode,
 					Email: EmailAddress
-					// Email: 'deves@soyuztechnologies.com'
+					// Email: 'devesh@soyuztechnologies.com'
 				},
 				success: function(res) {
 					if(res =="Email sent successfully"){
 						MessageToast.show("Email sent Successfully");
 						if (oText.getText()== "Send Mail") {
-							oText.setText("Access granted");
+							oText.setEnabled(false);
+							that.statusChange(oText);
 						}
 					}
 				},
@@ -886,7 +953,81 @@ sap.ui.define([
 					// Handle error response here
 				}
 			});
+
+
+
+			// ajax call for the payment verification on phone number
+			$.ajax({
+				type: 'POST',
+				url: 'requestMessage',
+				data: {
+					// Number: '9309051983',
+					Number: Phone,
+					msgType: "WARDREG"
+				},
+				success: function (data) {
+					debugger;
+					console.log("success: " + data);
+					MessageToast.show('OTP Successfully Sent');
+				},
+				error: function (xhr, status, error) {
+					console.error(error);
+					MessageToast.show('Error sending OTP via email');
+				}
+			});
 			
+		},
+		statusChange:function(oEvent){
+			debugger;
+			if (oEvent.getText() == "Approve") {
+				var sPath = oEvent.getBindingContext().sPath;
+				var that = this;
+				var payload3 = {
+					"Status": "Approved"
+				};
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+					.then(function (oData) {
+
+
+					}).catch(function (oError) {
+						that.getView().setBusy(false);
+						var oPopover = that.getErrorMessage(oError);
+
+					});
+			}
+			 else if (oEvent.getText() == "Send Mail") {
+				var sPath = oEvent.getBindingContext().sPath;
+				var that = this;
+				var payload3 = {
+					"Status": "Access Granted"
+				};
+
+
+				// var loginPayload = oEvent.getBindingContext().getModel().getProperty(oEvent.getBindingContext().getPath());
+				// if (!that.passwords) {
+				// 	that.passwords = prompt("Please enter your password", "");
+				// }
+				// loginPayload.password = that.passwords;
+				// loginPayload.includeX = that.getView().byId("includeX").getSelected();
+				// $.post('/sendSubscriptionEmail', loginPayload)
+				// 	.done(function (data, status) {
+				// 		sap.m.MessageToast.show("Email sent successfully");
+				// 	})
+
+				// 	.fail(function (xhr, status, error) {
+				// 		sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+				// 	});
+
+
+				this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+					.then(function (oData) {
+
+					}).catch(function (oError) {
+						that.getView().setBusy(false);
+						var oPopover = that.getErrorMessage(oError);
+
+					});
+			}
 		},
 		// onApprove: function (oEvent) {
 
@@ -897,16 +1038,17 @@ sap.ui.define([
 		// 		var payload3 = {
 		// 			"Status": "Approved"
 		// 		};
-		// 		// this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
-		// 		// 	.then(function (oData) {
+		// 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+		// 			.then(function (oData) {
 
 
-		// 		// 	}).catch(function (oError) {
-		// 		// 		that.getView().setBusy(false);
-		// 		// 		var oPopover = that.getErrorMessage(oError);
+		// 			}).catch(function (oError) {
+		// 				that.getView().setBusy(false);
+		// 				var oPopover = that.getErrorMessage(oError);
 
-		// 		// 	});
-		// 	} else if (oEvent.getSource().getText() == "Send Mail") {
+		// 			});
+		// 	}
+		// 	 else if (oEvent.getSource().getText() == "Send Mail") {
 		// 		var sPath = oEvent.getSource().getBindingContext().sPath;
 		// 		var that = this;
 		// 		var payload3 = {
@@ -914,45 +1056,45 @@ sap.ui.define([
 		// 		};
 
 
-		// 		// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
-		// 		// if (!that.passwords) {
-		// 		// 	that.passwords = prompt("Please enter your password", "");
-		// 		// }
-		// 		// loginPayload.password = that.passwords;
-		// 		// loginPayload.includeX = that.getView().byId("includeX").getSelected();
-		// 		// $.post('/sendSubscriptionEmail', loginPayload)
-		// 		// 	.done(function (data, status) {
-		// 		// 		sap.m.MessageToast.show("Email sent successfully");
-		// 		// 	})
+		// 		var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
+		// 		if (!that.passwords) {
+		// 			that.passwords = prompt("Please enter your password", "");
+		// 		}
+		// 		loginPayload.password = that.passwords;
+		// 		loginPayload.includeX = that.getView().byId("includeX").getSelected();
+		// 		$.post('/sendSubscriptionEmail', loginPayload)
+		// 			.done(function (data, status) {
+		// 				sap.m.MessageToast.show("Email sent successfully");
+		// 			})
 
-		// 		// 	.fail(function (xhr, status, error) {
-		// 		// 		sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
-		// 		// 	});
+		// 			.fail(function (xhr, status, error) {
+		// 				sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+		// 			});
 
 
-		// 		// this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
-		// 		// 	.then(function (oData) {
+		// 		this.ODataHelper.callOData(this.getOwnerComponent().getModel(), sPath, "PUT", {}, payload3, this)
+		// 			.then(function (oData) {
 
-		// 		// 		// var that2 = that;
-		// 		// 		// that.passwords= null;
-		// 		// 		// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
-		// 		// 		// 	if(!that.passwords){
-		// 		// 		// 		that.passwords = prompt("Please enter your password", "");
-		// 		// 		// 	}
-		// 		// 		// 	loginPayload.password = that.passwords;
-		// 		// 		// $.post('/sendSubscriptionEmail', loginPayload)
-		// 		// 		// 		.done(function(data, status){
-		// 		// 		// 			sap.m.MessageToast.show("looks like done");
-		// 		// 		// 		})
-		// 		// 		// 		.fail(function(xhr, status, error) {
-		// 		// 		// 					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
-		// 		// 		// 		});
+		// 				// var that2 = that;
+		// 				// that.passwords= null;
+		// 				// var loginPayload = that.oEvent_approve.getSource().getBindingContext().getModel().getProperty(that.oEvent_approve.getSource().getBindingContext().getPath());
+		// 				// 	if(!that.passwords){
+		// 				// 		that.passwords = prompt("Please enter your password", "");
+		// 				// 	}
+		// 				// 	loginPayload.password = that.passwords;
+		// 				// $.post('/sendSubscriptionEmail', loginPayload)
+		// 				// 		.done(function(data, status){
+		// 				// 			sap.m.MessageToast.show("looks like done");
+		// 				// 		})
+		// 				// 		.fail(function(xhr, status, error) {
+		// 				// 					sap.m.MessageBox.error("Login Failed, Please enter correct credentials");
+		// 				// 		});
 
-		// 		// 	}).catch(function (oError) {
-		// 		// 		that.getView().setBusy(false);
-		// 		// 		var oPopover = that.getErrorMessage(oError);
+		// 			}).catch(function (oError) {
+		// 				that.getView().setBusy(false);
+		// 				var oPopover = that.getErrorMessage(oError);
 
-		// 		// 	});
+		// 			});
 		// 	}
 		// },
 		searchPopup: null,
