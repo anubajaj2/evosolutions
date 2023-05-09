@@ -4,7 +4,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:u="sap.ui.unified"
     xmlns:html="http://www.w3.org/1999/xhtml">
-    <Page showFooter="true" title="Generate Id Card" navButtonPress="onBack">
+    <Page showNavButton="true" navButtonPress="handleNavButtonPress" showFooter="true" title="Generate Id Card">
         <headerContent>
             <Text id="idUser"></Text>
             <Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>

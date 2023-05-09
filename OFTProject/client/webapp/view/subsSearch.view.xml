@@ -9,7 +9,7 @@
 	xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:smartTable="sap.ui.comp.smarttable"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Manage Subscriptions" navButtonPress="onBack">
+	<Page showNavButton="true" navButtonPress="handleNavButtonPress" title="Manage Subscriptions" >
 		<headerContent>
 			<Text id="idUser"></Text>
 			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
