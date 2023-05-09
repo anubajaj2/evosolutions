@@ -15,7 +15,7 @@ sap.ui.define([
         },
 
         _onRouteMatched: function (oEvent) {
-            debugger;
+            
             var sRouteName = oEvent.getParameter("name");
             if(sRouteName==="leadDetails"){
                 this.getView().getModel('local').setProperty("/onResendOTP", false);
@@ -27,7 +27,9 @@ sap.ui.define([
 
                 this.getView().getModel('local').setProperty("/Email", "");
                 this.getView().getModel('local').setProperty("/captcha", "");
+                this.getView().getModel('local').setProperty("/otpValue", "");
                 this.getView().getModel('local').setProperty("/sendOtpDisabled", true);
+                
                 this.onOpenDialog();
                 this.getView().getModel('local').updateBindings();                
                 // this.getView().getModel('local').refresh()
@@ -40,7 +42,7 @@ sap.ui.define([
             var that = this;
             // Load the fragment file
             // this.oDialog = "undefined";
-            debugger;
+            
             if (!this.oDialog) {
                 this.oDialog = Fragment.load({
                     id: oView.getId(),
@@ -64,6 +66,7 @@ sap.ui.define([
                 that.getView().getModel('local').setProperty("/PageVisibility", false);
                 that.getView().getModel('local').setProperty("/verifySubmit", false);
                 oDialog.open();
+                that.onRefresh();
                 
                 // this.getView().getModel('local').setProperty("/Email", "");
                 // this.getView().getModel('local').setProperty("/captcha", "");
@@ -85,7 +88,7 @@ sap.ui.define([
             var ctx = canvas.getContext("2d");
             // Draw the captcha code on the canvas
             ctx.fillText(captchaCode, 20, 20);
-            debugger;
+            
             // var captchaImage = this.getView().byId("captchaImage");
             // captchaImage.setSrc(canvas.toDataURL());
             // Set the data URL of the canvas as the source of the captcha image
@@ -122,7 +125,7 @@ sap.ui.define([
  // ================== Function validate the input field for the email and as well as send OTP  ===================== 
 
         validateCaptcha: function () {
-            debugger;
+            
             var sEmail = this.getView().getModel('local').getProperty("/Email");
             this.sEmail = this.getView().getModel('local').getProperty("/Email");
             var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
@@ -142,7 +145,7 @@ sap.ui.define([
             };
 
             if (!InpCaptchaCode || InpCaptchaCode !== this._captchaCode) {
-                debugger;
+                
                 MessageToast.show("Please enter a valid captcha code.");
                 return;
             };
@@ -150,7 +153,7 @@ sap.ui.define([
             var that = this;
             var oModel = this.getView().getModel('local');
 
-            // debugger;
+            // 
             // Send AJAX request to backend
             var that = this;
             var oModel = this.getView().getModel('local');
@@ -161,7 +164,7 @@ sap.ui.define([
                     eMail: sEmail
                 },
                 success: function (data) {
-                    // debugger;
+                    // 
                     if(data=="email sent"){
                         oModel.setProperty('/sendOtpDisabled', false);
 
@@ -192,7 +195,7 @@ sap.ui.define([
         },
 
         resendOTP:function(){
-            debugger;
+            
             this.getView().getModel('local').setProperty('/sendOtp', false);
             var sEmail = this.getView().getModel('local').getProperty("/Email");
             this.sEmail = this.getView().getModel('local').getProperty("/Email");
@@ -213,7 +216,7 @@ sap.ui.define([
             };
 
             if (!InpCaptchaCode || InpCaptchaCode !== this._captchaCode) {
-                debugger;
+                
                 MessageToast.show("Please enter a valid captcha code.");
                 return;
             };
@@ -221,7 +224,7 @@ sap.ui.define([
             var that = this;
             var oModel = this.getView().getModel('local');
 
-            // debugger;
+            // 
             // Send AJAX request to backend
             var that = this;
             var oModel = this.getView().getModel('local');
@@ -232,7 +235,7 @@ sap.ui.define([
                     eMail: sEmail
                 },
                 success: function (data) {
-                    // debugger;
+                    // 
                     if(data=="email sent"){
                         oModel.setProperty('/sendOtpDisabled', false);
 
@@ -253,7 +256,7 @@ sap.ui.define([
  // =========================== Function validate the input field for the Mobile Number As Well as send =========================
 
         onNumberOTPPress: function () {
-            debugger;
+            
             var that = this;
             var sMobileNumber = this.getView().getModel('local').getProperty("/mobileNumber");
             
@@ -271,7 +274,7 @@ sap.ui.define([
                             msgType: "OTP"
                         },
                         success: function (data) {
-                            debugger;
+                            
                             that.getView().getModel('local').setProperty('/otpVisible', true);
                             
                             //   that.getView().getModel('local').setProperty('/email', false);
@@ -304,7 +307,7 @@ onSubmit: function () {
             debugger
             if (otpvalue !== undefined) {
                 var that = this;
-                debugger;
+                
                 $.ajax({
                     type: 'GET',
                     url: 'validateOtp',
@@ -313,7 +316,7 @@ onSubmit: function () {
                         OTP: otpvalue
                     },
                     success: function (data) {
-                        debugger;
+                        
                         if (data === false) {
                             MessageToast.show('Error in Verification');
                             oModel.setProperty('/otpValue', "");
@@ -326,7 +329,7 @@ onSubmit: function () {
 
                             // // that.getView().getModel('local').setProperty("/PageVisibility",true);
                             //   that.getRouter().navTo("leadDetail", {}, true);
-                                debugger;
+                                
                                 that.getView().getModel("local").setProperty("/Authorization", data.id);
                                 that.getView().getModel().setHeaders({
                                     "Authorization": data.id
@@ -379,7 +382,7 @@ onSubmit: function () {
                                         }
                                         // that2.getRouter().navTo("leadDetail", {}, true);
                                     }).catch(function (oError) {
-                                        debugger;
+                                        
                                         MessageToast.show("Error While Login");
                                     });
             
@@ -389,7 +392,7 @@ onSubmit: function () {
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
-                        debugger;
+                        
                         MessageToast.show('Error in Verification');
                     }
                 });
@@ -397,7 +400,7 @@ onSubmit: function () {
             else {
                 MessageToast.show("Please Enter Your  OTP",)
             }
-            debugger;
+            
 
             // this.numberVisible();
             // this.getView().getModel('local').setProperty("/MobileNumber",false);
@@ -406,7 +409,7 @@ onSubmit: function () {
 
 // ===================== This function will enalbe the mobile number filed after 2 attempts =====================
         numberVisible: function () {
-            debugger;
+            
             if (this.emailCount >= 2) {
                 this.getView().getModel('local').setProperty("/numberVisible", true);
                 this.getView().getModel('local').setProperty("/messageStripVisible", true);
@@ -419,7 +422,7 @@ onSubmit: function () {
 // ============ this fucntion will shows the resend info and timer below to the otp input filed ================ 
 
         OtpSend: function () {
-            debugger;
+            
             this.emailCount += 1;
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
@@ -448,7 +451,7 @@ onSubmit: function () {
         },
 //      this function will run the time for 60 second and than after 60 second the field for email will be disable and for email is enabled
         OtpReSend: function () {
-            debugger;
+            
             this.emailCount += 1;
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
@@ -489,7 +492,7 @@ onSubmit: function () {
         onRefresh: function (oEvent) {
             var captchaDialog = this.getView().byId("idLead");
             captchaDialog.removeAllItems();
-            debugger;
+            
             this.onCaptchaGenerate();
         },
         
@@ -524,7 +527,7 @@ onSubmit: function () {
         //           eMail: this.sEmail
         //         },
         //         success: function (data) {
-        //           debugger;
+        //           
         //           that.getView().getModel('local').setProperty('/otpVisible', true);
         //           that.getView().getModel('local').setProperty('/sendOtp', false);
         //           // oModel.setProperty('/MobileNumber', false);
