@@ -1591,7 +1591,7 @@ app.start = function () {
 			}
 
 			const fs = require('fs');
-			this.htmlTemplate = fs.readFileSync(process.cwd() + "\\server\\sampledata\\" + 'SubscriptionEmailTemplate.html', 'utf8');
+			this.htmlTemplate = fs.readFileSync(process.cwd() + "/server/sampledata/" + 'SubscriptionEmailTemplate.html', 'utf8');
 			const { Parent_Name, Camper_Name, Camp_Program_Name, Program_Dates, Payment_Amount, Payment_Date, Payment_Method, Email } = req.body;
 
 			this.htmlTemplate = this.htmlTemplate
