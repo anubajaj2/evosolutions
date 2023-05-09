@@ -3,6 +3,7 @@
   xmlns:semantic="sap.m.semantic" xmlns:t="sap.ui.table" xmlns:l="sap.m.ListBase"
   xmlns:f="sap.ui.layout.form">
   <semantic:FullscreenPage
+  showNavButton="true" navButtonPress="handleNavButtonPress"
     title="Daily Task">
     <semantic:customHeaderContent>
   		<Text id="idUser"> </Text>

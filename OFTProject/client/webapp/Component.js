@@ -1,8 +1,9 @@
 sap.ui.define(
 	["sap/ui/core/UIComponent",
 	"oft/fiori/models/models",
-	"sap/ui/model/json/JSONModel"], 
-	function(UIComponent, Models,JSONModel){
+	"sap/ui/model/json/JSONModel",
+"sap/ui/Device"], 
+	function(UIComponent, Models,JSONModel,Device){
 		return UIComponent.extend("oft.fiori.Component",{
 			//includes metadata of app e.g. themes, router config, app name, version etc.
 			metadata: {
@@ -13,7 +14,9 @@ sap.ui.define(
 				//we must call the base class constructor to
 				//initialize the readymade features
 				sap.ui.core.UIComponent.prototype.init.apply(this);
-				
+				var oModel = new JSONModel(Device);
+				oModel.setDefaultBindingMode("OneWay");
+				this.setModel(oModel, "device");
      			var oRouter = this.getRouter();
 				//Router will read manifest.json accordingly create view object
 				oRouter.initialize();

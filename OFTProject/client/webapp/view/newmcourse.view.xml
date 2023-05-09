@@ -2,7 +2,7 @@
     controllerName="oft.fiori.controller.newmcourse"
 	xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="New Course"  navButtonPress="onBack">
+	<Page showNavButton="true" navButtonPress="handleNavButtonPress" title="New Course" >
 		<headerContent>
 	    	<Text id="idUser"></Text>
 			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>

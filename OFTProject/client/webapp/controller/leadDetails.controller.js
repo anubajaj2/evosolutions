@@ -406,6 +406,13 @@ onSubmit: function () {
             // this.getView().getModel('local').setProperty("/MobileNumber",false);
             // this.getView().getModel('local').getProperty("/Email");
         },
+        onEnter:function(){
+            this.validateCaptcha()
+        },
+        onEnterOtp:function(){
+            this.onSubmit();
+        },
+        
 
 // ===================== This function will enalbe the mobile number filed after 2 attempts =====================
         numberVisible: function () {

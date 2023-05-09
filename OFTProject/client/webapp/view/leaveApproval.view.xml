@@ -9,10 +9,9 @@
 	xmlns="sap.m"
 	>
  <semantic:FullscreenPage id="page"
+ showNavButton="true" navButtonPress="handleNavButtonPress"
 	title="Leave Approval"
 	floatingFooter="false"
-	showNavButton="false"
-	navButtonPress="onNavButtonPress"
 	>
 	<semantic:customHeaderContent>
 		<Text id="idUser"> </Text>

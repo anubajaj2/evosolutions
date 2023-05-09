@@ -406,6 +406,13 @@ onSubmit: function () {
             // this.getView().getModel('local').setProperty("/MobileNumber",false);
             // this.getView().getModel('local').getProperty("/Email");
         },
+        onEnter:function(){
+            this.validateCaptcha()
+        },
+        onEnterOtp:function(){
+            this.onSubmit();
+        },
+        
 
 // ===================== This function will enalbe the mobile number filed after 2 attempts =====================
         numberVisible: function () {
@@ -427,7 +434,7 @@ onSubmit: function () {
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;
-            var countDownDate = new Date().getTime() + 10000; // 60 seconds from now
+            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
             var x = setInterval(function () {
                 var now = new Date().getTime();
                 var distance = countDownDate - now;

@@ -11,8 +11,7 @@
 
   <!-- <semantic:FullscreenPage
     id="Trainers"
-    navButtonPress="onNavBack"
-    showNavButton="true"
+    showNavButton="true" navButtonPress="handleNavButtonPress"
     title="Manage Trainers"
     busy="{objectView>/busy}"
     busyIndicatorDelay="{objectView>/delay}">
