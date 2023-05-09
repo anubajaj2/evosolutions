@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 	controllerName="oft.fiori.controller.batch" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page showNavButton="true" navButtonPress="handleNavButtonPress" title="New Batch" >
+	<Page showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress" title="New Batch" >
 		<headerContent>
 			<Text id="idUser"></Text>
 			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>

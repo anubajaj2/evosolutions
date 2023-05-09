@@ -12,7 +12,7 @@
   xmlns:chart="sap.suite.ui.commons"
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
 
-  <semantic:FullscreenPage showNavButton="true" navButtonPress="handleNavButtonPress"  title="Daily Task">
+  <semantic:FullscreenPage showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"  title="Daily Task">
     <semantic:customHeaderContent>
       <Text id="idUser"> </Text>
       <Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>

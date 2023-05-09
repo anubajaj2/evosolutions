@@ -12,7 +12,7 @@
   xmlns:me="sap.me"
   xmlns:h ="http://www.w3.org/1999/xhtml"
 	>
-  <Page showNavButton="true" navButtonPress="handleNavButtonPress" title="Performace Analysis">
+  <Page showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress" title="Performace Analysis">
     <content>
 
       <f:SimpleForm editable="true" id="idform">

@@ -10,7 +10,7 @@
 	xmlns:h ="http://www.w3.org/1999/xhtml"
 	xmlns="sap.m">
 <semantic:FullscreenPage id="idspage"
-showNavButton="true" navButtonPress="handleNavButtonPress"
+showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"
 	title="Create Leave Request"
 	floatingFooter="true"
 	>

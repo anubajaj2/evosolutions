@@ -9,7 +9,7 @@
   xmlns:t="sap.ui.table"
 	>
   <semantic:FullscreenPage
-  showNavButton="true" navButtonPress="handleNavButtonPress"
+  showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"
     title="Task Overview">
     <semantic:customHeaderContent>
   		<Text id="idUserl"> </Text>

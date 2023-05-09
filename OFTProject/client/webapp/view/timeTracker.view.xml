@@ -13,7 +13,7 @@
   xmlns:h ="http://www.w3.org/1999/xhtml"
 	>
   <semantic:FullscreenPage
-  showNavButton="true" navButtonPress="handleNavButtonPress"
+  showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"
     title="Track Your Time">
     <semantic:customHeaderContent>
   		<Text id="idUserl"> </Text>

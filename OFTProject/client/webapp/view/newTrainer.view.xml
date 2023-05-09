@@ -11,7 +11,7 @@
 
   <!-- <semantic:FullscreenPage
     id="Trainers"
-    showNavButton="true" navButtonPress="handleNavButtonPress"
+    showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"
     title="Manage Trainers"
     busy="{objectView>/busy}"
     busyIndicatorDelay="{objectView>/delay}">
@@ -26,7 +26,7 @@
         </f:Form>
       </semantic:content> -->
       <Page title="Manage Trainers"  navButtonPress="onNavBack"
-      showNavButton="true">
+      showNavButton="{device>/system/phone}">
       <headerContent>
         <Text id="idUser"></Text>
         <Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>

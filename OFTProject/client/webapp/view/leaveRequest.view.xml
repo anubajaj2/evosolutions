@@ -8,7 +8,7 @@
 	xmlns:u="sap.ui.unified"
 	xmlns="sap.m">
 <semantic:FullscreenPage id="page"
-showNavButton="true" navButtonPress="handleNavButtonPress"
+showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress"
 	title="Leave Request"
 	floatingFooter="true"
 	>
