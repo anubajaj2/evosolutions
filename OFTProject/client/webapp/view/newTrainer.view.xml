@@ -105,10 +105,24 @@
 
         <f:Form id="sideBySide" editable="true">
           <f:layout>
-            <f:GridLayout labelSpanXL="2" labelSpanL="2" labelSpanM="2"
+            <!-- <f:GridLayout labelSpanXL="2" labelSpanL="2" labelSpanM="2"
               emptySpanXL="2" emptySpanL="2" emptySpanM="2"
               columnsXL="8" columnsL="8" columnsM="8"
-              singleContainerFullSize="false"></f:GridLayout>
+              singleContainerFullSize="false"></f:GridLayout> -->
+              <f:ResponsiveGridLayout
+					labelSpanXL="4"
+					labelSpanL="4"
+					labelSpanM="4"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="0"
+					emptySpanL="0"
+					emptySpanM="0"
+					emptySpanS="0"
+					columnsXL="3"
+					columnsL="2"
+					columnsM="2"
+					singleContainerFullSize="false" />
             </f:layout>
 
             <f:formContainers>
