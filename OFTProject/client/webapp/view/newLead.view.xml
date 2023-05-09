@@ -2,7 +2,7 @@
     controllerName="oft.fiori.controller.newLead"
 	xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page showNavButton="true" navButtonPress="handleNavButtonPress" title="New Lead" >
+	<Page showNavButton="{device>/system/phone}" navButtonPress="handleNavButtonPress" title="New Lead" >
 		<headerContent>
 	    	<Text id="idUser"></Text>
 			<Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
