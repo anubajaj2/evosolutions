@@ -424,7 +424,7 @@ onSubmit: function () {
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;
-            var countDownDate = new Date().getTime() + 10000; // 60 seconds from now
+            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
             var x = setInterval(function () {
                 var now = new Date().getTime();
                 var distance = countDownDate - now;
