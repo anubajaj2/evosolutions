@@ -78,7 +78,7 @@
 				 showRowCount="true" updateFinished="onUpdateFinished">
 				<!--class="tableStyle" -->
 				<headerToolbar>
-					<Toolbar>
+					<OverflowToolbar>
 						<Title id="titletext"/>
 						<ToolbarSpacer/>
 						<Button press="onTableSettings" icon="sap-icon://drop-down-list" tooltip="Settings"/>
@@ -103,7 +103,7 @@
 								</layoutData>
 							</Switch>
 						</HBox>
-					</Toolbar>
+					</OverflowToolbar>
 				</headerToolbar>
 				<columns>
 					<!-- <Column> <Text text="SubGuid"/> </Column> -->
