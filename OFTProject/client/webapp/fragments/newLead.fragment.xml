@@ -104,7 +104,7 @@ xmlns:html="http://www.w3.org/1999/xhtml">
 		</f:SimpleForm>
     </VBox>
     <VBox>
-        <Table id="idWardDetails" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+        <Table id="idWardDetails" autoPopinMode="true" contextualWidth="Auto" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
             <headerToolbar>
               <OverflowToolbar >
                 <ToolbarSpacer/>

@@ -104,7 +104,7 @@
 				</List>
 			</VBox> -->
 			<Table id="idSubsRecent" items="{/Subs}" growing="true"  growingThreshold="2000"
-				growingScrollToLoad="false" mode="MultiSelect"
+				growingScrollToLoad="false" mode="MultiSelect"  autoPopinMode="true" contextualWidth="Auto" 
 	      class="sapUiSizeCompact"
 				showRowCount="true"  updateFinished="onUpdateFinished" >
 				<headerToolbar>
@@ -123,11 +123,11 @@
 					<!-- <Button icon="sap-icon://refresh" press="onRefresh"/> -->
 				</Toolbar>
 					</headerToolbar>
-					<columns>
-					<Column>
+					<columns >
+					<Column >
 						<Label text="{i18n>customerId}" class="columnLabelStyle"/>
 					</Column>
-					<Column>
+					<Column >
 						<Label text="{i18n>courseName}" class="columnLabelStyle"/>
 					</Column>
 					<Column>
@@ -153,7 +153,7 @@
 					</Column> -->
 				</columns>
 				<items>
-					<ColumnListItem id="idColumnlist" press="onItemPress"  type="Active" >
+					<ColumnListItem id="idColumnlist" press="onItemPress"  type="Active" vAlign="Middle" >
 						<cells>
 
 							<!-- modelContextChange="onStudentIdChange"  -->
@@ -177,12 +177,12 @@
 			</Table>
 		</content>
 		<footer>
-			<Toolbar>
+			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button text="Clear Screen" icon="sap-icon://sys-minus" type="Reject" press="onClearScreen" id="idClear"></Button>
 				<Button text="New Customer" icon="sap-icon://add-employee" type="Accept" press="onCustomer" id="idCust"></Button>
 				<Button text="Save" type="Accept" press="onSaveSubs" id="idApr"></Button>
-			</Toolbar>
+			</OverflowToolbar>
 		</footer>
 	</Page>
 </mvc:View>

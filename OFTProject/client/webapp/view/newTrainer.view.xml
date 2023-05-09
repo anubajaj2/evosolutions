@@ -9,7 +9,7 @@
   xmlns:footerbar="sap.ushell.ui.footerbar"
   xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-  <semantic:FullscreenPage
+  <!-- <semantic:FullscreenPage
     id="Trainers"
     navButtonPress="onNavBack"
     showNavButton="true"
@@ -25,9 +25,15 @@
       <semantic:content id="Header">
         <f:Form id="trainerHeader" editable="true">
         </f:Form>
-      </semantic:content>
+      </semantic:content> -->
+      <Page title="Manage Trainers"  navButtonPress="onNavBack"
+      showNavButton="true">
+      <headerContent>
+        <Text id="idUser"></Text>
+        <Button icon="sap-icon://log" text="Logout" type="Emphasized" tooltip="Logout" press="logOutApp"/>
+      </headerContent>
 
-      <semantic:content>
+      <!-- <semantic:content> -->
         <f:SimpleForm
           minWidth="1024"
           maxContainerCols="2"
@@ -235,7 +241,7 @@
 
           </f:Form>
 
-          <Table id="idTrainerCourse" items="{local>/TrainerModel/Courses}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+          <Table id="idTrainerCourse" items="{local>/TrainerModel/Courses}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true" autoPopinMode="true" contextualWidth="Auto">
             <headerToolbar>
               <OverflowToolbar>
                 <ToolbarSpacer/>
@@ -287,12 +293,12 @@
               </items>
             </Table>
 
-          </semantic:content>
-          <semantic:customFooterContent>
+          <!-- </semantic:content> -->
+          <!-- <semantic:customFooterContent> -->
             <Button text="Save" type="Accept" press="onSave"/>
             <Button text="Delete" type="Reject" press="deletetrainer" enabled="{viewModel>/deleteEnabled}"/>
             <Button text="Clear" type="Ghost" press="cleartrainer"/>
-          </semantic:customFooterContent>
-        </semantic:FullscreenPage>
-
+          <!-- </semantic:customFooterContent> -->
+        <!-- </semantic:FullscreenPage> -->
+              </Page>
       </mvc:View>

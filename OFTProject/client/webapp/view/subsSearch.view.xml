@@ -72,7 +72,7 @@
 				<Button press="onClearSearchFilter" text="Clear Search" icon="sap-icon://delete"/>
 			</Panel>
 			<Table id="manageSubsTable" items="{/Subs}" growing="true"
-				growingThreshold="50"
+				growingThreshold="50" autoPopinMode="true" contextualWidth="Auto" 
 				growingScrollToLoad="false"
 				 mode="MultiSelect" class="sapUiSizeCompact"
 				 showRowCount="true" updateFinished="onUpdateFinished">
@@ -130,7 +130,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem id="idColumnlist" press="onItemPress" type="Active" highlight="{path:'PartialPayment', formatter:'.formatRowHighlight'}">
+					<ColumnListItem vAlign="Middle" id="idColumnlist" press="onItemPress" type="Active" highlight="{path:'PartialPayment', formatter:'.formatRowHighlight'}">
 						<cells>
 							<!-- <Text text="{id}"></Text> -->
 							<Text text="{StudentId}"></Text>

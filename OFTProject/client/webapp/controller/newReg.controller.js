@@ -1029,6 +1029,10 @@ sap.ui.define([
 					});
 			}
 		},
+		onPopinChanged: function(oEvent) {
+			var aHiddenInPopin = oEvent.getParameter("hiddenInPopin");
+			MessageToast.show("Number of hidden pop-ins: " + aHiddenInPopin.length);
+		},
 		// onApprove: function (oEvent) {
 
 		// 	this.oEvent_approve = oEvent;
