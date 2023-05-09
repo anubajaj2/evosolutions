@@ -21,11 +21,11 @@
                     <Button press="onRefresh" icon="sap-icon://refresh"/>
                     <!-- <i:Icon src="sap-icon://refresh"></i:Icon> -->
                 </HBox>
-                <Input id="captchacheck" value="{local>/captcha}" />
+                <Input id="captchacheck" submit="onEnter" value="{local>/captcha}" />
                     
 
                 <Label text="OTP" id="otpLabel" visible="{local>/otpVisible}"/>
-                <Input liveChange="{local>/otpValue}" id="otpInput" value="{local>/otpValue}" visible="{local>/otpVisible}"/>
+                <Input liveChange="{local>/otpValue}" id="otpInput" value="{local>/otpValue}" submit="onEnterOtp" visible="{local>/otpVisible}"/>
                 <ObjectStatus  press="resendOTP" title="{local>/ResendMsg}" active="{local>/onResendOTP}" id="countdownT" text="{local>/timerText}" visible="{local>/otpVisible}"/>
                 </VBox>
         </f:SimpleForm>
