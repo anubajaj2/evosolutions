@@ -8,7 +8,7 @@ sap.ui.define([
 	'sap/m/MessagePopover',
 	'sap/m/MessageItem',
 	"oft/fiori/models/formatter"
-], function(jQuery, Controller, History, JSONModel, ODataHelper, MessageBox, MessagePopover, MessageItem,Formatter) {
+], function (jQuery, Controller, History, JSONModel, ODataHelper, MessageBox, MessagePopover, MessageItem, Formatter) {
 	"use strict";
 	var oTargetField;
 	var oSDCField;
@@ -35,12 +35,12 @@ sap.ui.define([
 		oEventBus: undefined,
 		oTestcaseListModel: undefined,
 		sUrlTargetSystem: undefined,
-		allMasterData:{
-			"courseMst":[],
-			"Trainers":[],
-			"AppUsers":[],
-			"Tasks":[],
-			"Wards":[]
+		allMasterData: {
+			"courseMst": [],
+			"Trainers": [],
+			"AppUsers": [],
+			"Tasks": [],
+			"Wards": []
 		},
 		/**
 		 * Convenience method for accessing t	he router in every controller of the application.
@@ -66,7 +66,7 @@ sap.ui.define([
 		// 		}).catch(function(oError) {
 		// 			var oPopover = that.getErrorMessage(oError);
 		// 		});
-				
+
 		// 	this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
 		// 	.then(function(oData){
 		// 		for(var i =0 ;i < oData.results.length; i++){
@@ -95,50 +95,50 @@ sap.ui.define([
 		// 		var oPopover = that.getErrorMessage(oError);
 		// 	});
 		// },
-		onInit: async function() {
+		onInit: async function () {
 			try {
-			  var that = this;
-			  var oData;
-			  // Use TechnicalId as Key
-			  oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
-				.then();
+				var that = this;
+				var oData;
+				// Use TechnicalId as Key
+				oData = await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/AppUsers", "GET", null, null, this)
+					.then();
 				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.AppUsers[oData.results[i].TechnicalId] = oData.results[i];
-				  }
-				  oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
-				.then();
+				}
+				oData = await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/tasks", "GET", {}, {}, this)
+					.then();
 				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.Tasks[oData.results[i].id] = oData.results[i];
-				  }
-		  
-			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
-				.then();
+				}
+
+				oData = await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/CoursesMst", "GET", {}, {}, this)
+					.then();
 				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.courseMst[oData.results[i].id] = oData.results[i];
-				  }
-		  
-			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Wards", "GET", {}, {}, this)
-				.then();
+				}
+
+				oData = await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Wards", "GET", {}, {}, this)
+					.then();
 				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.Wards[oData.results[i].id] = oData.results[i];
-				  }
-		  
-			    oData= await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
-				.then();
+				}
+
+				oData = await this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Trainers", "GET", {}, {}, this)
+					.then();
 				for (var i = 0; i < oData.results.length; i++) {
 					that.allMasterData.Trainers[oData.results[i].id] = oData.results[i];
-				  }
+				}
 			} catch (oError) {
-			  var oPopover = that.getErrorMessage(oError);
+				var oPopover = that.getErrorMessage(oError);
 			}
-		  },
-		  
+		},
+
 		allStudnets: [],
-		loadAllStudents: function(){
+		loadAllStudents: function () {
 			var that = this;
 			var oStuModel = this.getOwnerComponent().getModel();
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Students", "GET", {}, {}, this)
-				.then(function(data, controller) {
+				.then(function (data, controller) {
 					for (var i = 0; i < data.results.length; i++) {
 						that.allStudnets[data.results[i].id] = data.results[i];
 					}
@@ -146,12 +146,12 @@ sap.ui.define([
 
 		},
 		formatter: Formatter,
-		initAccounts: function() {
+		initAccounts: function () {
 
 			var oLocalModel = this.getView().getModel("local");
 			var that = this;
 			this.ODataHelper.callOData(this.getOwnerComponent().getModel(), "/Accounts", "GET", {}, {}, this)
-				.then(function(data, controller) {
+				.then(function (data, controller) {
 					var allAccounts = [];
 					data.results = that.formatter.sortByProperty(data.results, "accountName");
 					for (var i = 0; i < data.results.length; i++) {
@@ -165,33 +165,33 @@ sap.ui.define([
 					that.getView().getModel("local").setProperty("/accountSet", allAccounts);
 				});
 		},
-		getAccountBeneficiary: function(AccountName){
+		getAccountBeneficiary: function (AccountName) {
 			var allAccounts = this.getView().getModel("local").getProperty("/accountSet");
 			for (var i = 0; i < allAccounts.length; i++) {
-				if(allAccounts[i].key === AccountName){
+				if (allAccounts[i].key === AccountName) {
 					return allAccounts[i].value;
 				}
 			}
 		},
-		getRouter: function() {
+		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},
-		getCurrentUser: function(){
+		getCurrentUser: function () {
 			return this.currentUser;
 		},
-		logOutApp: function(Reload) {
+		logOutApp: function (Reload) {
 			var that = this;
 			var accessToken = that.getView().getModel("local").getProperty("/Authorization");
 			if (accessToken) {
 				$.post('/api/Users/logout?access_token=' + accessToken, {})
-					.done(function(data, status) {
+					.done(function (data, status) {
 						that.getView().getModel("local").setProperty("/Authorization", "");
 						that.getView().getModel().setHeaders({
 							"Authorization": ""
 						});
 						that.redirectLoginPage("X", Reload);
 					})
-					.fail(function(xhr, status, error) {
+					.fail(function (xhr, status, error) {
 						sap.m.MessageBox.error("Logout failed");
 					});
 			} else {
@@ -199,7 +199,7 @@ sap.ui.define([
 			}
 
 		},
-		getCustomerPopup: function() {
+		getCustomerPopup: function () {
 			if (!this.searchPopup) {
 				this.searchPopup = new sap.ui.xmlfragment("oft.fiori.fragments.popup", this);
 				this.getView().addDependent(this.searchPopup);
@@ -210,23 +210,23 @@ sap.ui.define([
 
 		},
 
-		getDialogPopup: function() {
+		getDialogPopup: function () {
 			if (!this.oDialogPopup) {
-				this.oDialogPopup = new sap.ui.xmlfragment("idDialog","oft.fiori.fragments.Dialog", this);
+				this.oDialogPopup = new sap.ui.xmlfragment("idDialog", "oft.fiori.fragments.Dialog", this);
 				// sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
 				this.getView().addDependent(this.oDialogPopup);
 			}
 			this.oDialogPopup.open();
 		},
-		getReasgnPopup: function() {
+		getReasgnPopup: function () {
 			if (!this.ReasgnPopup) {
-				this.ReasgnPopup = new sap.ui.xmlfragment("idReDialog","oft.fiori.fragments.Dialog", this);
+				this.ReasgnPopup = new sap.ui.xmlfragment("idReDialog", "oft.fiori.fragments.Dialog", this);
 				// sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
 				this.getView().addDependent(this.ReasgnPopup);
 			}
 			this.ReasgnPopup.open();
 		},
-		getFormPopup: function() {
+		getFormPopup: function () {
 			if (!this.oFormPopup) {
 				this.oFormPopup = new sap.ui.xmlfragment("oft.fiori.fragments.SimpleForm", this);
 				// sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
@@ -237,7 +237,7 @@ sap.ui.define([
 			this.oFormPopup.open();
 		},
 
-		getBatchPopup: function() {
+		getBatchPopup: function () {
 			if (!this.oSuppPopup) {
 				this.oSuppPopup = new sap.ui.xmlfragment("oft.fiori.fragments.popup", this);
 				// sap.ui.getCore().getMessageManager().registerObject(this.oSuppPopup, true);
@@ -248,7 +248,7 @@ sap.ui.define([
 			this.oSuppPopup.open();
 		},
 
-		getQuery: function(oEvent) {
+		getQuery: function (oEvent) {
 			var queryString = oEvent.getParameter("query");
 			if (!queryString) {
 				queryString = oEvent.getParameter("value");
@@ -256,7 +256,7 @@ sap.ui.define([
 			return queryString;
 		},
 
-		getSelectedKey: function(oEvent, key, label) {
+		getSelectedKey: function (oEvent, key, label) {
 			var key = oEvent.getParameter("selectedItem").getValue();
 			var label = oEvent.getParameter("selectedItem").getLabel();
 			var sPath = oEvent.getParameter("selectedItem").getBindingContextPath();
@@ -265,8 +265,8 @@ sap.ui.define([
 
 		},
 
-		getObjListSelectedkey: function(oEvent) {
-			
+		getObjListSelectedkey: function (oEvent) {
+
 			var title = oEvent.getParameter("selectedItem").getTitle();
 			var intro = oEvent.getParameter("selectedItem").getIntro();
 			var number = oEvent.getParameter("selectedItem").getNumber();
@@ -281,12 +281,12 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.model.Model} the model instance
 		 */
-		getModel: function(sName) {
+		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
 
 		messagePoper: null,
-		createMessagePopover: function() {
+		createMessagePopover: function () {
 			var that = this;
 			if (!this.messagePoper) {
 				this.messagePoper = sap.ui.xmlfragment(
@@ -299,14 +299,14 @@ sap.ui.define([
 			this.messagePoper.open();
 
 		},
-		destroyMessagePopover: function() {
+		destroyMessagePopover: function () {
 			if (this.messagePoper) {
 				this.messagePoper.destroy();
 				this.messagePoper = null;
 			}
 		},
 
-		getErrorMessage: function(oError) {
+		getErrorMessage: function (oError) {
 			var sErrorMessages = [];
 			var sResponseText;
 			var oResponse;
@@ -317,17 +317,17 @@ sap.ui.define([
 
 			try {
 				var sErrorMessages = oError.responseText.split(".")[1];
-				if(oError.responseText.split(".")["length"] > 2){
-				 sErrorMessages = oError.responseText ;
+				if (oError.responseText.split(".")["length"] > 2) {
+					sErrorMessages = oError.responseText;
 				}
-				if(!sErrorMessages){
-				sErrorMessages = oError.responseText.split(":")[1];
+				if (!sErrorMessages) {
+					sErrorMessages = oError.responseText.split(":")[1];
 				}
 			} catch (e) {
-				if(oError.message){
+				if (oError.message) {
 					sErrorMessages = ';' + oError.message;
 				}
-				else{
+				else {
 					return oError.responseText.split(".")[1];
 				}
 			}
@@ -345,7 +345,7 @@ sap.ui.define([
 				this.createMessagePopover();
 			}
 		},
-		handlevalidationDialogClose: function() {
+		handlevalidationDialogClose: function () {
 			this.messagePoper.close();
 			if (this.messagePoper) {
 				this.messagePoper.destroy();
@@ -360,7 +360,7 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.mvc.View} the view instance
 		 */
-		setModel: function(oModel, sName) {
+		setModel: function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
 		},
 
@@ -369,20 +369,20 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 		 */
-		getResourceBundle: function() {
+		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
-		redirectLoginPage: function(logOut, Reload) {
+		redirectLoginPage: function (logOut, Reload) {
 
 			if (logOut == "X" && Reload != "X") {
 				MessageBox.alert("Logout Successful");
 			} else if (Reload != "X") {
 				MessageBox.alert("Page expired, please login again");
 			}
-			if(window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetail" || window.top.location.href.split("/")[window.top.location.href.split("/").length-1]==="leadDetails"){
+			if (window.top.location.href.split("/")[window.top.location.href.split("/").length - 1] === "leadDetail" || window.top.location.href.split("/")[window.top.location.href.split("/").length - 1] === "leadDetails") {
 				window.top.location.href = "/#/leadDetails";
 			}
-			else{
+			else {
 				window.top.location.href = "/";
 			}
 		},
@@ -392,7 +392,7 @@ sap.ui.define([
 		 * If not, it will replace the current entry of the browser history with the master route.
 		 * @public
 		 */
-		onNavBack: function() {
+		onNavBack: function () {
 			var sPreviousHash = History.getInstance().getPreviousHash(),
 				oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
@@ -402,10 +402,10 @@ sap.ui.define([
 				this.getRouter().navTo("master", {}, true);
 			}
 		},
-		getEventBus: function() {
+		getEventBus: function () {
 			return sap.ui.getCore().getEventBus();
 		},
-		getViewModel: function() {
+		getViewModel: function () {
 			return new JSONModel({
 				busy: false,
 				delay: 0,
@@ -415,15 +415,15 @@ sap.ui.define([
 			});
 		},
 
-		clearData: function() {
+		clearData: function () {
 
 		},
 
-		onSwitchStateChange: function(oEvent) {
+		onSwitchStateChange: function (oEvent) {
 
 		},
 
-		onAutoLoginCheck: function(oEvent) {
+		onAutoLoginCheck: function (oEvent) {
 			// var state = oEvent.getSource().getSelected();
 			// var oTestcaseModel = sap.ui.getCore().getModel("tcCreateModel");
 			// if (state) {
@@ -434,28 +434,26 @@ sap.ui.define([
 		},
 
 		//conversion of server date to format "DD-MM-YYYY"
-		onDateFormatted: function(oDate){
+		onDateFormatted: function (oDate) {
 			var dd = oDate.getDate();
-			var mm = oDate.getMonth()+1;
+			var mm = oDate.getMonth() + 1;
 			var yyyy = oDate.getFullYear();
-			if(dd<10)
-			{
-			    dd='0'+dd;
+			if (dd < 10) {
+				dd = '0' + dd;
 			}
-			if(mm<10)
-			{
-			    mm='0'+mm;
+			if (mm < 10) {
+				mm = '0' + mm;
 			}
-			return dd+'.'+mm+'.'+yyyy;
+			return dd + '.' + mm + '.' + yyyy;
 		},
 		copyTextToClipboard: function (text) {
 			if (!navigator.clipboard) {
 				fallbackCopyTextToClipboard(text);
 				return;
 			}
-			navigator.clipboard.writeText(text).then(function() {
+			navigator.clipboard.writeText(text).then(function () {
 				console.log('Async: Copying to clipboard was successful!');
-			}, function(err) {
+			}, function (err) {
 				console.error('Async: Could not copy text: ', err);
 			});
 		},
@@ -476,7 +474,7 @@ sap.ui.define([
 
 			document.body.removeChild(textArea);
 		},
-		onSystemHelp: function(oEvent) {
+		onSystemHelp: function (oEvent) {
 			// oSystemField = oEvent.getSource();
 			// if (!this.systemHelpDialog) {
 			// 	this.systemHelpDialog = sap.ui.xmlfragment(
@@ -495,7 +493,7 @@ sap.ui.define([
 			// 		jQuery.sap.log.error("Could not obtain data");
 			// 	});
 		},
-		getCourseMstPopUp: function() {
+		getCourseMstPopUp: function () {
 			if (!this.searchPopup) {
 				this.searchPopup = new sap.ui.xmlfragment("oft.fiori.fragments.popup", this);
 				this.getView().addDependent(this.searchPopup);
@@ -503,6 +501,11 @@ sap.ui.define([
 				this.searchPopup.setTitle(title);
 			}
 			this.searchPopup.open();
+		},
+		handleNavButtonPress: function () {
+			var oSplitApp = this.getView().getParent().getParent();
+			var oMaster = oSplitApp.getMasterPages()[0];
+			oSplitApp.toMaster(oMaster, "flip");
 		}
 
 	});

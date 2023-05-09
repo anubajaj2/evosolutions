@@ -8,10 +8,9 @@
 	xmlns:u="sap.ui.unified"
 	xmlns="sap.m">
 <semantic:FullscreenPage id="page"
+showNavButton="true" navButtonPress="handleNavButtonPress"
 	title="Leave Request"
 	floatingFooter="true"
-	showNavButton="false"
-	navButtonPress="onNavButtonPress"
 	>
 	<semantic:customHeaderContent>
 		<Text id="idUser"> </Text>

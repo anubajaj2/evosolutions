@@ -1,6 +1,6 @@
 <mvc:View controllerName="oft.fiori.controller.adminPanel" xmlns:core="sap.ui.core" xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic">
-	<semantic:FullscreenPage busyIndicatorDelay="0" title="Admin Panel" >
+	<semantic:FullscreenPage showNavButton="true" navButtonPress="handleNavButtonPress" busyIndicatorDelay="0" title="Admin Panel" >
 		<semantic:customHeaderContent>
 			<Text id="idDB"> </Text>
 			<Text id="idUser"> </Text>
