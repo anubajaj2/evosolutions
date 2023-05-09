@@ -25,7 +25,7 @@
         <f:Form id="trainerHeader" editable="true">
         </f:Form>
       </semantic:content> -->
-      <Page title="Manage Trainers"  navButtonPress="onNavBack"
+      <Page title="Manage Trainers"  navButtonPress="handleNavButtonPress"
       showNavButton="{device>/system/phone}">
       <headerContent>
         <Text id="idUser"></Text>
