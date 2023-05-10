@@ -15,26 +15,29 @@ sap.ui.define([
         },
 
         _onRouteMatched: function (oEvent) {
-            
             var sRouteName = oEvent.getParameter("name");
-            if(sRouteName==="leadDetails"){
+            setTimeout(() => {
+            if (sRouteName === "leadDetails") {
                 this.getView().getModel('local').setProperty("/onResendOTP", false);
                 this.getView().getModel('local').setProperty("/sendOtp", true);
                 this.getView().getModel('local').setProperty("/otpVisible", false);
                 this.getView().getModel('local').setProperty("/PageVisibility", false);
                 this.getView().getModel('local').setProperty("/verifySubmit", false);
-
-
+        
                 this.getView().getModel('local').setProperty("/Email", "");
                 this.getView().getModel('local').setProperty("/captcha", "");
                 this.getView().getModel('local').setProperty("/otpValue", "");
                 this.getView().getModel('local').setProperty("/sendOtpDisabled", true);
-                
+        
                 this.onOpenDialog();
-                this.getView().getModel('local').updateBindings();                
-                // this.getView().getModel('local').refresh()
-            }
+                this.getView().getModel('local').updateBindings();
+        
+                    // Code to be executed after 3 seconds
+                    this.getView().getModel('local').refresh();
+                }
+            }, 1500);
         },
+        
 
         onOpenDialog: function () {
 
@@ -137,7 +140,8 @@ sap.ui.define([
             }
             else{
                 this.getView().getModel('local').setProperty('/email', false);
-            }
+            };
+
 
             if (sEmail && !sEmail.match(oRegex)) {
                 MessageToast.show("Please enter a valid email address.");
@@ -182,6 +186,7 @@ sap.ui.define([
             this.OtpSend();
 
         },
+
         onNumberCaptchaCheck:function(){
             var InpCaptchaCode = this.getView().getModel('local').getProperty("/captcha");
 
@@ -190,6 +195,7 @@ sap.ui.define([
                 return false;
             }
             else{
+                // this.onNumberOTPPress();
                 return true;
             }
         },
@@ -407,8 +413,16 @@ onSubmit: function () {
             // this.getView().getModel('local').getProperty("/Email");
         },
         onEnter:function(){
-            this.validateCaptcha()
+            var emailvis = this.getView().getModel("local").getProperty("/emailVisible")
+
+            if (emailvis == false) {
+                this.onNumberOTPPress();
+            }
+            else {
+                this.validateCaptcha();
+            }
         },
+
         onEnterOtp:function(){
             this.onSubmit();
         },
@@ -434,7 +448,7 @@ onSubmit: function () {
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;
-            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
+            var countDownDate = new Date().getTime() + 10000; // 60 seconds from now
             var x = setInterval(function () {
                 var now = new Date().getTime();
                 var distance = countDownDate - now;
@@ -463,7 +477,7 @@ onSubmit: function () {
             // this.onValidate();
             this.getView().getModel('local').setProperty("/otpVisible", true);
             var that = this;
-            var countDownDate = new Date().getTime() + 60000; // 60 seconds from now
+            var countDownDate = new Date().getTime() + 10000; // 60 seconds from now
             var x = setInterval(function () {
                 var now = new Date().getTime();
                 var distance = countDownDate - now;
