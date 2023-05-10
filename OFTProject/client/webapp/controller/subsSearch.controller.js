@@ -279,16 +279,15 @@ sap.ui.define([
 					var oCourseId = 'Courses(\'' + vCourse + '\')';
 					var oModel = this.getView().getModel().oData[oCourseId];
 					if (oModel) {
-						var CourseName = oModel.BatchNo + ': ' + oModel.Name; //got the course anme from screen
+						var CourseName = oModel.BatchNo; //got the course anme from screen
 						itemList[i].getCells()[2].setText(CourseName);
 					}
 					var vStudent = itemList[i].getCells()[0].getText();
-					var oStudentId = 'Students(\'' + vStudent + '\')';
-					
-					var vModel = this.allStudnets[vStudent];
+					var oStudentId = 'Wards(\'' + vStudent + '\')';
+					var vModel = this.getView().getModel().oData[oStudentId];
 					if (vModel) {
-						var StudMail = vModel.GmailId;
-						itemList[i].getCells()[0].setText(StudMail);
+					  var StudMail = vModel.Name + "(" + vModel.RollNo + ")";
+					  itemList[i].getCells()[0].setText(StudMail);
 					}
 				}
 

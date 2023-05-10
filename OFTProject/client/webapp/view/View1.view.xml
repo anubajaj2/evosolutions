@@ -3,7 +3,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page  title="Evo Solution">
 		<headerContent>
-			<Button icon="sap-icon://arrow-right" press="onNext"></Button>
+			<!-- <Button icon="sap-icon://arrow-right" press="onNext"></Button> -->
 		</headerContent>
 		<content>
 			<!--<Button text="go to next screen" press="onNext"></Button>-->
