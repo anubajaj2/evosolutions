@@ -37,8 +37,8 @@
 				<!-- <SearchField id="idStuSearch" search="onStuSearch" placeholder="Enter Student Email Id" icon="sap-icon://search" width="100%" height="30%"/> <SearchField id="idCourseSearch" search="onCourseSearch" placeholder="Enter Only Course Name(not batch
 				id)" icon="sap-icon://search" width="100%" height="30%"/> <SearchField id="idPartPaySearch" search="onPartPaySearch" placeholder="Enter true or false(for Partial Payment)" icon="sap-icon://search" width="100%" height="30%"/> -->
 
-				<Label text="Student Email"/>
-				<Input id="idStuSearch" value="{local>/newRegistration/StudentId}" showValueHelp="true" valueHelpRequest="onSelect" valueHelpOnly="true" placeholder="Select student email"/>
+				<Label text="Student Name"/>
+				<Input id="idStuSearch" value="{local>/newRegistration/StudentId}" showValueHelp="true" valueHelpRequest="onSelect" valueHelpOnly="true" placeholder="Select Student Name"/>
 
 				<Label text="Batch"/>
 				<Input id="idCourseSearch" value="{local>/newRegistration/CourseId}" showValueHelp="true" valueHelpRequest="onSelect" valueHelpOnly="true" placeholder="Select a batch"/>

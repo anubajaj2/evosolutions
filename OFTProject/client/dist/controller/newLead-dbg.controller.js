@@ -122,7 +122,7 @@ sap.ui.define([
 				loginPayload.password = this.passwords;
 				loginPayload.DollerQuote = this.getView().byId("doller").getSelected();
 				loginPayload.courseId =  this.getView().byId("idCourse1").getSelectedKey();
-				$.post('/sendInquiryEmail',  )
+				$.post('/sendInquiryEmail', loginPayload)
 					.done(function(data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
@@ -403,11 +403,58 @@ sap.ui.define([
 				payload.FatherName = parent.FatherName;
 				payload.EmailId = parent.EmailId;
 				payload.WardName = `${item.Gender==="F" ? "Miss" : "Master"} ${item.Name}`;
+				var EmailTemplate = '<!DOCTYPE html>'+
+				'<html>'+
+				'	<body>'+
+				'		<p>Dear $$FatherName$$, '
+				+
+				'<br>'
+				+
+				'We are excited to announce our upcoming summer camp for kids and we would like to invite your $$WardName$$ to be a part of it! Our summer camp is designed to provide an enriching and fun-filled experience for children while also allowing them to make new friends and learn new skills. '+
+				' '
+				+
+				'<br>'
+				+
+
+				'The camp will be held from 20th May 2023 to 20th June 2023 and will feature a variety of activities such as Brain Development Skills, Multiple Intelligence, Coding, Art & Craft, and many more. Our team of experienced and enthusiastic counsellors will be there to guide your child throughout the camp, always ensuring their safety and well-being. We believe that this will be a wonderful opportunity for your child to make new friends, explore new interests, and have a great time. '+
+				' '
+				+
+				'<br>'
+				+
+
+				'You can find the course details here '+
+				' '
+				+
+				'<br>'
+				+
+				'https://www.evotrainingsolutions.com/evos-summer-camp '+
+				' '
+				+
+				'<br>'
+				+
+
+				'We would be honored to have your children (Age 5-12 Years) join us at camp and we believe they will have an amazing time. Please let us know if you are interested in registering your child for the summer camp. If you have any questions or concerns, please do not hesitate to reach out to us. '+
+				' '
+				+
+				'<br>'
+				+
+
+				'Evos Training Solutions, EPS-FF 074, Emerald Plaza, Sector-65, Gurgaon M: 8800156440 '+
+				' '
+				+
+				'<br>'
+				+
+
+				'Thank you for considering our summer camp and we look forward to hearing from you soon!</p>'+
+				'<br>'
+				+
+				'	</body>'+
+				'</html>';
 				for(var courseId of item.CourseName){
 					var course = this.getView().getModel().getProperty(`/CoursesMst('${courseId}')`);
 					payload.CourseName = course.CourseName;
 					payload.CourseFee = course.CourseFee;
-					payload.EmailTemplate= course.EmailTemplate;
+					payload.EmailTemplate= course.EmailTemplate?course.EmailTemplate:EmailTemplate;
 					that.getView().setBusy(true);
 					$.post('/sendInquiryEmail', payload)
 						.done(function(data, status) {

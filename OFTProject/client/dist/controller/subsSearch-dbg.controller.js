@@ -1600,6 +1600,7 @@ sap.ui.define([
 				//set the id here
 			},
 			onSelect: function(oEvent) {
+				debugger;
 				this.sId = oEvent.getSource().getId();
 				
 				var sTitle = "",
@@ -1648,10 +1649,10 @@ sap.ui.define([
 				var title = this.getView().getModel("i18n").getProperty("customer");
 				this.searchPopup.setTitle(title);
 				this.searchPopup.bindAggregation("items", {
-					path: "/Students",
+					path: "/Wards",
 					template: new sap.m.DisplayListItem({
 						label: "{Name}",
-						value: "{GmailId}"
+						value: "{Name}"
 					})
 				});
 			}

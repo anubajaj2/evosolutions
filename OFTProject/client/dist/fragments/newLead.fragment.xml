@@ -1,79 +1,51 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
-xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
-xmlns:html="http://www.w3.org/1999/xhtml">
+<core:FragmentDefinition xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:l="sap.ui.layout"
+  xmlns:html="http://www.w3.org/1999/xhtml">
 
-        <VBox>
-        <f:SimpleForm id="SimpleFormToolbar"
-			editable="true"
-			layout="ResponsiveGridLayout"
-			labelSpanXL="4"
-			labelSpanL="3"
-			labelSpanM="4"
-			labelSpanS="12"
-			adjustLabelSpan="false"
-			emptySpanXL="0"
-			emptySpanL="4"
-			emptySpanM="0"
-			emptySpanS="0"
-			columnsXL="2"
-			columnsL="1"
-			columnsM="1"
-			singleContainerFullSize="false"
-			ariaLabelledBy="New Inquiry" >
-			<f:toolbar >
-				<OverflowToolbar visible="{local>/toolbarVisibility}" id="TB1">
-					<Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
-					<ToolbarSpacer />
+  <VBox>
+    <f:SimpleForm id="SimpleFormToolbar" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false" ariaLabelledBy="New Inquiry">
+      <f:toolbar >
+        <OverflowToolbar visible="{local>/toolbarVisibility}" id="TB1">
+          <Title id="Title1" text="New Lead" level="H4" titleStyle="H4"/>
+          <ToolbarSpacer />
           <Label text="Parent Mode:"/>
           <Switch state="true" change="onParentMode"/>
           <Button text="Show Fullscreen" icon="sap-icon://full-screen" press="onFullScreen"/>
-				</OverflowToolbar>
-			</f:toolbar>
-			<f:content>
+        </OverflowToolbar>
+      </f:toolbar>
+      <f:content>
         <Label text="Mobile No" />
-				<Input required="true" liveChange="onMobileNumber" type="Number"  value="{local>/newLead/Phone}"  editable="{local>/newLeadVis/Phone}" showValueHelp="{local>/valueHelpVisibility}"
-        valueHelpRequest="onSelectInq"
-        submit="onEnter"></Input>
-        <Label text="Email"  />
-				<Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" editable="{local>/newLeadVis/EmailId}" submit="onEnterEmail" />
-    		<Label text="Date" />
-				<DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}" ></DatePicker>
-		        <!-- <Label text="Category" />
-		        <Select id="idCategory"
-		          selectedKey="{local>/newLead/Category}" width="500px"
-		          items="{
+        <Input required="true" liveChange="onMobileNumber" type="Number" value="{local>/newLead/Phone}" editable="{local>/newLeadVis/Phone}" showValueHelp="{local>/valueHelpVisibility}" valueHelpRequest="onSelectInq" submit="onEnter"></Input>
+        <Label text="Email" />
+        <Input id="idParentEmail" required="true" type="Email" value="{local>/newLead/EmailId}" editable="{local>/newLeadVis/EmailId}" submit="onEnterEmail" />
+        <Label text="Date" />
+        <DatePicker required="true" visible="false" id="inqDate" displayFormat="dd.MM.yyyy" dateValue="{local>/newLead/Date}"></DatePicker>
+        <!-- <Label text="Category" />
+		        <Select id="idCategory" selectedKey="{local>/newLead/Category}" width="500px" items="{
 		            path: 'local>/courseCategory'
 		          }">
 		          <core:Item key="{local>text}" text="{local>text}"/>
 		        </Select> -->
 
-    			<!-- <Label text="Courses" />
-		        <MultiComboBox id="idCourse1"
-		          selectedKeys="{local>/newLead/CourseName}" width="500px"
-		          items="{
-		            path: '/CoursesMst',
-		            sorter: { path: 'CourseName' }
-		          }">
-		          <core:Item key="{id}" text="{CourseName}"/>
-		        </MultiComboBox> -->
-
-				<Label text="Father Name" />
-				<Input required="true" editable="{local>/newLeadVis/FatherName}"  value="{local>/newLead/FatherName}"/>
+        <Label text="Father Name" />
+        <Input required="true" editable="{local>/newLeadVis/FatherName}" value="{local>/newLead/FatherName}"/>
         <Label text="Mother Name"/>
         <Input editable="{local>/newLeadVis/MotherName}" value="{local>/newLead/MotherName}"/>
         <Label text="Quoted Fee" />
-				<Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
-				<Label text="Address" />
-        		<TextArea editable="{local>/newLeadVis/Address}" value="{local>/newLead/Address}"></TextArea>
+        <Input visible="false" id="quotedFee" type="Number" value="{local>/newLead/Fees}" />
+        <Label text="Address" />
+        <TextArea editable="{local>/newLeadVis/Address}" value="{local>/newLead/Address}"></TextArea>
 
-        		<Label text="City" />
-        		<ComboBox editable="{local>/newLeadVis/City}" id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
-        			<core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
-        		</ComboBox>
-				<Label text="Emergency Contact Name" />
-				<Input editable="{local>/newLeadVis/EmergencyContactName}" value="{local>/newLead/EmergencyContactName}"></Input>
+        <Label text="City" />
+        <ComboBox editable="{local>/newLeadVis/City}" id="idCity" showSecondaryValues="true" items="{local>/cities}" selectedKey="{local>/newLead/City}">
+          <core:ListItem key="{local>city}" text="{local>city}" additionalText ="{local>state}" />
+        </ComboBox>
+        <Label text="Emergency Contact Name" />
+        <Input editable="{local>/newLeadVis/EmergencyContactName}" value="{local>/newLead/EmergencyContactName}"></Input>
         <Label text="Emergency Contact No" />
-				<Input type="Number" editable="{local>/newLeadVis/EmergencyContactNo}" value="{local>/newLead/EmergencyContactNo}" liveChange="onMobileNumber"></Input>
+        <Input type="Number" editable="{local>/newLeadVis/EmergencyContactNo}" value="{local>/newLead/EmergencyContactNo}" liveChange="onMobileNumber"></Input>
         <!-- <Label text="Type"/>
         <Select id="idCustType" selectedKey="{local>/newLead/custType}">
           <core:Item key="School" text="School"></core:Item>
@@ -84,9 +56,9 @@ xmlns:html="http://www.w3.org/1999/xhtml">
         </Select>
         <Label text="College/Company name" />
         <Input value="{local>/newLead/organization}"/> -->
-				<Label text="Remarks" />
-				<TextArea editable="{local>/newLeadVis/Remarks}" value="{local>/newLead/Remarks}">
-				</TextArea>
+        <Label text="Remarks" />
+        <TextArea editable="{local>/newLeadVis/Remarks}" value="{local>/newLead/Remarks}">
+        </TextArea>
 
         <Label text="How did you hear about us" />
         <Select editable="{local>/newLeadVis/HearAbout}" id="idHearAbout" selectedKey="{local>/newLead/HearAbout}">
@@ -100,118 +72,115 @@ xmlns:html="http://www.w3.org/1999/xhtml">
           <core:Item key="GoogleAds" text="GoogleAds"></core:Item>
           <core:Item key="Other" text="Other"></core:Item>
         </Select>
-			</f:content>
-		</f:SimpleForm>
-    </VBox>
-    <VBox>
-        <Table id="idWardDetails" autoPopinMode="true" contextualWidth="Auto" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
-            <headerToolbar>
-              <OverflowToolbar >
-                <ToolbarSpacer/>
-                <OverflowToolbarButton visible="{local>/bottomToolbar}"  id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
-                <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
-                <OverflowToolbarButton visible="{local>/bottomToolbar}" id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete"
-                  press="onPressDeleteRow"/>
-                </OverflowToolbar>
-              </headerToolbar>
-              <columns>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text  text="Roll No"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Ward Name"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Gender"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="DOB"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Standard"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="School Name"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Weakness"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Mobile No"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Course Name"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Blood Group"/>
-                  </header>
-                </Column>
-                <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
-                  <header>
-                    <Text text="Photo"/>
-                  </header>
-                </Column>
-              </columns>
+      </f:content>
+    </f:SimpleForm>
+  </VBox>
+  <VBox>
+    <Table id="idWardDetails" contextualWidth="Auto" items="{local>/newLead/WardDetails}" busyIndicatorDelay="0" class="sapUiContentPadding" mode="MultiSelect" growing="true">
+      <headerToolbar>
+        <OverflowToolbar >
+          <ToolbarSpacer/>
+          <OverflowToolbarButton visible="{local>/bottomToolbar}" id="viewSecureTableEmailBtn" icon="sap-icon://email" tooltip="Send Email" press="onPressSendEmail"/>
+          <OverflowToolbarButton id="viewSecureTableAddBtn" icon="sap-icon://add" tooltip="Add" press="onPressAddWard"/>
+          <OverflowToolbarButton visible="{local>/bottomToolbar}" id="viewSecureTPTableDeleteBtn" icon="sap-icon://delete" tooltip="Delete" press="onPressDeleteRow"/>
+        </OverflowToolbar>
+      </headerToolbar>
+      <columns>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Roll No"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Ward Name"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Gender"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="DOB"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Standard"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="School Name"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Weakness"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Mobile No"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Course Name"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Blood Group"/>
+          </header>
+        </Column>
+        <Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="auto">
+          <header>
+            <Text text="Photo"/>
+          </header>
+        </Column>
+      </columns>
+      <items>
+        <ColumnListItem vAlign="Middle">
+          <cells>
+            <Input enabled="false" type="Number" value="{local>RollNo}"/>
+            <Input editable="{=${local>/isLeadDetail}?${local>Name}?false:true:true}" value="{local>Name}"/>
+            <Select enabled="{=${local>/isLeadDetail}?${local>Gender}?false:true:true}" selectedKey="{local>Gender}" forceSelection="false">
               <items>
-                <ColumnListItem vAlign="Middle">
-                  <cells>
-                    <Input enabled="false" type="Number" value="{local>RollNo}"/>
-                    <Input editable="{=${local>/isLeadDetail}?${local>Name}?false:true:true}" value="{local>Name}"/>
-                    <Select enabled="{=${local>/isLeadDetail}?${local>Gender}?false:true:true}" selectedKey="{local>Gender}" forceSelection="false">
-                      <items>
-                        <core:Item text="Male" key="M" />
-                        <core:Item text="Female" key="F" />
-                    </items>
-                    </Select>
-                    <DatePicker editable="{=${local>/isLeadDetail}?${local>DOB}?false:true:true}" displayFormat="dd.MM.yyyy" dateValue="{local>DOB}"/>
-                    <Input editable="{=${local>/isLeadDetail}?${local>Standard}?false:true:true}" type="Number" value="{local>Standard}"/>
-                    <Input editable="{=${local>/isLeadDetail}?${local>SchoolName}?false:true:true}" value="{local>SchoolName}"/>
-                    <Input editable="{=${local>/isLeadDetail}?${local>Weakness}?false:true:true}" value="{local>Weakness}"/>
-                    <Input editable="{=${local>/isLeadDetail}?${local>MobileNo}?false:true:true}" type="Number" value="{local>MobileNo}" liveChange="onMobileNumber"/>
-                    <MultiComboBox id="idCourse1"
-                    enabled="{=${local>/isLeadDetail}?{local>CourseName}?false:true:true}"
-                          selectedKeys="{local>CourseName}" width="500px"
-                          items="{
-                            path: '/CoursesMst',
-                            sorter: { path: 'CourseName' }
-                          }">
-                          <core:Item key="{id}" text="{CourseName}"/>
-                        </MultiComboBox>
-                    <Select enabled="{=${local>/isLeadDetail}?${local>BloodGroup}?false:true:true}" selectedKey="{local>BloodGroup}" forceSelection="false">
-                      <items>
-                        <core:Item text="O+" key="O+" />
-                        <core:Item text="O-" key="O-" />
-                        <core:Item text="A+" key="A+" />
-                        <core:Item text="A-" key="A-" />
-                        <core:Item text="B+" key="B+" />
-                        <core:Item text="B-" key="B-" />
-                        <core:Item text="AB+" key="AB+" />
-                        <core:Item text="AB-" key="AB-" />
-                    </items>
-                    </Select>
-                    <Button  type="{=${local>Photo} ? 'Emphasized': 'Default'}" text="View" press="onViewPhoto"/>
-                  </cells>
-                </ColumnListItem>
+                <core:Item text="Male" key="M" />
+                <core:Item text="Female" key="F" />
               </items>
-            </Table>
-    </VBox>
+            </Select>
+            <DatePicker editable="{=${local>/isLeadDetail}?${local>DOB}?false:true:true}" displayFormat="dd.MM.yyyy" dateValue="{local>DOB}"/>
+            <Input editable="{=${local>/isLeadDetail}?${local>Standard}?false:true:true}" type="Number" value="{local>Standard}"/>
+            <Input editable="{=${local>/isLeadDetail}?${local>SchoolName}?false:true:true}" value="{local>SchoolName}"/>
+            <Input editable="{=${local>/isLeadDetail}?${local>Weakness}?false:true:true}" value="{local>Weakness}"/>
+            <Input editable="{=${local>/isLeadDetail}?${local>MobileNo}?false:true:true}" type="Number" value="{local>MobileNo}" liveChange="onMobileNumber"/>
+           
+            <MultiComboBox id="idCourse1" selectedKeys="{local>CourseName}" width="500px" items="{
+								path: '/CoursesMst',
+								sorter: { path: 'CourseName' }
+							}">
+              <core:Item key="{id}" text="{CourseName}"/>
+            </MultiComboBox>
+            <Select enabled="{=${local>/isLeadDetail}?${local>BloodGroup}?false:true:true}" selectedKey="{local>BloodGroup}" forceSelection="false">
+              <items>
+                <core:Item text="O+" key="O+" />
+                <core:Item text="O-" key="O-" />
+                <core:Item text="A+" key="A+" />
+                <core:Item text="A-" key="A-" />
+                <core:Item text="B+" key="B+" />
+                <core:Item text="B-" key="B-" />
+                <core:Item text="AB+" key="AB+" />
+                <core:Item text="AB-" key="AB-" />
+              </items>
+            </Select>
+            <Button type="{=${local>Photo} ? 'Emphasized': 'Default'}" text="View" press="onViewPhoto"/>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
+  </VBox>
 </core:FragmentDefinition>
