@@ -2557,8 +2557,8 @@ app.start = function () {
 
 					// var Subject = req.body.Subject;
 					Subject =  `${req.body.CourseName} for ${req.body.WardName} 🟢`;
-					var contents = req.body.EmailTemplate.replace(/\$\$FatherName\$\$/gi,req.body.FatherName)
-					.replace(/\$\$WardName\$\$/gi, req.body.WardName).replace(/\$\$CourseName\$\$/gi, req.body.CourseName)
+					var contents = req.body.EmailTemplate.replace("$$FatherName$$",req.body.FatherName)
+					.replace("$$WardName$$", req.body.WardName).replace(/\$\$CourseName\$\$/gi, req.body.CourseName)
 					.replace(/\$\$CourseFee\$\$/gi, req.body.CourseFee);
 
 				// var contents = fs.readFileSync(__dirname + '/sampledata/summercamp.html', 'utf-8');

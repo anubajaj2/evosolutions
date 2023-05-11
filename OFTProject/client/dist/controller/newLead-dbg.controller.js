@@ -122,7 +122,7 @@ sap.ui.define([
 				loginPayload.password = this.passwords;
 				loginPayload.DollerQuote = this.getView().byId("doller").getSelected();
 				loginPayload.courseId =  this.getView().byId("idCourse1").getSelectedKey();
-				$.post('/sendInquiryEmail', loginPayload)
+				$.post('/sendInquiryEmail',  )
 					.done(function(data, status) {
 						sap.m.MessageToast.show("Email sent successfully");
 					})
