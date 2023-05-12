@@ -398,13 +398,13 @@ sap.ui.define([
 			selectedPaths.forEach((item, i) => {
 				selectedItems.push(oModel.getProperty(item));
 			});
+			debugger
 			for(var item of selectedItems){
 				var payload = {};
 				payload.FatherName = parent.FatherName;
 				payload.EmailId = parent.EmailId;
 				payload.WardName = `${item.Gender==="F" ? "Miss" : "Master"} ${item.Name}`;
 				var EmailTemplate = '<!DOCTYPE html>'+
-				'<html>'+
 				'	<body>'+
 				'		<p>Dear $$FatherName$$, '
 				+
@@ -450,11 +450,20 @@ sap.ui.define([
 				+
 				'	</body>'+
 				'</html>';
+				debugger;
 				for(var courseId of item.CourseName){
 					var course = this.getView().getModel().getProperty(`/CoursesMst('${courseId}')`);
+					console.log(course);
 					payload.CourseName = course.CourseName;
 					payload.CourseFee = course.CourseFee;
-					payload.EmailTemplate= course.EmailTemplate?course.EmailTemplate:EmailTemplate;
+					payload.EmailTemplate= course.EmailTemplate;
+
+					let oCourse =  course.CourseName;
+					
+					if(!payload.EmailTemplate){
+						MessageToast.show( "The Email Template is not Available for this course" + "" + oCourse );
+					}
+					else {
 					that.getView().setBusy(true);
 					$.post('/sendInquiryEmail', payload)
 						.done(function(data, status) {
@@ -466,6 +475,7 @@ sap.ui.define([
 							that.getView().setBusy(false);
 							sap.m.MessageBox.error(xhr.responseText);
 						});
+					}
 				}
 			}
 		},
