@@ -1201,6 +1201,108 @@ app.start = function () {
 			);
 		});
 
+		app.get("/getAllData", function (req, res) {
+
+			var sId = req.query.sId;
+			var Subs = app.models.Sub;
+			var Courses = app.models.Course;
+
+			var Wards = app.models.Ward;
+			var Inquiry = app.models.Inquiry;
+
+			var async = require('async');
+			async.waterfall([
+				function (callback) {
+
+					Inquiry.find({}).then(function (parentData) {
+						callback(null, parentData);
+					});
+				},
+				function (parentData, callback) {
+					
+					var sCourseIds = [...new Set(parentData.map(item => item.id.toString()))];
+					// var sCourseId = parentData[0].__data.id.toString()
+					Wards.find({
+						where: {
+							and: [{
+								InquiryId: {
+									inq: sCourseIds
+								}
+							}]
+						}
+					})
+						.then(function (studentsDetail, err) {
+							callback(null, parentData, studentsDetail);
+							console.log(studentsDetail);
+						});
+				},
+				function (parentData, studentsDetail, callback) {
+					var array = [];
+					for (let index = 0; index < studentsDetail.length; index++) {
+						const element = studentsDetail[index];
+						// var sStudentSubId = studentsDetail[index].__data.StudentId.toString();
+						// array.push(sStudentSubId);
+						// element.CourseName 
+						for (let i = 0; i < element.CourseName.length; i++) {
+							const ele = element.CourseName[i];
+							array.push(ele);
+						}
+					}
+
+					Courses.find({
+						where: {
+							and: [{
+								CourseId: {
+									inq: array
+								}
+
+							}]
+						}
+					})
+						.then(function (Records, err) {
+							callback(null, parentData, studentsDetail, Records);
+						});
+				}
+			],
+				function (err, parentData, studentsDetail, Records) {
+					// result now equals 'done'
+					
+					try {
+						var allData = [];
+						for (var i = 0; i < studentsDetail.length; i++) {
+							var oParent = parentData.filter(function(ele){
+								return ele.__data.id.toString()===studentsDetail[i].__data.InquiryId.toString();
+							});
+							for (let index = 0; index < studentsDetail[i].__data.CourseName.length; index++) {
+								const element = studentsDetail[i].__data.CourseName[index];
+								var oCurse=Records.filter(function(ele){
+									return ele.__data.CourseId.toString()===element.toString()
+								});
+								allData.push({
+									"ParentName": oParent[0].__data.FatherName,
+									"WardName": studentsDetail[i].__data.Name,
+									"ParentMailId":  oParent[0].__data.EmailId,
+									"ContactNo":  oParent[0].__data.Phone,
+									"Course": oCurse[0].__data.BatchNo,
+									"RegistrationDate": null
+								});
+	
+							}
+							
+							
+						}
+
+						
+						res.send(allData);
+					} catch (e) {
+						debugger;
+					} finally {
+
+					}
+				}
+			);
+		});
+
 
 		app.post('/requestMessage', function (req, res) {
 
