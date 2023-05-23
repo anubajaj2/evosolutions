@@ -10,8 +10,10 @@ sap.ui.define([
 	"sap/ui/model/Filter", //PJHA,
 	'sap/m/Token',
 	"sap/ui/model/FilterOperator",
-	"sap/ui/core/Fragment"
-], function (Controller, MessageBox, MessageToast, Formatter, oFilter, oToken, FilterOperator, Fragment) { //PJHA
+	"sap/ui/core/Fragment",
+	'sap/ui/export/Spreadsheet',
+	'sap/ui/export/library',
+], function (Controller, MessageBox, MessageToast, Formatter, oFilter, oToken, FilterOperator, Fragment,Spreadsheet,library) { //PJHA
 	"use strict";
 
 	return Controller.extend("oft.fiori.controller.newReg", {
@@ -2255,8 +2257,88 @@ sap.ui.define([
 			this._oPopover.then(function (oPopover) {
 				oPopover.openBy(oButton);
 			});
-		}
+		},
+		onExportExcel:function(){
+			$.ajax({
+                type: 'GET',
+                url: 'getAllData',
+                success: function (data) {
+                   debugger;
+				   if(data.length>0){
+					var oSingle=data[0];
+					var oCols = [];
+					for (const key in oSingle) {
+						oCols.push({
+							label: key,
+							property: [key],
+							// type: typeof (element) === "number" ? EdmType.Number : EdmType.String
+						});
+					}
+				   }
+				   var aCols, oRowBinding, oSettings, oSheet, oTable;
+				//    oTable = this._oTable;
+				   oRowBinding = data;
+				   aCols = oCols;
+				   oSettings = {
+						workbook: {
+							columns: aCols,
+							hierarchyLevel: 'Level'
+						},
+						dataSource: oRowBinding,
+						fileName: 'Data_' + new Date().toISOString() + '.xlsx',
+						worker: false // We need to disable worker because we are using a MockServer as OData Service
+					};
+	
+					oSheet = new Spreadsheet(oSettings);
+					oSheet.build().finally(function () {
+						oSheet.destroy();
+					});
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    MessageToast.show('Error sending OTP via email');
+                }
+            });
+		},
+		onTransDataExport: function (oEvent) {
+			var oCols = [];
+			var oTransData = this.getModel("appView").getProperty("/U_ENT_CPRT_POS_TRANS");
+			var oTransColumn = this.getModel("appView").getProperty("/TransColumn");
+			for (const key in oTransColumn) {
+				if (Object.hasOwnProperty.call(oTransColumn, key)) {
+					const element = oTransData[0][key];
+					oCols.push({
+						label: key.includes("U_") ? key.split("U_")[1] : key,
+						property: [key],
+						type: typeof (element) === "number" ? EdmType.Number : EdmType.String
+					});
+				}
+			}
+			var aCols, oRowBinding, oSettings, oSheet, oTable;
 
+			if (!this._oTable) {
+				this._oTable = this.byId('transationTable');
+			}
+
+			oTable = this._oTable;
+			oRowBinding = oTable.getBinding('rows');
+			aCols = oCols;
+
+			oSettings = {
+				workbook: {
+					columns: aCols,
+					hierarchyLevel: 'Level'
+				},
+				dataSource: oRowBinding,
+				fileName: 'Data_' + new Date().toISOString() + '.xlsx',
+				worker: false // We need to disable worker because we are using a MockServer as OData Service
+			};
+
+			oSheet = new Spreadsheet(oSettings);
+			oSheet.build().finally(function () {
+				oSheet.destroy();
+			});
+		},
 		//End of PJHA
 
 	});
