@@ -1262,9 +1262,28 @@ app.start = function () {
 						.then(function (Records, err) {
 							callback(null, parentData, studentsDetail, Records);
 						});
+				},
+				function (parentData, studentsDetail, Records, callback) {
+					// var array = [];
+					var sArayIds = [...new Set(studentsDetail.map(item => item.id.toString()))];
+					
+
+					Subs.find({
+						where: {
+							and: [{
+								StudentId: {
+									inq: sArayIds
+								}
+
+							}]
+						}
+					})
+						.then(function (Subs, err) {
+							callback(null, parentData, studentsDetail, Records, Subs);
+						});
 				}
 			],
-				function (err, parentData, studentsDetail, Records) {
+				function (err, parentData, studentsDetail, Records,Subs) {
 					// result now equals 'done'
 					
 					try {
@@ -1273,18 +1292,23 @@ app.start = function () {
 							var oParent = parentData.filter(function(ele){
 								return ele.__data.id.toString()===studentsDetail[i].__data.InquiryId.toString();
 							});
+							var oCurse;
 							for (let index = 0; index < studentsDetail[i].__data.CourseName.length; index++) {
 								const element = studentsDetail[i].__data.CourseName[index];
-								var oCurse=Records.filter(function(ele){
+								oCurse=Records.filter(function(ele){
 									return ele.__data.CourseId.toString()===element.toString()
 								});
+								var oSubs=Subs.filter(function(ele){
+									// return ele.__data.CourseId.toString()===oCurse[0].__data.id.toString() && 
+									return ele.__data.StudentId.toString() === studentsDetail[i].__data.id.toString()
+								},oCurse);
 								allData.push({
 									"ParentName": oParent[0].__data.FatherName,
 									"WardName": studentsDetail[i].__data.Name,
 									"ParentMailId":  oParent[0].__data.EmailId,
 									"ContactNo":  oParent[0].__data.Phone,
 									"Course": oCurse[0].__data.BatchNo,
-									"RegistrationDate": null
+									"RegistrationDate": oSubs[0].__data.CreatedOn
 								});
 	
 							}
