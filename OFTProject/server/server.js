@@ -1308,9 +1308,9 @@ app.start = function () {
 									"ParentMailId":  oParent[0].__data.EmailId,
 									"ContactNo":  oParent[0].__data.Phone,
 									"Course": oCurse[0].__data.BatchNo,
-									"RegistrationDate": oSubs[0].__data.CreatedOn?oSubs[0].__data.CreatedOn.toLocaleString('en-GB', {
+									"RegistrationDate": oSubs.length>0 ? oSubs[0].__data.CreatedOn ? oSubs[0].__data.CreatedOn.toLocaleString('en-GB', {
 										hour12: false,
-									  }):oSubs[0].__data.CreatedOn
+									  }):oSubs[0].__data.CreatedOn :null
 								});
 	
 							}
